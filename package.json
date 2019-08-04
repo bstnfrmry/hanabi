@@ -9,6 +9,7 @@
     "shuffle-seed": "^1.1.6"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "prettier": "^1.18.2"
   }
 }
