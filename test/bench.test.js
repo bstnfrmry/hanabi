@@ -1,4 +1,4 @@
-const { conventions } = require('../src/ai')
+const { ai } = require('../src/ai')
 const { Game } = require('../src/game')
 const { range, sumBy, groupBy } = require('lodash')
 
@@ -8,9 +8,9 @@ const options = {
   extension: false,
   logging: false,
   players: [
-    { name: 'P1', onPlay: conventions },
-    { name: 'P2', onPlay: conventions },
-    { name: 'P3', onPlay: conventions },
+    { name: 'P1', onPlay: ai },
+    { name: 'P2', onPlay: ai },
+    { name: 'P3', onPlay: ai },
   ]
 }
 
