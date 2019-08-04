@@ -9,7 +9,7 @@ export default () => (
     <div className="b">You</div>
     <div className="flex flex-row">
       {range(NCARDS).map(i => (
-        <Card key={i} />
+        <Card key={i} large={true}/>
       ))}
     </div>
   </div>
