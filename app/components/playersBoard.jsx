@@ -6,7 +6,7 @@ import SelfGame from "./selfGame";
 const NPLAYERS = 5;
 
 export default () => (
-  <div className="flex flex-column content-end bg-green h-100 w-40 pa2">
+  <div className="flex flex-column content-end bg-light-silver h-100 w-40 pa2">
     {range(NPLAYERS - 1).map(i => (
       <PlayerGame key={i} />
     ))}
