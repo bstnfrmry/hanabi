@@ -1,3 +1,3 @@
 import React from "react";
 
-export default () => <div>draw</div>;
+export default () => <div className="br1 ba">draw</div>;

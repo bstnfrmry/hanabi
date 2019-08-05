@@ -10,5 +10,29 @@ export default () => (
       <GameBoard />
       <ActionArea />
     </div>
+    <style global jsx>{`
+      body {
+        background: black;
+      }
+
+      .bg-hanabi-white {
+        background-color: white;
+      }
+      .bg-hanabi-red {
+        background-color: red;
+      }
+      .bg-hanabi-blue {
+        background-color: blue;
+      }
+      .bg-hanabi-yellow {
+        background-color: yellow;
+      }
+      .bg-hanabi-green {
+        background-color: green;
+      }
+      .bg-hanabi-multicolor {
+        background-color: purple;
+      }
+    `}</style>
   </div>
 );

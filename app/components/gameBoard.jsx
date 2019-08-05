@@ -5,9 +5,9 @@ import DrawPile from "./drawPile";
 import DiscardPile from "./discardPile";
 
 export default () => (
-  <div className="w-100 bg-blue flex-grow-1 pa2 flex flex-column">
+  <div className="w-100 bg-blue pa2 flex flex-column">
     <PlayedCards />
-    <div className="flex flex-row">
+    <div className="flex flex-row pv1">
       <TokenSpace />
       <DrawPile />
       <DiscardPile />

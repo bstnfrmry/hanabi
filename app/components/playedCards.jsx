@@ -7,7 +7,7 @@ const NCOLORS = 6;
 export default () => (
   <div className="flex flex-row">
     {range(NCOLORS).map(i => (
-      <Card key={i} />
+      <Card key={i} large={true}/>
     ))}
   </div>
 );

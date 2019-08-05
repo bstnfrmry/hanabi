@@ -1,3 +1,3 @@
 import React from "react";
 
-export default () => <div>discard</div>;
+export default () => <div className="br1 ba">discard</div>;
