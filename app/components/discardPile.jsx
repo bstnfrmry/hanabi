@@ -3,9 +3,29 @@ import Modal from "react-modal";
 import { sumBy, sortBy } from 'lodash'
 
 import Card from './card'
+import CardPlaceholder from "./cardPlaceholder";
 
-function orderByValue(cards) {
-  return sortBy(cards, card => card.value)
+function CardPile({ cards, color }) {
+  if (!cards.length) {
+    return <CardPlaceholder
+      color={color}
+      size="large"
+      className='ma1'
+    />
+  }
+
+  const sortedCards = sortBy(cards, card => card.value)
+
+  return <div className="flex flex-column">
+    {sortedCards.map((card, i) => (
+      <Card 
+        card={card}
+        size="large"
+        className="ma1"
+        style={i ? {marginTop: '-20px'} : {}}
+      />
+    ))}
+  </div>
 }
 
 export default function DiscardPile({ cards }) {
@@ -31,26 +51,11 @@ export default function DiscardPile({ cards }) {
         <h1>Discarded cards</h1>
         <div className="flex">
           {piles.map((color, i) => (
-            <div
+            <CardPile
               key={i}
-              className="flex flex-column"
-            >
-              {!cards[color].length && (
-                <Card
-                  color={color}
-                  size="large"
-                  className='ma1'
-                />
-              )}
-              {orderByValue(cards[color]).map((card, j) => (
-                <Card 
-                  card={card}
-                  size="large"
-                  className="ma1"
-                  style={j ? {marginTop: '-20px'} : {}}
-                />
-              ))}
-            </div>
+              cards={cards[color]}
+              color={color}
+            />
           ))}
         </div>
       </div>

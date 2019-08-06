@@ -1,7 +1,7 @@
 import React from "react";
 
 // Cards possible sizes
-const SizeMap = {
+export const SizeMap = {
   tiny: "", // TODO h0 doesnt exist
   small: "h1 w1",
   medium: "h2 w2",
@@ -15,19 +15,14 @@ export const CardContext = {
   PLAYED: 'played'
 }
 
-export default ({ card, context, color, hidden, size = 'medium', className = '', style = {} }) => {
+export default function Card({ card, context, hidden, size = 'medium', className = '', style = {} }) {
   const sizeClass = SizeMap[size]
-
-  let cardColor = color
-  let cardValue = null
-  if (card) {
-    cardColor = hidden
-      ? card.knowledge.color && card.color 
-      : card.color
-    cardValue = hidden 
-      ? card.knowledge.value && card.value 
-      : card.value
-  }
+  const color = hidden
+    ? card.knowledge.color && card.color 
+    : card.color
+  const value = hidden 
+    ? card.knowledge.value && card.value 
+    : card.value
 
   return (
     <div
@@ -36,10 +31,10 @@ export default ({ card, context, color, hidden, size = 'medium', className = '',
         "relative flex items-center justify-center br1 ba",
         sizeClass,
         className,
-        `bg-hanabi-${cardColor}`
+        `bg-hanabi-${color}`
       ].join(' ')}
     >
-      {cardValue}
+      {value}
       {context === CardContext.OTHER_PLAYER && <>
         {card.knowledge.value && 
           <div className="absolute right-0 top-0">V</div>
