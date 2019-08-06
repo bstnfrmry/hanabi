@@ -2,8 +2,12 @@ import React from "react";
 import Head from "next/head";
 import App from "../components/app";
 
-const Home = () => (
-  <>
+export default function Home({ seed }) {
+  Home.getInitialProps = ({ query }) => {
+    return { seed: query.seed }
+  }
+  
+  return <>
     <Head>
       <title>Hanabi</title>
       <link
@@ -12,9 +16,8 @@ const Home = () => (
       />
     </Head>
     <div className="aspect-ratio--object">
-      <App />
+      <App seed={seed} />
     </div>
   </>
-);
+}
 
-export default Home;

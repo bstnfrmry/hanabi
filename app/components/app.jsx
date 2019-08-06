@@ -7,10 +7,11 @@ import ActionArea from "./actionArea";
 const { Game } = require('./game')
 const { ai } = require('../../src/ai')
 
-export default () => {
+export default ({ seed = '1234' }) => {
   const [game, setGame] = useState(new Game({
     extension: false,
     logging: true,
+    seed,
     players: [
       { name: "Tomoa", onPlay: ai },
       { name: "Akiyo", onPlay: ai },
@@ -19,12 +20,12 @@ export default () => {
     ]
   }))
 
+  const [selectedPlayer, selectPlayer] = useState(null)
+
   const play = async () => {
     await game.play()
     setGame(cloneDeep(game)) // 🤮
   }
-
-  const [selectedPlayer, selectPlayer] = useState(null)
 
   return <div className="flex flex-row w-100 h-100">
     <PlayersBoard game={game} onSelectPlayer={selectPlayer} />
