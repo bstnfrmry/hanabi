@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { sumBy, sortBy } from 'lodash'
 
-import Card from './card'
-import CardPlaceholder from "./cardPlaceholder";
+import Card, { CardWrapper } from './card'
 
 function CardPile({ cards, color }) {
   if (!cards.length) {
-    return <CardPlaceholder
+    return <CardWrapper
       color={color}
       size="large"
       className='ma1'
@@ -18,7 +17,8 @@ function CardPile({ cards, color }) {
 
   return <div className="flex flex-column">
     {sortedCards.map((card, i) => (
-      <Card 
+      <Card
+        key={i}
         card={card}
         size="large"
         className="ma1"

@@ -15,6 +15,30 @@ export const CardContext = {
   PLAYED: 'played'
 }
 
+export function CardWrapper(props) {
+  const {
+    color,
+    size = 'medium',
+    className = '',
+    style = {},
+    children
+  } = props
+  
+  const sizeClass = SizeMap[size]
+
+  return <div
+    style={style}
+    className={[
+      "relative flex items-center justify-center br1 ba",
+      sizeClass,
+      className,
+      `bg-hanabi-${color}`
+    ].join(' ')}
+  >
+    {children}
+  </div>
+};
+
 export default function Card(props) {
   const {
     card,
@@ -25,7 +49,6 @@ export default function Card(props) {
     style = {}
   } = props
 
-  const sizeClass = SizeMap[size]
   const color = hidden
     ? card.knowledge.color && card.color 
     : card.color
@@ -34,14 +57,12 @@ export default function Card(props) {
     : card.value
 
   return (
-    <div
+    <CardWrapper
       style={style}
-      className={[
-        "relative flex items-center justify-center br1 ba",
-        sizeClass,
-        className,
-        `bg-hanabi-${color}`
-      ].join(' ')}
+      color={color}
+      size={size}
+      className={className}
+      style={style}
     >
       {value}
       {context === CardContext.OTHER_PLAYER && <>
@@ -52,6 +73,6 @@ export default function Card(props) {
           <div className="absolute right-0 bottom-0">C</div>
         }
       </>}
-    </div>
+    </CardWrapper>
   );
 };

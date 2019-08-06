@@ -1,8 +1,7 @@
 import React from "react";
 import { last } from "lodash";
 
-import Card from "./card";
-import CardPlaceholder from "./cardPlaceholder";
+import Card, { CardWrapper } from "./card";
 
 export default ({ cards }) => {
   const piles = Object.keys(cards)
@@ -12,7 +11,7 @@ export default ({ cards }) => {
       const topCard = last(cards[color])
 
       if (!topCard) {
-        return <CardPlaceholder
+        return <CardWrapper
           key={i}
           size="large"
           className="ma1"
