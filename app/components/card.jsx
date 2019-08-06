@@ -15,7 +15,7 @@ export const CardContext = {
   PLAYED: 'played'
 }
 
-export default ({ card, context, color, hidden, size = 'medium', className = '' }) => {
+export default ({ card, context, color, hidden, size = 'medium', className = '', style = {} }) => {
   const sizeClass = SizeMap[size]
 
   let cardColor = color
@@ -31,6 +31,7 @@ export default ({ card, context, color, hidden, size = 'medium', className = '' 
 
   return (
     <div
+      style={style}
       className={[
         "relative flex items-center justify-center br1 ba",
         sizeClass,

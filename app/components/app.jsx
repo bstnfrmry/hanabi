@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import Modal from "react-modal";
 import { cloneDeep } from 'lodash'
+
 import PlayersBoard from "./playersBoard";
 import GameBoard from "./gameBoard";
 import ActionArea from "./actionArea";
-
 const { Game } = require('./game')
 const { ai } = require('../../src/ai')
+
+Modal.setAppElement('#app')
 
 export default ({ seed = '1234' }) => {
   const [game, setGame] = useState(new Game({
@@ -27,7 +30,7 @@ export default ({ seed = '1234' }) => {
     setGame(cloneDeep(game)) // 🤮
   }
 
-  return <div className="flex flex-row w-100 h-100">
+  return <div id="app" className="flex flex-row w-100 h-100">
     <PlayersBoard game={game} onSelectPlayer={selectPlayer} />
     <div className="flex flex-column h-100 flex-grow-1">
       <GameBoard game={game} />
@@ -74,6 +77,28 @@ export default ({ seed = '1234' }) => {
       }
       .hanabi-multicolor {
         color: #af7ac5;
+      }
+
+      /* Modals */
+      .modal {
+        position: absolute;
+        background-color: white;
+        border-radius: 16px;
+        padding: 24px;
+        outline: none;
+      }
+    
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     `}</style>
   </div>
