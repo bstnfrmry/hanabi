@@ -1,7 +1,7 @@
 import React from "react";
 
 // Cards possible sizes
-export const SizeMap = {
+const SizeMap = {
   tiny: "", // TODO h0 doesnt exist
   small: "h1 w1",
   medium: "h2 w2",
