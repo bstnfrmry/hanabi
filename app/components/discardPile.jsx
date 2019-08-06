@@ -44,8 +44,8 @@ export default function DiscardPile({ cards }) {
     <Modal
       isOpen={isOpen}
       onRequestClose={() => toggleModal(false)}
-      className="modal w-40"
-      overlayClassName="modal-overlay"
+      className="absolute bg-white br3 pa3 outline-0 w-40"
+      overlayClassName="fixed absolute--fill bg-black-40 z-999 flex items-center justify-center"
     >
       <div className="flex flex-column items-center">
         <h1>Discarded cards</h1>

@@ -78,28 +78,6 @@ export default ({ seed = '1234' }) => {
       .hanabi-multicolor {
         color: #af7ac5;
       }
-
-      /* Modals */
-      .modal {
-        position: absolute;
-        background-color: white;
-        border-radius: 16px;
-        padding: 24px;
-        outline: none;
-      }
-    
-      .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.4);
-        z-index: 100;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
     `}</style>
   </div>
 };
