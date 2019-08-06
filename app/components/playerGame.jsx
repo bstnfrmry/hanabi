@@ -1,18 +1,20 @@
 import React from "react";
-import { range } from "lodash";
-import Card from "./card";
+import Card, { CardContext } from "./card";
 
-const NCARDS = 5;
-
-export default () => (
-  <div>
+export default ({ player, active, onSelectPlayer }) => (
+  <div onClick={() => onSelectPlayer(player)}>
     <div className="flex flex-row justify-between pb1">
-      <div className="b">Akiyo</div>
+      <div className="b">{player.name} {active && '*'}</div>
       <div className="gray">played 2 Blue</div>
     </div>
     <div className="flex flex-row">
-      {range(NCARDS).map(i => (
-        <Card key={i} />
+      {player.hand.map((card, i) => (
+        <Card
+          key={i}
+          card={card}
+          size="large"
+          context={CardContext.OTHER_PLAYER}
+        />
       ))}
     </div>
   </div>

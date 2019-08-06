@@ -1,14 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
+import { cloneDeep } from 'lodash'
 import PlayersBoard from "./playersBoard";
 import GameBoard from "./gameBoard";
 import ActionArea from "./actionArea";
 
-export default () => (
-  <div className="flex flex-row w-100 h-100">
-    <PlayersBoard />
+const { Game } = require('./game')
+const { ai } = require('../../src/ai')
+
+export default ({ seed = '1234' }) => {
+  const [game, setGame] = useState(new Game({
+    extension: false,
+    logging: true,
+    seed,
+    players: [
+      { name: "Tomoa", onPlay: ai },
+      { name: "Akiyo", onPlay: ai },
+      { name: "Futaba", onPlay: ai },
+      { name: "Miho", onPlay: ai }
+    ]
+  }))
+
+  const [selectedPlayer, selectPlayer] = useState(null)
+
+  const play = async () => {
+    await game.play()
+    setGame(cloneDeep(game)) // 🤮
+  }
+
+  return <div className="flex flex-row w-100 h-100">
+    <PlayersBoard game={game} onSelectPlayer={selectPlayer} />
     <div className="flex flex-column h-100 flex-grow-1">
-      <GameBoard />
-      <ActionArea />
+      <GameBoard game={game} />
+      <ActionArea game={game} selectedPlayer={selectedPlayer} />
+      <button onClick={() => play()}>Play turn</button>
     </div>
     <style global jsx>{`
       /* Background Colors */
@@ -53,4 +77,4 @@ export default () => (
       }
     `}</style>
   </div>
-);
+};

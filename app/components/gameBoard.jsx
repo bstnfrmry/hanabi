@@ -4,13 +4,16 @@ import TokenSpace from "./tokenSpace";
 import DrawPile from "./drawPile";
 import DiscardPile from "./discardPile";
 
-export default () => (
+export default ({ game }) => (
   <div className="w-100 bg-moon-gray pa2 flex flex-column">
-    <PlayedCards />
+    <PlayedCards cards={game.board} />
     <div className="flex flex-row pv1">
-      <TokenSpace />
-      <DrawPile />
-      <DiscardPile />
+      <TokenSpace
+        noteTokens={game.remainingNoteTokens}
+        stormTokens={game.remainingStormTokens}
+      />
+      <DrawPile cards={game.deck} />
+      <DiscardPile cards={game.discardPile} />
     </div>
   </div>
 );
