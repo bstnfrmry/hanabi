@@ -15,7 +15,16 @@ export const CardContext = {
   PLAYED: 'played'
 }
 
-export default function Card({ card, context, hidden, size = 'medium', className = '', style = {} }) {
+export default function Card(props) {
+  const {
+    card,
+    context,
+    hidden = false,
+    size = 'medium',
+    className = '',
+    style = {}
+  } = props
+
   const sizeClass = SizeMap[size]
   const color = hidden
     ? card.knowledge.color && card.color 

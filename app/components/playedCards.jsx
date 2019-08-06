@@ -1,8 +1,8 @@
 import React from "react";
 import { last } from "lodash";
+
 import Card from "./card";
 import CardPlaceholder from "./cardPlaceholder";
-import { cpus } from "os";
 
 export default ({ cards }) => {
   const piles = Object.keys(cards)
