@@ -1,43 +1,51 @@
 import React from "react";
 
-const number = 4;
-const color = "yellow";
+// Cards possible sizes
+const SizeMap = {
+  tiny: "", // TODO h0 doesnt exist
+  small: "h1 w1",
+  medium: "h2 w2",
+  large: "h3 w3",
+  extralarge: "h4 w3"
+}
 
-export default props => {
-  // Cards possible size
-  let sizeClass;
+export const CardContext = {
+  SELF_PLAYER: 'selfPlayer',
+  OTHER_PLAYER: 'otherPlayer',
+  PLAYED: 'played'
+}
 
-  switch (props.size) {
-    case "tiny":
-      sizeClass = ""; // TODO h0 doesnt exist
-      break;
-    case "small":
-      sizeClass = "h1 w1";
-      break;
-    case "medium":
-      sizeClass = "h2 w2";
-      break;
-    case "large":
-      sizeClass = "h3 w3";
-      break;
-    case "extralarge":
-      sizeClass = "h4 w3";
-      break;
-    default:
-      sizeClass = "h2 w2";
-      break;
+export default ({ card, context, color, hidden, size = 'medium' }) => {
+  const sizeClass = SizeMap[size]
+
+  let cardColor = color
+  let cardValue = null
+  if (card) {
+    cardColor = hidden
+      ? card.knowledge.color && card.color 
+      : card.color
+    cardValue = hidden 
+      ? card.knowledge.value && card.value 
+      : card.value
   }
 
   return (
     <div
-      className={
-        "flex items-center justify-center br1 ba " +
-        sizeClass +
-        " bg-hanabi-" +
-        color
-      }
+      className={[
+        "relative flex items-center justify-center br1 ba",
+        sizeClass,
+        `bg-hanabi-${cardColor}`
+      ].join(' ')}
     >
-      {number}
+      {cardValue}
+      {context === CardContext.OTHER_PLAYER && <>
+        {card.knowledge.value && 
+          <div className="absolute right-0 top-0">V</div>
+        }
+        {card.knowledge.color && 
+          <div className="absolute right-0 bottom-0">C</div>
+        }
+      </>}
     </div>
   );
 };

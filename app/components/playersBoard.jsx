@@ -1,15 +1,23 @@
 import React from "react";
-import { range } from "lodash";
 import PlayerGame from "./playerGame";
 import SelfGame from "./selfGame";
 
-const NPLAYERS = 5;
+export default ({ game, onSelectPlayer }) => {
+  const [selfPlayer, ...otherPlayers] = game.players
 
-export default () => (
-  <div className="flex flex-column content-end bg-light-silver h-100 w-40 pa2">
-    {range(NPLAYERS - 1).map(i => (
-      <PlayerGame key={i} />
+  return <div className="flex flex-column content-end bg-light-silver h-100 w-40 pa2">
+    {otherPlayers.map((player, i) => (
+      <PlayerGame
+        key={i} 
+        player={player}
+        onSelectPlayer={onSelectPlayer}
+        active={player === game.currentPlayer}
+      />
     ))}
-    <SelfGame />
+    <SelfGame
+      player={selfPlayer}
+      onSelectPlayer={onSelectPlayer}
+      active={selfPlayer === game.currentPlayer}
+    />
   </div>
-);
+};

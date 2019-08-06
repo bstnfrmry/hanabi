@@ -1,13 +1,18 @@
 import React from "react";
-import { range } from "lodash";
+import { last } from "lodash";
 import Card from "./card";
 
-const NCOLORS = 6;
+export default ({ cards }) => {
+  const piles = Object.keys(cards)
 
-export default () => (
-  <div className="flex flex-row">
-    {range(NCOLORS).map(i => (
-      <Card key={i} size="large" />
+  return <div className="flex flex-row">
+    {piles.map((color, i) => (
+      <Card
+        key={i}
+        card={last(cards[color])}
+        color={color}
+        size="large"
+      />
     ))}
   </div>
-);
+};

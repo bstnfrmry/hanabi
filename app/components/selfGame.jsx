@@ -1,15 +1,12 @@
 import React from "react";
-import { range } from "lodash";
 import Card from "./card";
 
-const NCARDS = 5;
-
-export default () => (
-  <div style={{ marginTop: "auto" }}>
-    <div className="b">You</div>
+export default ({ player, active, onSelectPlayer }) => (
+  <div onClick={() => onSelectPlayer(null)} style={{ marginTop: "auto" }}>
+    <div className="b">You {active && '*'}</div>
     <div className="flex flex-row">
-      {range(NCARDS).map(i => (
-        <Card key={i} size="large" />
+      {player.hand.map((card, i) => (
+        <Card key={i} card={card} hidden size="large" />
       ))}
     </div>
   </div>
