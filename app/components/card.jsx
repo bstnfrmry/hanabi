@@ -27,6 +27,7 @@ export function CardWrapper(props) {
   const sizeClass = SizeMap[size]
 
   return <div
+    children={children}
     style={style}
     className={[
       "relative flex items-center justify-center br1 ba",
@@ -34,9 +35,7 @@ export function CardWrapper(props) {
       className,
       `bg-hanabi-${color}`
     ].join(' ')}
-  >
-    {children}
-  </div>
+  />
 };
 
 export default function Card(props) {
