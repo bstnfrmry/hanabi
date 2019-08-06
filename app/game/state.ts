@@ -1,4 +1,8 @@
-export interface IGameState {
+/**
+ * game state
+ */
+
+export default interface IGameState {
   playedCards: ICard[];
   drawPile: ICard[];
   discardPile: ICard[];
@@ -7,7 +11,14 @@ export interface IGameState {
   lastAction?: IAction;
   currentPlayer: number;
   options: IGameOptions;
+  // this is initiated as the number of players + 1 and serves for
+  // the last round of game when the draw is empty
+  actionsLeft: number;
 }
+
+/**
+ * Subtypes of the game state
+ */
 
 export interface IGameOptions {
   playersCount: number;
@@ -35,14 +46,11 @@ export interface ICardHint {
   number: { [key in 1 | 2 | 3 | 4 | 5]: (0 | 1 | 2) };
 }
 
-export type IHand = IHandCard[];
+export type IHand = ICard[];
 
 export interface ICard {
   color: IColor;
   number: number;
-}
-
-export interface IHandCard extends ICard {
   hint: ICardHint;
 }
 
@@ -50,13 +58,16 @@ export type IActionType = "discard" | "play" | "hint";
 
 export interface IDiscardAction {
   action: "discard";
-  card: IHandCard;
-  // do we need to know where that card was placed in the hand?
+  from: number;
+  card: ICard;
+  cardIndex: number;
 }
 
 export interface IPlayAction {
   action: "play";
-  card: IHandCard;
+  from: number;
+  card: ICard;
+  cardIndex: number;
 }
 
 export interface IHintAction {
@@ -76,7 +87,8 @@ export interface IPlayer {
   lastAction?: IAction;
 }
 
-// the remaining strikes and hints
+// the *remaining* strikes and hints.
+// There are 8 hints and 3 strikes to begin with.
 export interface ITokens {
   hints: number;
   strikes: number;
@@ -84,11 +96,20 @@ export interface ITokens {
 
 export type gameHistory = IGameState[];
 
+/**
+ * utilities and examples
+ */
+
+export const emptyHint = (): ICardHint => ({
+  color: { blue: 1, red: 1, yellow: 1, white: 1, green: 1, multicolor: 1 },
+  number: { 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
+});
+
 export const sampleState: IGameState = {
-  playedCards: [{ color: IColor.RED, number: 1 }],
+  playedCards: [{ color: IColor.RED, number: 1, hint: emptyHint() }],
   drawPile: [
-    { color: IColor.YELLOW, number: 2 },
-    { color: IColor.BLUE, number: 4 }
+    { color: IColor.YELLOW, number: 2, hint: emptyHint() },
+    { color: IColor.BLUE, number: 4, hint: emptyHint() }
   ],
   discardPile: [],
   players: [
@@ -323,5 +344,6 @@ export const sampleState: IGameState = {
   options: {
     playersCount: 2,
     multicolor: true
-  }
+  },
+  actionsLeft: 3
 };
