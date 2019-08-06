@@ -12,6 +12,7 @@ export default ({ cards }) => {
         card={last(cards[color])}
         color={color}
         size="large"
+        className='ma1'
       />
     ))}
   </div>

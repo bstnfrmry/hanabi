@@ -15,7 +15,7 @@ export const CardContext = {
   PLAYED: 'played'
 }
 
-export default ({ card, context, color, hidden, size = 'medium' }) => {
+export default ({ card, context, color, hidden, size = 'medium', className = '' }) => {
   const sizeClass = SizeMap[size]
 
   let cardColor = color
@@ -34,6 +34,7 @@ export default ({ card, context, color, hidden, size = 'medium' }) => {
       className={[
         "relative flex items-center justify-center br1 ba",
         sizeClass,
+        className,
         `bg-hanabi-${cardColor}`
       ].join(' ')}
     >
