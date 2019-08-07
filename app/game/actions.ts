@@ -1,6 +1,17 @@
-import IGameState, { IAction, IHand, ICard, IHintAction } from "./state";
-import { cloneDeep, isEqual, findIndex } from "lodash";
+import IGameState, {
+  IAction,
+  IHand,
+  ICard,
+  ICardHint,
+  IHintAction,
+  IGameOptions,
+  INumber,
+  IColor,
+  IPlayer
+} from "./state";
+import { cloneDeep, isEqual, findIndex, flatMap, range } from "lodash";
 import assert from "assert";
+import { shuffle } from "shuffle-seed";
 
 export function commitAction(state: IGameState, action: IAction): IGameState {
   // the function should be pure
@@ -41,6 +52,9 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
 
   /** HINT */
   if (action.action === "hint") {
+    assert(s.tokens.hints > 0);
+    s.tokens.hints -= 1;
+
     assert(action.from !== action.to);
     const hand = s.players[action.to].hand;
     applyHint(hand, action);
@@ -52,6 +66,9 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   if (s.drawPile.length === 0) {
     s.actionsLeft -= 1;
   }
+
+  // update player
+  s.currentPlayer = (s.currentPlayer + 1) % s.options.playersCount;
 
   return s;
 }
@@ -89,13 +106,104 @@ function applyHint(hand: IHand, hint: IHintAction) {
 
 function isPlayable(card: ICard, playedCards: ICard[]): boolean {
   const isPreviousHere =
-    card.number === 1 ||
+    card.number === 1 || // first card on the pile
     findIndex(
       playedCards,
       c => card.number === c.number + 1 && card.color === c.color
-    ) > -1;
+    ) > -1; // previous card belongs to the playedCards
 
   const isSameNotHere = findIndex(playedCards, c => isEqual(c, card)) === -1;
 
   return isPreviousHere && isSameNotHere;
+}
+
+export function emptyHint(options: IGameOptions): ICardHint {
+  return {
+    color: {
+      blue: 1,
+      red: 1,
+      green: 1,
+      white: 1,
+      yellow: 1,
+      multicolor: options.multicolor ? 1 : 0
+    },
+    number: { 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
+  };
+}
+
+function emptyPlayer(id: number, name: string): IPlayer {
+  return {
+    hand: [],
+    name,
+    id
+  };
+}
+
+const colors = [
+  IColor.BLUE,
+  IColor.RED,
+  IColor.GREEN,
+  IColor.WHITE,
+  IColor.YELLOW,
+  IColor.MULTICOLOR
+];
+
+const playerNames = ["Akiyo", "Miho", "Tomoa", "Futaba", "Kai"];
+
+export function newGame(options: IGameOptions, seed?: number): IGameState {
+  if (seed === undefined) seed = +new Date() * Math.random();
+
+  const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
+
+  assert(options.playersCount > 1 && options.playersCount < 6);
+
+  const cards: ICard[] = flatMap(colors, color => [
+    { number: 1, color },
+    { number: 1, color },
+    { number: 1, color },
+    { number: 2, color },
+    { number: 2, color },
+    { number: 3, color },
+    { number: 3, color },
+    { number: 4, color },
+    { number: 4, color },
+    { number: 5, color }
+  ]);
+
+  // Add extensions cards when applicable
+  if (this.extension) {
+    cards.push(
+      { number: 1, color: IColor.MULTICOLOR },
+      { number: 2, color: IColor.MULTICOLOR },
+      { number: 3, color: IColor.MULTICOLOR },
+      { number: 4, color: IColor.MULTICOLOR },
+      { number: 5, color: IColor.MULTICOLOR }
+    );
+  }
+
+  const deck = shuffle(cards, seed);
+
+  const players = range(options.playersCount).map(i =>
+    emptyPlayer(i, playerNames[i])
+  );
+
+  players.forEach(player => {
+    player.hand = this.deck.splice(0, startingHandSize[this.players.length]);
+  });
+
+  const currentPlayer = shuffle(range(options.playersCount), seed);
+
+  return {
+    playedCards: [],
+    drawPile: deck,
+    discardPile: [],
+    players,
+    tokens: {
+      hints: 8,
+      strikes: 3
+    },
+    currentPlayer,
+    options,
+    actionsLeft: options.playersCount + 1 // this will be decreased when the draw pile is empty
+  };
 }

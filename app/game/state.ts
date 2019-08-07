@@ -51,7 +51,7 @@ export type IHand = ICard[];
 export interface ICard {
   color: IColor;
   number: number;
-  hint: ICardHint;
+  hint?: ICardHint;
 }
 
 export type IActionType = "discard" | "play" | "hint";
