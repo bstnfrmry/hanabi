@@ -73,14 +73,6 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   return s;
 }
 
-export function isGameOver(state: IGameState) {
-  return (
-    state.actionsLeft <= 0 ||
-    state.tokens.strikes <= 0 ||
-    state.playedCards.length === (state.options.multicolor ? 30 : 25)
-  );
-}
-
 /**
  * Side effect function that applies the given hint on a given hand's cards
  */
@@ -138,6 +130,35 @@ export function emptyPlayer(id: number, name: string): IPlayer {
     id
   };
 }
+
+export function isGameOver(state: IGameState) {
+  return (
+    state.actionsLeft <= 0 ||
+    state.tokens.strikes <= 0 ||
+    state.playedCards.length === (state.options.multicolor ? 30 : 25)
+  );
+}
+
+export function getScore(state: IGameState) {
+  return state.playedCards.length;
+}
+
+export function getPlayedCardsPile(state: IGameState) {
+  const playedCardsPile = {};
+  state.playedCards.forEach(
+    c =>
+      (playedCardsPile[c.color] = Math.max(
+        playedCardsPile[c.color] || 0,
+        c.number
+      ))
+  );
+
+  return playedCardsPile;
+}
+
+/**
+ * new game utilities
+ */
 
 const colors = [
   IColor.BLUE,

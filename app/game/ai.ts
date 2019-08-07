@@ -65,6 +65,23 @@ export function makeLevel1Deductions(gameView: IGameView): IGameView {
   throw new Error("notimplemented");
 }
 
+export function choseAction(
+  gameView: IGameView,
+  lookAhead: number = 0,
+  lookBehind: number = 0
+): IAction {
+  // this function finds the most suitable action given the current player's playerView (what they know about the game)
+  // first only implement the case where we play the best card with level 1 deductions
+  // then when it works make the function:
+  // - look behind and make higher level deductions depending on the assumption of optimality of the partners
+  // (assuming those partners use the same lookAhead and lookBehind - 1)
+  // note that those deductions should be kept in memory until challenged, so that the deduction knowledge carries on over rounds
+  // - look ahead to play what triggers the best score
+  // (heuristic = maxPossibleScore + 1.5 * numbers of 5s played + 1 * number of other cards played + 0.5 * happy discards - 1.5 discards - 2 sad discards) ?
+  // assuming those partners use the same lookBehind and lookAhead - 1
+  throw new Error("notimplemented");
+}
+
 /**
  * we inspect how the previous person would have played for each possible combination of deductions (i.e possible games)
  * and keep a set of deductions that correspond to what that person actually played.
