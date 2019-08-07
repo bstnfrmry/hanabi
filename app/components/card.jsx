@@ -9,6 +9,14 @@ const SizeMap = {
   extralarge: "h4 w3"
 }
 
+export const PositionMap = {
+  0: 'A',
+  1: 'B',
+  2: 'C',
+  3: 'D',
+  4: 'E'
+}
+
 export const CardContext = {
   SELF_PLAYER: 'selfPlayer',
   OTHER_PLAYER: 'otherPlayer',
@@ -45,15 +53,19 @@ export default function Card(props) {
     hidden = false,
     size = 'medium',
     className = '',
-    style = {}
+    style = {},
+    position = null
   } = props
 
   const color = hidden
     ? card.knowledge.color && card.color 
     : card.color
+
   const value = hidden 
     ? card.knowledge.value && card.value 
     : card.value
+
+  const displayHints = context === CardContext.OTHER_PLAYER
 
   return (
     <CardWrapper
@@ -64,7 +76,10 @@ export default function Card(props) {
       style={style}
     >
       {value}
-      {context === CardContext.OTHER_PLAYER && <>
+      {position >= 0 && (
+        <div className="absolute left-0 top-0">{PositionMap[position]}</div>
+      )}
+      {displayHints && <>
         {card.knowledge.value && 
           <div className="absolute right-0 top-0">V</div>
         }

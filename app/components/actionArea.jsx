@@ -14,6 +14,7 @@ export default ({ game, selectedPlayer }) => {
         <Card
           key={i}
           card={card}
+          position={i}
           size="extralarge"
           context={CardContext.OTHER_PLAYER}
           className="ma1"

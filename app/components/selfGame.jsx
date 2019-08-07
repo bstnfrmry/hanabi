@@ -9,6 +9,7 @@ export default ({ player, active, onSelectPlayer }) => (
         <Card
           key={i}
           card={card}
+          position={i}
           hidden
           size="large"
           className="ma1"

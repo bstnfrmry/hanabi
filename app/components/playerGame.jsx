@@ -12,6 +12,7 @@ export default ({ player, active, onSelectPlayer }) => (
         <Card
           key={i}
           card={card}
+          position={i}
           size="large"
           context={CardContext.OTHER_PLAYER}
           className="ma1"
