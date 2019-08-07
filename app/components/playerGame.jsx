@@ -14,6 +14,7 @@ export default ({ player, active, onSelectPlayer }) => (
           card={card}
           size="large"
           context={CardContext.OTHER_PLAYER}
+          className="ma1"
         />
       ))}
     </div>

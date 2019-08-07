@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import Modal from "react-modal";
 import { cloneDeep } from 'lodash'
+
 import PlayersBoard from "./playersBoard";
 import GameBoard from "./gameBoard";
 import ActionArea from "./actionArea";
-
 const { Game } = require('./game')
 const { ai } = require('../../src/ai')
+
+Modal.setAppElement('#app')
 
 export default ({ seed = '1234' }) => {
   const [game, setGame] = useState(new Game({
@@ -27,7 +30,7 @@ export default ({ seed = '1234' }) => {
     setGame(cloneDeep(game)) // 🤮
   }
 
-  return <div className="flex flex-row w-100 h-100">
+  return <div id="app" className="flex flex-row w-100 h-100">
     <PlayersBoard game={game} onSelectPlayer={selectPlayer} />
     <div className="flex flex-column h-100 flex-grow-1">
       <GameBoard game={game} />
