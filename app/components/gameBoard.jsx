@@ -4,16 +4,24 @@ import TokenSpace from "./tokenSpace";
 import DrawPile from "./drawPile";
 import DiscardPile from "./discardPile";
 
-export default ({ game }) => (
-  <div className="w-100 bg-moon-gray pa2 flex flex-column">
+export default ({ game, onSimulateTurn }) => (
+  <div className="flex flex-column pt4 ph4 bb bg-gray-light b--gray-light">
     <PlayedCards cards={game.board} />
-    <div className="flex flex-row pv1">
+    <div className="flex flex-row mv4 ph1 justify-between items-center">
       <TokenSpace
         noteTokens={game.remainingNoteTokens}
         stormTokens={game.remainingStormTokens}
       />
-      <DrawPile cards={game.deck} />
-      <DiscardPile cards={game.discardPile} />
+      <div>
+        <DrawPile cards={game.deck} />
+        <DiscardPile cards={game.discardPile} />
+        <button
+          className="pa3 br1 ba f4 fw2 tracked ttu ml2 gray pointer"
+          onClick={onSimulateTurn}
+        >
+          Simulate turn
+        </button>
+      </div>
     </div>
   </div>
 );

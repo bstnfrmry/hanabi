@@ -1,23 +1,31 @@
 import React from "react";
 import PlayerGame from "./playerGame";
-import SelfGame from "./selfGame";
 
 export default ({ game, onSelectPlayer }) => {
   const [selfPlayer, ...otherPlayers] = game.players
 
-  return <div className="flex flex-column content-end bg-light-silver h-100 w-40 pa2">
-    {otherPlayers.map((player, i) => (
+  return <div className="flex flex-column content-end h-100">
+    <div className="flex-column ph4 pv4 bb bg-gray-light b--gray-light">
+      {otherPlayers.map((player, i) => (
+        <div
+          key={i}
+          className="mb4"
+        >
+          <PlayerGame
+            player={player}
+            onSelectPlayer={onSelectPlayer}
+            active={player === game.currentPlayer}
+          />
+        </div>
+      ))}
+    </div>
+    <div className="pa4 bg-gray-light b--gray-light bt" style={{ marginTop: "auto" }}>
       <PlayerGame
-        key={i} 
-        player={player}
+        player={selfPlayer}
+        self={true}
         onSelectPlayer={onSelectPlayer}
-        active={player === game.currentPlayer}
+        active={selfPlayer === game.currentPlayer}
       />
-    ))}
-    <SelfGame
-      player={selfPlayer}
-      onSelectPlayer={onSelectPlayer}
-      active={selfPlayer === game.currentPlayer}
-    />
+    </div>
   </div>
 };

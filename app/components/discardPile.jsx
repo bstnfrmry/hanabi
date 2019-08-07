@@ -35,7 +35,7 @@ export default function DiscardPile({ cards }) {
 
   return <>
     <button
-      className="br1 ba"
+      className="pa3 br1 ba f4 fw2 tracked ttu ml2 gray pointer"
       onClick={() => toggleModal(true)}
     >
         Discard ({count})
@@ -44,11 +44,11 @@ export default function DiscardPile({ cards }) {
     <Modal
       isOpen={isOpen}
       onRequestClose={() => toggleModal(false)}
-      className="absolute bg-white br3 pa3 outline-0 w-40"
+      className="absolute bg-white br3 pa3 outline-0 w-60"
       overlayClassName="fixed absolute--fill bg-black-40 z-999 flex items-center justify-center"
     >
       <div className="flex flex-column items-center">
-        <h1>Discarded cards</h1>
+        <h1 className="fw2 tracked ttu ml1 gray">Discarded cards</h1>
         <div className="flex">
           {piles.map((color, i) => (
             <CardPile

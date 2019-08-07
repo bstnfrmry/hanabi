@@ -1,26 +1,20 @@
 import React from "react";
 
-export default ({ type, value, selected }) => {
-  if (type === "color") {
-    return (
-      <div
-        className={[
-          "ba pointer flex items-center justify-center mr1 br-100 h2 w2",
-          `bg-hanabi-${value}`,
-          (selected === "true" ? " bw1" : "")
-        ].join(' ')}
-      />
-    );
-  } else {
-    return (
-      <div
-        className={[
-          "ba pointer flex items-center justify-center mr1 br-100 h2 w2 bg-silver",
-          (selected === "true" ? " bw1" : ""),
-        ].join(' ')}
-      >
-        {value}
-      </div>
-    );
-  }
+export default function Vignette(props) {
+  const { type, value } = props
+
+  return <div
+    className={[
+      "ba pointer flex items-center justify-center mr2 br-100 h2 w2 grow fw2",
+      ...type === 'color' ? [
+        `bg-${value}`,
+        `b--${value}`,
+      ] : [
+        'bg-gray-light',
+        'b-gray-light',
+      ]
+    ].join(' ')}
+  >
+    {type === 'number' && value}
+  </div>
 };
