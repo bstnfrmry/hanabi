@@ -16,6 +16,7 @@ export default ({ game, selectedPlayer }) => {
           card={card}
           size="extralarge"
           context={CardContext.OTHER_PLAYER}
+          className="ma1"
         />
       ))}
     </div>

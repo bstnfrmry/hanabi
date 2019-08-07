@@ -6,7 +6,13 @@ export default ({ player, active, onSelectPlayer }) => (
     <div className="b">You {active && '*'}</div>
     <div className="flex flex-row">
       {player.hand.map((card, i) => (
-        <Card key={i} card={card} hidden size="large" />
+        <Card
+          key={i}
+          card={card}
+          hidden
+          size="large"
+          className="ma1"
+        />
       ))}
     </div>
   </div>
