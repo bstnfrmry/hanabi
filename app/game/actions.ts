@@ -131,7 +131,7 @@ export function emptyHint(options: IGameOptions): ICardHint {
   };
 }
 
-function emptyPlayer(id: number, name: string): IPlayer {
+export function emptyPlayer(id: number, name: string): IPlayer {
   return {
     hand: [],
     name,
