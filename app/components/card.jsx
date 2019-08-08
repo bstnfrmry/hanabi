@@ -15,29 +15,55 @@ export const CardContext = {
   PLAYED: 'played'
 }
 
-export default ({ card, context, color, hidden, size = 'medium' }) => {
+export function CardWrapper(props) {
+  const {
+    color,
+    size = 'medium',
+    className = '',
+    style = {},
+    children
+  } = props
+  
   const sizeClass = SizeMap[size]
 
-  let cardColor = color
-  let cardValue = null
-  if (card) {
-    cardColor = hidden
-      ? card.knowledge.color && card.color 
-      : card.color
-    cardValue = hidden 
-      ? card.knowledge.value && card.value 
-      : card.value
-  }
+  return <div
+    children={children}
+    style={style}
+    className={[
+      "relative flex items-center justify-center br1 ba",
+      sizeClass,
+      className,
+      `bg-hanabi-${color}`
+    ].join(' ')}
+  />
+};
+
+export default function Card(props) {
+  const {
+    card,
+    context,
+    hidden = false,
+    size = 'medium',
+    className = '',
+    style = {}
+  } = props
+
+  const color = hidden
+    ? card.knowledge.color && card.color 
+    : card.color
+  const value = hidden 
+    ? card.knowledge.value && card.value 
+    : card.value
 
   return (
-    <div
-      className={[
-        "relative flex items-center justify-center br1 ba",
-        sizeClass,
-        `bg-hanabi-${cardColor}`
-      ].join(' ')}
+    <CardWrapper
+      style={style}
+      color={color}
+      size={size}
+      className={className}
+      style={style}
     >
-      {cardValue}
+      {value}
       {context === CardContext.OTHER_PLAYER && <>
         {card.knowledge.value && 
           <div className="absolute right-0 top-0">V</div>
@@ -46,6 +72,6 @@ export default ({ card, context, color, hidden, size = 'medium' }) => {
           <div className="absolute right-0 bottom-0">C</div>
         }
       </>}
-    </div>
+    </CardWrapper>
   );
 };
