@@ -1,17 +1,19 @@
 import React from "react";
 
 function Token({ color, amount }) {
-  return <>
-    <div
-      className={[
-        "flex items-center justify-center mr2 br-100 h3 w3 fw2 f3 white",
-        `bg-${color}`,
-        `b--${color}`
-      ].join(' ')}
-    >
-      {amount}
-    </div>
-  </>
+  return (
+    <>
+      <div
+        className={[
+          "flex items-center justify-center mr2 br-100 h2 w2 h3-l w3-l fw2 f5 f3-l white",
+          `bg-${color}`,
+          `b--${color}`
+        ].join(" ")}
+      >
+        {amount}
+      </div>
+    </>
+  );
 }
 
 export default ({ noteTokens, stormTokens }) => (
