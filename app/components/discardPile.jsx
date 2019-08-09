@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import Modal from "react-modal";
-import { sumBy, sortBy } from "lodash";
+import React from "react";
+import { sortBy } from "lodash";
 
 import Card, { CardWrapper } from "./card";
 
@@ -19,7 +18,7 @@ function CardPile({ cards, color }) {
           card={card}
           size="large"
           className="ma1"
-          style={i ? { marginTop: "-20px" } : {}}
+          style={i ? { marginTop: "-25px" } : {}}
         />
       ))}
     </div>
@@ -27,34 +26,13 @@ function CardPile({ cards, color }) {
 }
 
 export default function DiscardPile({ cards }) {
-  const [isOpen, toggleModal] = useState(false);
   const piles = Object.keys(cards);
-  const count = sumBy(piles, color => cards[color].length);
 
   return (
-    <>
-      <button
-        className="pa3 br1 ba f6 f4-l fw2 tracked ttu ml2 gray pointer"
-        onClick={() => toggleModal(true)}
-      >
-        Discard ({count})
-      </button>
-
-      <Modal
-        isOpen={isOpen}
-        onRequestClose={() => toggleModal(false)}
-        className="absolute bg-white br3 pa3 outline-0 w-60"
-        overlayClassName="fixed absolute--fill bg-black-40 z-999 flex items-center justify-center"
-      >
-        <div className="flex flex-column items-center">
-          <h1 className="fw2 tracked ttu ml1 gray">Discarded cards</h1>
-          <div className="flex">
-            {piles.map((color, i) => (
-              <CardPile key={i} cards={cards[color]} color={color} />
-            ))}
-          </div>
-        </div>
-      </Modal>
-    </>
+    <div className="flex">
+      {piles.map((color, i) => (
+        <CardPile key={i} cards={cards[color]} color={color} />
+      ))}
+    </div>
   );
 }

@@ -1,16 +1,26 @@
-import React, { useState } from "react";
-import Modal from "react-modal";
+import React, { useState, useEffect } from "react";
+import firebase from "firebase";
 import { cloneDeep } from "lodash";
 
 import PlayersBoard from "./playersBoard";
 import GameBoard from "./gameBoard";
-import ActionArea from "./actionArea";
+import ActionArea, { ActionAreaType } from "./actionArea";
 const { Game } = require("./game");
 const { ai } = require("../../src/ai");
 
-Modal.setAppElement("#app");
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDeWR7W7kmxe4K7jGx7hqe92zJ4w5xl_DY",
+  authDomain: "hanabi-df790.firebaseapp.com",
+  databaseURL: "https://hanabi-df790.firebaseio.com",
+  projectId: "hanabi-df790",
+  storageBucket: "",
+  messagingSenderId: "681034034410",
+  appId: "1:681034034410:web:dff20eb4bcb7274d"
+};
 
-export default ({ seed = "1234" }) => {
+export default ({ gameId = "root", seed = "1234" }) => {
+  if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+
   const [game, setGame] = useState(
     new Game({
       extension: false,
@@ -25,7 +35,38 @@ export default ({ seed = "1234" }) => {
     })
   );
 
-  const [selectedPlayer, selectPlayer] = useState(null);
+  // useEffect(async () => {
+  //   const db = firebase.database();
+  //   const gameRef = db.ref(`/games/${gameId}`);
+
+  //   let gameSnapshot = await gameRef.once("value");
+  //   let game = null;
+  //   if (!gameSnapshot.exists()) {
+  //     game = gameRef.set(
+  // new Game({
+  //   extension: false,
+  //   logging: true,
+  //   seed,
+  //   players: [
+  //     { name: "Tomoa", onPlay: ai },
+  //     { name: "Akiyo", onPlay: ai },
+  //     { name: "Futaba", onPlay: ai },
+  //     { name: "Miho", onPlay: ai }
+  //   ]
+  // })
+  //     );
+  //   }
+
+  //   console.log(game);
+
+  //   setGame(game);
+  // });
+
+  if (!game) {
+    return "Loading";
+  }
+
+  const [selectedArea, selectArea] = useState(null);
 
   const play = async () => {
     await game.play();
@@ -34,10 +75,19 @@ export default ({ seed = "1234" }) => {
 
   return (
     <div id="app" className="flex flex-row w-100 h-100">
-      <PlayersBoard game={game} onSelectPlayer={selectPlayer} />
+      <PlayersBoard
+        game={game}
+        onSelectPlayer={player =>
+          selectArea({ type: ActionAreaType.PLAYER, player })
+        }
+      />
       <div className="flex-grow-1 flex flex-column h-100 overflow-scroll bl b--gray-light">
-        <GameBoard game={game} onSimulateTurn={() => play()} />
-        <ActionArea game={game} selectedPlayer={selectedPlayer} />
+        <GameBoard
+          game={game}
+          onSelectDiscard={() => selectArea({ type: ActionAreaType.DISCARD })}
+          onSimulateTurn={() => play()}
+        />
+        <ActionArea game={game} selectedArea={selectedArea} />
       </div>
     </div>
   );
