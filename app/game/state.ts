@@ -3,10 +3,11 @@
  */
 
 export default interface IGameState {
+  status: IGameStatus;
   playedCards: ICard[];
   drawPile: ICard[];
   discardPile: ICard[];
-  players: IPlayer[];
+  players: { [string: number]: IPlayer };
   tokens: ITokens;
   lastAction?: IAction;
   currentPlayer: number;
@@ -23,6 +24,12 @@ export default interface IGameState {
 export interface IGameOptions {
   playersCount: number;
   multicolor: boolean;
+}
+
+export enum IGameStatus {
+  LOBBY = "lobby",
+  ONGOING = "ongoing",
+  OVER = "over"
 }
 
 export enum IColor {

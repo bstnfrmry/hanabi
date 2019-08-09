@@ -7,7 +7,8 @@ import IGameState, {
   IGameOptions,
   INumber,
   IColor,
-  IPlayer
+  IPlayer,
+  IGameStatus
 } from "./state";
 import { cloneDeep, isEqual, findIndex, flatMap, range } from "lodash";
 import assert from "assert";
@@ -215,10 +216,11 @@ export function newGame(options: IGameOptions, seed?: number): IGameState {
   const currentPlayer = shuffle(range(options.playersCount), seed);
 
   return {
+    status: IGameStatus.LOBBY,
     playedCards: [],
     drawPile: deck,
     discardPile: [],
-    players,
+    players: {},
     tokens: {
       hints: 8,
       strikes: 3

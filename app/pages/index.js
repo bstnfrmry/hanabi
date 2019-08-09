@@ -1,26 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
+import Router from "next/router";
 import Head from "next/head";
+import shortid from "shortid";
 
-import App from "../components/app";
+import { newGame } from "../game/actions";
+import withDatabase from "../concerns/withDatabase";
+
 import "../styles/tachyons.css";
 import "../styles/style.css";
 
-export default function Home({ gameId, seed }) {
-  Home.getInitialProps = ({ query }) => {
-    return {
-      seed: query.seed,
-      gameId: query.gameId
-    };
-  };
+function Home({ db }) {
+  const [seed, setSeed] = useState(1234);
+  const [multicolor, setMulticolor] = useState(false);
+
+  async function createGame() {
+    const gameId = shortid();
+
+    await db
+      .ref(`/games/${gameId}`)
+      .set(newGame({ multicolor, playersCount: 4 }, seed));
+
+    Router.push(`/lobby?gameId=${gameId}`);
+  }
 
   return (
     <>
       <Head>
         <title>Hanabi</title>
       </Head>
-      <div className="aspect-ratio--object">
-        <App gameId={gameId} seed={seed} />
-      </div>
+      <label>
+        Seed:
+        <input
+          type="text"
+          value={seed}
+          onChange={e => setSeed(e.target.value)}
+        />
+      </label>
+      <label>
+        Multicolor:
+        <input
+          type="checkbox"
+          checked={multicolor}
+          onChange={e => setMulticolor(e.target.checked)}
+        />
+      </label>
+
+      <button onClick={() => createGame()}>New game</button>
     </>
   );
 }
+
+export default withDatabase(Home);

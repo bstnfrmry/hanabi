@@ -1,7 +1,9 @@
 import React from "react";
-import { sortBy } from "lodash";
+import { groupBy, sortBy } from "lodash";
 
 import Card, { CardWrapper } from "./card";
+
+const piles = ["red", "yellow", "green", "blue", "white"];
 
 function CardPile({ cards, color }) {
   if (!cards.length) {
@@ -26,12 +28,15 @@ function CardPile({ cards, color }) {
 }
 
 export default function DiscardPile({ cards }) {
-  const piles = Object.keys(cards);
+  const byColor = groupBy(
+    sortBy(cards, card => card.value),
+    card => card.color
+  );
 
   return (
     <div className="flex">
       {piles.map((color, i) => (
-        <CardPile key={i} cards={cards[color]} color={color} />
+        <CardPile key={i} cards={byColor[color] || []} color={color} />
       ))}
     </div>
   );

@@ -2,7 +2,7 @@ import React from "react";
 import PlayerGame from "./playerGame";
 
 export default ({ game, onSelectPlayer }) => {
-  const [selfPlayer, ...otherPlayers] = game.players;
+  const [selfPlayer, ...otherPlayers] = Object.values(game.players);
 
   return (
     <div className="flex flex-column h-100 overflow-y-scroll">
