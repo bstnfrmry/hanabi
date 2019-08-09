@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/database";
 import { cloneDeep } from "lodash";
 
 import PlayersBoard from "./playersBoard";
 import GameBoard from "./gameBoard";
 import ActionArea, { ActionAreaType } from "./actionArea";
-const { Game } = require("./game");
-const { ai } = require("../../src/ai");
+
+import { newGame } from "../game/actions";
 
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyDeWR7W7kmxe4K7jGx7hqe92zJ4w5xl_DY",
@@ -21,52 +22,45 @@ const FIREBASE_CONFIG = {
 export default ({ gameId = "root", seed = "1234" }) => {
   if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
 
-  const [game, setGame] = useState(
-    new Game({
-      extension: false,
-      logging: true,
-      seed,
-      players: [
-        { name: "Tomoa", onPlay: ai },
-        { name: "Akiyo", onPlay: ai },
-        { name: "Futaba", onPlay: ai },
-        { name: "Miho", onPlay: ai }
-      ]
-    })
-  );
+  const [game, setGame] = useState(null);
 
-  // useEffect(async () => {
-  //   const db = firebase.database();
-  //   const gameRef = db.ref(`/games/${gameId}`);
+  useEffect(() => {
+    async function loadGame() {
+      const db = firebase.database();
+      const gameRef = db.ref(`/games/${gameId}`);
 
-  //   let gameSnapshot = await gameRef.once("value");
-  //   let game = null;
-  //   if (!gameSnapshot.exists()) {
-  //     game = gameRef.set(
-  // new Game({
-  //   extension: false,
-  //   logging: true,
-  //   seed,
-  //   players: [
-  //     { name: "Tomoa", onPlay: ai },
-  //     { name: "Akiyo", onPlay: ai },
-  //     { name: "Futaba", onPlay: ai },
-  //     { name: "Miho", onPlay: ai }
-  //   ]
-  // })
-  //     );
-  //   }
+      let gameSnapshot = await gameRef.once("value");
+      let game = null;
+      if (!gameSnapshot.exists()) {
+        game = await gameRef.set(
+          newGame(
+            {
+              multicolor: false,
+              playersCount: 4
+            },
+            seed
+          )
+        );
+      } else {
+        game = gameSnapshot.val();
+      }
 
-  //   console.log(game);
+      // gameRef.on("value", function(snapshot) {
+      //   console.log(snapshot.val());
+      //   setGame(snapshot.val());
+      // });
 
-  //   setGame(game);
-  // });
+      setGame(game);
+    }
+
+    loadGame();
+  });
+
+  const [selectedArea, selectArea] = useState(null);
 
   if (!game) {
     return "Loading";
   }
-
-  const [selectedArea, selectArea] = useState(null);
 
   const play = async () => {
     await game.play();

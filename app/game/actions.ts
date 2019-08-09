@@ -192,7 +192,7 @@ export function newGame(options: IGameOptions, seed?: number): IGameState {
   ]);
 
   // Add extensions cards when applicable
-  if (this.extension) {
+  if (options.multicolor) {
     cards.push(
       { number: 1, color: IColor.MULTICOLOR },
       { number: 2, color: IColor.MULTICOLOR },
@@ -209,7 +209,7 @@ export function newGame(options: IGameOptions, seed?: number): IGameState {
   );
 
   players.forEach(player => {
-    player.hand = this.deck.splice(0, startingHandSize[this.players.length]);
+    player.hand = deck.splice(0, startingHandSize[players.length]);
   });
 
   const currentPlayer = shuffle(range(options.playersCount), seed);

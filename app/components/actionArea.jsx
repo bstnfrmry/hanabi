@@ -8,6 +8,9 @@ export const ActionAreaType = {
   DISCARD: "discard"
 };
 
+const colors = ["red", "yellow", "green", "blue", "white"];
+const values = [1, 2, 3, 4, 5];
+
 export default ({ game, selectedArea }) => {
   if (!selectedArea) {
     return (
@@ -53,8 +56,8 @@ export default ({ game, selectedArea }) => {
         </div>
         <div className="flex flex-row pb2 ml1">
           <Vignettes
-            colors={game.colors}
-            values={game.values}
+            colors={colors}
+            values={values}
             className="flex flex-grow-1"
           />
           <button className="ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray">

@@ -63,13 +63,13 @@ export default function Card(props) {
     position = null
   } = props;
 
-  const color = hidden
+  const color = false
     ? (card.knowledge.color && card.color) || "gray-light"
     : card.color;
 
-  const value = hidden ? card.knowledge.value && card.value : card.value;
+  const number = false ? card.knowledge.number && card.number : card.number;
 
-  const displayHints = context === CardContext.OTHER_PLAYER;
+  const displayHints = false; // context === CardContext.OTHER_PLAYER;
 
   return (
     <CardWrapper
@@ -80,7 +80,7 @@ export default function Card(props) {
       className={className}
       style={style}
     >
-      <div className="f2 f1-l fw3">{value}</div>
+      <div className="f2 f1-l fw3">{number}</div>
       {position >= 0 && (
         <div className="absolute left-0 top-0 ma1 fw1">
           {PositionMap[position]}
@@ -88,7 +88,7 @@ export default function Card(props) {
       )}
       {displayHints && (
         <div className="absolute right-0 bottom-0 ma1 fw1 flex">
-          {card.knowledge.value && <div>V</div>}
+          {card.knowledge.number && <div>V</div>}
           {card.knowledge.color && <div className="ml1">C</div>}
         </div>
       )}
