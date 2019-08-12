@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
+    "dotenv-webpack": "^1.7.0",
     "firebase": "^6.3.4",
     "lodash": "^4.17.15",
     "next": "9.0.3",
