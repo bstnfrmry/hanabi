@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import shortid from "shortid";
 
@@ -10,6 +10,7 @@ import "../styles/tachyons.css";
 import "../styles/style.css";
 
 function Home({ db }) {
+  const router = useRouter();
   const [seed, setSeed] = useState(1234);
   const [multicolor, setMulticolor] = useState(false);
 
@@ -20,7 +21,7 @@ function Home({ db }) {
       .ref(`/games/${gameId}`)
       .set(newGame({ multicolor, playersCount: 4 }, seed));
 
-    Router.push(`/lobby?gameId=${gameId}`);
+    router.push(`/lobby?gameId=${gameId}`);
   }
 
   return (

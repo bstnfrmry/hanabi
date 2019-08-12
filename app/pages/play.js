@@ -1,17 +1,14 @@
 import React from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 import App from "../components/app";
 import "../styles/tachyons.css";
 import "../styles/style.css";
 
-export default function Player({ gameId, playerId }) {
-  Player.getInitialProps = ({ query }) => {
-    return {
-      playerId: query.playerId,
-      gameId: query.gameId
-    };
-  };
+export default function Player() {
+  const router = useRouter();
+  const { gameId, playerId } = router.query;
 
   return (
     <>

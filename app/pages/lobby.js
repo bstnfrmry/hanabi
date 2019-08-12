@@ -1,31 +1,32 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import generate from "project-name-generator";
 import shortid from "shortid";
 
 import withDatabase from "../concerns/withDatabase";
 import "../styles/tachyons.css";
 import "../styles/style.css";
-import Router from "next/router";
 
-const defaultName = generate().dashed;
+function Lobby({ db }) {
+  const router = useRouter();
 
-function Lobby({ gameId, playerId, db }) {
+  const { gameId, playerId } = router.query;
   const [game, setGame] = useState(null);
-  const [name, setName] = useState(defaultName);
-
-  const player = game && game.players && game.players[playerId];
+  const [name, setName] = useState(generate().dashed);
 
   useEffect(() => {
-    db.ref(`/games/${gameId}`).on("value", event => {
+    const gameRef = db.ref(`/games/${gameId}`);
+
+    gameRef.on("value", event => {
       const snapshot = event.val();
 
       if (!snapshot) {
-        return Router.push("/");
+        return router.push("/");
       }
 
       if (snapshot.status === "ongoing") {
-        Router.push({
+        router.push({
           pathname: `/play`,
           query: { gameId, playerId }
         });
@@ -33,24 +34,24 @@ function Lobby({ gameId, playerId, db }) {
 
       setGame(snapshot);
     });
-  }, []);
+
+    return () => gameRef.off();
+  }, [gameId, playerId]);
 
   async function joinGame(event) {
     event.preventDefault();
 
     const playerId = shortid();
-    console.log(playerId);
 
     await db.ref(`/games/${gameId}/players/${playerId}`).set({ name });
 
-    Router.push({
+    router.replace({
       pathname: "/lobby",
       query: { gameId, playerId }
     });
   }
 
-  async function startGame(event) {
-    debugger;
+  async function startGame() {
     await db.ref(`/games/${gameId}/status`).set("ongoing");
   }
 
@@ -58,6 +59,7 @@ function Lobby({ gameId, playerId, db }) {
     return "No game";
   }
 
+  const player = game && game.players && game.players[playerId];
   const players = Object.values(game.players || {});
   const canStart = players.length > 1 && players.length < 6;
 
@@ -102,13 +104,4 @@ function Lobby({ gameId, playerId, db }) {
   );
 }
 
-const page = withDatabase(Lobby);
-
-page.getInitialProps = ({ query }) => {
-  return {
-    gameId: query.gameId,
-    playerId: query.playerId
-  };
-};
-
-export default page;
+export default withDatabase(Lobby);
