@@ -6,6 +6,14 @@ import IGameState, {
   IAction,
   IPlayer
 } from "./state";
+import {
+  isGameOver,
+  colors,
+  numbers,
+  commitAction,
+  isPlayable
+} from "./actions";
+import { cloneDeep, range } from "lodash";
 
 export enum IDeductionStatus {
   PLAYABLE = 0, // the card value is such that it can be played right now
@@ -27,6 +35,7 @@ export interface IPlayerView {
  * leads to the worst possible outcome, unless it's an optimist card in which case we trust our partners :)
  */
 export interface IHiddenCard {
+  hint: ICardHint;
   deductions: IDeduction[];
   optimist: boolean;
 }
@@ -53,20 +62,83 @@ export type IGameView = IGameState & { gameViews: IPlayerView[] };
 
 export function gameStateToGameView(gameState: IGameState): IGameView {
   // copy the state
+  const state = cloneDeep(gameState) as IGameView;
+  state.gameViews = [];
+
   // add a parallel array to the players that give their view of the game
-  // make all level 0 deductions
-  // return the modified state as IGameView
-  throw new Error("notimplemented");
+  // and make all level 0 deductions
+  state.players.forEach((player: IPlayer, i) => {
+    const gameView = { hand: [] };
+    const possibleCards = getPossibleCards(state, i);
+    player.hand.forEach((card: ICard) => {
+      gameView.hand.push({
+        hint: card.hint,
+        deductions: getHintDeductions(card.hint, possibleCards),
+        optimist: false
+      } as IHiddenCard);
+    });
+    state.gameViews.push(gameView);
+  });
+
+  return state;
 }
 
-export function makeLevel1Deductions(gameView: IGameView): IGameView {
-  // this function can mutate the gameview
-  // make sure we assert that we're never reading from the current player's cards
-  throw new Error("notimplemented");
+export function getHintDeductions(
+  hint: ICardHint,
+  possibleCards: ICard[]
+): IDeduction[] {
+  let deductions: IDeduction[] = [];
+  colors.forEach(color => {
+    numbers.forEach(number => {
+      if (
+        hint.color[color] > 0 &&
+        hint.number[number] > 0 &&
+        isCardPossible({ color, number } as ICard, possibleCards)
+      ) {
+        deductions.push({
+          number: number as INumber,
+          color,
+          deductionLevel: 0
+        } as IDeduction);
+      }
+    });
+  });
+  return deductions;
+}
+
+function getPossibleCards(state: IGameState, player: number): ICard[] {
+  return [...state.drawPile, ...state.players[player].hand].map(c => ({
+    color: c.color,
+    number: c.number
+  }));
+}
+
+/**
+ * Check whether the current card can be in hand
+ */
+function isCardPossible(card: ICard, possibleCards: ICard[]): boolean {
+  return (
+    possibleCards.findIndex(
+      c => c.number === card.number && c.color === card.color
+    ) > -1
+  );
+}
+
+function commitViewAction(state: IGameView, action: IAction): IGameView {
+  // change how players change their views given a certain action
+  const newState = commitAction(state, action) as IGameView;
+  newState.gameViews = state.gameViews;
+  if (action.action === "hint") {
+    // @todo change the player view of the person who received a hint
+  } else {
+    // @todo check what card was just drawn and apply new knowledge to other players
+  }
+
+  return newState;
 }
 
 export function choseAction(
-  gameView: IGameView,
+  state: IGameView,
   lookAhead: number = 0,
   lookBehind: number = 0
 ): IAction {
@@ -79,7 +151,60 @@ export function choseAction(
   // - look ahead to play what triggers the best score
   // (heuristic = maxPossibleScore + 1.5 * numbers of 5s played + 1 * number of other cards played + 0.5 * happy discards - 1.5 discards - 2 sad discards) ?
   // assuming those partners use the same lookBehind and lookAhead - 1
-  throw new Error("notimplemented");
+
+  /**
+   * DUMB VERSION
+   */
+
+  // if current player has a playable card, play
+  const currentGameView = state.gameViews[state.currentPlayer];
+  // go from the most recent
+  for (let i = currentGameView.hand.length - 1; i >= 0; i--) {
+    const card = currentGameView.hand[i];
+    if (
+      // @ todo here check for optimist card to play, in which case even if there's more
+      // than 1 deduction if there's a valid one we play it
+      card.deductions.length === 1 &&
+      isPlayable(card.deductions[0], state.playedCards)
+    ) {
+      return {
+        action: "play",
+        from: state.currentPlayer,
+        cardIndex: i
+      };
+    }
+  }
+
+  if (state.tokens.hints > 0) {
+    // if someone has a playable card (but with some hint uncertainty), give hint
+    for (let i = 1; i < state.options.playersCount; i++) {
+      const pIndex = (state.currentPlayer + i) % state.options.playersCount;
+      const player = state.players[pIndex];
+
+      for (let card of player.hand) {
+        if (
+          isPlayable(card, state.playedCards) &&
+          (card.hint.color[card.color] < 2 || card.hint.number[card.number] < 2)
+        ) {
+          let type = card.hint.color[card.color] < 2 ? "color" : "number";
+          return {
+            action: "hint",
+            from: state.currentPlayer,
+            to: pIndex,
+            type: card.hint.color[card.color] < 2 ? "color" : "number",
+            value: card[type]
+          };
+        }
+      }
+    }
+  }
+
+  // discard otherwise
+  return {
+    action: "discard",
+    from: state.currentPlayer,
+    cardIndex: 0
+  };
 }
 
 /**
@@ -95,3 +220,12 @@ export function choseAction(
 
 /** that recursion is bounded by a max lookahead forwards and backwards. We should check the compute load but it should be alright?
  */
+
+export default function play(state: IGameState): IGameState {
+  // play an AI action as the current player
+  // @todo this gameview should be persisted from action to action,
+  // we commit
+  const gameView = gameStateToGameView(state);
+  const action = choseAction(gameView);
+  return commitAction(state, action);
+}

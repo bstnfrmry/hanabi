@@ -59,14 +59,14 @@ export type IActionType = "discard" | "play" | "hint";
 export interface IDiscardAction {
   action: "discard";
   from: number;
-  card: ICard;
+  card?: ICard;
   cardIndex: number;
 }
 
 export interface IPlayAction {
   action: "play";
   from: number;
-  card: ICard;
+  card?: ICard;
   cardIndex: number;
 }
 
