@@ -3,10 +3,11 @@ import React, { useState, useEffect } from "react";
 import PlayersBoard from "./playersBoard";
 import GameBoard from "./gameBoard";
 import ActionArea, { ActionAreaType } from "./actionArea";
-import withDatabase from "../concerns/withDatabase";
+import { useDatabase } from "../context/database";
 
-function App({ gameId, playerId, db }) {
+export default function App({ gameId, playerId }) {
   const [game, setGame] = useState(null);
+  const db = useDatabase();
   const [selectedArea, selectArea] = useState(null);
 
   useEffect(() => {
@@ -38,5 +39,3 @@ function App({ gameId, playerId, db }) {
     </div>
   );
 }
-
-export default withDatabase(App);

@@ -1,10 +1,17 @@
+import React, { useContext } from "react";
+
 import firebase from "firebase/app";
 import "firebase/database";
 
-/**
- * Initialise Firebase when needed and inject it in our components as "db"
- */
-export default Component => {
+const DatabaseContext = React.createContext(null);
+
+export const DatabaseProvider = DatabaseContext.Provider;
+
+export function useDatabase() {
+  return useContext(DatabaseContext);
+}
+
+export function setupDatabase() {
   if (!firebase.apps.length) {
     firebase.initializeApp({
       apiKey: process.env.FIREBASE_API_KEY,
@@ -17,7 +24,5 @@ export default Component => {
     });
   }
 
-  const db = firebase.database();
-
-  return props => <Component {...props} db={db} />;
-};
+  return firebase.database();
+}

@@ -3,14 +3,16 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import shortid from "shortid";
 
+import { useDatabase } from "../context/database";
+
 import { newGame } from "../game/actions";
-import withDatabase from "../concerns/withDatabase";
 
 import "../styles/tachyons.css";
 import "../styles/style.css";
 
-function Home({ db }) {
+export default function Home() {
   const router = useRouter();
+  const db = useDatabase();
   const [seed, setSeed] = useState(1234);
   const [multicolor, setMulticolor] = useState(false);
 
@@ -50,5 +52,3 @@ function Home({ db }) {
     </>
   );
 }
-
-export default withDatabase(Home);

@@ -4,12 +4,14 @@ import { useRouter } from "next/router";
 import generate from "project-name-generator";
 import shortid from "shortid";
 
-import withDatabase from "../concerns/withDatabase";
+import { useDatabase } from "../context/database";
+
 import "../styles/tachyons.css";
 import "../styles/style.css";
 
-function Lobby({ db }) {
+export default function Lobby() {
   const router = useRouter();
+  const db = useDatabase();
 
   const { gameId, playerId } = router.query;
   const [game, setGame] = useState(null);
@@ -103,5 +105,3 @@ function Lobby({ db }) {
     </>
   );
 }
-
-export default withDatabase(Lobby);
