@@ -5,10 +5,10 @@ import IGameState, {
   ICardHint,
   IHintAction,
   IGameOptions,
-  INumber,
   IColor,
   IPlayer,
-  IGameStatus
+  IGameStatus,
+  INumber
 } from "./state";
 import { cloneDeep, isEqual, findIndex, flatMap, range } from "lodash";
 import assert from "assert";
@@ -22,14 +22,12 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   const player = s.players[action.from];
 
   if (action.action === "discard" || action.action === "play") {
-    // remove the card from hand and check that it's what we expect
+    // remove the card from hand
     const [card] = player.hand.splice(action.cardIndex, 1);
-    assert(isEqual(card, action.card));
-
     /** PLAY */
     if (action.action === "play") {
       if (isPlayable(card, s.playedCards)) {
-        s.playedCards.push(action.card);
+        s.playedCards.push(card);
         if (card.number === 5) {
           // play a 5, win a hint
           s.tokens.hints += 1;
@@ -42,11 +40,13 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
     } else {
       /** DISCARD */
       s.discardPile.push(action.card);
+      if (s.tokens.hints < 8) s.tokens.hints += 1;
     }
 
     // in both cases (play, discard) we need to remove a card from the hand and get a new one
     const newCard = s.drawPile.pop();
     if (newCard) {
+      newCard.hint = emptyHint(state.options);
       player.hand.unshift(newCard);
     }
   }
@@ -82,7 +82,8 @@ function applyHint(hand: IHand, hint: IHintAction) {
     if (card[hint.type] === hint.value) {
       // positive hint, e.g. card is a red 5 and the hint is "color red"
       Object.keys(card.hint[hint.type]).forEach(value => {
-        if (value === hint.value) {
+        if (value == hint.value) {
+          // == because we want '2' == 2
           // it has to be this value
           card.hint[hint.type][value] = 2;
         } else {
@@ -97,7 +98,7 @@ function applyHint(hand: IHand, hint: IHintAction) {
   });
 }
 
-function isPlayable(card: ICard, playedCards: ICard[]): boolean {
+export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
   const isPreviousHere =
     card.number === 1 || // first card on the pile
     findIndex(
@@ -161,7 +162,7 @@ export function getPlayedCardsPile(state: IGameState) {
  * new game utilities
  */
 
-const colors = [
+export const colors: IColor[] = [
   IColor.BLUE,
   IColor.RED,
   IColor.GREEN,
@@ -169,6 +170,8 @@ const colors = [
   IColor.YELLOW,
   IColor.MULTICOLOR
 ];
+
+export const numbers: INumber[] = [1, 2, 3, 4, 5];
 
 const playerNames = ["Akiyo", "Miho", "Tomoa", "Futaba", "Kai"];
 
@@ -204,16 +207,16 @@ export function newGame(options: IGameOptions, seed?: number): IGameState {
   }
 
   const deck = shuffle(cards, seed);
-
   const players = range(options.playersCount).map(i =>
     emptyPlayer(i, playerNames[i])
   );
 
-  players.forEach(player => {
+  for (let player of players) {
     player.hand = deck.splice(0, startingHandSize[players.length]);
-  });
+    player.hand.forEach(c => (c.hint = emptyHint(options)));
+  }
 
-  const currentPlayer = shuffle(range(options.playersCount), seed);
+  const currentPlayer = shuffle(range(options.playersCount), seed)[0];
 
   return {
     status: IGameStatus.LOBBY,
