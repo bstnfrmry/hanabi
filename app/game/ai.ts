@@ -67,7 +67,7 @@ export function gameStateToGameView(gameState: IGameState): IGameView {
 
   // add a parallel array to the players that give their view of the game
   // and make all level 0 deductions
-  state.players.forEach((player: IPlayer, i) => {
+  Object.values(state.players).forEach((player: IPlayer, i) => {
     const gameView = { hand: [] };
     const possibleCards = getPossibleCards(state, i);
     player.hand.forEach((card: ICard) => {
