@@ -10,7 +10,7 @@ import IGameState, {
   IGameStatus,
   INumber
 } from "./state";
-import { cloneDeep, isEqual, findIndex, flatMap, range } from "lodash";
+import { cloneDeep, isEqual, findIndex, flatMap, range, omit } from "lodash";
 import assert from "assert";
 import { shuffle } from "shuffle-seed";
 
@@ -19,7 +19,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   const s = cloneDeep(state) as IGameState;
 
   assert(action.from === state.currentPlayer);
-  const player = s.players[action.from];
+  const player = Object.values(s.players)[action.from];
 
   if (action.action === "discard" || action.action === "play") {
     // remove the card from hand
@@ -38,15 +38,20 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
         s.discardPile.push(action.card);
       }
     } else {
+      if (!s.discardPile) {
+        s.discardPile = [];
+      }
+
       /** DISCARD */
-      s.discardPile.push(action.card);
+      debugger;
+      s.discardPile.push(card);
       if (s.tokens.hints < 8) s.tokens.hints += 1;
     }
 
     // in both cases (play, discard) we need to remove a card from the hand and get a new one
     const newCard = s.drawPile.pop();
     if (newCard) {
-      newCard.hint = emptyHint(state.options);
+      // newCard.hint = emptyHint(state.options);
       player.hand.unshift(newCard);
     }
   }
@@ -125,7 +130,7 @@ export function emptyHint(options: IGameOptions): ICardHint {
   };
 }
 
-export function emptyPlayer(id: number, name: string): IPlayer {
+export function emptyPlayer(id: string, name: string): IPlayer {
   return {
     hand: [],
     name,
@@ -173,16 +178,31 @@ export const colors: IColor[] = [
 
 export const numbers: INumber[] = [1, 2, 3, 4, 5];
 
-const playerNames = ["Akiyo", "Miho", "Tomoa", "Futaba", "Kai"];
+const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
+
+export function joinGame(state: IGameState, player: IPlayer): IGameState {
+  const game = cloneDeep(state) as IGameState;
+
+  game.players = game.players || {};
+  game.players[player.id] = {
+    ...player,
+    hand: game.drawPile.splice(0, startingHandSize[game.playersCount])
+  };
+
+  return game;
+}
 
 export function newGame(options: IGameOptions, seed?: number): IGameState {
   if (seed === undefined) seed = +new Date() * Math.random();
 
-  const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
-
   assert(options.playersCount > 1 && options.playersCount < 6);
 
-  const cards: ICard[] = flatMap(colors, color => [
+  const gameColors = [...colors];
+  if (!options.multicolor) {
+    gameColors.splice(gameColors.indexOf(IColor.MULTICOLOR), 1);
+  }
+
+  const cards: ICard[] = flatMap(gameColors, color => [
     { number: 1, color },
     { number: 1, color },
     { number: 1, color },
@@ -207,19 +227,12 @@ export function newGame(options: IGameOptions, seed?: number): IGameState {
   }
 
   const deck = shuffle(cards, seed);
-  const players = range(options.playersCount).map(i =>
-    emptyPlayer(i, playerNames[i])
-  );
-
-  for (let player of players) {
-    player.hand = deck.splice(0, startingHandSize[players.length]);
-    player.hand.forEach(c => (c.hint = emptyHint(options)));
-  }
 
   const currentPlayer = shuffle(range(options.playersCount), seed)[0];
 
   return {
     status: IGameStatus.LOBBY,
+    playersCount: options.playersCount,
     playedCards: [],
     drawPile: deck,
     discardPile: [],

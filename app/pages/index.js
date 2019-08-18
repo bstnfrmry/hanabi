@@ -1,14 +1,10 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import Head from "next/head";
 import shortid from "shortid";
 
 import { useDatabase } from "../context/database";
 
 import { newGame } from "../game/actions";
-
-import "../styles/tachyons.css";
-import "../styles/style.css";
 
 export default function Home() {
   const router = useRouter();
@@ -21,16 +17,13 @@ export default function Home() {
 
     await db
       .ref(`/games/${gameId}`)
-      .set(newGame({ multicolor, playersCount: 4 }, seed));
+      .set(newGame({ multicolor, playersCount: 2 }, seed));
 
-    router.push(`/lobby?gameId=${gameId}`);
+    router.push(`/play?gameId=${gameId}`);
   }
 
   return (
     <>
-      <Head>
-        <title>Hanabi</title>
-      </Head>
       <label>
         Seed:
         <input

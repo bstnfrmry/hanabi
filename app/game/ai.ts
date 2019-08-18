@@ -87,6 +87,7 @@ export function getHintDeductions(
   hint: ICardHint,
   possibleCards: ICard[]
 ): IDeduction[] {
+  return [];
   let deductions: IDeduction[] = [];
   colors.forEach(color => {
     numbers.forEach(number => {
@@ -107,10 +108,12 @@ export function getHintDeductions(
 }
 
 function getPossibleCards(state: IGameState, player: number): ICard[] {
-  return [...state.drawPile, ...state.players[player].hand].map(c => ({
-    color: c.color,
-    number: c.number
-  }));
+  return [...state.drawPile, ...Object.values(state.players)[player].hand].map(
+    c => ({
+      color: c.color,
+      number: c.number
+    })
+  );
 }
 
 /**
@@ -137,7 +140,7 @@ function commitViewAction(state: IGameView, action: IAction): IGameView {
   return newState;
 }
 
-export function choseAction(
+export function chooseAction(
   state: IGameView,
   lookAhead: number = 0,
   lookBehind: number = 0
@@ -179,9 +182,10 @@ export function choseAction(
     // if someone has a playable card (but with some hint uncertainty), give hint
     for (let i = 1; i < state.options.playersCount; i++) {
       const pIndex = (state.currentPlayer + i) % state.options.playersCount;
-      const player = state.players[pIndex];
+      const player = Object.values(state.players)[pIndex];
 
       for (let card of player.hand) {
+        break;
         if (
           isPlayable(card, state.playedCards) &&
           (card.hint.color[card.color] < 2 || card.hint.number[card.number] < 2)
@@ -226,6 +230,6 @@ export default function play(state: IGameState): IGameState {
   // @todo this gameview should be persisted from action to action,
   // we commit
   const gameView = gameStateToGameView(state);
-  const action = choseAction(gameView);
+  const action = chooseAction(gameView);
   return commitAction(state, action);
 }

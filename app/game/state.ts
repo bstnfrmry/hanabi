@@ -4,6 +4,7 @@
 
 export default interface IGameState {
   status: IGameStatus;
+  playersCount: number;
   playedCards: ICard[];
   drawPile: ICard[];
   discardPile: ICard[];
@@ -88,9 +89,9 @@ export interface IHintAction {
 export type IAction = IDiscardAction | IPlayAction | IHintAction;
 
 export interface IPlayer {
+  id: string;
   hand: IHand;
   name: string;
-  id: number;
   lastAction?: IAction;
 }
 

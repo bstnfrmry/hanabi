@@ -3,11 +3,12 @@ import Card, { CardContext } from "./card";
 
 export default function PlayerGame(props) {
   const { player, active, self = false, onSelectPlayer } = props;
+  const hand = player.hand || [];
 
   return (
     <div onClick={() => onSelectPlayer(player)}>
       <div className="flex flex-row">
-        {player.hand.map((card, i) => (
+        {hand.map((card, i) => (
           <Card
             key={i}
             card={card}

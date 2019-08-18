@@ -16,9 +16,11 @@ function Token({ color, amount }) {
   );
 }
 
-export default ({ noteTokens, stormTokens }) => (
-  <div className="flex">
-    <Token color="hints" amount={noteTokens} />
-    <Token color="strikes" amount={stormTokens} />
-  </div>
-);
+export default function TokenSpace({ noteTokens, stormTokens }) {
+  return (
+    <div className="flex">
+      <Token color="hints" amount={noteTokens} />
+      <Token color="strikes" amount={stormTokens} />
+    </div>
+  );
+}
