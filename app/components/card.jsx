@@ -63,11 +63,9 @@ export default function Card(props) {
     position = null
   } = props;
 
-  const color = false
-    ? (card.knowledge.color && card.color) || "gray-light"
-    : card.color;
+  const color = hidden ? "gray-light" : card.color;
 
-  const number = false ? card.knowledge.number && card.number : card.number;
+  const number = hidden ? null : card.number;
 
   const displayHints = false; // context === CardContext.OTHER_PLAYER;
 

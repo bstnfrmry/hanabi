@@ -2,6 +2,7 @@ import React from "react";
 import Card, { CardContext } from "./card";
 import Vignettes from "./vignettes";
 import DiscardPile from "./discardPile";
+import { useRouter } from "next/router";
 
 export const ActionAreaType = {
   PLAYER: "player",
@@ -12,6 +13,9 @@ const colors = ["red", "yellow", "green", "blue", "white"];
 const values = [1, 2, 3, 4, 5];
 
 export default ({ game, selectedArea }) => {
+  const router = useRouter();
+  const { playerId } = router.query;
+
   if (!selectedArea) {
     return (
       <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f4 fw2 tracked ttu gray">
@@ -44,6 +48,7 @@ export default ({ game, selectedArea }) => {
             <Card
               key={i}
               card={card}
+              hidden={player.id === playerId}
               position={i}
               size="large"
               context={CardContext.OTHER_PLAYER}
