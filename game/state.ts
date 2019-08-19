@@ -52,7 +52,7 @@ export type INumber = 1 | 2 | 3 | 4 | 5;
 // to all players
 export interface ICardHint {
   color: { [key in IColor]: (0 | 1 | 2) };
-  number: { [key in 1 | 2 | 3 | 4 | 5]: (0 | 1 | 2) };
+  number: { [key in 0 | 1 | 2 | 3 | 4 | 5]: (0 | 1 | 2) };
 }
 
 export type IHand = ICard[];

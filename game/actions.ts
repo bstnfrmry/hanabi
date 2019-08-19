@@ -50,7 +50,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
     // in both cases (play, discard) we need to remove a card from the hand and get a new one
     const newCard = s.drawPile.pop();
     if (newCard) {
-      // newCard.hint = emptyHint(state.options);
+      newCard.hint = emptyHint(state.options);
       player.hand.unshift(newCard);
     }
   }
@@ -125,7 +125,7 @@ export function emptyHint(options: IGameOptions): ICardHint {
       yellow: 1,
       multicolor: options.multicolor ? 1 : 0
     },
-    number: { 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
+    number: { 0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
   };
 }
 
@@ -181,12 +181,12 @@ const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
 
 export function joinGame(state: IGameState, player: IPlayer): IGameState {
   const game = cloneDeep(state) as IGameState;
+  const hand = game.drawPile.splice(0, startingHandSize[game.playersCount]);
 
   game.players = game.players || [];
-  game.players.push({
-    ...player,
-    hand: game.drawPile.splice(0, startingHandSize[game.playersCount])
-  });
+  game.players.push({ ...player, hand });
+
+  hand.forEach(card => (card.hint = emptyHint(state.options)));
 
   return game;
 }
