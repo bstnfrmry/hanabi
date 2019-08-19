@@ -109,7 +109,7 @@ export default function Card(props) {
         </div>
       )}
       {displayHints && (
-        <div className="absolute right-0 bottom-0 pv1 fw1 flex flex-column bg-black-30">
+        <div className="absolute w-100 right-0 bottom-0 pv1 fw1 flex items-center flex-column bg-black-30">
           <div className="flex white">
             {Object.keys(card.hint.color)
               .filter(c => c !== "multicolor")
