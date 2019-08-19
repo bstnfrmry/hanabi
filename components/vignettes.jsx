@@ -1,7 +1,7 @@
 import React from "react";
 import Vignette from "./vignette";
 
-export default ({ values, colors, onSelect, pendingAction }) => {
+export default ({ values, colors, onSelect, pendingHint }) => {
   return (
     <div>
       <div className="flex flex-row">
@@ -12,7 +12,7 @@ export default ({ values, colors, onSelect, pendingAction }) => {
             value={value}
             onClick={onSelect}
             selected={
-              pendingAction.type === "number" && pendingAction.value === value
+              pendingHint.type === "number" && pendingHint.value === value
             }
           />
         ))}
@@ -25,7 +25,7 @@ export default ({ values, colors, onSelect, pendingAction }) => {
             value={color}
             onClick={onSelect}
             selected={
-              pendingAction.type === "color" && pendingAction.value === color
+              pendingHint.type === "color" && pendingHint.value === color
             }
           />
         ))}

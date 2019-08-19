@@ -29,6 +29,7 @@ export function CardWrapper(props) {
     size = "medium",
     playable = false,
     className = "",
+    borderWidth = "",
     style = {},
     children
   } = props;
@@ -43,6 +44,7 @@ export function CardWrapper(props) {
         "relative flex items-center justify-center br1 ba",
         sizeClass,
         className,
+        borderWidth,
         `bg-${color}`,
         `b--${color}`,
         ...(playable ? ["pointer", "grow"] : [])
@@ -61,7 +63,8 @@ export default function Card(props) {
     size = "medium",
     className = "",
     style = {},
-    position = null
+    position = null,
+    hintable = false
   } = props;
 
   const color = hidden ? "gray-light" : card.color;
@@ -75,6 +78,7 @@ export default function Card(props) {
       style={style}
       color={color}
       size={size}
+      borderWidth={hintable ? "bw2" : ""}
       playable={playable}
       className={className}
       style={style}
