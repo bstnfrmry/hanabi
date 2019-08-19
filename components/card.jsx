@@ -55,6 +55,7 @@ export default function Card(props) {
   const {
     card,
     context,
+    hint,
     hidden = false,
     playable = true,
     size = "medium",
@@ -67,7 +68,7 @@ export default function Card(props) {
 
   const number = hidden ? null : card.number;
 
-  const displayHints = false; // context === CardContext.OTHER_PLAYER;
+  const displayHints = context === CardContext.OTHER_PLAYER;
 
   return (
     <CardWrapper
@@ -86,8 +87,8 @@ export default function Card(props) {
       )}
       {displayHints && (
         <div className="absolute right-0 bottom-0 ma1 fw1 flex">
-          {card.knowledge.number && <div>V</div>}
-          {card.knowledge.color && <div className="ml1">C</div>}
+          {/* {JSON.stringify(hint.number)}
+          {JSON.stringify(hint.color)} */}
         </div>
       )}
     </CardWrapper>

@@ -7,7 +7,7 @@ import DrawPile from "./drawPile";
 export default function GameBoard({ game, onSelectDiscard, onSimulateTurn }) {
   const playedCards = game.playedCards || [];
   const discardPile = game.discardPile || [];
-
+  console.log(game);
   return (
     <div className="flex flex-column pa2 pa4-l bg-gray-light">
       <PlayedCards cards={playedCards} />

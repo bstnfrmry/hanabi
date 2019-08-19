@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card, { CardContext } from "./card";
 import Vignettes from "./vignettes";
 import DiscardPile from "./discardPile";
@@ -15,6 +15,10 @@ const values = [1, 2, 3, 4, 5];
 export default ({ game, player, selectedArea }) => {
   const router = useRouter();
   const { playerId } = router.query;
+  const [pendingAction, setPendingAction] = useState({
+    type: null,
+    value: null
+  });
 
   const currentPlayer = game.players[game.currentPlayer];
   const isCurrentPlayer = currentPlayer === player;
@@ -77,7 +81,8 @@ export default ({ game, player, selectedArea }) => {
           <Vignettes
             colors={colors}
             values={values}
-            className="flex flex-grow-1"
+            onSelect={action => setPendingAction(action)}
+            pendingAction={pendingAction}
           />
           <button className="ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray">
             Give hint
