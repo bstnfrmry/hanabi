@@ -31,6 +31,7 @@ export function CardWrapper(props) {
     className = "",
     borderWidth = "",
     style = {},
+    onClick,
     children
   } = props;
 
@@ -38,6 +39,7 @@ export function CardWrapper(props) {
 
   return (
     <div
+      onClick={onClick}
       children={children}
       style={style}
       className={[
@@ -57,14 +59,14 @@ export default function Card(props) {
   const {
     card,
     context,
-    hint,
+    onClick = () => {},
     hidden = false,
     playable = true,
     size = "medium",
     className = "",
     style = {},
     position = null,
-    hintable = false
+    selected = false
   } = props;
 
   const color = hidden ? "gray-light" : card.color;
@@ -78,10 +80,11 @@ export default function Card(props) {
       style={style}
       color={color}
       size={size}
-      borderWidth={hintable ? "bw2" : ""}
+      borderWidth={selected ? "bw2" : ""}
       playable={playable}
       className={className}
       style={style}
+      onClick={onClick}
     >
       <div className="f2 f1-l fw3">{number}</div>
       {position >= 0 && (

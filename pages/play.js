@@ -58,8 +58,8 @@ export default function Play() {
     await db.ref(`/games/${gameId}`).set(play(game));
   }
 
-  async function giveHint(from, to, hint) {
-    console.log(from, to, hint);
+  async function commitAction(action) {
+    console.log(action);
     // @todo send hint to the db
   }
 
@@ -69,7 +69,13 @@ export default function Play() {
         game={game}
         player={player}
         onSelectPlayer={player =>
-          selectArea({ type: ActionAreaType.PLAYER, player })
+          selectArea({
+            type:
+              player.index === game.currentPlayer
+                ? ActionAreaType.OWNGAME
+                : ActionAreaType.PLAYER,
+            player
+          })
         }
       />
       <div className="flex-grow-1 flex flex-column h-100 overflow-scroll bl b--gray-light">
@@ -91,13 +97,7 @@ export default function Play() {
             game={game}
             selectedArea={selectedArea}
             player={player}
-            giveHint={hint =>
-              giveHint(
-                game.currentPlayer, // from
-                _.findIndex(game.players, p => p === selectedArea.player), // to
-                hint
-              )
-            }
+            commitAction={action => commitAction(action)}
           />
         )}
       </div>

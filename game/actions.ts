@@ -184,7 +184,7 @@ export function joinGame(state: IGameState, player: IPlayer): IGameState {
   const hand = game.drawPile.splice(0, startingHandSize[game.playersCount]);
 
   game.players = game.players || [];
-  game.players.push({ ...player, hand });
+  game.players.push({ ...player, hand, index: game.players.length });
 
   hand.forEach(card => (card.hint = emptyHint(state.options)));
 

@@ -94,6 +94,7 @@ export interface IPlayer {
   hand: IHand;
   name: string;
   lastAction?: IAction;
+  index?: number;
 }
 
 // the *remaining* strikes and hints.
