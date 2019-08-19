@@ -4,10 +4,11 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
   const [name, setName] = useState("");
 
   const players = Object.values(game.players || {});
-  const canStart = players.length > 1 && players.length < 6;
+  const gameFull = players.length === game.playersCount;
+  const canJoin = !player && !gameFull;
 
   return (
-    <>
+    <div className="pa4 bg-grey bt bg-gray-light">
       <h1>Lobby</h1>
 
       {player && <h2>Joined as {player.name}</h2>}
@@ -19,9 +20,7 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
         <p key={i}>{player.name}</p>
       ))}
 
-      <hr />
-
-      {!player && (
+      {canJoin && (
         <form>
           <label>Name</label>
           <input
@@ -35,11 +34,13 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
         </form>
       )}
 
-      <hr />
+      {gameFull && <p>Game is full</p>}
 
-      <button disabled={!canStart} onClick={onStartGame}>
-        Start game
-      </button>
-    </>
+      {player && (
+        <button disabled={!gameFull} onClick={onStartGame}>
+          Start game
+        </button>
+      )}
+    </div>
   );
 }

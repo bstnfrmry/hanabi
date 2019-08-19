@@ -10,6 +10,7 @@ export default function Home() {
   const router = useRouter();
   const db = useDatabase();
   const [seed, setSeed] = useState(1234);
+  const [playersCount, setPlayersCount] = useState(2);
   const [multicolor, setMulticolor] = useState(false);
 
   async function createGame() {
@@ -17,19 +18,30 @@ export default function Home() {
 
     await db
       .ref(`/games/${gameId}`)
-      .set(newGame({ multicolor, playersCount: 2, seed }));
+      .set(newGame({ multicolor, playersCount, seed }));
 
     router.push(`/play?gameId=${gameId}`);
   }
 
   return (
-    <>
+    <div className="pa4 bg-grey bt bg-gray-light">
       <label>
         Seed:
         <input
           type="text"
           value={seed}
           onChange={e => setSeed(e.target.value)}
+        />
+      </label>
+      <label>
+        Players:
+        <input
+          type="number"
+          min="2"
+          max="5"
+          step="1"
+          value={playersCount}
+          onChange={e => setPlayersCount(e.target.value)}
         />
       </label>
       <label>
@@ -42,6 +54,6 @@ export default function Home() {
       </label>
 
       <button onClick={() => createGame()}>New game</button>
-    </>
+    </div>
   );
 }
