@@ -78,6 +78,7 @@ export default function Card(props) {
   const number = hidden ? null : card.number;
 
   const displayHints = [
+    CardContext.OTHER_PLAYER, // Todo: remove other when mobile (removing hints due to lack of space)
     CardContext.TARGETED_PLAYER,
     CardContext.SELF_PLAYER
   ].includes(context);
