@@ -58,6 +58,11 @@ export default function Play() {
     await db.ref(`/games/${gameId}`).set(play(game));
   }
 
+  async function giveHint(from, to, hint) {
+    console.log(from, to, hint);
+    // @todo send hint to the db
+  }
+
   return (
     <div className="flex flex-row w-100 h-100">
       <PlayersBoard
@@ -82,7 +87,18 @@ export default function Play() {
           />
         )}
         {game.status === "ongoing" && (
-          <ActionArea game={game} player={player} selectedArea={selectedArea} />
+          <ActionArea
+            game={game}
+            selectedArea={selectedArea}
+            player={player}
+            giveHint={hint =>
+              giveHint(
+                game.currentPlayer, // from
+                _.findIndex(game.players, p => p === selectedArea.player), // to
+                hint
+              )
+            }
+          />
         )}
       </div>
     </div>

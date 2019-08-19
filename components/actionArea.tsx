@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Card, { CardContext } from "./card";
+import Card, { CardContext, PositionMap } from "./card";
 import Vignettes from "./vignettes";
 import DiscardPile from "./discardPile";
 import { useRouter } from "next/router";
@@ -13,7 +13,7 @@ export const ActionAreaType = {
 const colors = ["red", "yellow", "green", "blue", "white"];
 const values = [1, 2, 3, 4, 5];
 
-export default ({ game, player, selectedArea }) => {
+export default ({ game, selectedArea, player, giveHint }) => {
   const router = useRouter();
   const { playerId } = router.query;
   const [pendingHint, setPendingHint] = useState({
@@ -86,9 +86,17 @@ export default ({ game, player, selectedArea }) => {
             onSelect={action => setPendingHint(action)}
             pendingHint={pendingHint}
           />
-          <button className="ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray">
-            Give hint
-          </button>
+          <div className="pl3">
+            <div className="h2 f5 fw3 i">
+              {textualHint(pendingHint, player.hand)}
+            </div>
+            <button
+              onClick={() => giveHint(pendingHint)}
+              className="pointer ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray"
+            >
+              Give hint
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -100,5 +108,29 @@ function isCardHintable(hint: IHintAction, card: ICard) {
     return card.color === hint.value;
   } else {
     return card.number === hint.value;
+  }
+}
+
+function textualHint(hint: IHintAction, cards: ICard[]) {
+  if (hint.value === null) {
+    return "";
+  }
+
+  const hintableCards = cards
+    .map((c, i) => (isCardHintable(hint, c) ? i : null))
+    .filter(i => i !== null)
+    .map(i => PositionMap[i]);
+
+  if (hintableCards.length === 0) {
+    if (hint.type === "color") return `You have no ${hint.value} cards.`;
+    else return `You have no ${hint.value}s.`;
+  } else if (hintableCards.length === 1) {
+    if (hint.type === "color")
+      return `Your card ${hintableCards[0]} is ${hint.value}!`;
+    else return `Your card ${hintableCards[0]} is a ${hint.value}!`;
+  } else {
+    if (hint.type === "color")
+      return `Your cards ${hintableCards.join(", ")} are ${hint.value}!`;
+    else return `Your cards ${hintableCards.join(", ")} are ${hint.value}s!`;
   }
 }
