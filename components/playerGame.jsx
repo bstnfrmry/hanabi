@@ -1,5 +1,6 @@
 import React from "react";
 import Card, { CardContext } from "./card";
+import { findLast } from "lodash";
 
 export default function PlayerGame(props) {
   const { game, player, active, self = false, onSelectPlayer } = props;
@@ -21,7 +22,12 @@ export default function PlayerGame(props) {
           {player.name} {self && "(you)"}
           {isCurrentPlayer && " <"}
         </div>
-        <div className="f6 f4-l gray fw1 tracked ttu">played 2 Blue</div>
+        <div className="f6 f4-l gray fw1 tracked ttu">
+          {actionToText(
+            findLast(game.actionsHistory, a => a.from === player.index),
+            game
+          )}
+        </div>
       </div>
       <div className="flex flex-row">
         {hand.map((card, i) => (
@@ -38,4 +44,16 @@ export default function PlayerGame(props) {
       </div>
     </div>
   );
+}
+
+function actionToText(action, game) {
+  if (!action) {
+    return "";
+  } else if (action.action === "hint") {
+    return `gave a hint to ${game.players[action.to].name} about their ${action.value} card(s).`;
+  } else if (action.action === "discard") {
+    return `discarded ${action.card.number} ${action.card.color}`;
+  } else if (action.action === "play") {
+    return `played ${action.card.number} ${action.card.color}`;
+  }
 }

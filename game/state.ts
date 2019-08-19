@@ -16,6 +16,7 @@ export default interface IGameState {
   // this is initiated as the number of players + 1 and serves for
   // the last round of game when the draw is empty
   actionsLeft: number;
+  actionsHistory: IAction[];
 }
 
 /**

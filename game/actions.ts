@@ -24,6 +24,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   if (action.action === "discard" || action.action === "play") {
     // remove the card from hand
     const [card] = player.hand.splice(action.cardIndex, 1);
+    action.card = card;
     /** PLAY */
     if (action.action === "play") {
       if (isPlayable(card, s.playedCards)) {
@@ -38,7 +39,8 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
       } else {
         // strike !
         s.tokens.strikes -= 1;
-        s.discardPile.push(action.card);
+        if (!s.discardPile) s.discardPile = [];
+        s.discardPile.push(card);
       }
     } else {
       if (!s.discardPile) {
@@ -78,6 +80,9 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   // update player
   s.currentPlayer = (s.currentPlayer + 1) % s.options.playersCount;
 
+  // update history
+  if (!s.actionsHistory) s.actionsHistory = [];
+  s.actionsHistory.push(action);
   return s;
 }
 
@@ -245,6 +250,7 @@ export function newGame(options: IGameOptions): IGameState {
     },
     currentPlayer,
     options,
-    actionsLeft: options.playersCount + 1 // this will be decreased when the draw pile is empty
+    actionsLeft: options.playersCount + 1, // this will be decreased when the draw pile is empty
+    actionsHistory: []
   };
 }
