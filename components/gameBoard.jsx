@@ -5,11 +5,11 @@ import PlayedCards from "./playedCards";
 import TokenSpace from "./tokenSpace";
 import DrawPile from "./drawPile";
 
-export default function GameBoard({ game, onSelectDiscard, onSimulateTurn }) {
+export default function GameBoard({ game, onSelectDiscard }) {
   const playedCards = game.playedCards || [];
   const discardPile = game.discardPile || [];
 
-  const score = sumBy(Object.values(playedCards), pile => pile.length);
+  const score = playedCards.length;
   const maxScore = game.options.multicolor ? 30 : 25;
 
   return (
@@ -33,12 +33,6 @@ export default function GameBoard({ game, onSelectDiscard, onSimulateTurn }) {
           onClick={onSelectDiscard}
         >
           Discard ({discardPile.length})
-        </button>
-        <button
-          className="pa3 br1 ba f6 f4-l fw2 tracked ttu ml2 gray pointer"
-          onClick={onSimulateTurn}
-        >
-          Simulate turn
         </button>
       </div>
     </div>

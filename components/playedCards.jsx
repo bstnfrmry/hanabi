@@ -6,10 +6,12 @@ import Card, { CardWrapper } from "./card";
 const piles = ["red", "yellow", "green", "blue", "white"];
 
 export default ({ cards }) => {
+  const groupedCards = groupBy(cards, c => c.color);
+
   return (
     <div className="flex flex-row">
       {piles.map((color, i) => {
-        const topCard = last(cards[color]);
+        const topCard = last(groupedCards[color]);
 
         if (!topCard) {
           return (
@@ -20,7 +22,7 @@ export default ({ cards }) => {
         return (
           <Card
             key={i}
-            card={last(cards[color])}
+            card={topCard}
             color={color}
             size="large"
             className="ma1"
