@@ -14,7 +14,7 @@ export const ActionAreaType = {
 const colors = ["red", "yellow", "green", "blue", "white"];
 const values = [1, 2, 3, 4, 5];
 
-export default ({ game, selectedArea, player, commitAction }) => {
+export default ({ game, selectedArea, player, onCommitAction }) => {
   const router = useRouter();
   const { playerId } = router.query;
 
@@ -79,35 +79,39 @@ export default ({ game, selectedArea, player, commitAction }) => {
             />
           ))}
         </div>
-        <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2 gray">
-          Select a hint below
-        </div>
-        <div className="flex flex-row pb2 ml1">
-          <Vignettes
-            colors={colors}
-            values={values}
-            onSelect={action => setPendingHint(action)}
-            pendingHint={pendingHint}
-          />
-          <div className="pl3">
-            <div className="h2 f5 fw3 i">
-              {textualHint(pendingHint, player.hand)}
+        {isCurrentPlayer && (
+          <>
+            <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2 gray">
+              Select a hint below
             </div>
-            <button
-              onClick={() =>
-                commitAction({
-                  action: "hint",
-                  from: game.currentPlayer,
-                  to: player.index,
-                  ...pendingHint
-                } as IHintAction)
-              }
-              className="pointer ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray"
-            >
-              Give hint
-            </button>
-          </div>
-        </div>
+            <div className="flex flex-row pb2 ml1">
+              <Vignettes
+                colors={colors}
+                values={values}
+                onSelect={action => setPendingHint(action)}
+                pendingHint={pendingHint}
+              />
+              <div className="pl3">
+                <div className="h2 f5 fw3 i">
+                  {textualHint(pendingHint, player.hand)}
+                </div>
+                <button
+                  onClick={() =>
+                    onCommitAction({
+                      action: "hint",
+                      from: game.currentPlayer,
+                      to: player.index,
+                      ...pendingHint
+                    } as IHintAction)
+                  }
+                  className="pointer ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray"
+                >
+                  Give hint
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     );
   }
@@ -135,25 +139,29 @@ export default ({ game, selectedArea, player, commitAction }) => {
             />
           ))}
         </div>
-        <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2 gray">
-          Select a card
-        </div>
-        <div className="flex flex-row pb2 ml1">
-          {["play", "discard"].map(action => (
-            <button
-              onClick={() =>
-                commitAction({
-                  action,
-                  from: player.index,
-                  cardIndex: selectedCard
-                })
-              }
-              className="pointer ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray"
-            >
-              {action}
-            </button>
-          ))}
-        </div>
+        {isCurrentPlayer && (
+          <>
+            <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2 gray">
+              Select a card
+            </div>
+            <div className="flex flex-row pb2 ml1">
+              {["play", "discard"].map(action => (
+                <button
+                  onClick={() =>
+                    onCommitAction({
+                      action,
+                      from: player.index,
+                      cardIndex: selectedCard
+                    })
+                  }
+                  className="pointer ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray"
+                >
+                  {action}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     );
   }

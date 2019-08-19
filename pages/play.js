@@ -7,7 +7,7 @@ import GameBoard from "../components/gameBoard";
 import Lobby from "../components/lobby";
 import ActionArea, { ActionAreaType } from "../components/actionArea";
 import { useDatabase } from "../context/database";
-import { joinGame } from "../game/actions";
+import { joinGame, commitAction } from "../game/actions";
 import play from "../game/ai";
 
 export default function Play() {
@@ -58,9 +58,8 @@ export default function Play() {
     await db.ref(`/games/${gameId}`).set(play(game));
   }
 
-  async function commitAction(action) {
-    console.log(action);
-    // @todo send hint to the db
+  async function onCommitAction(action) {
+    await db.ref(`/games/${gameId}`).set(commitAction(game, action));
   }
 
   return (
@@ -68,13 +67,13 @@ export default function Play() {
       <PlayersBoard
         game={game}
         player={player}
-        onSelectPlayer={player =>
+        onSelectPlayer={p =>
           selectArea({
             type:
-              player.index === game.currentPlayer
+              p.id === player.id
                 ? ActionAreaType.OWNGAME
                 : ActionAreaType.PLAYER,
-            player
+            player: p
           })
         }
       />
@@ -97,7 +96,7 @@ export default function Play() {
             game={game}
             selectedArea={selectedArea}
             player={player}
-            commitAction={action => commitAction(action)}
+            onCommitAction={onCommitAction}
           />
         )}
       </div>
