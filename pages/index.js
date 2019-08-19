@@ -41,7 +41,7 @@ export default function Home() {
           max="5"
           step="1"
           value={playersCount}
-          onChange={e => setPlayersCount(e.target.value)}
+          onChange={e => setPlayersCount(+e.target.value)}
         />
       </label>
       <label>
