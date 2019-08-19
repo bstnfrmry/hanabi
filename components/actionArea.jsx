@@ -65,7 +65,7 @@ export default ({ game, player, selectedArea }) => {
               hidden={player.id === playerId}
               position={i}
               size="large"
-              context={CardContext.OTHER_PLAYER}
+              context={CardContext.TARGETED_PLAYER}
               className="ma1"
             />
           ))}

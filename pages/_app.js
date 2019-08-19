@@ -29,9 +29,12 @@ export default class Hanabi extends App {
 
     return (
       <>
-        {/* <Head>
-          <title>Hanabi</title>
-        </Head> */}
+        <Head>
+          <link
+            href="https://fonts.googleapis.com/css?family=Kalam&display=swap"
+            rel="stylesheet"
+          />
+        </Head>
         <Container>
           <DatabaseProvider value={this.database}>
             <Component {...pageProps} />
