@@ -1,5 +1,7 @@
 import React from "react";
 
+import Hint from "./hint";
+
 // Cards possible sizes
 const SizeMap = {
   tiny: "", // TODO h0 doesnt exist
@@ -63,11 +65,11 @@ export default function Card(props) {
     position = null
   } = props;
 
-  const color = hidden ? "gray-light" : card.color;
+  const color = hidden ? "main" : card.color;
 
   const number = hidden ? null : card.number;
 
-  const displayHints = false; // context === CardContext.OTHER_PLAYER;
+  const displayHints = true; // context === CardContext.SELF_PLAYER;
 
   return (
     <CardWrapper
@@ -80,14 +82,30 @@ export default function Card(props) {
     >
       <div className="f2 f1-l fw3">{number}</div>
       {position >= 0 && (
-        <div className="absolute left-0 top-0 ma1 fw1">
+        <div className="absolute left-0 top-0 ma1 fw1 white">
           {PositionMap[position]}
         </div>
       )}
       {displayHints && (
-        <div className="absolute right-0 bottom-0 ma1 fw1 flex">
-          {card.knowledge.number && <div>V</div>}
-          {card.knowledge.color && <div className="ml1">C</div>}
+        <div className="absolute right-0 bottom-0 ma1 fw1 flex flex-column">
+          <div className="flex white">
+            {Object.keys(card.hint.color)
+              .filter(c => c !== "multicolor")
+              .map(color => {
+                const hint = card.hint.color[color];
+
+                return <Hint type="color" value={color} hint={hint} />;
+              })}
+          </div>
+          <div className="flex">
+            {Object.keys(card.hint.number)
+              .slice(1)
+              .map(number => {
+                const hint = card.hint.number[number];
+
+                return <Hint type="number" value={number} hint={hint} />;
+              })}
+          </div>
         </div>
       )}
     </CardWrapper>
