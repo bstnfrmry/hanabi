@@ -1,7 +1,8 @@
 import { useState } from "react";
+import generate from "project-name-generator";
 
 export default function Lobby({ game, player, onJoinGame, onStartGame }) {
-  const [name, setName] = useState("");
+  const [name, setName] = useState(generate().dashed);
 
   const players = Object.values(game.players || {});
   const gameFull = players.length === game.playersCount;
