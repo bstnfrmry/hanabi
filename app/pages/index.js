@@ -17,7 +17,7 @@ export default function Home() {
 
     await db
       .ref(`/games/${gameId}`)
-      .set(newGame({ multicolor, playersCount: 2 }, seed));
+      .set(newGame({ multicolor, playersCount: 2, seed }));
 
     router.push(`/play?gameId=${gameId}`);
   }

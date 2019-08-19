@@ -192,8 +192,8 @@ export function joinGame(state: IGameState, player: IPlayer): IGameState {
   return game;
 }
 
-export function newGame(options: IGameOptions, seed?: number): IGameState {
-  if (seed === undefined) seed = +new Date() * Math.random();
+export function newGame(options: IGameOptions): IGameState {
+  if (options.seed === undefined) options.seed = +new Date() * Math.random();
 
   assert(options.playersCount > 1 && options.playersCount < 6);
 
@@ -226,9 +226,9 @@ export function newGame(options: IGameOptions, seed?: number): IGameState {
     );
   }
 
-  const deck = shuffle(cards, seed);
+  const deck = shuffle(cards, options.seed);
 
-  const currentPlayer = shuffle(range(options.playersCount), seed)[0];
+  const currentPlayer = shuffle(range(options.playersCount), options.seed)[0];
 
   return {
     status: IGameStatus.LOBBY,

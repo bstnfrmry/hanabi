@@ -25,6 +25,7 @@ export default interface IGameState {
 export interface IGameOptions {
   playersCount: number;
   multicolor: boolean;
+  seed: number;
 }
 
 export enum IGameStatus {
