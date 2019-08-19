@@ -16,6 +16,11 @@ body {
   font-family: -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell,
     Helvetica Neue;
   background-color: #00153f;
+  font-family: "Kalam", cursive;
+}
+
+.bg-main {
+  background-color: #00153f;
 }
 
 /**

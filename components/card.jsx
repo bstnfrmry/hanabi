@@ -1,4 +1,7 @@
 import React from "react";
+import classnames from "classnames";
+
+import Hint from "./hint";
 
 // Cards possible sizes
 const SizeMap = {
@@ -20,6 +23,7 @@ export const PositionMap = {
 export const CardContext = {
   SELF_PLAYER: "selfPlayer",
   OTHER_PLAYER: "otherPlayer",
+  TARGETED_PLAYER: "targetedPlayer",
   PLAYED: "played"
 };
 
@@ -69,11 +73,14 @@ export default function Card(props) {
     selected = false
   } = props;
 
-  const color = hidden ? "gray-light" : card.color;
+  const color = hidden ? "main" : card.color;
 
   const number = hidden ? null : card.number;
 
-  const displayHints = context === CardContext.OTHER_PLAYER;
+  const displayHints = [
+    CardContext.TARGETED_PLAYER,
+    CardContext.SELF_PLAYER
+  ].includes(context);
 
   return (
     <CardWrapper
@@ -86,16 +93,40 @@ export default function Card(props) {
       style={style}
       onClick={onClick}
     >
-      <div className="f2 f1-l fw3">{number}</div>
+      <div className={classnames("f2 f1-l fw3", { mb4: displayHints })}>
+        {number}
+      </div>
       {position >= 0 && (
-        <div className="absolute left-0 top-0 ma1 fw1">
+        <div
+          className={classnames(
+            "absolute left-0 top-0 ma1 fw1",
+            { white: hidden },
+            { "dark-gray": !hidden }
+          )}
+        >
           {PositionMap[position]}
         </div>
       )}
       {displayHints && (
-        <div className="absolute right-0 bottom-0 ma1 fw1 flex">
-          {/* {JSON.stringify(hint.number)}
-          {JSON.stringify(hint.color)} */}
+        <div className="absolute right-0 bottom-0 pa1 fw1 flex flex-column bg-black-30">
+          <div className="flex white">
+            {Object.keys(card.hint.color)
+              .filter(c => c !== "multicolor")
+              .map(color => {
+                const hint = card.hint.color[color];
+
+                return <Hint type="color" value={color} hint={hint} />;
+              })}
+          </div>
+          <div className="flex mt1">
+            {Object.keys(card.hint.number)
+              .slice(1)
+              .map(number => {
+                const hint = card.hint.number[number];
+
+                return <Hint type="number" value={number} hint={hint} />;
+              })}
+          </div>
         </div>
       )}
     </CardWrapper>

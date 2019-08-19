@@ -27,6 +27,9 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
     /** PLAY */
     if (action.action === "play") {
       if (isPlayable(card, s.playedCards)) {
+        if (!s.playedCards) {
+          s.playedCards = [];
+        }
         s.playedCards.push(card);
         if (card.number === 5) {
           // play a 5, win a hint
@@ -187,6 +190,30 @@ export function joinGame(state: IGameState, player: IPlayer): IGameState {
   game.players.push({ ...player, hand, index: game.players.length });
 
   hand.forEach(card => (card.hint = emptyHint(state.options)));
+
+  hand[0].hint.number[1] = 0;
+  hand[0].hint.number[2] = 0;
+  hand[0].hint.number[3] = 0;
+  hand[0].hint.number[4] = 2;
+  hand[0].hint.number[5] = 0;
+  hand[0].hint.color.blue = 0;
+  hand[0].hint.color.green = 0;
+  hand[0].hint.color.red = 0;
+  hand[0].hint.color.yellow = 0;
+  hand[0].hint.color.white = 2;
+
+  hand[1].hint.number[1] = 0;
+  hand[1].hint.number[4] = 0;
+  hand[1].hint.number[5] = 0;
+
+  hand[2].hint.color.green = 0;
+  hand[2].hint.color.white = 0;
+
+  hand[3].hint.color.blue = 0;
+  hand[3].hint.color.green = 0;
+  hand[3].hint.color.red = 2;
+  hand[3].hint.color.yellow = 0;
+  hand[3].hint.color.white = 0;
 
   return game;
 }

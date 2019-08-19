@@ -12,6 +12,7 @@ export default ({ game, player, onSelectPlayer }) => {
         {otherPlayers.map((otherPlayer, i) => (
           <div key={i} className="mb2 mb4-l">
             <PlayerGame
+              game={game}
               player={otherPlayer}
               onSelectPlayer={onSelectPlayer}
               active={otherPlayer === game.currentPlayer}
@@ -25,6 +26,7 @@ export default ({ game, player, onSelectPlayer }) => {
           style={{ marginTop: "auto" }}
         >
           <PlayerGame
+            game={game}
             player={player}
             self={true}
             onSelectPlayer={onSelectPlayer}

@@ -73,7 +73,7 @@ export default ({ game, selectedArea, player, onCommitAction }) => {
               hidden={player.id === playerId}
               position={i}
               size="large"
-              context={CardContext.OTHER_PLAYER}
+              context={CardContext.TARGETED_PLAYER}
               className="ma1"
               selected={isCardHintable(pendingHint, card)}
             />
@@ -132,7 +132,7 @@ export default ({ game, selectedArea, player, onCommitAction }) => {
               hidden={player.id === playerId}
               position={i}
               size="large"
-              context={CardContext.OTHER_PLAYER}
+              context={CardContext.TARGETED_PLAYER}
               className="ma1"
               onClick={() => setSelectedCard(i)}
               selected={selectedCard === i}
