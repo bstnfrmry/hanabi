@@ -2,8 +2,8 @@ import React from "react";
 import PlayerGame from "./playerGame";
 
 export default ({ game, player, onSelectPlayer }) => {
-  const otherPlayers = Object.values(game.players || {}).filter(
-    p => p !== player
+  const otherPlayers = (game.players || []).filter(
+    p => player && p.id !== player.id
   );
 
   return (

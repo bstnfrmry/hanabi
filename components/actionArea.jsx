@@ -12,14 +12,28 @@ export const ActionAreaType = {
 const colors = ["red", "yellow", "green", "blue", "white"];
 const values = [1, 2, 3, 4, 5];
 
-export default ({ game, selectedArea }) => {
+export default ({ game, player, selectedArea }) => {
   const router = useRouter();
   const { playerId } = router.query;
+
+  const currentPlayer = game.players[game.currentPlayer];
+  const isCurrentPlayer = currentPlayer === player;
+
+  if (!selectedArea && isCurrentPlayer) {
+    return (
+      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f4 fw2 tracked ttu gray">
+        <p>-> Your turn!</p>
+
+        <p>- Tap on one of your playmates to give hints</p>
+        <p>- Click on one of your cards to withdraw or play</p>
+      </div>
+    );
+  }
 
   if (!selectedArea) {
     return (
       <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f4 fw2 tracked ttu gray">
-        Select a player
+        It's {currentPlayer.name}'s turn
       </div>
     );
   }

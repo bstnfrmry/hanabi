@@ -18,13 +18,20 @@ export default function Play() {
 
   const { gameId, playerId } = router.query;
 
-  const player = game && game.players && game.players[playerId];
+  const player =
+    game && game.players && game.players.find(p => p.id === playerId);
 
   useEffect(() => {
     db.ref(`/games/${gameId}`).on("value", event => {
       setGame(event.val());
     });
   }, [gameId, playerId]);
+
+  useEffect(() => {
+    db.ref(`/games/${gameId}/currentPlayer`).on("value", event => {
+      selectArea(null);
+    });
+  }, [gameId]);
 
   if (!game) {
     return "Loading";
@@ -75,7 +82,7 @@ export default function Play() {
           />
         )}
         {game.status === "ongoing" && (
-          <ActionArea game={game} selectedArea={selectedArea} />
+          <ActionArea game={game} player={player} selectedArea={selectedArea} />
         )}
       </div>
     </div>

@@ -19,7 +19,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   const s = cloneDeep(state) as IGameState;
 
   assert(action.from === state.currentPlayer);
-  const player = Object.values(s.players)[action.from];
+  const player = s.players[action.from];
 
   if (action.action === "discard" || action.action === "play") {
     // remove the card from hand
@@ -43,7 +43,6 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
       }
 
       /** DISCARD */
-      debugger;
       s.discardPile.push(card);
       if (s.tokens.hints < 8) s.tokens.hints += 1;
     }
@@ -183,11 +182,11 @@ const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
 export function joinGame(state: IGameState, player: IPlayer): IGameState {
   const game = cloneDeep(state) as IGameState;
 
-  game.players = game.players || {};
-  game.players[player.id] = {
+  game.players = game.players || [];
+  game.players.push({
     ...player,
     hand: game.drawPile.splice(0, startingHandSize[game.playersCount])
-  };
+  });
 
   return game;
 }
@@ -236,7 +235,7 @@ export function newGame(options: IGameOptions): IGameState {
     playedCards: [],
     drawPile: deck,
     discardPile: [],
-    players: {},
+    players: [],
     tokens: {
       hints: 8,
       strikes: 3

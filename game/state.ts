@@ -8,7 +8,7 @@ export default interface IGameState {
   playedCards: ICard[];
   drawPile: ICard[];
   discardPile: ICard[];
-  players: { [string: number]: IPlayer };
+  players: IPlayer[];
   tokens: ITokens;
   lastAction?: IAction;
   currentPlayer: number;
