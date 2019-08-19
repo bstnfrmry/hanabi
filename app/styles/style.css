@@ -1,0 +1,112 @@
+:root {
+  --color-white: #f4f6f7;
+  --color-red: #ec7063;
+  --color-blue: #5dade2;
+  --color-yellow: #f4d03f;
+  --color-green: #52be80;
+  --color-multicolor: #af7ac5;
+
+  --color-hints: rgb(0, 61, 181);
+  --color-strikes: rgb(192, 21, 21);
+
+  --color-gray-light: #ddd;
+}
+
+body {
+  font-family: -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell,
+    Helvetica Neue;
+  background-color: #00153f;
+}
+
+/**
+ * Background colors
+ */
+
+.bg-white {
+  background-color: var(--color-white);
+}
+
+.bg-red {
+  background-color: var(--color-red);
+}
+
+.bg-blue {
+  background-color: var(--color-blue);
+}
+
+.bg-yellow {
+  background-color: var(--color-yellow);
+}
+
+.bg-green {
+  background-color: var(--color-green);
+}
+
+.bg-multicolor {
+  background-color: var(--color-multicolor);
+}
+
+.bg-hints {
+  background-color: var(--color-hints);
+}
+
+.bg-strikes {
+  background-color: var(--color-strikes);
+}
+
+.bg-gray-light {
+  background-color: var(--color-gray-light);
+}
+
+/**
+ * Border colors
+ */
+
+.b--white {
+  border-color: color-mod(var(--color-white) shade(20%));
+}
+
+.b--red {
+  border-color: color-mod(var(--color-red) shade(20%));
+}
+
+.b--blue {
+  border-color: color-mod(var(--color-blue) shade(20%));
+}
+
+.b--yellow {
+  border-color: color-mod(var(--color-yellow) shade(20%));
+}
+
+.b--green {
+  border-color: color-mod(var(--color-green) shade(20%));
+}
+
+.b--multicolor {
+  border-color: color-mod(var(--color-multicolor) shade(20%));
+}
+
+.b--hints {
+  border-color: color-mod(var(--color-hints) shade(20%));
+}
+
+.b--strikes {
+  border-color: color-mod(var(--color-strikes) shade(20%));
+}
+
+.b--gray-light {
+  border-color: color-mod(var(--color-gray-light) shade(20%));
+}
+
+/**
+ * Animations
+ */
+
+.grow {
+  transition: transform 0.1s ease-in-out;
+}
+
+.grow:hover {
+  transform: scale(1.2);
+  z-index: 2;
+}

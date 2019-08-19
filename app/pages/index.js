@@ -1,23 +1,59 @@
-import React from "react";
-import Head from "next/head";
-import App from "../components/app";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
+import shortid from "shortid";
 
-export default function Home({ seed }) {
-  Home.getInitialProps = ({ query }) => {
-    return { seed: query.seed }
+import { useDatabase } from "../context/database";
+
+import { newGame } from "../game/actions";
+
+export default function Home() {
+  const router = useRouter();
+  const db = useDatabase();
+  const [seed, setSeed] = useState(1234);
+  const [playersCount, setPlayersCount] = useState(2);
+  const [multicolor, setMulticolor] = useState(false);
+
+  async function createGame() {
+    const gameId = shortid();
+
+    await db
+      .ref(`/games/${gameId}`)
+      .set(newGame({ multicolor, playersCount, seed }));
+
+    router.push(`/play?gameId=${gameId}`);
   }
-  
-  return <>
-    <Head>
-      <title>Hanabi</title>
-      <link
-        rel="stylesheet"
-        href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"
-      />
-    </Head>
-    <div className="aspect-ratio--object">
-      <App seed={seed} />
-    </div>
-  </>
-}
 
+  return (
+    <div className="pa4 bg-grey bt bg-gray-light">
+      <label>
+        Seed:
+        <input
+          type="text"
+          value={seed}
+          onChange={e => setSeed(e.target.value)}
+        />
+      </label>
+      <label>
+        Players:
+        <input
+          type="number"
+          min="2"
+          max="5"
+          step="1"
+          value={playersCount}
+          onChange={e => setPlayersCount(e.target.value)}
+        />
+      </label>
+      <label>
+        Multicolor:
+        <input
+          type="checkbox"
+          checked={multicolor}
+          onChange={e => setMulticolor(e.target.checked)}
+        />
+      </label>
+
+      <button onClick={() => createGame()}>New game</button>
+    </div>
+  );
+}

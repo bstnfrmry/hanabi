@@ -1,3 +1,9 @@
 import React from "react";
 
-export default ({ cards }) => <div className="br1 ba">draw ({cards.length} remaining)</div>;
+export default function DrawPile({ cards }) {
+  return (
+    <button className="pa3 br1 ba f6 f4-l fw2 tracked ttu ml1 gray pointer">
+      Deck ({cards.length})
+    </button>
+  );
+}

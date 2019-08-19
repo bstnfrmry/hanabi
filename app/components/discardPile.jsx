@@ -1,64 +1,43 @@
-import React, { useState } from "react";
-import Modal from "react-modal";
-import { sumBy, sortBy } from 'lodash'
+import React from "react";
+import { groupBy, sortBy } from "lodash";
 
-import Card, { CardWrapper } from './card'
+import Card, { CardWrapper } from "./card";
+
+const piles = ["red", "yellow", "green", "blue", "white"];
 
 function CardPile({ cards, color }) {
   if (!cards.length) {
-    return <CardWrapper
-      color={color}
-      size="large"
-      className='ma1'
-    />
+    return <CardWrapper color={color} size="large" className="ma1" />;
   }
 
-  const sortedCards = sortBy(cards, card => card.value)
+  const sortedCards = sortBy(cards, card => card.value);
 
-  return <div className="flex flex-column">
-    {sortedCards.map((card, i) => (
-      <Card
-        key={i}
-        card={card}
-        size="large"
-        className="ma1"
-        style={i ? {marginTop: '-20px'} : {}}
-      />
-    ))}
-  </div>
+  return (
+    <div className="flex flex-column">
+      {sortedCards.map((card, i) => (
+        <Card
+          key={i}
+          card={card}
+          size="large"
+          className="ma1"
+          style={i ? { marginTop: "-25px" } : {}}
+        />
+      ))}
+    </div>
+  );
 }
 
 export default function DiscardPile({ cards }) {
-  const [isOpen, toggleModal] = useState(false)
-  const piles = Object.keys(cards)
-  const count = sumBy(piles, color => cards[color].length)
+  const byColor = groupBy(
+    sortBy(cards, card => card.value),
+    card => card.color
+  );
 
-  return <>
-    <button
-      className="br1 ba"
-      onClick={() => toggleModal(true)}
-    >
-        Discard ({count})
-    </button>
-
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={() => toggleModal(false)}
-      className="absolute bg-white br3 pa3 outline-0 w-40"
-      overlayClassName="fixed absolute--fill bg-black-40 z-999 flex items-center justify-center"
-    >
-      <div className="flex flex-column items-center">
-        <h1>Discarded cards</h1>
-        <div className="flex">
-          {piles.map((color, i) => (
-            <CardPile
-              key={i}
-              cards={cards[color]}
-              color={color}
-            />
-          ))}
-        </div>
-      </div>
-    </Modal>
-  </>
+  return (
+    <div className="flex">
+      {piles.map((color, i) => (
+        <CardPile key={i} cards={byColor[color] || []} color={color} />
+      ))}
+    </div>
+  );
 }
