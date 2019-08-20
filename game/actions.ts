@@ -153,7 +153,7 @@ export function isGameOver(state: IGameState) {
   return (
     state.actionsLeft <= 0 ||
     state.tokens.strikes <= 0 ||
-    state.playedCards.length === (state.options.multicolor ? 30 : 25)
+    (state.playedCards || []).length === (state.options.multicolor ? 30 : 25)
   );
 }
 
