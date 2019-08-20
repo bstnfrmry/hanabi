@@ -22,9 +22,11 @@ export default function Hint(props) {
       )}
       {hint === 0 && (
         <div className="w-100 h-100 relative flex justify-center items-center fw2">
-          {type === "number" && <div className="absolute white">{value}</div>}
+          {type === "number" && (
+            <div className="absolute white o-50">{value}</div>
+          )}
           <div
-            className={`absolute w-100 rotate-135 bg-${color} b--${color}`}
+            className={`absolute w-100 o-80 rotate-135 bg-${color} b--${color}`}
             style={{ height: "2px" }}
           />
         </div>
