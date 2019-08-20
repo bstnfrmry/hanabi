@@ -53,8 +53,8 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
     }
 
     // in both cases (play, discard) we need to remove a card from the hand and get a new one
-    const newCard = s.drawPile.pop();
-    if (newCard) {
+    if (s.drawPile && s.drawPile.length) {
+      const newCard = s.drawPile.pop();
       newCard.hint = emptyHint(state.options);
       player.hand.unshift(newCard);
     }
@@ -73,7 +73,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   // there's no card in the pile (or the last card was just drawn)
   // decrease the actionsLeft counter.
   // The game ends when it reaches 0.
-  if (s.drawPile.length === 0) {
+  if (!s.drawPile || s.drawPile.length === 0) {
     s.actionsLeft -= 1;
   }
 
@@ -118,7 +118,11 @@ export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
       c => card.number === c.number + 1 && card.color === c.color
     ) > -1; // previous card belongs to the playedCards
 
-  const isSameNotHere = findIndex(playedCards, c => isEqual(c, card)) === -1;
+  const isSameNotHere =
+    findIndex(
+      playedCards,
+      c => c.number === card.number && c.color === card.color
+    ) === -1;
 
   return isPreviousHere && isSameNotHere;
 }

@@ -1,10 +1,24 @@
 import React from "react";
 import PlayerGame from "./playerGame";
+import { range } from "lodash";
+import IGameState, { IPlayer } from "../game/state";
 
-export default ({ game, player, onSelectPlayer }) => {
-  const otherPlayers = (game.players || []).filter(
-    p => player && p.id !== player.id
-  );
+interface IPlayersBoard {
+  game: IGameState;
+  player: IPlayer | undefined;
+  onSelectPlayer: any;
+}
+
+export default ({ game, player, onSelectPlayer }: IPlayersBoard) => {
+  // all the other players in order (starting with the next one)
+  let otherPlayers;
+  if (!player) {
+    otherPlayers = [];
+  } else {
+    otherPlayers = range(game.players.length - 1).map(
+      i => game.players[(i + player.index + 1) % game.playersCount]
+    );
+  }
 
   return (
     <div className="flex flex-column h-100 overflow-y-scroll">
@@ -30,7 +44,7 @@ export default ({ game, player, onSelectPlayer }) => {
             player={player}
             self={true}
             onSelectPlayer={onSelectPlayer}
-            active={player === game.currentPlayer}
+            active={player.index === game.currentPlayer}
           />
         </div>
       )}
