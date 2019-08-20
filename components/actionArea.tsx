@@ -3,18 +3,48 @@ import Card, { CardContext, PositionMap } from "./card";
 import Vignettes from "./vignettes";
 import DiscardPile from "./discardPile";
 import { useRouter } from "next/router";
-import { IHintAction, ICard } from "../game/state";
+import IGameState, { IHintAction, ICard, IPlayer } from "../game/state";
+import classnames from "classnames";
 
-export const ActionAreaType = {
-  PLAYER: "player",
-  OWNGAME: "ownGame",
-  DISCARD: "discard"
-};
+interface IActionArea {
+  game: IGameState;
+  selectedArea:
+    | IPlayerSelectedArea
+    | IOwnGameSelectedArea
+    | IDiscardSelectedArea;
+  player: IPlayer;
+  onCommitAction: any;
+}
+
+interface IPlayerSelectedArea {
+  type: ActionAreaType.PLAYER;
+  player: IPlayer;
+}
+
+interface IOwnGameSelectedArea {
+  type: ActionAreaType.OWNGAME;
+  player: IPlayer;
+}
+
+interface IDiscardSelectedArea {
+  type: ActionAreaType.DISCARD;
+}
+
+export enum ActionAreaType {
+  PLAYER = "player",
+  OWNGAME = "ownGame",
+  DISCARD = "discard"
+}
 
 const colors = ["red", "yellow", "green", "blue", "white"];
 const values = [1, 2, 3, 4, 5];
 
-export default ({ game, selectedArea, player, onCommitAction }) => {
+export default ({
+  game,
+  selectedArea,
+  player,
+  onCommitAction
+}: IActionArea) => {
   const router = useRouter();
   const { playerId } = router.query;
 
@@ -92,10 +122,11 @@ export default ({ game, selectedArea, player, onCommitAction }) => {
                 pendingHint={pendingHint}
               />
               <div className="pl3">
-                <div className="h2 f5 fw3 i">
+                <div className="h2 f5 fw3 i dark-gray">
                   {textualHint(pendingHint, player.hand)}
                 </div>
                 <button
+                  disabled={game.tokens.hints === 0}
                   onClick={() =>
                     onCommitAction({
                       action: "hint",
@@ -104,7 +135,13 @@ export default ({ game, selectedArea, player, onCommitAction }) => {
                       ...pendingHint
                     } as IHintAction)
                   }
-                  className="pointer ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray"
+                  className={classnames(
+                    "ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray",
+                    {
+                      "light-gray": game.tokens.hints === 0,
+                      pointer: game.tokens.hints > 0
+                    }
+                  )}
                 >
                   Give hint
                 </button>

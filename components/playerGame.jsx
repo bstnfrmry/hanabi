@@ -7,9 +7,6 @@ export default function PlayerGame(props) {
   const { game, player, active, self = false, onSelectPlayer } = props;
   const hand = player.hand || [];
 
-  const currentPlayer = game.players[game.currentPlayer];
-  const isCurrentPlayer = currentPlayer === player;
-
   return (
     <div onClick={() => onSelectPlayer(player)}>
       <div className="flex flex-row justify-between items-end mb2">
@@ -19,9 +16,9 @@ export default function PlayerGame(props) {
             gray: !active
           })}
         >
-          {isCurrentPlayer && "> "}
+          {active && "> "}
           {player.name} {self && "(you)"}
-          {isCurrentPlayer && " <"}
+          {active && " <"}
         </div>
         <div className="f7 f6-l gray fw1 tracked ttu tr">
           {actionToText(

@@ -6,7 +6,7 @@ import IGameState, { IPlayer } from "../game/state";
 interface IPlayersBoard {
   game: IGameState;
   player: IPlayer | undefined;
-  onSelectPlayer: () => any;
+  onSelectPlayer: any;
 }
 
 export default ({ game, player, onSelectPlayer }: IPlayersBoard) => {
