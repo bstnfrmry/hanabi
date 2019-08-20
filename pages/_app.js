@@ -34,6 +34,11 @@ export default class Hanabi extends App {
             href="https://fonts.googleapis.com/css?family=Kalam&display=swap"
             rel="stylesheet"
           />
+          <link
+            rel="shortcut icon"
+            href="../static/favicon.ico"
+            type="image/x-icon"
+          ></link>
         </Head>
         <Container>
           <DatabaseProvider value={this.database}>
