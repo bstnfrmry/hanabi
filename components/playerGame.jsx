@@ -20,7 +20,7 @@ export default function PlayerGame(props) {
           {player.name} {self && "(you)"}
           {active && " <"}
         </div>
-        <div className="f7 f6-l gray fw1 tracked ttu tr">
+        <div className="f7 f6-l gray fw1 tracked ttu tr small">
           {actionToText(
             findLast(game.actionsHistory, a => a.from === player.index),
             game
