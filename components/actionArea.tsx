@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import IGameState, { IHintAction, ICard, IPlayer } from "../game/state";
 import classnames from "classnames";
 import { isGameOver } from "../game/actions";
+import { actionToText } from "../game/utils";
 
 interface IActionArea {
   game: IGameState;
@@ -80,7 +81,32 @@ export default ({
   if (!selectedArea) {
     return (
       <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f4 fw2 tracked ttu gray">
-        It's {currentPlayer.name}'s turn
+        {isCurrentPlayer && <>It's {currentPlayer.name}'s turn</>}
+        {!isCurrentPlayer && (
+          <div>
+            <p>-> Your turn!</p>
+
+            <p>- Tap on one of your playmates to give hints</p>
+            <p>- Click on one of your cards to withdraw or play</p>
+          </div>
+        )}
+        <hr />
+        <p>Last actions:</p>
+        {(game.actionsHistory || [])
+          .reverse()
+          .slice(3)
+          .map(action => {
+            const playerName =
+              action.from === player.index
+                ? "You"
+                : game.players[action.from].name;
+
+            return (
+              <p>
+                - {playerName} {actionToText(action, game)}
+              </p>
+            );
+          })}
       </div>
     );
   }
