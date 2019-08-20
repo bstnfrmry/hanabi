@@ -27,7 +27,7 @@ export default function PlayerGame(props) {
           )}
         </div>
       </div>
-      <div className="flex flex-row">
+      <div className="cards flex flex-row grow pointer">
         {hand.map((card, i) => (
           <Card
             key={i}
@@ -40,6 +40,12 @@ export default function PlayerGame(props) {
           />
         ))}
       </div>
+      <style jsx>{`
+        .cards:hover {
+          background-color: #fffceb;
+          box-shadow: 0px 0px 10px 5px #fffceb;
+        }
+      `}</style>
     </div>
   );
 }
