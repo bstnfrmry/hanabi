@@ -29,7 +29,7 @@ export default ({ game, player, onSelectPlayer }: IPlayersBoard) => {
               game={game}
               player={otherPlayer}
               onSelectPlayer={onSelectPlayer}
-              active={otherPlayer === game.currentPlayer}
+              active={game.players[game.currentPlayer] === otherPlayer}
             />
           </div>
         ))}
@@ -44,7 +44,7 @@ export default ({ game, player, onSelectPlayer }: IPlayersBoard) => {
             player={player}
             self={true}
             onSelectPlayer={onSelectPlayer}
-            active={player.index === game.currentPlayer}
+            active={game.players[game.currentPlayer] === player}
           />
         </div>
       )}
