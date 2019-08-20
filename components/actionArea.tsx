@@ -5,6 +5,7 @@ import DiscardPile from "./discardPile";
 import { useRouter } from "next/router";
 import IGameState, { IHintAction, ICard, IPlayer } from "../game/state";
 import classnames from "classnames";
+import { isGameOver } from "../game/actions";
 
 interface IActionArea {
   game: IGameState;
@@ -56,6 +57,14 @@ export default ({
 
   const currentPlayer = game.players[game.currentPlayer];
   const isCurrentPlayer = currentPlayer === player;
+
+  if (isGameOver(game)) {
+    return (
+      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f4 fw2 tracked ttu gray">
+        <p>The game is over! Your score is {game.playedCards.length} 🎉</p>
+      </div>
+    );
+  }
 
   if (!selectedArea && isCurrentPlayer) {
     return (
@@ -184,6 +193,7 @@ export default ({
             <div className="flex flex-row pb2 ml1">
               {["play", "discard"].map(action => (
                 <button
+                  key={action}
                   onClick={() =>
                     onCommitAction({
                       action,
