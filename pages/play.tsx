@@ -80,7 +80,6 @@ export default function Play() {
         <GameBoard
           game={game}
           onSelectDiscard={() => selectArea({ type: ActionAreaType.DISCARD })}
-          onSimulateTurn={onSimulateTurn}
         />
         {game.status === "lobby" && (
           <Lobby

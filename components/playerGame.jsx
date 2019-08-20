@@ -1,28 +1,26 @@
 import React from "react";
 import Card, { CardContext } from "./card";
 import { findLast } from "lodash";
+import classnames from "classnames";
 
 export default function PlayerGame(props) {
   const { game, player, active, self = false, onSelectPlayer } = props;
   const hand = player.hand || [];
 
-  const currentPlayer = game.players[game.currentPlayer];
-  const isCurrentPlayer = currentPlayer === player;
-
   return (
     <div onClick={() => onSelectPlayer(player)}>
       <div className="flex flex-row justify-between items-end mb2">
         <div
-          className={[
-            "f6 f4-l fw2 tracked ttu ml1 gray",
-            ...(active ? ["fw5"] : [])
-          ].join(" ")}
+          className={classnames("f6 f4-l fw2 tracked ttu ml1", {
+            "fw6 dark-gray": active,
+            gray: !active
+          })}
         >
-          {isCurrentPlayer && "> "}
+          {active && "> "}
           {player.name} {self && "(you)"}
-          {isCurrentPlayer && " <"}
+          {active && " <"}
         </div>
-        <div className="f6 f4-l gray fw1 tracked ttu">
+        <div className="f7 f6-l gray fw1 tracked ttu tr">
           {actionToText(
             findLast(game.actionsHistory, a => a.from === player.index),
             game
