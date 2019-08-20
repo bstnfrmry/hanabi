@@ -16,7 +16,7 @@ export default function Play() {
   const [game, setGame] = useState(null);
   const [selectedArea, selectArea] = useState(null);
   const { gameId, playerId } = router.query;
-  console.log(game);
+
   const player =
     game && game.players && game.players.find(p => p.id === playerId);
 

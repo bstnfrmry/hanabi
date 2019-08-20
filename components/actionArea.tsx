@@ -101,7 +101,7 @@ export default ({
 
     return (
       <div className="pa2 pa4-l bg-gray-light bt b--gray-light flex flex-column flex-grow-1">
-        <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 gray">
+        <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 gray mb2">
           {player.name}'s game
         </div>
         <div className="flex flex-row pb2">
@@ -120,7 +120,7 @@ export default ({
         </div>
         {isCurrentPlayer && (
           <>
-            <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2 gray">
+            <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2 gray mt3">
               Select a hint below
             </div>
             <div className="flex flex-row pb2 ml1">
@@ -164,10 +164,11 @@ export default ({
 
   if (selectedArea.type === ActionAreaType.OWNGAME) {
     const { player } = selectedArea;
+    const hasSelectedCard = selectedCard !== null;
 
     return (
       <div className="pa2 pa4-l bg-gray-light bt b--gray-light flex flex-column flex-grow-1">
-        <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 gray">
+        <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 gray mb2">
           Your game
         </div>
         <div className="flex flex-row pb2">
@@ -187,26 +188,31 @@ export default ({
         </div>
         {isCurrentPlayer && (
           <>
-            <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2 gray">
-              Select a card
+            <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2 gray mt3">
+              {hasSelectedCard && (
+                <>Card {PositionMap[selectedCard]} selected</>
+              )}
+              {!hasSelectedCard && "Select a card"}
             </div>
-            <div className="flex flex-row pb2 ml1">
-              {["play", "discard"].map(action => (
-                <button
-                  key={action}
-                  onClick={() =>
-                    onCommitAction({
-                      action,
-                      from: player.index,
-                      cardIndex: selectedCard
-                    })
-                  }
-                  className="pointer ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray"
-                >
-                  {action}
-                </button>
-              ))}
-            </div>
+            {hasSelectedCard && (
+              <div className="flex flex-row pb2 ml1">
+                {["play", "discard"].map(action => (
+                  <button
+                    key={action}
+                    onClick={() =>
+                      onCommitAction({
+                        action,
+                        from: player.index,
+                        cardIndex: selectedCard
+                      })
+                    }
+                    className="pointer ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray"
+                  >
+                    {action}
+                  </button>
+                ))}
+              </div>
+            )}
           </>
         )}
       </div>

@@ -2,6 +2,9 @@ import React from "react";
 
 export default function Vignette(props) {
   const { type, value, onClick, selected } = props;
+  const style = {
+    ...(selected && { transform: "scale(1.2)" })
+  };
 
   return (
     <div
@@ -12,6 +15,7 @@ export default function Vignette(props) {
           : "bg-gray-light b-gray-light",
         selected ? "bw2" : ""
       ].join(" ")}
+      style={style}
       onClick={e => onClick({ type, value })}
     >
       {type === "number" && value}
