@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import shortid from "shortid";
+import { get } from "lodash";
 
 import PlayersBoard from "../components/playersBoard";
 import GameBoard from "../components/gameBoard";
@@ -16,7 +17,7 @@ export default function Play() {
   const [game, setGame] = useState(null);
   const [selectedArea, selectArea] = useState(null);
   const { gameId, playerId } = router.query;
-  console.log(game);
+
   const player =
     game && game.players && game.players.find(p => p.id === playerId);
 
@@ -79,7 +80,13 @@ export default function Play() {
       <div className="flex-grow-1 flex flex-column h-100 overflow-scroll bl b--gray-light">
         <GameBoard
           game={game}
-          onSelectDiscard={() => selectArea({ type: ActionAreaType.DISCARD })}
+          onSelectDiscard={() =>
+            selectArea(
+              get(selectedArea, "type") === ActionAreaType.DISCARD
+                ? null
+                : { type: ActionAreaType.DISCARD }
+            )
+          }
         />
         {game.status === "lobby" && (
           <Lobby

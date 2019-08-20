@@ -32,6 +32,7 @@ export function CardWrapper(props) {
     color,
     size = "medium",
     playable = false,
+    context,
     className = "",
     borderWidth = "",
     style = {},
@@ -46,15 +47,15 @@ export function CardWrapper(props) {
       onClick={onClick}
       children={children}
       style={style}
-      className={[
+      className={classnames(
         "relative flex items-center justify-center br1 ba",
         sizeClass,
         className,
         borderWidth,
         `bg-${color}`,
-        `b--${color}`,
-        ...(playable ? ["pointer", "grow"] : [])
-      ].join(" ")}
+        { pointer: playable },
+        { grow: context === CardContext.TARGETED_PLAYER }
+      )}
     />
   );
 }
@@ -73,7 +74,7 @@ export default function Card(props) {
     selected = false
   } = props;
 
-  const color = hidden ? "main" : card.color;
+  const color = hidden ? "light-silver" : card.color;
 
   const number = hidden ? null : card.number;
 
@@ -83,12 +84,17 @@ export default function Card(props) {
     CardContext.SELF_PLAYER
   ].includes(context);
 
+  if (selected) {
+    style.transform = "scale(1.20)";
+  }
+
   return (
     <CardWrapper
       style={style}
       color={color}
+      context={context}
       size={size}
-      borderWidth={selected ? "bw2" : ""}
+      borderWidth={selected ? "bw2 z-5" : ""}
       playable={playable}
       className={className}
       style={style}

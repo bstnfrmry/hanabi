@@ -20,14 +20,14 @@ export default function PlayerGame(props) {
           {player.name} {self && "(you)"}
           {active && " <"}
         </div>
-        <div className="f7 f6-l gray fw1 tracked ttu tr">
+        <div className="f7 f6-l gray fw1 tracked ttu tr small">
           {actionToText(
             findLast(game.actionsHistory, a => a.from === player.index),
             game
           )}
         </div>
       </div>
-      <div className="flex flex-row">
+      <div className="cards flex flex-row grow pointer">
         {hand.map((card, i) => (
           <Card
             key={i}
@@ -40,6 +40,12 @@ export default function PlayerGame(props) {
           />
         ))}
       </div>
+      <style jsx>{`
+        .cards:hover {
+          background-color: #fffceb;
+          box-shadow: 0px 0px 10px 5px #fffceb;
+        }
+      `}</style>
     </div>
   );
 }
