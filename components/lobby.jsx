@@ -10,7 +10,7 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
   const gameFull = players.length === game.playersCount;
   const canJoin = !player && !gameFull;
 
-  const shareLink = `${window.location.origin}?gameId=${router.query.gameId}`;
+  const shareLink = `${window.location.origin}/play?gameId=${router.query.gameId}`;
 
   const inputRef = React.createRef();
   function copy() {
@@ -31,7 +31,6 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
         ref={inputRef}
         type="text"
         value={shareLink}
-        readonly
       />
       <button onClick={copy}>Copy</button>
 
@@ -40,16 +39,19 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
         <p key={i}>{player.name}</p>
       ))}
       {canJoin && (
-        <form>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            onJoinGame({ name });
+          }}
+        >
           <label>Name</label>
           <input
             type="text"
             value={name}
             onChange={e => setName(e.target.value)}
           />
-          <button type="button" onClick={() => onJoinGame({ name })}>
-            Join game
-          </button>
+          <button>Join game</button>
         </form>
       )}
       {gameFull && <p>Game is full</p>}
