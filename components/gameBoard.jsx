@@ -13,13 +13,9 @@ export default function GameBoard({ game, onSelectDiscard }) {
 
   return (
     <div className="flex flex-column pa2 pa4-l bg-gray-light">
-      <div className="flex flex-column">
-        <div className="self-end">
-          <PlayedCards cards={playedCards} />
-        </div>
-        <div className="self-end mt1">
-          Score: {score} / {maxScore}
-        </div>
+      <div className="flex flex-column items-end">
+        <PlayedCards cards={playedCards} />
+        Score: {score} / {maxScore}
       </div>
       <div className="flex flex-row mt2 mt4-l ph1 justify-left items-center">
         <TokenSpace

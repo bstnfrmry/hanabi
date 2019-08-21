@@ -8,8 +8,8 @@ const SizeMap = {
   tiny: "", // TODO h0 doesnt exist
   small: "h1 w1 h2-l w2-l f5 f4-l",
   medium: "h2 w2 h3-l w3-l f4 f3-l",
-  large: "h3 w3 h4-l w4-l f2 f1-l",
-  extralarge: "h4 w4 h5-l w5-l f2 f1-l"
+  large: "h4 w4 mw4 f2 f1-l",
+  extralarge: "h4 w4 mw4 h5-l w5-l f2 f1-l"
 };
 
 export const PositionMap = {

@@ -4,7 +4,6 @@ import Vignettes from "./vignettes";
 import DiscardPile from "./discardPile";
 import { useRouter } from "next/router";
 import IGameState, { IHintAction, ICard, IPlayer } from "../game/state";
-import classnames from "classnames";
 import { isGameOver } from "../game/actions";
 import { actionToText } from "../game/utils";
 import Button from "./button";
@@ -138,7 +137,7 @@ export default ({
               card={card}
               hidden={player.id === playerId}
               position={i}
-              size="extralarge"
+              size="large"
               context={CardContext.TARGETED_PLAYER}
               className="ma1"
               selected={isCardHintable(pendingHint, card)}
@@ -198,7 +197,7 @@ export default ({
               card={card}
               hidden={player.id === playerId}
               position={i}
-              size="extralarge"
+              size="large"
               context={CardContext.TARGETED_PLAYER}
               className="ma1"
               onClick={() => setSelectedCard(i)}

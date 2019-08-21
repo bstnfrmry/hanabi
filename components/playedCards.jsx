@@ -9,13 +9,13 @@ export default ({ cards }) => {
   const groupedCards = groupBy(cards, c => c.color);
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row w-100">
       {piles.map((color, i) => {
         const topCard = last(groupedCards[color]);
 
         if (!topCard) {
           return (
-            <CardWrapper key={i} size="large" className="ma1" color={color} />
+            <CardWrapper key={i} size="medium" className="ma1" color={color} />
           );
         }
 
@@ -24,7 +24,7 @@ export default ({ cards }) => {
             key={i}
             card={topCard}
             color={color}
-            size="large"
+            size="medium"
             className="ma1"
           />
         );
