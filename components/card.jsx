@@ -110,8 +110,22 @@ export default function Card(props) {
           {PositionMap[position]}
         </div>
       )}
+      {/* show positive hints with a larger type*/}
+      {displayHints && hidden && (
+        <div
+          className={classnames(
+            "absolute fw3 br-100 w-50 h-50 flex justify-center items-center",
+            {
+              [`bg-${card.color}`]: card.hint.color[card.color] === 2
+            }
+          )}
+        >
+          {card.hint.number[card.number] === 2 ? card.number : null}
+        </div>
+      )}
+      {/* show other hints, including negative hints */}
       {displayHints && size.includes("large") && (
-        <div className="absolute w-100 right-0 bottom-0 pv1 f5 fw1 flex items-center flex-column bg-black-30">
+        <div className="absolute w-100 right-0 bottom-0 pv1 f5 fw1 flex items-center flex-column bg-black-50">
           <div className="flex white pl1">
             {Object.keys(card.hint.color)
               .filter(c => c !== "multicolor") // @fixme
