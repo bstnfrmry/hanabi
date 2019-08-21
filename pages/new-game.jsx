@@ -6,7 +6,7 @@ import { useDatabase } from "../context/database";
 
 import { newGame } from "../game/actions";
 
-export default function Home() {
+export default function NewGame() {
   const router = useRouter();
   const db = useDatabase();
   const [seed, setSeed] = useState(1234);

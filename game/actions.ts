@@ -28,9 +28,6 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
     /** PLAY */
     if (action.action === "play") {
       if (isPlayable(card, s.playedCards)) {
-        if (!s.playedCards) {
-          s.playedCards = [];
-        }
         s.playedCards.push(card);
         if (card.number === 5) {
           // play a 5, win a hint
@@ -39,14 +36,9 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
       } else {
         // strike !
         s.tokens.strikes -= 1;
-        if (!s.discardPile) s.discardPile = [];
         s.discardPile.push(card);
       }
     } else {
-      if (!s.discardPile) {
-        s.discardPile = [];
-      }
-
       /** DISCARD */
       s.discardPile.push(card);
       if (s.tokens.hints < 8) s.tokens.hints += 1;
@@ -81,7 +73,6 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   s.currentPlayer = (s.currentPlayer + 1) % s.options.playersCount;
 
   // update history
-  if (!s.actionsHistory) s.actionsHistory = [];
   s.actionsHistory.push(action);
   return s;
 }

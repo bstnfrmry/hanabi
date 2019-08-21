@@ -10,6 +10,7 @@ import ActionArea, { ActionAreaType } from "../components/actionArea";
 import { useDatabase } from "../context/database";
 import { joinGame, commitAction } from "../game/actions";
 import play from "../game/ai";
+import { fillEmptyValues } from "../game/state";
 
 export default function Play() {
   const db = useDatabase();
@@ -23,7 +24,7 @@ export default function Play() {
 
   useEffect(() => {
     db.ref(`/games/${gameId}`).on("value", event => {
-      setGame(event.val());
+      setGame(fillEmptyValues(event.val()));
     });
   }, [gameId, playerId]);
 
