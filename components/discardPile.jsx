@@ -1,5 +1,6 @@
 import React from "react";
 import { groupBy, sortBy } from "lodash";
+import classnames from "classnames";
 
 import Card, { CardWrapper } from "./card";
 
@@ -7,7 +8,7 @@ const piles = ["red", "yellow", "green", "blue", "white"];
 
 function CardPile({ cards, color }) {
   if (!cards.length) {
-    return <CardWrapper color={color} size="large" className="ma1" />;
+    return <CardWrapper color={color} size="medium" className="ma1" />;
   }
 
   const sortedCards = sortBy(cards, card => card.value);
@@ -18,9 +19,8 @@ function CardPile({ cards, color }) {
         <Card
           key={i}
           card={card}
-          size="large"
-          className="ma1"
-          style={i ? { marginTop: "-25px" } : {}}
+          size="medium"
+          className={classnames("ma1", { "nt3 nt4-l": i > 0 })}
         />
       ))}
     </div>
@@ -34,7 +34,7 @@ export default function DiscardPile({ cards }) {
   );
 
   return (
-    <div className="flex">
+    <div className="flex w-100">
       {piles.map((color, i) => (
         <CardPile key={i} cards={byColor[color] || []} color={color} />
       ))}
