@@ -14,7 +14,7 @@ export default function JoinGame() {
     // @todo this fetches all available games... we need a more efficient key strategy
     // we could have a store of game-statuses with creation date, status (lobby), etc.
     // and keep the game state purely about the game and cards
-    db.ref(`/games`).on("value", event => {
+    db.ref(`/games`).once("value", event => {
       setGames(event.val());
     });
   });
