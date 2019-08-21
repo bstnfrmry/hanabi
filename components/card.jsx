@@ -7,7 +7,7 @@ import Hint from "./hint";
 const SizeMap = {
   tiny: "", // TODO h0 doesnt exist
   small: "h1 w1 h2-l w2-l f5 f4-l",
-  medium: "h2 w2 h3-l w3-l f4 f3-l",
+  medium: "h2 w2 h4-l w4-l f4 f1-l",
   large: "h4 w4 mw4 f2 f1-l",
   extralarge: "h4 w4 mw4 h5-l w5-l f2 f1-l"
 };
@@ -105,7 +105,7 @@ export default function Card(props) {
       </div>
       {position >= 0 && size.includes("large") && (
         <div
-          className={classnames("absolute left-0 top-0 ma1 fw1 f3 white-50")}
+          className={classnames("absolute left-0 top-0 ma1 fw1 f3 black-50")}
         >
           {PositionMap[position]}
         </div>
@@ -124,9 +124,17 @@ export default function Card(props) {
         </div>
       )}
       {/* show other hints, including negative hints */}
-      {displayHints && size.includes("large") && (
-        <div className="absolute w-100 right-0 bottom-0 pv1 f5 fw1 flex items-center flex-column bg-black-50">
-          <div className="flex white pl1">
+      {displayHints && (size.includes("large") || size === "medium") && (
+        <div
+          className={classnames(
+            "absolute w-100 right-0 bottom-0 pv1 f5 fw1 flex-l items-center flex-column bg-black-50",
+            {
+              dn: size === "medium" || size === "small",
+              flex: size.includes("large")
+            }
+          )}
+        >
+          <div className="flex justify-around w-100 white">
             {Object.keys(card.hint.color)
               .filter(c => c !== "multicolor") // @fixme
               .map(color => {
@@ -135,7 +143,7 @@ export default function Card(props) {
                 return <Hint type="color" value={color} hint={hint} />;
               })}
           </div>
-          <div className="flex mt1">
+          <div className="flex justify-around w-100 white mt1">
             {Object.keys(card.hint.number)
               .slice(1)
               .map(number => {

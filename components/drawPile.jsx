@@ -1,6 +1,8 @@
 import React from "react";
-import Button from "./button";
+import { CardWrapper } from "./card";
 
 export default function DrawPile({ cards }) {
-  return <Button>Deck ({cards ? cards.length : 0})</Button>;
+  return (
+    <CardWrapper color="light-silver">{cards ? cards.length : 0}</CardWrapper>
+  );
 }

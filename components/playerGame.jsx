@@ -29,7 +29,7 @@ export default function PlayerGame(props) {
           game
         )}
       </div>
-      <div className="cards dib mt2">
+      <div className="cards dib mt2 mw-100">
         <div className="flex flex-row grow pointer">
           {hand.map((card, i) => (
             <Card

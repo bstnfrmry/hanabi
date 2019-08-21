@@ -95,14 +95,14 @@ export default ({
         {game.actionsHistory
           .slice(-5)
           .reverse()
-          .map(action => {
+          .map((action, i) => {
             const playerName =
               action.from === player.index
                 ? "You"
                 : game.players[action.from].name;
 
             return (
-              <p>
+              <p key={i}>
                 - {playerName} {actionToText(action, game)}
               </p>
             );

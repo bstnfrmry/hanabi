@@ -12,19 +12,21 @@ export default function GameBoard({ game, onSelectDiscard }) {
   const maxScore = game.options.multicolor ? 30 : 25;
 
   return (
-    <div className="flex flex-column pa2 pa4-l bg-gray-light">
-      <div className="flex flex-column items-end">
+    <div className="flex flex-column-l justify-between pa2 pa4-l bg-gray-light">
+      <div className="flex flex-column">
         <PlayedCards cards={playedCards} />
-        Score: {score} / {maxScore}
+        <div className="ma1 f5 f4-l">
+          Score: {score} / {maxScore}
+        </div>
       </div>
-      <div className="flex flex-row mt2 mt4-l ph1 justify-left items-center">
+      <div className="flex flex-row ph1 justify-left mt1 items-center-l">
         <TokenSpace
           noteTokens={game.tokens.hints}
           stormTokens={game.tokens.strikes}
         />
         <DrawPile cards={game.drawPile} />
         <Button
-          className="pa3 br1 ba f6 f4-l fw2 tracked ttu ml2 gray pointer"
+          className="pa3 br1 ba f7 f5-l fw2 tracked ttu ml2 gray pointer"
           onClick={onSelectDiscard}
         >
           Discard ({discardPile.length})

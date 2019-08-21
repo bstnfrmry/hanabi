@@ -9,7 +9,7 @@ export default ({ cards }) => {
   const groupedCards = groupBy(cards, c => c.color);
 
   return (
-    <div className="flex flex-row w-100">
+    <div className="flex flex-row">
       {piles.map((color, i) => {
         const topCard = last(groupedCards[color]);
 
