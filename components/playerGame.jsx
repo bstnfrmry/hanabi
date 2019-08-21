@@ -36,7 +36,7 @@ export default function PlayerGame(props) {
             card={card}
             position={i}
             hidden={self}
-            size="large"
+            size="medium"
             context={self ? CardContext.SELF_PLAYER : CardContext.OTHER_PLAYER}
             className={i < player.hand.length - 1 ? "mr1 mr2-l" : ""}
           />

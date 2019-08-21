@@ -78,7 +78,7 @@ export default function Play() {
           })
         }
       />
-      <div className="flex-grow-1 flex flex-column h-100 overflow-scroll bl b--gray-light">
+      <div className="flex flex-column flex-grow-1 h-100 overflow-scroll bl b--gray-light">
         <GameBoard
           game={game}
           onSelectDiscard={() =>

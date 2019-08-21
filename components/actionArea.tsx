@@ -62,7 +62,7 @@ export default ({
 
   if (isGameOver(game)) {
     return (
-      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f4 fw2 tracked ttu gray">
+      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f6 f4-l fw2 tracked ttu gray">
         <p>The game is over! Your score is {game.playedCards.length} 🎉</p>
       </div>
     );
@@ -70,7 +70,7 @@ export default ({
 
   if (!selectedArea && isCurrentPlayer) {
     return (
-      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f4 fw2 tracked ttu gray">
+      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f6 f4-l fw2 tracked ttu gray">
         <p>-> Your turn!</p>
 
         <p>- Tap on one of your playmates to give hints</p>
@@ -81,7 +81,7 @@ export default ({
 
   if (!selectedArea) {
     return (
-      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f4 fw2 tracked ttu gray">
+      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f6 f4-l fw2 tracked ttu gray">
         {isCurrentPlayer && <>It's {currentPlayer.name}'s turn</>}
         {!isCurrentPlayer && (
           <div>
@@ -138,7 +138,7 @@ export default ({
               card={card}
               hidden={player.id === playerId}
               position={i}
-              size="large"
+              size="extralarge"
               context={CardContext.TARGETED_PLAYER}
               className="ma1"
               selected={isCardHintable(pendingHint, card)}
@@ -198,7 +198,7 @@ export default ({
               card={card}
               hidden={player.id === playerId}
               position={i}
-              size="large"
+              size="extralarge"
               context={CardContext.TARGETED_PLAYER}
               className="ma1"
               onClick={() => setSelectedCard(i)}

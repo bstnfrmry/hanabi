@@ -6,10 +6,10 @@ import Hint from "./hint";
 // Cards possible sizes
 const SizeMap = {
   tiny: "", // TODO h0 doesnt exist
-  small: "h1 w1 h2-l w2-l",
-  medium: "h2 w2 h3-l w3-l",
-  large: "h3 w3 h4-l w4-l",
-  extralarge: "h4 w4 h5-l w5-l"
+  small: "h1 w1 h2-l w2-l f5 f4-l",
+  medium: "h2 w2 h3-l w3-l f4 f3-l",
+  large: "h3 w3 h4-l w4-l f2 f1-l",
+  extralarge: "h4 w4 h5-l w5-l f2 f1-l"
 };
 
 export const PositionMap = {
@@ -100,25 +100,21 @@ export default function Card(props) {
       style={style}
       onClick={onClick}
     >
-      <div className={classnames("f2 f1-l fw3", { mb4: displayHints })}>
+      <div className={classnames("absolute fw3", { mb4: displayHints })}>
         {number}
       </div>
-      {position >= 0 && (
+      {position >= 0 && size.includes("large") && (
         <div
-          className={classnames(
-            "absolute left-0 top-0 ma1 fw1",
-            { white: hidden },
-            { "dark-gray": !hidden }
-          )}
+          className={classnames("absolute left-0 top-0 ma1 fw1 f3 white-50")}
         >
           {PositionMap[position]}
         </div>
       )}
-      {displayHints && (
-        <div className="absolute w-100 right-0 bottom-0 pv1 fw1 flex items-center flex-column bg-black-30">
-          <div className="flex white">
+      {displayHints && size.includes("large") && (
+        <div className="absolute w-100 right-0 bottom-0 pv1 f5 fw1 flex items-center flex-column bg-black-30">
+          <div className="flex white pl1">
             {Object.keys(card.hint.color)
-              .filter(c => c !== "multicolor")
+              .filter(c => c !== "multicolor") // @fixme
               .map(color => {
                 const hint = card.hint.color[color];
 
