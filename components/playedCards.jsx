@@ -15,7 +15,7 @@ export default ({ cards }) => {
 
         if (!topCard) {
           return (
-            <CardWrapper key={i} size="large" className="ma1" color={color} />
+            <CardWrapper key={i} size="medium" className="ma1" color={color} />
           );
         }
 
@@ -24,7 +24,7 @@ export default ({ cards }) => {
             key={i}
             card={topCard}
             color={color}
-            size="large"
+            size="medium"
             className="ma1"
           />
         );

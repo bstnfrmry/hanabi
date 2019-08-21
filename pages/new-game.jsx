@@ -5,8 +5,9 @@ import shortid from "shortid";
 import { useDatabase } from "../context/database";
 
 import { newGame } from "../game/actions";
+import Button from "../components/button";
 
-export default function Home() {
+export default function NewGame() {
   const router = useRouter();
   const db = useDatabase();
   const [seed, setSeed] = useState(1234);
@@ -53,7 +54,7 @@ export default function Home() {
         />
       </label>
 
-      <button onClick={() => createGame()}>New game</button>
+      <Button onClick={() => createGame()}>New game</Button>
     </div>
   );
 }

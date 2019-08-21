@@ -10,7 +10,6 @@ export default interface IGameState {
   discardPile: ICard[];
   players: IPlayer[];
   tokens: ITokens;
-  lastAction?: IAction;
   currentPlayer: number;
   options: IGameOptions;
   // this is initiated as the number of players + 1 and serves for
@@ -105,4 +104,13 @@ export interface ITokens {
   strikes: number;
 }
 
-export type gameHistory = IGameState[];
+// empty arrays are returned as null in Firebase, so we fill
+// them back to avoid having to type check everywhere
+export function fillEmptyValues(val: any): IGameState {
+  if (!val.playedCards) val.playedCards = [];
+  if (!val.drawPile) val.drawPile = [];
+  if (!val.discardPile) val.discardPile = [];
+  if (!val.players) val.players = [];
+  if (!val.actionsHistory) val.actionsHistory = [];
+  return val;
+}

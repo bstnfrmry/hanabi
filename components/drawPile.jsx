@@ -1,9 +1,8 @@
 import React from "react";
+import { CardWrapper } from "./card";
 
 export default function DrawPile({ cards }) {
   return (
-    <button className="pa3 br1 ba f6 f4-l fw2 tracked ttu ml1 gray pointer">
-      Deck ({cards ? cards.length : 0})
-    </button>
+    <CardWrapper color="light-silver">{cards ? cards.length : 0}</CardWrapper>
   );
 }

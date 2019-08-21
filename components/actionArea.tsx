@@ -4,9 +4,9 @@ import Vignettes from "./vignettes";
 import DiscardPile from "./discardPile";
 import { useRouter } from "next/router";
 import IGameState, { IHintAction, ICard, IPlayer } from "../game/state";
-import classnames from "classnames";
 import { isGameOver } from "../game/actions";
 import { actionToText } from "../game/utils";
+import Button from "./button";
 
 interface IActionArea {
   game: IGameState;
@@ -61,7 +61,7 @@ export default ({
 
   if (isGameOver(game)) {
     return (
-      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f4 fw2 tracked ttu gray">
+      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f6 f4-l fw2 tracked ttu gray">
         <p>The game is over! Your score is {game.playedCards.length} 🎉</p>
       </div>
     );
@@ -69,7 +69,7 @@ export default ({
 
   if (!selectedArea && isCurrentPlayer) {
     return (
-      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f4 fw2 tracked ttu gray">
+      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f6 f4-l fw2 tracked ttu gray">
         <p>-> Your turn!</p>
 
         <p>- Tap on one of your playmates to give hints</p>
@@ -80,10 +80,10 @@ export default ({
 
   if (!selectedArea) {
     return (
-      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f4 fw2 tracked ttu gray">
+      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f6 f4-l fw2  gray">
         {isCurrentPlayer && <>It's {currentPlayer.name}'s turn</>}
         {!isCurrentPlayer && (
-          <div>
+          <div className="ttu tracked">
             <p>-> Your turn!</p>
 
             <p>- Tap on one of your playmates to give hints</p>
@@ -91,18 +91,18 @@ export default ({
           </div>
         )}
         <hr />
-        <p>Last actions:</p>
-        {(game.actionsHistory || [])
+        <p className="ttu tracked">Last actions:</p>
+        {game.actionsHistory
+          .slice(-5)
           .reverse()
-          .slice(3)
-          .map(action => {
+          .map((action, i) => {
             const playerName =
               action.from === player.index
                 ? "You"
                 : game.players[action.from].name;
 
             return (
-              <p>
+              <p key={i}>
                 - {playerName} {actionToText(action, game)}
               </p>
             );
@@ -160,7 +160,7 @@ export default ({
                 <div className="h2 f5 fw3 i dark-gray">
                   {textualHint(pendingHint, player.hand)}
                 </div>
-                <button
+                <Button
                   disabled={game.tokens.hints === 0}
                   onClick={() =>
                     onCommitAction({
@@ -170,16 +170,9 @@ export default ({
                       ...pendingHint
                     } as IHintAction)
                   }
-                  className={classnames(
-                    "ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray",
-                    {
-                      "light-gray": game.tokens.hints === 0,
-                      pointer: game.tokens.hints > 0
-                    }
-                  )}
                 >
                   Give hint
-                </button>
+                </Button>
               </div>
             </div>
           </>
@@ -223,7 +216,7 @@ export default ({
             {hasSelectedCard && (
               <div className="flex flex-row pb2 ml1">
                 {["play", "discard"].map(action => (
-                  <button
+                  <Button
                     key={action}
                     onClick={() =>
                       onCommitAction({
@@ -232,10 +225,9 @@ export default ({
                         cardIndex: selectedCard
                       })
                     }
-                    className="pointer ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray"
                   >
                     {action}
-                  </button>
+                  </Button>
                 ))}
               </div>
             )}

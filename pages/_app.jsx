@@ -43,7 +43,9 @@ export default class Hanabi extends App {
         </Head>
         <Container>
           <DatabaseProvider value={this.database}>
-            <Component {...pageProps} />
+            <div className="aspect-ratio--object">
+              <Component {...pageProps} />
+            </div>
           </DatabaseProvider>
         </Container>
       </>

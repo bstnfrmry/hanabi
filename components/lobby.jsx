@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import generate from "project-name-generator";
+import Button from "./button";
 
 export default function Lobby({ game, player, onJoinGame, onStartGame }) {
   const router = useRouter();
@@ -32,7 +33,7 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
         type="text"
         value={shareLink}
       />
-      <button onClick={copy}>Copy</button>
+      <Button onClick={copy}>Copy</Button>
 
       <h2>Players:</h2>
       {players.map((player, i) => (
@@ -51,14 +52,14 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
             value={name}
             onChange={e => setName(e.target.value)}
           />
-          <button>Join game</button>
+          <Button>Join game</Button>
         </form>
       )}
       {gameFull && <p>Game is full</p>}
       {player && (
-        <button disabled={!gameFull} onClick={onStartGame}>
+        <Button disabled={!gameFull} onClick={onStartGame}>
           Start game
-        </button>
+        </Button>
       )}
     </div>
   );
