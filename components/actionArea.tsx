@@ -61,37 +61,27 @@ export default ({
 
   if (isGameOver(game)) {
     return (
-      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f6 f4-l fw2 tracked ttu gray">
+      <div className="ph2 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f6 f4-l fw2 tracked ttu gray">
         <p>The game is over! Your score is {game.playedCards.length} 🎉</p>
-      </div>
-    );
-  }
-
-  if (!selectedArea && isCurrentPlayer) {
-    return (
-      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f6 f4-l fw2 tracked ttu gray">
-        <p>-> Your turn!</p>
-
-        <p>- Tap on one of your playmates to give hints</p>
-        <p>- Click on one of your cards to withdraw or play</p>
       </div>
     );
   }
 
   if (!selectedArea) {
     return (
-      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f6 f4-l fw2  gray">
-        {isCurrentPlayer && <>It's {currentPlayer.name}'s turn</>}
+      <div className="ph2 pt2 ph4-l pt4-l bg-grey bt bg-gray-light b--gray-light flex-grow-1 f6 f4-l fw2 gray lh-copy">
         {!isCurrentPlayer && (
+          <div className="ttu tracked">It's {currentPlayer.name}'s turn</div>
+        )}
+        {isCurrentPlayer && (
           <div className="ttu tracked">
-            <p>-> Your turn!</p>
-
-            <p>- Tap on one of your playmates to give hints</p>
-            <p>- Click on one of your cards to withdraw or play</p>
+            <div>Your turn!</div>
+            <div>- Give a hint by tapping on your playmates' hand</div>
+            <div>- Play or discard by tapping on your own game</div>
           </div>
         )}
         <hr />
-        <p className="ttu tracked">Last actions:</p>
+        <div className="ttu tracked">Last actions:</div>
         {game.actionsHistory
           .slice(-5)
           .reverse()
@@ -102,9 +92,9 @@ export default ({
                 : game.players[action.from].name;
 
             return (
-              <p key={i}>
+              <div key={i}>
                 - {playerName} {actionToText(action, game)}
-              </p>
+              </div>
             );
           })}
       </div>
