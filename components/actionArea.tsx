@@ -80,10 +80,10 @@ export default ({
 
   if (!selectedArea) {
     return (
-      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f6 f4-l fw2 tracked ttu gray">
+      <div className="ph4 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f6 f4-l fw2  gray">
         {isCurrentPlayer && <>It's {currentPlayer.name}'s turn</>}
         {!isCurrentPlayer && (
-          <div>
+          <div className="ttu tracked">
             <p>-> Your turn!</p>
 
             <p>- Tap on one of your playmates to give hints</p>
@@ -91,10 +91,10 @@ export default ({
           </div>
         )}
         <hr />
-        <p>Last actions:</p>
-        {(game.actionsHistory || [])
+        <p className="ttu tracked">Last actions:</p>
+        {game.actionsHistory
+          .slice(-5)
           .reverse()
-          .slice(3)
           .map(action => {
             const playerName =
               action.from === player.index

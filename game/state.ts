@@ -104,8 +104,6 @@ export interface ITokens {
   strikes: number;
 }
 
-export type gameHistory = IGameState[];
-
 // empty arrays are returned as null in Firebase, so we fill
 // them back to avoid having to type check everywhere
 export function fillEmptyValues(val: any): IGameState {
