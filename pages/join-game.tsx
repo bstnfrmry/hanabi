@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDatabase } from "../context/database";
 import IGameState from "../game/state";
-import { isGameOver } from "../game/actions";
+import Button from "../components/button";
 
 export default function JoinGame() {
   const router = useRouter();
@@ -35,13 +35,10 @@ export default function JoinGame() {
         if (game.status === "lobby") {
           return (
             <div className="pa2" key={k}>
-              <button
-                className="pointer"
-                onClick={() => router.push(`/play?gameId=${k}`)}
-              >
+              <Button onClick={() => router.push(`/play?gameId=${k}`)}>
                 {game.players.map(p => p.name).join(", ")} -{" "}
                 {game.players.length}/{game.playersCount}
-              </button>
+              </Button>
             </div>
           );
         }

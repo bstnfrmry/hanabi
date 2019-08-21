@@ -7,6 +7,7 @@ import IGameState, { IHintAction, ICard, IPlayer } from "../game/state";
 import classnames from "classnames";
 import { isGameOver } from "../game/actions";
 import { actionToText } from "../game/utils";
+import Button from "./button";
 
 interface IActionArea {
   game: IGameState;
@@ -160,7 +161,7 @@ export default ({
                 <div className="h2 f5 fw3 i dark-gray">
                   {textualHint(pendingHint, player.hand)}
                 </div>
-                <button
+                <Button
                   disabled={game.tokens.hints === 0}
                   onClick={() =>
                     onCommitAction({
@@ -170,16 +171,9 @@ export default ({
                       ...pendingHint
                     } as IHintAction)
                   }
-                  className={classnames(
-                    "ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray",
-                    {
-                      "light-gray": game.tokens.hints === 0,
-                      pointer: game.tokens.hints > 0
-                    }
-                  )}
                 >
                   Give hint
-                </button>
+                </Button>
               </div>
             </div>
           </>
@@ -223,7 +217,7 @@ export default ({
             {hasSelectedCard && (
               <div className="flex flex-row pb2 ml1">
                 {["play", "discard"].map(action => (
-                  <button
+                  <Button
                     key={action}
                     onClick={() =>
                       onCommitAction({
@@ -232,10 +226,9 @@ export default ({
                         cardIndex: selectedCard
                       })
                     }
-                    className="pointer ba br1 pointer fw2 f6 f4-l tracked ttu ml1 gray"
                   >
                     {action}
-                  </button>
+                  </Button>
                 ))}
               </div>
             )}

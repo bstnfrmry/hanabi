@@ -1,9 +1,8 @@
 import React from "react";
-import { sumBy } from "lodash";
-
 import PlayedCards from "./playedCards";
 import TokenSpace from "./tokenSpace";
 import DrawPile from "./drawPile";
+import Button from "./button";
 
 export default function GameBoard({ game, onSelectDiscard }) {
   const playedCards = game.playedCards || [];
@@ -28,12 +27,12 @@ export default function GameBoard({ game, onSelectDiscard }) {
           stormTokens={game.tokens.strikes}
         />
         <DrawPile cards={game.drawPile} />
-        <button
+        <Button
           className="pa3 br1 ba f6 f4-l fw2 tracked ttu ml2 gray pointer"
           onClick={onSelectDiscard}
         >
           Discard ({discardPile.length})
-        </button>
+        </Button>
       </div>
     </div>
   );
