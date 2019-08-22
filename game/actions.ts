@@ -19,7 +19,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   // the function should be pure
   const s = cloneDeep(state) as IGameState;
 
-  s.history.push(state);
+  // s.history.push(state);
 
   assert(action.from === state.currentPlayer);
   const player = s.players[action.from];
