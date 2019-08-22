@@ -3,8 +3,7 @@ import { groupBy, sortBy } from "lodash";
 import classnames from "classnames";
 
 import Card, { CardWrapper } from "./card";
-
-const piles = ["red", "yellow", "green", "blue", "white"];
+import { getColors } from "../game/actions";
 
 function CardPile({ cards, color }) {
   if (!cards.length) {
@@ -27,7 +26,7 @@ function CardPile({ cards, color }) {
   );
 }
 
-export default function DiscardPile({ cards }) {
+export default function DiscardPile({ game, cards }) {
   const byColor = groupBy(
     sortBy(cards, card => card.value),
     card => card.color
@@ -35,7 +34,7 @@ export default function DiscardPile({ cards }) {
 
   return (
     <div className="flex w-100">
-      {piles.map((color, i) => (
+      {getColors(game).map((color, i) => (
         <CardPile key={i} cards={byColor[color] || []} color={color} />
       ))}
     </div>

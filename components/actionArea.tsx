@@ -116,7 +116,7 @@ export default ({
         <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 gray">
           Discarded cards
         </div>
-        <DiscardPile cards={game.discardPile} />
+        <DiscardPile game={game} cards={game.discardPile} />
       </div>
     );
   }
