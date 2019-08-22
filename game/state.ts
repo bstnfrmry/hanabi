@@ -103,6 +103,7 @@ export interface IPlayer {
   name: string;
   lastAction?: IAction;
   index?: number;
+  notified?: boolean;
 }
 
 // the *remaining* strikes and hints.

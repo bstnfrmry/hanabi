@@ -40,6 +40,26 @@ export default function Play() {
     });
   }, [gameId]);
 
+  useEffect(() => {
+    if (!player) {
+      return;
+    }
+
+    const ref = db.ref(`/games/${gameId}/players/${player.index}/notified`);
+    ref.on("value", event => {
+      const notified = event.val();
+      if (notified) {
+        if (notified !== player.notified) {
+          new Audio(`/static/sounds/bell.mp3`).play();
+        }
+
+        setTimeout(() => {
+          ref.set(false);
+        }, 10000);
+      }
+    });
+  }, [gameId, playerId]);
+
   if (!game) {
     return "Loading";
   }
@@ -78,6 +98,10 @@ export default function Play() {
     await db.ref(`/games/${gameId}`).set(getLastState(game));
   }
 
+  async function onNotifyPlayer(player) {
+    await db.ref(`/games/${gameId}/players/${player.index}/notified`).set(true);
+  }
+
   return (
     <>
       <Link href="/">
@@ -97,6 +121,7 @@ export default function Play() {
               cardIndex
             })
           }
+          onNotifyPlayer={onNotifyPlayer}
         />
         <div className="flex flex-column flex-grow-1 h-100 overflow-scroll bl b--gray-light">
           <GameBoard

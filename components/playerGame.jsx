@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Card, { CardContext } from "./card";
 import { findLast } from "lodash";
 import classnames from "classnames";
 
 import { turnToText } from "../game/utils";
-
 export default function PlayerGame(props) {
-  const { game, player, active, self = false, onSelectPlayer } = props;
+  const {
+    game,
+    player,
+    active,
+    self = false,
+    onSelectPlayer,
+    onNotifyPlayer
+  } = props;
   const hand = player.hand || [];
 
   return (
@@ -19,6 +25,11 @@ export default function PlayerGame(props) {
       >
         {active && "> "}
         {player.name} {self && "(you)"}
+        {active && !self && !player.notified && (
+          <span className="pointer" onClick={() => onNotifyPlayer(player)}>
+            🔔
+          </span>
+        )}
       </div>
       <div
         className="f7 f6-l gray fw1 small"
@@ -29,6 +40,7 @@ export default function PlayerGame(props) {
           game
         )}
       </div>
+
       <div className="cards dib mt2 mw-100">
         <div className="flex flex-row grow pointer">
           {hand.map((card, i) => (

@@ -7,9 +7,15 @@ interface IPlayersBoard {
   game: IGameState;
   player: IPlayer | undefined;
   onSelectPlayer: any;
+  onNotifyPlayer: Function;
 }
 
-export default ({ game, player, onSelectPlayer }: IPlayersBoard) => {
+export default ({
+  game,
+  player,
+  onSelectPlayer,
+  onNotifyPlayer
+}: IPlayersBoard) => {
   // all the other players in order (starting with the next one)
   let otherPlayers;
   if (!player) {
@@ -29,6 +35,7 @@ export default ({ game, player, onSelectPlayer }: IPlayersBoard) => {
               game={game}
               player={otherPlayer}
               onSelectPlayer={onSelectPlayer}
+              onNotifyPlayer={onNotifyPlayer}
               active={game.players[game.currentPlayer] === otherPlayer}
             />
           </div>
