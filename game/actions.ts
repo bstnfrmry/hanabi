@@ -19,7 +19,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   // the function should be pure
   const s = cloneDeep(state) as IGameState;
 
-  // s.history.push(state);
+  s.history.push({ ...state, history: [] });
 
   assert(action.from === state.currentPlayer);
   const player = s.players[action.from];
@@ -84,7 +84,16 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
  * Return the last state before the given state
  */
 export function getLastState(state: IGameState) {
-  return last(state.history);
+  const lastState = last(state.history);
+
+  if (!lastState) {
+    return null;
+  }
+
+  return {
+    ...lastState,
+    history: state.history.slice(0, -1)
+  };
 }
 
 /**

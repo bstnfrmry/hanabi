@@ -65,7 +65,6 @@ export default function Play() {
     const newState = commitAction(game, action);
     const misplay =
       getMaximumPossibleScore(game) !== getMaximumPossibleScore(newState);
-
     if (game.options.preventLoss && misplay) {
       if (!window.confirm("You fucked up · Keep going?")) {
         return;

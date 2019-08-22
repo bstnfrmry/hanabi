@@ -19,9 +19,15 @@ export default function NewGame() {
   async function createGame() {
     const gameId = shortid();
 
-    await db
-      .ref(`/games/${gameId}`)
-      .set(newGame({ multicolor, playersCount, seed }));
+    await db.ref(`/games/${gameId}`).set(
+      newGame({
+        multicolor,
+        playersCount,
+        seed,
+        allowRollback,
+        preventLoss
+      })
+    );
 
     router.push(`/play?gameId=${gameId}`);
   }
