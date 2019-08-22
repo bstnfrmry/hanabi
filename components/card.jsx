@@ -102,7 +102,9 @@ export default function Card(props) {
       style={style}
       onClick={onClick}
     >
-      <div className={classnames("absolute fw3", { mb4: displayHints })}>
+      <div
+        className={classnames("absolute fw3", { "top-0 pt3": displayHints })}
+      >
         {number}
       </div>
       {position >= 0 && size.includes("large") && (
@@ -116,7 +118,7 @@ export default function Card(props) {
       {displayHints && hidden && (
         <div
           className={classnames(
-            "absolute fw3 br-100 w-50 h-50 flex justify-center items-center",
+            "absolute top-0 mt2 fw3 br-100 w-50 h-50 flex justify-center items-center",
             {
               [`bg-${card.color}`]: card.hint.color[card.color] === 2
             }
