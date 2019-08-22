@@ -14,7 +14,10 @@ export default function GameBoard({ game, onSelectDiscard }) {
   return (
     <div className="flex flex-column-l justify-between pa2 pa4-l bg-gray-light">
       <div className="flex flex-column">
-        <PlayedCards cards={playedCards} />
+        <PlayedCards
+          cards={playedCards}
+          multicolorOption={game.options.multicolor}
+        />
         <div className="ma1 f5 f4-l">
           Score: {score} / {maxScore}
         </div>
