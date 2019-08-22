@@ -15,7 +15,7 @@ export default interface IGameState {
   // this is initiated as the number of players + 1 and serves for
   // the last round of game when the draw is empty
   actionsLeft: number;
-  actionsHistory: IAction[];
+  turnsHistory: ITurn[];
   history: IGameState[];
 }
 
@@ -92,6 +92,11 @@ export interface IHintAction {
 
 export type IAction = IDiscardAction | IPlayAction | IHintAction;
 
+export interface ITurn {
+  action: IAction;
+  card?: ICard;
+}
+
 export interface IPlayer {
   id: string;
   hand: IHand;
@@ -109,12 +114,12 @@ export interface ITokens {
 
 // empty arrays are returned as null in Firebase, so we fill
 // them back to avoid having to type check everywhere
-export function fillEmptyValues(val: any): IGameState {
+export function fillEmptyValues(val: IGameState): IGameState {
   if (!val.playedCards) val.playedCards = [];
   if (!val.drawPile) val.drawPile = [];
   if (!val.discardPile) val.discardPile = [];
   if (!val.players) val.players = [];
-  if (!val.actionsHistory) val.actionsHistory = [];
+  if (!val.turnsHistory) val.turnsHistory = [];
   if (!val.history) val.history = [];
   return val;
 }

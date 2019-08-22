@@ -5,7 +5,7 @@ import DiscardPile from "./discardPile";
 import { useRouter } from "next/router";
 import IGameState, { IHintAction, ICard, IPlayer } from "../game/state";
 import { isGameOver } from "../game/actions";
-import { actionToText } from "../game/utils";
+import { turnToText } from "../game/utils";
 import Button from "./button";
 
 interface IActionArea {
@@ -91,18 +91,18 @@ export default ({
         )}
         <hr />
         <div className="ttu tracked">Last actions:</div>
-        {game.actionsHistory
+        {game.turnsHistory
           .slice(-5)
           .reverse()
-          .map((action, i) => {
+          .map((turn, i) => {
             const playerName =
-              action.from === player.index
+              turn.action.from === player.index
                 ? "You"
-                : game.players[action.from].name;
+                : game.players[turn.action.from].name;
 
             return (
               <div key={i}>
-                - {playerName} {actionToText(action, game)}
+                - {playerName} {turnToText(turn, game)}
               </div>
             );
           })}

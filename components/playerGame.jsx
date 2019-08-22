@@ -3,7 +3,7 @@ import Card, { CardContext } from "./card";
 import { findLast } from "lodash";
 import classnames from "classnames";
 
-import { actionToText } from "../game/utils";
+import { turnToText } from "../game/utils";
 
 export default function PlayerGame(props) {
   const { game, player, active, self = false, onSelectPlayer } = props;
@@ -24,8 +24,8 @@ export default function PlayerGame(props) {
         className="f7 f6-l gray fw1 small"
         style={{ wordWrap: "break-word" }}
       >
-        {actionToText(
-          findLast(game.actionsHistory, a => a.from === player.index),
+        {turnToText(
+          findLast(game.turnsHistory, a => a.action.from === player.index),
           game
         )}
       </div>
