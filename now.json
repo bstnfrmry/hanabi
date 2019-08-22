@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "alias": "hanabi.now.sh",
+  "alias": "hanabi.cards",
   "scope": "hanabi",
   "routes": [
     {
