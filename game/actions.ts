@@ -199,12 +199,8 @@ export function newGame(options: IGameOptions): IGameState {
 
   assert(options.playersCount > 1 && options.playersCount < 6);
 
-  const gameColors = [...colors];
-  if (!options.multicolor) {
-    gameColors.splice(gameColors.indexOf(IColor.MULTICOLOR), 1);
-  }
-
-  const cards: ICard[] = flatMap(gameColors, color => [
+  // all cards but multicolors
+  const cards: ICard[] = flatMap(colors.slice(0, -1), color => [
     { number: 1, color },
     { number: 1, color },
     { number: 1, color },
