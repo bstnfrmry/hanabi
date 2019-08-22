@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card, { CardContext, PositionMap } from "./card";
 import Vignettes from "./vignettes";
 import DiscardPile from "./discardPile";
@@ -21,11 +21,13 @@ interface IActionArea {
 interface IPlayerSelectedArea {
   type: ActionAreaType.PLAYER;
   player: IPlayer;
+  cardIndex?: number;
 }
 
 interface IOwnGameSelectedArea {
   type: ActionAreaType.OWNGAME;
   player: IPlayer;
+  cardIndex?: number;
 }
 
 interface IDiscardSelectedArea {
@@ -54,7 +56,17 @@ export default ({
     type: null,
     value: null
   } as IHintAction);
-  const [selectedCard, setSelectedCard] = useState(null);
+  const [selectedCard, selectCard] = useState(null);
+
+  useEffect(
+    () =>
+      selectCard(
+        selectedArea && selectedArea.type !== ActionAreaType.DISCARD
+          ? selectedArea.cardIndex
+          : null
+      ),
+    [selectedArea]
+  );
 
   const currentPlayer = game.players[game.currentPlayer];
   const isCurrentPlayer = currentPlayer === player;
@@ -190,7 +202,7 @@ export default ({
               size="large"
               context={CardContext.TARGETED_PLAYER}
               className="ma1"
-              onClick={() => setSelectedCard(i)}
+              onClick={() => selectCard(i)}
               selected={selectedCard === i}
             />
           ))}

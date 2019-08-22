@@ -28,11 +28,11 @@ export default function Play() {
     });
   }, [gameId, playerId]);
 
-  useEffect(() => {
-    db.ref(`/games/${gameId}/currentPlayer`).on("value", event => {
-      selectArea(null);
-    });
-  }, [gameId]);
+  // useEffect(() => {
+  //   db.ref(`/games/${gameId}/currentPlayer`).on("value", event => {
+  //     selectArea(null);
+  //   });
+  // }, [gameId]);
 
   if (!game) {
     return "Loading";
@@ -68,13 +68,14 @@ export default function Play() {
       <PlayersBoard
         game={game}
         player={player}
-        onSelectPlayer={p =>
+        onSelectPlayer={(p, cardIndex) =>
           selectArea({
             type:
               p.id === player.id
                 ? ActionAreaType.OWNGAME
                 : ActionAreaType.PLAYER,
-            player: p
+            player: p,
+            cardIndex
           })
         }
       />

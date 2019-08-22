@@ -10,7 +10,7 @@ export default function PlayerGame(props) {
   const hand = player.hand || [];
 
   return (
-    <div onClick={() => onSelectPlayer(player)}>
+    <div>
       <div
         className={classnames("f6 f4-l fw2 tracked ttu ml1", {
           "fw6 near-black": active,
@@ -33,6 +33,7 @@ export default function PlayerGame(props) {
         <div className="flex flex-row grow pointer">
           {hand.map((card, i) => (
             <Card
+              onClick={() => onSelectPlayer(player, i)}
               key={i}
               card={card}
               position={i}
