@@ -16,7 +16,7 @@ export default ({ game, player, onSelectPlayer }: IPlayersBoard) => {
     otherPlayers = [];
   } else {
     otherPlayers = range(game.players.length - 1).map(
-      i => game.players[(i + player.index + 1) % game.playersCount]
+      i => game.players[(i + player.index + 1) % game.players.length]
     );
   }
 
