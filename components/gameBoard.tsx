@@ -3,10 +3,22 @@ import PlayedCards from "./playedCards";
 import TokenSpace from "./tokenSpace";
 import DrawPile from "./drawPile";
 import Button from "./button";
+import IGameState from "../game/state";
 
-export default function GameBoard({ game, onSelectDiscard }) {
+interface IGameBoard {
+  game: IGameState;
+  onSelectDiscard: Function;
+  onRollback: Function;
+}
+
+export default function GameBoard({
+  game,
+  onSelectDiscard,
+  onRollback
+}: IGameBoard) {
   const playedCards = game.playedCards || [];
   const discardPile = game.discardPile || [];
+  const history = game.history || [];
 
   const score = playedCards.length;
   const maxScore = game.options.multicolor ? 30 : 25;
@@ -28,11 +40,11 @@ export default function GameBoard({ game, onSelectDiscard }) {
           stormTokens={game.tokens.strikes}
         />
         <DrawPile cards={game.drawPile} />
-        <Button
-          className="pa3 br1 ba f7 f5-l fw2 tracked ttu ml2 gray pointer"
-          onClick={onSelectDiscard}
-        >
+        <Button onClick={onSelectDiscard}>
           Discard ({discardPile.length})
+        </Button>
+        <Button disabled={!history.length} onClick={onRollback}>
+          Rollback
         </Button>
       </div>
     </div>

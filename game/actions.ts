@@ -10,13 +10,16 @@ import IGameState, {
   IGameStatus,
   INumber
 } from "./state";
-import { cloneDeep, isEqual, findIndex, flatMap, range, omit } from "lodash";
+import { cloneDeep, findIndex, flatMap, range, last } from "lodash";
 import assert from "assert";
 import { shuffle } from "shuffle-seed";
+import { lstat } from "fs";
 
 export function commitAction(state: IGameState, action: IAction): IGameState {
   // the function should be pure
   const s = cloneDeep(state) as IGameState;
+
+  s.history.push(state);
 
   assert(action.from === state.currentPlayer);
   const player = s.players[action.from];
@@ -75,6 +78,13 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   // update history
   s.actionsHistory.push(action);
   return s;
+}
+
+/**
+ * Return the last state before the given state
+ */
+export function getLastState(state: IGameState) {
+  return last(state.history);
 }
 
 /**
@@ -242,6 +252,7 @@ export function newGame(options: IGameOptions): IGameState {
     currentPlayer,
     options,
     actionsLeft: options.playersCount + 1, // this will be decreased when the draw pile is empty
-    actionsHistory: []
+    actionsHistory: [],
+    history: []
   };
 }

@@ -16,6 +16,7 @@ export default interface IGameState {
   // the last round of game when the draw is empty
   actionsLeft: number;
   actionsHistory: IAction[];
+  history: IGameState[];
 }
 
 /**
@@ -112,5 +113,6 @@ export function fillEmptyValues(val: any): IGameState {
   if (!val.discardPile) val.discardPile = [];
   if (!val.players) val.players = [];
   if (!val.actionsHistory) val.actionsHistory = [];
+  if (!val.history) val.history = [];
   return val;
 }
