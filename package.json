@@ -15,6 +15,7 @@
     "firebase": "^6.3.4",
     "lodash": "^4.17.15",
     "next": "9.0.3",
+    "next-offline": "^4.0.5",
     "project-name-generator": "^2.1.7",
     "react": "16.8.6",
     "react-dom": "16.8.6",
