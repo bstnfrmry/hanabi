@@ -28,11 +28,11 @@ export default function Play() {
     });
   }, [gameId, playerId]);
 
-  // useEffect(() => {
-  //   db.ref(`/games/${gameId}/currentPlayer`).on("value", event => {
-  //     selectArea(null);
-  //   });
-  // }, [gameId]);
+  useEffect(() => {
+    db.ref(`/games/${gameId}/currentPlayer`).on("value", event => {
+      selectArea(null);
+    });
+  }, [gameId]);
 
   if (!game) {
     return "Loading";
