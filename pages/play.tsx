@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import shortid from "shortid";
 import { get } from "lodash";
 
@@ -8,14 +9,19 @@ import GameBoard from "../components/gameBoard";
 import Lobby from "../components/lobby";
 import ActionArea, { ActionAreaType } from "../components/actionArea";
 import { useDatabase } from "../context/database";
-import { joinGame, commitAction } from "../game/actions";
-import play from "../game/ai";
-import { fillEmptyValues } from "../game/state";
+import {
+  joinGame,
+  commitAction,
+  getLastState,
+  getMaximumPossibleScore
+} from "../game/actions";
+
+import IGameState, { fillEmptyValues } from "../game/state";
 
 export default function Play() {
   const db = useDatabase();
   const router = useRouter();
-  const [game, setGame] = useState(null);
+  const [game, setGame] = useState<IGameState>(null);
   const [selectedArea, selectArea] = useState(null);
   const { gameId, playerId } = router.query;
 
@@ -55,58 +61,74 @@ export default function Play() {
     await db.ref(`/games/${gameId}/status`).set("ongoing");
   }
 
-  async function onSimulateTurn() {
-    await db.ref(`/games/${gameId}`).set(play(game));
+  async function onCommitAction(action) {
+    const newState = commitAction(game, action);
+    const misplay =
+      getMaximumPossibleScore(game) !== getMaximumPossibleScore(newState);
+
+    if (game.options.preventLoss && misplay) {
+      if (!window.confirm("You fucked up · Keep going?")) {
+        return;
+      }
+    }
+
+    await db.ref(`/games/${gameId}`).set(newState);
   }
 
-  async function onCommitAction(action) {
-    await db.ref(`/games/${gameId}`).set(commitAction(game, action));
+  async function onRollback() {
+    await db.ref(`/games/${gameId}`).set(getLastState(game));
   }
 
   return (
-    <div className="flex flex-row w-100 h-100">
-      <PlayersBoard
-        game={game}
-        player={player}
-        onSelectPlayer={(p, cardIndex) =>
-          selectArea({
-            type:
-              p.id === player.id
-                ? ActionAreaType.OWNGAME
-                : ActionAreaType.PLAYER,
-            player: p,
-            cardIndex
-          })
-        }
-      />
-      <div className="flex flex-column flex-grow-1 h-100 overflow-scroll bl b--gray-light">
-        <GameBoard
+    <>
+      <Link href="/">
+        <span className="white pointer">Home</span>
+      </Link>
+      <div className="flex flex-row w-100 h-100">
+        <PlayersBoard
           game={game}
-          onSelectDiscard={() =>
-            selectArea(
-              get(selectedArea, "type") === ActionAreaType.DISCARD
-                ? null
-                : { type: ActionAreaType.DISCARD }
-            )
+          player={player}
+          onSelectPlayer={(p, cardIndex) =>
+            selectArea({
+              type:
+                p.id === player.id
+                  ? ActionAreaType.OWNGAME
+                  : ActionAreaType.PLAYER,
+              player: p,
+              cardIndex
+            })
           }
         />
-        {game.status === "lobby" && (
-          <Lobby
+        <div className="flex flex-column flex-grow-1 h-100 overflow-scroll bl b--gray-light">
+          <GameBoard
             game={game}
-            player={player}
-            onJoinGame={onJoinGame}
-            onStartGame={onStartGame}
+            onRollback={onRollback}
+            onSelectDiscard={() =>
+              selectArea(
+                get(selectedArea, "type") === ActionAreaType.DISCARD
+                  ? null
+                  : { type: ActionAreaType.DISCARD }
+              )
+            }
           />
-        )}
-        {game.status === "ongoing" && (
-          <ActionArea
-            game={game}
-            selectedArea={selectedArea}
-            player={player}
-            onCommitAction={onCommitAction}
-          />
-        )}
+          {game.status === "lobby" && (
+            <Lobby
+              game={game}
+              player={player}
+              onJoinGame={onJoinGame}
+              onStartGame={onStartGame}
+            />
+          )}
+          {game.status === "ongoing" && (
+            <ActionArea
+              game={game}
+              selectedArea={selectedArea}
+              player={player}
+              onCommitAction={onCommitAction}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
