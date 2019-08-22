@@ -4,6 +4,11 @@ import TokenSpace from "./tokenSpace";
 import DrawPile from "./drawPile";
 import Button from "./button";
 import IGameState from "../game/state";
+import {
+  getScore,
+  getMaximumScore,
+  getMaximumPossibleScore
+} from "../game/actions";
 
 interface IGameBoard {
   game: IGameState;
@@ -20,8 +25,9 @@ export default function GameBoard({
   const discardPile = game.discardPile || [];
   const history = game.history || [];
 
-  const score = playedCards.length;
-  const maxScore = game.options.multicolor ? 30 : 25;
+  const score = getScore(game);
+  const maxScore = getMaximumScore(game);
+  const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
     <div className="flex flex-column-l justify-between pa2 pa4-l bg-gray-light">
@@ -31,7 +37,10 @@ export default function GameBoard({
           multicolorOption={game.options.multicolor}
         />
         <div className="ma1 f5 f4-l">
-          Score: {score} / {maxScore}
+          Score: {score} / {maxPossibleScore}
+          {maxScore !== maxPossibleScore && (
+            <span className="strike ml1 gray">{maxScore}</span>
+          )}
         </div>
       </div>
       <div className="flex flex-row ph1 justify-left mt1 items-center-l">
@@ -43,9 +52,11 @@ export default function GameBoard({
         <Button onClick={onSelectDiscard}>
           Discard ({discardPile.length})
         </Button>
-        <Button disabled={!history.length} onClick={onRollback}>
-          Rollback
-        </Button>
+        {game.options.allowRollback && (
+          <Button disabled={!history.length} onClick={onRollback}>
+            Rollback
+          </Button>
+        )}
       </div>
     </div>
   );

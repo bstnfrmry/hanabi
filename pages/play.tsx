@@ -9,14 +9,19 @@ import GameBoard from "../components/gameBoard";
 import Lobby from "../components/lobby";
 import ActionArea, { ActionAreaType } from "../components/actionArea";
 import { useDatabase } from "../context/database";
-import { joinGame, commitAction, getLastState } from "../game/actions";
-import play from "../game/ai";
-import { fillEmptyValues } from "../game/state";
+import {
+  joinGame,
+  commitAction,
+  getLastState,
+  getMaximumPossibleScore
+} from "../game/actions";
+
+import IGameState, { fillEmptyValues } from "../game/state";
 
 export default function Play() {
   const db = useDatabase();
   const router = useRouter();
-  const [game, setGame] = useState(null);
+  const [game, setGame] = useState<IGameState>(null);
   const [selectedArea, selectArea] = useState(null);
   const { gameId, playerId } = router.query;
 
@@ -57,7 +62,17 @@ export default function Play() {
   }
 
   async function onCommitAction(action) {
-    await db.ref(`/games/${gameId}`).set(commitAction(game, action));
+    const newState = commitAction(game, action);
+    const misplay =
+      getMaximumPossibleScore(game) !== getMaximumPossibleScore(newState);
+
+    if (game.options.preventLoss && misplay) {
+      if (!window.confirm("You fucked up · Keep going?")) {
+        return;
+      }
+    }
+
+    await db.ref(`/games/${gameId}`).set(newState);
   }
 
   async function onRollback() {

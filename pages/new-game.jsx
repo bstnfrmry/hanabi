@@ -13,6 +13,8 @@ export default function NewGame() {
   const [seed, setSeed] = useState(1234);
   const [playersCount, setPlayersCount] = useState(2);
   const [multicolor, setMulticolor] = useState(false);
+  const [allowRollback, setAllowRollback] = useState(true);
+  const [preventLoss, setPreventLoss] = useState(true);
 
   async function createGame() {
     const gameId = shortid();
@@ -51,6 +53,22 @@ export default function NewGame() {
           type="checkbox"
           checked={multicolor}
           onChange={e => setMulticolor(e.target.checked)}
+        />
+      </label>
+      <label>
+        Allow rollback:
+        <input
+          type="checkbox"
+          checked={allowRollback}
+          onChange={e => setAllowRollback(e.target.checked)}
+        />
+      </label>
+      <label>
+        Prevent loss:
+        <input
+          type="checkbox"
+          checked={preventLoss}
+          onChange={e => setPreventLoss(e.target.checked)}
         />
       </label>
 

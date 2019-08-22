@@ -26,6 +26,8 @@ export default interface IGameState {
 export interface IGameOptions {
   playersCount: number;
   multicolor: boolean;
+  allowRollback: boolean;
+  preventLoss: boolean;
   seed: number;
 }
 

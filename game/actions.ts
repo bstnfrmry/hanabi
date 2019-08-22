@@ -10,7 +10,7 @@ import IGameState, {
   IGameStatus,
   INumber
 } from "./state";
-import { cloneDeep, findIndex, flatMap, range, last } from "lodash";
+import { cloneDeep, findIndex, flatMap, range, last, zipObject } from "lodash";
 import assert from "assert";
 import { shuffle } from "shuffle-seed";
 import { lstat } from "fs";
@@ -162,17 +162,59 @@ export function getScore(state: IGameState) {
   return state.playedCards.length;
 }
 
-export function getPlayedCardsPile(state: IGameState) {
-  const playedCardsPile = {};
-  state.playedCards.forEach(
-    c =>
-      (playedCardsPile[c.color] = Math.max(
-        playedCardsPile[c.color] || 0,
-        c.number
-      ))
-  );
+export function getMaximumScore(state: IGameState) {
+  return state.options.multicolor ? 30 : 25;
+}
 
-  return playedCardsPile;
+/**
+ * Compute the max possible score with remaining cards in hand & deck
+ * Doesn't take in account remaining turns
+ */
+export function getMaximumPossibleScore(state: IGameState): number {
+  const playableCards = [
+    ...state.drawPile,
+    ...flatMap(state.players, p => p.hand)
+  ];
+  const playedCardsPile = getPlayedCardsPile(state);
+
+  let maxScore = getMaximumScore(state);
+
+  Object.keys(playedCardsPile).forEach(color => {
+    let value = playedCardsPile[color];
+
+    while (value < 5) {
+      const nextCard = playableCards.find(
+        card => card.color === color && card.number === value + 1
+      );
+
+      if (!nextCard) {
+        maxScore -= 5 - value;
+        break;
+      }
+      value += 1;
+    }
+  });
+
+  return maxScore;
+}
+
+export function getPlayedCardsPile(state: IGameState) {
+  const colors = getColors(state);
+
+  return zipObject(
+    colors,
+    colors.map(color => {
+      const topCard = last(
+        state.playedCards.filter(card => card.color === color)
+      );
+
+      return topCard ? topCard.number : 0;
+    })
+  );
+}
+
+export function getColors(state: IGameState) {
+  return state.options.multicolor ? colors : colors.slice(0, -1);
 }
 
 /**
