@@ -38,6 +38,7 @@ export default function PlayerGame(props) {
               card={card}
               position={i}
               hidden={self}
+              multicolorOption={game.options.multicolor}
               size="medium"
               context={
                 self ? CardContext.SELF_PLAYER : CardContext.OTHER_PLAYER

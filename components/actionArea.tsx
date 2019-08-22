@@ -40,9 +40,6 @@ export enum ActionAreaType {
   DISCARD = "discard"
 }
 
-const colors = ["red", "yellow", "green", "blue", "white"];
-const values = [1, 2, 3, 4, 5];
-
 export default ({
   game,
   selectedArea,
@@ -138,6 +135,7 @@ export default ({
               key={i}
               card={card}
               hidden={player.id === playerId}
+              multicolorOption={game.options.multicolor}
               position={i}
               size="large"
               context={CardContext.TARGETED_PLAYER}
@@ -153,8 +151,7 @@ export default ({
             </div>
             <div className="flex flex-row pb2 ml1">
               <Vignettes
-                colors={colors}
-                values={values}
+                multicolorOption={game.options.multicolor}
                 onSelect={action => setPendingHint(action)}
                 pendingHint={pendingHint}
               />
@@ -198,6 +195,7 @@ export default ({
               key={i}
               card={card}
               hidden={player.id === playerId}
+              multicolorOption={game.options.multicolor}
               position={i}
               size="large"
               context={CardContext.TARGETED_PLAYER}

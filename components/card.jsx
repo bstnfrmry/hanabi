@@ -1,5 +1,6 @@
 import React from "react";
 import classnames from "classnames";
+import { colors, numbers } from "../game/actions";
 
 import Hint from "./hint";
 
@@ -71,7 +72,8 @@ export default function Card(props) {
     className = "",
     style = {},
     position = null,
-    selected = false
+    selected = false,
+    multicolorOption = false
   } = props;
 
   const color = hidden ? "light-silver" : card.color;
@@ -135,8 +137,8 @@ export default function Card(props) {
           )}
         >
           <div className="flex justify-around w-100 white">
-            {Object.keys(card.hint.color)
-              .filter(c => c !== "multicolor") // @fixme
+            {colors
+              .filter(c => (multicolorOption ? true : c !== "multicolor"))
               .map(color => {
                 const hint = card.hint.color[color];
 
@@ -146,15 +148,13 @@ export default function Card(props) {
               })}
           </div>
           <div className="flex justify-around w-100 white mt1">
-            {Object.keys(card.hint.number)
-              .slice(1)
-              .map(number => {
-                const hint = card.hint.number[number];
+            {numbers.map(number => {
+              const hint = card.hint.number[number];
 
-                return (
-                  <Hint key={number} type="number" value={number} hint={hint} />
-                );
-              })}
+              return (
+                <Hint key={number} type="number" value={number} hint={hint} />
+              );
+            })}
           </div>
         </div>
       )}
