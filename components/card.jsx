@@ -140,7 +140,9 @@ export default function Card(props) {
               .map(color => {
                 const hint = card.hint.color[color];
 
-                return <Hint type="color" value={color} hint={hint} />;
+                return (
+                  <Hint key={color} type="color" value={color} hint={hint} />
+                );
               })}
           </div>
           <div className="flex justify-around w-100 white mt1">
@@ -149,7 +151,9 @@ export default function Card(props) {
               .map(number => {
                 const hint = card.hint.number[number];
 
-                return <Hint type="number" value={number} hint={hint} />;
+                return (
+                  <Hint key={number} type="number" value={number} hint={hint} />
+                );
               })}
           </div>
         </div>
