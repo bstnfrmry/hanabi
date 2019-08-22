@@ -36,9 +36,10 @@ export default class Hanabi extends App {
           />
           <link
             rel="shortcut icon"
-            href="../static/favicon.ico"
+            href="/static/favicon.ico"
             type="image/x-icon"
           />
+          <link rel="manifest" href="/static/manifest.json" />
           <title>Hanabi</title>
         </Head>
         <Container>

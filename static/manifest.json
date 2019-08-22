@@ -1,0 +1,11 @@
+{
+  "short_name": "Hanabi",
+  "name": "Hababi",
+  "icons": [
+    { "src": "/static/hanabi.png", "type": "image/png", "sizes": "512x512" }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "landscape",
+  "theme_color": "#00153f"
+}
