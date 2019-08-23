@@ -12,7 +12,6 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
   const canJoin = !player && !gameFull;
 
   const shareLink = `${window.location.origin}/play?gameId=${router.query.gameId}`;
-
   const inputRef = React.createRef();
   function copy() {
     inputRef.current.select();
@@ -20,20 +19,21 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
   }
 
   return (
-    <div className="pa4 bg-grey bt bg-gray-light">
-      <h1>Lobby</h1>
+    <div className="pa3 bg-grey bt bg-gray-light">
       {player && <h2>Joined as {player.name}</h2>}
-      <a href={shareLink} target="_blank" className="mr2">
-        {shareLink}
-      </a>
-      <input
-        className="fixed"
-        style={{ top: -100, left: -100 }}
-        ref={inputRef}
-        type="text"
-        value={shareLink}
-      />
-      <Button onClick={copy}>Copy</Button>
+      <div className="flex items-center">
+        <a href={shareLink} target="_blank" className="mr2">
+          {shareLink}
+        </a>
+        <input
+          className="fixed"
+          style={{ top: -100, left: -100 }}
+          ref={inputRef}
+          type="text"
+          value={shareLink}
+        />
+        <Button onClick={copy}>Copy</Button>
+      </div>
 
       <h2>Players:</h2>
       {players.map((player, i) => (

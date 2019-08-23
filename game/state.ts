@@ -1,3 +1,5 @@
+import { defaults } from "lodash";
+
 /**
  * game state
  */
@@ -115,12 +117,13 @@ export interface ITokens {
 
 // empty arrays are returned as null in Firebase, so we fill
 // them back to avoid having to type check everywhere
-export function fillEmptyValues(val: IGameState): IGameState {
-  if (!val.playedCards) val.playedCards = [];
-  if (!val.drawPile) val.drawPile = [];
-  if (!val.discardPile) val.discardPile = [];
-  if (!val.players) val.players = [];
-  if (!val.turnsHistory) val.turnsHistory = [];
-  if (!val.history) val.history = [];
-  return val;
+export function fillEmptyValues(state: IGameState): IGameState {
+  return defaults(state, {
+    playedCards: [],
+    drawPile: [],
+    discardPile: [],
+    players: [],
+    turnsHistory: [],
+    history: []
+  });
 }

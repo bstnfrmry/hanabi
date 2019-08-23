@@ -3,9 +3,11 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import shortid from "shortid";
 
-import { useDatabase } from "../context/database";
+import { useDatabase } from "../hooks/database";
 import { newGame } from "../game/actions";
 import Button from "../components/button";
+
+const PlayerCounts = [2, 3, 4, 5];
 
 export default function NewGame() {
   const router = useRouter();
@@ -15,8 +17,6 @@ export default function NewGame() {
   const [multicolor, setMulticolor] = useState(false);
   const [allowRollback, setAllowRollback] = useState(true);
   const [preventLoss, setPreventLoss] = useState(true);
-
-  const PlayerCounts = [2, 3, 4, 5];
 
   async function createGame() {
     const gameId = shortid();

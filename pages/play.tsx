@@ -8,7 +8,7 @@ import PlayersBoard from "../components/playersBoard";
 import GameBoard from "../components/gameBoard";
 import Lobby from "../components/lobby";
 import ActionArea, { ActionAreaType } from "../components/actionArea";
-import { useDatabase } from "../context/database";
+import { useDatabase } from "../hooks/database";
 import {
   joinGame,
   commitAction,
