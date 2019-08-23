@@ -1,9 +1,15 @@
 import React from "react";
 import Button from "./button";
 import classnames from "classnames";
+import posed, { PoseGroup } from "react-pose";
 
 import PlayerName from "./playerName";
 import Card, { CardContext } from "./card";
+
+const CardAnimationWrapper = posed.div({
+  enter: { opacity: 1, y: 0, transition: { duration: 1000 } },
+  exit: { opacity: 0, y: 10000, transition: { duration: 1000 } }
+});
 
 export default function PlayerGame(props) {
   const {
@@ -34,21 +40,24 @@ export default function PlayerGame(props) {
 
       <div className="cards dib mt2 mw-100">
         <div className="flex flex-row grow pointer">
-          {hand.map((card, i) => (
-            <Card
-              onClick={() => onSelectPlayer(player, i)}
-              key={i}
-              card={card}
-              position={i}
-              hidden={self}
-              multicolorOption={game.options.multicolor}
-              size="medium"
-              context={
-                self ? CardContext.SELF_PLAYER : CardContext.OTHER_PLAYER
-              }
-              className={i < player.hand.length - 1 ? "mr1 mr2-l" : ""}
-            />
-          ))}
+          <PoseGroup>
+            {hand.map((card, i) => (
+              <CardAnimationWrapper key={card.id}>
+                <Card
+                  onClick={() => onSelectPlayer(player, i)}
+                  card={card}
+                  position={i}
+                  hidden={self}
+                  multicolorOption={game.options.multicolor}
+                  size="medium"
+                  context={
+                    self ? CardContext.SELF_PLAYER : CardContext.OTHER_PLAYER
+                  }
+                  className={i < player.hand.length - 1 ? "mr1 mr2-l" : ""}
+                />
+              </CardAnimationWrapper>
+            ))}
+          </PoseGroup>
         </div>
       </div>
       <style jsx>{`
