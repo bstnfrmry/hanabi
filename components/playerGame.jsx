@@ -1,34 +1,38 @@
 import React from "react";
-import Card, { CardContext } from "./card";
-import { findLast } from "lodash";
+import Button from "./button";
 import classnames from "classnames";
 
-import { actionToText } from "../game/utils";
+import PlayerName from "./playerName";
+import Card, { CardContext } from "./card";
 
 export default function PlayerGame(props) {
-  const { game, player, active, self = false, onSelectPlayer } = props;
+  const {
+    game,
+    player,
+    active,
+    self = false,
+    onSelectPlayer,
+    onNotifyPlayer
+  } = props;
   const hand = player.hand || [];
 
   return (
     <div>
       <div
-        className={classnames("f6 f4-l fw2 tracked ttu ml1", {
+        className={classnames("f6 f4-l fw2 tracked ttu ml1 flex items-center", {
           "fw6 near-black": active,
           gray: !active
         })}
       >
-        {active && "> "}
-        {player.name} {self && "(you)"}
-      </div>
-      <div
-        className="f7 f6-l gray fw1 small"
-        style={{ wordWrap: "break-word" }}
-      >
-        {actionToText(
-          findLast(game.actionsHistory, a => a.from === player.index),
-          game
+        {active && <span>>&nbsp;</span>}
+        <PlayerName player={player} />
+        {active && !self && !player.notified && (
+          <span className="ml2 pointer" onClick={() => onNotifyPlayer(player)}>
+            🔔
+          </span>
         )}
       </div>
+
       <div className="cards dib mt2 mw-100">
         <div className="flex flex-row grow pointer">
           {hand.map((card, i) => (

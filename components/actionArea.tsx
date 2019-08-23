@@ -5,8 +5,9 @@ import DiscardPile from "./discardPile";
 import { useRouter } from "next/router";
 import IGameState, { IHintAction, ICard, IPlayer } from "../game/state";
 import { isGameOver } from "../game/actions";
-import { actionToText } from "../game/utils";
+import Turn from "./turn";
 import Button from "./button";
+import PlayerName from "./playerName";
 
 interface IActionArea {
   game: IGameState;
@@ -80,29 +81,27 @@ export default ({
     return (
       <div className="ph2 pt2 ph4-l pt4-l bg-grey bt bg-gray-light b--gray-light flex-grow-1 f6 f4-l fw2 gray lh-copy">
         {!isCurrentPlayer && (
-          <div className="ttu tracked">It's {currentPlayer.name}'s turn</div>
+          <div className="ttu tracked">
+            It's <PlayerName player={currentPlayer} />
+            's turn
+          </div>
         )}
         {isCurrentPlayer && (
           <div className="ttu tracked">
             <div>Your turn!</div>
-            <div>- Give a hint by tapping on your playmates' hand</div>
-            <div>- Play or discard by tapping on your own game</div>
+            <div>Give a hint by tapping on your playmates' hand</div>
+            <div>Play or discard by tapping on your own game</div>
           </div>
         )}
         <hr />
         <div className="ttu tracked">Last actions:</div>
-        {game.actionsHistory
-          .slice(-5)
+        {game.turnsHistory
+          .slice(-10)
           .reverse()
-          .map((action, i) => {
-            const playerName =
-              action.from === player.index
-                ? "You"
-                : game.players[action.from].name;
-
+          .map((turn, i) => {
             return (
-              <div key={i}>
-                - {playerName} {actionToText(action, game)}
+              <div key={i} className="mt1">
+                <Turn game={game} turn={turn} includePlayer={true} />
               </div>
             );
           })}
@@ -127,7 +126,8 @@ export default ({
     return (
       <div className="pa2 pa4-l bg-gray-light bt b--gray-light flex flex-column flex-grow-1">
         <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 gray mb2">
-          {player.name}'s game
+          <PlayerName player={player} />
+          's game
         </div>
         <div className="flex flex-row pb2">
           {player.hand.map((card, i) => (
@@ -155,7 +155,7 @@ export default ({
                 onSelect={action => setPendingHint(action)}
                 pendingHint={pendingHint}
               />
-              <div className="pl3">
+              <div className="ml3">
                 <div className="h2 f5 fw3 i dark-gray">
                   {textualHint(pendingHint, player.hand)}
                 </div>

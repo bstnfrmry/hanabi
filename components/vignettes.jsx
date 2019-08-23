@@ -3,7 +3,6 @@ import Vignette from "./vignette";
 import { colors, numbers } from "../game/actions";
 
 export default ({ onSelect, pendingHint, multicolorOption }) => {
-  console.log(multicolorOption);
   return (
     <div>
       <div className="flex flex-row">

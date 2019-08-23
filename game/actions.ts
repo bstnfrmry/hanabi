@@ -24,6 +24,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   assert(action.from === state.currentPlayer);
   const player = s.players[action.from];
 
+  let newCard = null as ICard;
   if (action.action === "discard" || action.action === "play") {
     // remove the card from hand
     const [card] = player.hand.splice(action.cardIndex, 1);
@@ -49,7 +50,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
 
     // in both cases (play, discard) we need to remove a card from the hand and get a new one
     if (s.drawPile && s.drawPile.length) {
-      const newCard = s.drawPile.pop();
+      newCard = s.drawPile.pop();
       newCard.hint = emptyHint(state.options);
       player.hand.unshift(newCard);
     }
@@ -76,7 +77,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   s.currentPlayer = (s.currentPlayer + 1) % s.options.playersCount;
 
   // update history
-  s.actionsHistory.push(action);
+  s.turnsHistory.push({ action, card: newCard });
   return s;
 }
 
@@ -155,6 +156,7 @@ export function emptyPlayer(id: string, name: string): IPlayer {
   return {
     hand: [],
     name,
+    emoji: "🐶",
     id
   };
 }
@@ -303,7 +305,7 @@ export function newGame(options: IGameOptions): IGameState {
     currentPlayer,
     options,
     actionsLeft: options.playersCount + 1, // this will be decreased when the draw pile is empty
-    actionsHistory: [],
+    turnsHistory: [],
     history: []
   };
 }

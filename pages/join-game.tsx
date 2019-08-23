@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useDatabase } from "../context/database";
+import { useDatabase } from "../hooks/database";
 import IGameState from "../game/state";
 import Button from "../components/button";
 

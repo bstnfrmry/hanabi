@@ -2,7 +2,7 @@ import React from "react";
 import App, { Container } from "next/app";
 import Head from "next/head";
 
-import { DatabaseProvider, setupDatabase } from "../context/database";
+import { DatabaseProvider, setupDatabase } from "../hooks/database";
 
 import "../styles/tachyons.css";
 import "../styles/style.css";

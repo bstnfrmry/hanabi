@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import shortid from "shortid";
 import { get } from "lodash";
 
@@ -8,7 +7,7 @@ import PlayersBoard from "../components/playersBoard";
 import GameBoard from "../components/gameBoard";
 import Lobby from "../components/lobby";
 import ActionArea, { ActionAreaType } from "../components/actionArea";
-import { useDatabase } from "../context/database";
+import { useDatabase } from "../hooks/database";
 import {
   joinGame,
   commitAction,
@@ -39,6 +38,26 @@ export default function Play() {
       selectArea(null);
     });
   }, [gameId]);
+
+  useEffect(() => {
+    if (!player) {
+      return;
+    }
+
+    const ref = db.ref(`/games/${gameId}/players/${player.index}/notified`);
+    ref.on("value", event => {
+      const notified = event.val();
+      if (notified) {
+        if (notified !== player.notified) {
+          new Audio(`/static/sounds/bell.mp3`).play();
+        }
+
+        setTimeout(() => {
+          ref.set(false);
+        }, 10000);
+      }
+    });
+  }, [gameId, playerId]);
 
   if (!game) {
     return "Loading";
@@ -78,12 +97,19 @@ export default function Play() {
     await db.ref(`/games/${gameId}`).set(getLastState(game));
   }
 
+  function onMenuClick() {
+    if (window.confirm("Back to menu?")) {
+      router.push("/");
+    }
+  }
+
+  async function onNotifyPlayer(player) {
+    await db.ref(`/games/${gameId}/players/${player.index}/notified`).set(true);
+  }
+
   return (
-    <>
-      <Link href="/">
-        <span className="white pointer">Home</span>
-      </Link>
-      <div className="flex flex-row w-100 h-100">
+    <div className="w-100 h-100">
+      <div className="flex flex-row h-100">
         <PlayersBoard
           game={game}
           player={player}
@@ -97,11 +123,13 @@ export default function Play() {
               cardIndex
             })
           }
+          onNotifyPlayer={onNotifyPlayer}
         />
         <div className="flex flex-column flex-grow-1 h-100 overflow-scroll bl b--gray-light">
           <GameBoard
             game={game}
             onRollback={onRollback}
+            onMenuClick={onMenuClick}
             onSelectDiscard={() =>
               selectArea(
                 get(selectedArea, "type") === ActionAreaType.DISCARD
@@ -128,6 +156,6 @@ export default function Play() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
