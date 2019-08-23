@@ -97,16 +97,18 @@ export default function Play() {
     await db.ref(`/games/${gameId}`).set(getLastState(game));
   }
 
+  function onMenuClick() {
+    if (window.confirm("Back to menu?")) {
+      router.push("/");
+    }
+  }
+
   async function onNotifyPlayer(player) {
     await db.ref(`/games/${gameId}/players/${player.index}/notified`).set(true);
   }
 
   return (
-    <div className="w-100 h-100 relative">
-      <div
-        className="absolute z-0 w-100 h-100"
-        onClick={() => selectArea(null)}
-      />
+    <div className="w-100 h-100">
       <div className="flex flex-row h-100">
         <PlayersBoard
           game={game}
@@ -127,6 +129,7 @@ export default function Play() {
           <GameBoard
             game={game}
             onRollback={onRollback}
+            onMenuClick={onMenuClick}
             onSelectDiscard={() =>
               selectArea(
                 get(selectedArea, "type") === ActionAreaType.DISCARD

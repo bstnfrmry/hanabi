@@ -1,8 +1,7 @@
 import React from "react";
-import { findLast } from "lodash";
+import Button from "./button";
 import classnames from "classnames";
 
-import Turn from "./turn";
 import PlayerName from "./playerName";
 import Card, { CardContext } from "./card";
 
@@ -20,15 +19,15 @@ export default function PlayerGame(props) {
   return (
     <div>
       <div
-        className={classnames("f6 f4-l fw2 tracked ttu ml1", {
+        className={classnames("f6 f4-l fw2 tracked ttu ml1 flex items-center", {
           "fw6 near-black": active,
           gray: !active
         })}
       >
-        {active && "> "}
+        {active && <span>>&nbsp;</span>}
         <PlayerName player={player} />
         {active && !self && !player.notified && (
-          <span className="ml1 pointer" onClick={() => onNotifyPlayer(player)}>
+          <span className="ml2 pointer" onClick={() => onNotifyPlayer(player)}>
             🔔
           </span>
         )}

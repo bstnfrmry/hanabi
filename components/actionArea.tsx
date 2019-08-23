@@ -82,7 +82,7 @@ export default ({
       <div className="ph2 pt2 ph4-l pt4-l bg-grey bt bg-gray-light b--gray-light flex-grow-1 f6 f4-l fw2 gray lh-copy">
         {!isCurrentPlayer && (
           <div className="ttu tracked">
-            It's <PlayerName player={player} />
+            It's <PlayerName player={currentPlayer} />
             's turn
           </div>
         )}
@@ -155,7 +155,7 @@ export default ({
                 onSelect={action => setPendingHint(action)}
                 pendingHint={pendingHint}
               />
-              <div className="pl3">
+              <div className="ml3">
                 <div className="h2 f5 fw3 i dark-gray">
                   {textualHint(pendingHint, player.hand)}
                 </div>

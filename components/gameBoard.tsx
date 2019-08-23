@@ -13,12 +13,14 @@ import {
 interface IGameBoard {
   game: IGameState;
   onSelectDiscard: Function;
+  onMenuClick: Function;
   onRollback: Function;
 }
 
 export default function GameBoard({
   game,
   onSelectDiscard,
+  onMenuClick,
   onRollback
 }: IGameBoard) {
   const playedCards = game.playedCards || [];
@@ -30,32 +32,43 @@ export default function GameBoard({
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="flex flex-column-l justify-between pa2 pa4-l bg-gray-light">
-      <div className="flex flex-column">
-        <PlayedCards
-          cards={playedCards}
-          multicolorOption={game.options.multicolor}
-        />
-        <div className="ma1 f5 f4-l">
-          Score: {score} / {maxPossibleScore}
-          {maxScore !== maxPossibleScore && (
-            <span className="strike ml1 gray">{maxScore}</span>
-          )}
+    <div className="pa2 pa4-l bg-gray-light">
+      <div className="flex flex-column-l justify-between ">
+        <div className="flex flex-column">
+          <PlayedCards
+            cards={playedCards}
+            multicolorOption={game.options.multicolor}
+          />
+        </div>
+        <div className="flex flex-row ph1 justify-left mt1 items-center">
+          <TokenSpace
+            noteTokens={game.tokens.hints}
+            stormTokens={game.tokens.strikes}
+          />
+          <DrawPile cards={game.drawPile} />
+
+          <div className="flex ml2">
+            <Button onClick={onSelectDiscard}>
+              Discard&nbsp;({discardPile.length})
+            </Button>
+            {game.options.allowRollback && (
+              <Button disabled={!history.length} onClick={onRollback}>
+                ⟲
+              </Button>
+            )}
+            <Button onClick={onMenuClick}>☰</Button>
+          </div>
         </div>
       </div>
-      <div className="flex flex-row ph1 justify-left mt1 items-center-l">
-        <TokenSpace
-          noteTokens={game.tokens.hints}
-          stormTokens={game.tokens.strikes}
-        />
-        <DrawPile cards={game.drawPile} />
-        <Button onClick={onSelectDiscard}>
-          Discard&nbsp;({discardPile.length})
-        </Button>
-        {game.options.allowRollback && (
-          <Button disabled={!history.length} onClick={onRollback}>
-            ⟲
-          </Button>
+      <div className="ma1 f5 f4-l">
+        Score: {score} / {maxPossibleScore}
+        {maxScore !== maxPossibleScore && (
+          <span className="strike ml1 gray">{maxScore}</span>
+        )}
+        {game.actionsLeft <= game.options.playersCount && (
+          <div className="ml2 inline-flex">
+            ·<span className="red ml2">{game.actionsLeft} turns left</span>
+          </div>
         )}
       </div>
     </div>
