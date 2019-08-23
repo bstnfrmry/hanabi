@@ -263,7 +263,7 @@ export function newGame(options: IGameOptions): IGameState {
   assert(options.playersCount > 1 && options.playersCount < 6);
 
   // all cards but multicolors
-  const cards: ICard[] = flatMap(colors.slice(0, -1), color => [
+  let cards = flatMap(colors.slice(0, -1), color => [
     { number: 1, color },
     { number: 1, color },
     { number: 1, color },
@@ -287,6 +287,8 @@ export function newGame(options: IGameOptions): IGameState {
     );
   }
 
+  cards = cards.map((c, i) => ({ ...c, id: i })) as ICard[];
+
   const deck = shuffle(cards, options.seed);
 
   const currentPlayer = shuffle(range(options.playersCount), options.seed)[0];
@@ -306,6 +308,7 @@ export function newGame(options: IGameOptions): IGameState {
     options,
     actionsLeft: options.playersCount + 1, // this will be decreased when the draw pile is empty
     turnsHistory: [],
-    history: []
+    history: [],
+    createdAt: Date.now()
   };
 }

@@ -14,20 +14,22 @@ export default function JoinGame() {
     // @todo this fetches all available games... we need a more efficient key strategy
     // we could have a store of game-statuses with creation date, status (lobby), etc.
     // and keep the game state purely about the game and cards
-    db.ref(`/games`).once("value", event => {
+    db.ref(`/games`).on("value", event => {
       setGames(event.val());
     });
-  });
+  }, []);
 
   return (
     <div className="white">
       {Object.keys(games).map(k => {
         const game = games[k] as IGameState;
+        console.log(game);
         // @todo we need to filter by date, like 'created in the last 10 min'
         if (
           !game.players ||
           !game.players.length ||
-          +game.players.length >= +game.playersCount
+          +game.players.length >= +game.playersCount ||
+          (game.createdAt || 0) < Date.now() - 10 * 60 * 1000 // 10 min
         ) {
           return null;
         }

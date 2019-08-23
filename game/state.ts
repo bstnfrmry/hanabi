@@ -19,6 +19,7 @@ export default interface IGameState {
   actionsLeft: number;
   turnsHistory: ITurn[];
   history: IGameState[];
+  createdAt: number;
 }
 
 /**
@@ -66,6 +67,7 @@ export interface ICard {
   color: IColor;
   number: number;
   hint?: ICardHint;
+  id?: number;
 }
 
 export type IActionType = "discard" | "play" | "hint";
