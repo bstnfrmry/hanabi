@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import shortid from "shortid";
 
 import { useDatabase } from "../hooks/database";
@@ -36,9 +35,6 @@ export default function NewGame() {
 
   return (
     <>
-      <Link href="/">
-        <span className="white pointer">Home</span>
-      </Link>
       <div className="w-100 h-100 flex justify-center items-center">
         <div className="flex flex-column w-50 pv2 ph4 bg-grey bg-gray-light">
           <h1>New game</h1>

@@ -7,10 +7,11 @@ interface TurnProps {
   game: IGameState;
   turn: ITurn;
   includePlayer: boolean;
+  showDrawn: boolean;
 }
 
 export default function Turn(props: TurnProps) {
-  const { game, turn, includePlayer = false } = props;
+  const { game, turn, includePlayer = false, showDrawn } = props;
 
   if (!turn) {
     return null;
@@ -44,7 +45,7 @@ export default function Turn(props: TurnProps) {
         </div>
       )}
 
-      {turn.card && (
+      {showDrawn && turn.card && (
         <div className="ml1 inline-flex items-center">
           & drew&nbsp;
           <Card card={turn.card} size="small" />

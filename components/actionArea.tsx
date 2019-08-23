@@ -101,7 +101,12 @@ export default ({
           .map((turn, i) => {
             return (
               <div key={i} className="mt1">
-                <Turn game={game} turn={turn} includePlayer={true} />
+                <Turn
+                  game={game}
+                  turn={turn}
+                  includePlayer={true}
+                  showDrawn={game.players[turn.action.from].id !== playerId}
+                />
               </div>
             );
           })}
