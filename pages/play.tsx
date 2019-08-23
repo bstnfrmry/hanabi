@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import shortid from "shortid";
 import { get } from "lodash";
 
@@ -103,11 +102,12 @@ export default function Play() {
   }
 
   return (
-    <>
-      <Link href="/">
-        <span className="white pointer">Home</span>
-      </Link>
-      <div className="flex flex-row w-100 h-100">
+    <div className="w-100 h-100 relative">
+      <div
+        className="absolute z-0 w-100 h-100"
+        onClick={() => selectArea(null)}
+      />
+      <div className="flex flex-row h-100">
         <PlayersBoard
           game={game}
           player={player}
@@ -153,6 +153,6 @@ export default function Play() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }

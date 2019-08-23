@@ -33,18 +33,6 @@ export default function PlayerGame(props) {
           </span>
         )}
       </div>
-      <div
-        className="f7 f6-l gray fw1 small"
-        style={{ wordWrap: "break-word" }}
-      >
-        <Turn
-          game={game}
-          turn={findLast(
-            game.turnsHistory,
-            a => a.action.from === player.index
-          )}
-        />
-      </div>
 
       <div className="cards dib mt2 mw-100">
         <div className="flex flex-row grow pointer">

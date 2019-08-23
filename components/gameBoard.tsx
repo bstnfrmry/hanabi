@@ -50,11 +50,11 @@ export default function GameBoard({
         />
         <DrawPile cards={game.drawPile} />
         <Button onClick={onSelectDiscard}>
-          Discard ({discardPile.length})
+          Discard&nbsp;({discardPile.length})
         </Button>
         {game.options.allowRollback && (
           <Button disabled={!history.length} onClick={onRollback}>
-            Rollback
+            ⟲
           </Button>
         )}
       </div>

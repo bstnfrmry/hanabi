@@ -89,14 +89,14 @@ export default ({
         {isCurrentPlayer && (
           <div className="ttu tracked">
             <div>Your turn!</div>
-            <div>- Give a hint by tapping on your playmates' hand</div>
-            <div>- Play or discard by tapping on your own game</div>
+            <div>Give a hint by tapping on your playmates' hand</div>
+            <div>Play or discard by tapping on your own game</div>
           </div>
         )}
         <hr />
         <div className="ttu tracked">Last actions:</div>
         {game.turnsHistory
-          .slice(-5)
+          .slice(-10)
           .reverse()
           .map((turn, i) => {
             return (
