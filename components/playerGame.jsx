@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
-import Card, { CardContext } from "./card";
+import React from "react";
 import { findLast } from "lodash";
 import classnames from "classnames";
 
-import { turnToText } from "../game/utils";
+import Turn from "./turn";
+import PlayerName from "./playerName";
+import Card, { CardContext } from "./card";
+
 export default function PlayerGame(props) {
   const {
     game,
@@ -24,9 +26,9 @@ export default function PlayerGame(props) {
         })}
       >
         {active && "> "}
-        {player.name} {self && "(you)"}
+        <PlayerName player={player} />
         {active && !self && !player.notified && (
-          <span className="pointer" onClick={() => onNotifyPlayer(player)}>
+          <span className="ml1 pointer" onClick={() => onNotifyPlayer(player)}>
             🔔
           </span>
         )}
@@ -35,10 +37,13 @@ export default function PlayerGame(props) {
         className="f7 f6-l gray fw1 small"
         style={{ wordWrap: "break-word" }}
       >
-        {turnToText(
-          findLast(game.turnsHistory, a => a.action.from === player.index),
-          game
-        )}
+        <Turn
+          game={game}
+          turn={findLast(
+            game.turnsHistory,
+            a => a.action.from === player.index
+          )}
+        />
       </div>
 
       <div className="cards dib mt2 mw-100">

@@ -103,6 +103,7 @@ export interface IPlayer {
   id: string;
   hand: IHand;
   name: string;
+  emoji: string;
   lastAction?: IAction;
   index?: number;
   notified?: boolean;

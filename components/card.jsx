@@ -102,7 +102,13 @@ export default function Card(props) {
       style={style}
       onClick={onClick}
     >
-      <div>{number}</div>
+      <div
+        className={classnames({
+          f7: size === "small"
+        })}
+      >
+        {number}
+      </div>
       {position >= 0 && size.includes("large") && (
         <div
           className={classnames("absolute left-0 top-0 ma1 fw1 f3 black-50")}

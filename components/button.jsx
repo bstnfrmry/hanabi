@@ -6,8 +6,8 @@ export default ({ onClick, children, disabled = false }) => (
     <button
       disabled={disabled}
       className={classnames(
-        "ba br2 fw2 f6 f4-l lh-copy tracked ttu ml1 gray bg-near-white hover-bg-white grow outline-0",
-        { pointer: !disabled, "bg-light-gray": disabled }
+        "ba br2 fw2 f6 f4-l lh-copy tracked ttu ml1 dark-gray bg-near-white hover-bg-white grow outline-0",
+        { pointer: !disabled, "bg-light-gray gray": disabled }
       )}
       onClick={onClick}
     >

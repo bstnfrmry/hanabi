@@ -156,6 +156,7 @@ export function emptyPlayer(id: string, name: string): IPlayer {
   return {
     hand: [],
     name,
+    emoji: "🐶",
     id
   };
 }
