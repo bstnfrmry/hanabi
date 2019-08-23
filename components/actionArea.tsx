@@ -71,7 +71,7 @@ export default ({
 
   if (isGameOver(game)) {
     return (
-      <div className="ph2 bg-grey bt bg-gray-light b--gray-light pt4 flex-grow-1 f6 f4-l fw2 tracked ttu gray">
+      <div className="ph2 bg-grey bt bg-main-dark b--main pt4 flex-grow-1 f6 f4-l fw2 tracked ttu">
         <p>The game is over! Your score is {game.playedCards.length} 🎉</p>
       </div>
     );
@@ -79,7 +79,7 @@ export default ({
 
   if (!selectedArea) {
     return (
-      <div className="ph2 pt2 ph4-l pt4-l bg-grey bt bg-gray-light b--gray-light flex-grow-1 f6 f4-l fw2 gray lh-copy">
+      <div className="ph2 pt2 ph4-l pt4-l bt bg-main-dark b--main flex-grow-1 f6 f4-l fw2 lh-copy">
         {!isCurrentPlayer && (
           <div className="ttu tracked">
             It's <PlayerName player={currentPlayer} />
@@ -113,8 +113,8 @@ export default ({
 
   if (selectedArea.type === ActionAreaType.DISCARD) {
     return (
-      <div className="pa2 pa4-l bg-gray-light bt b--gray-light flex flex-column flex-grow-1">
-        <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 gray">
+      <div className="pa2 pa4-l bg-main-dark bt b--main flex flex-column flex-grow-1">
+        <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1">
           Discarded cards
         </div>
         <DiscardPile game={game} cards={game.discardPile} />
@@ -126,8 +126,8 @@ export default ({
     const { player } = selectedArea;
 
     return (
-      <div className="pa2 pa4-l bg-gray-light bt b--gray-light flex flex-column flex-grow-1">
-        <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 gray mb2">
+      <div className="pa2 pa4-l bg-main-dark bt b--main flex flex-column flex-grow-1">
+        <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2">
           <PlayerName player={player} />
           's game
         </div>
@@ -148,7 +148,7 @@ export default ({
         </div>
         {isCurrentPlayer && (
           <>
-            <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2 gray mt3">
+            <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2 mt3">
               Select a hint below
             </div>
             <div className="flex flex-row pb2 ml1">
@@ -158,7 +158,7 @@ export default ({
                 pendingHint={pendingHint}
               />
               <div className="ml3">
-                <div className="h2 f5 fw3 i dark-gray">
+                <div className="h2 f5 fw3 i">
                   {textualHint(pendingHint, player.hand)}
                 </div>
                 <Button
@@ -187,7 +187,7 @@ export default ({
     const hasSelectedCard = selectedCard !== null;
 
     return (
-      <div className="pa2 pa4-l bg-gray-light bt b--gray-light flex flex-column flex-grow-1">
+      <div className="pa2 pa4-l bg-main-dark bt b--main flex flex-column flex-grow-1">
         <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 gray mb2">
           Your game
         </div>

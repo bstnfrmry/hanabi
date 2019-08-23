@@ -20,8 +20,7 @@ export default function PlayerGame(props) {
     <div>
       <div
         className={classnames("f6 f4-l fw2 tracked ttu ml1 flex items-center", {
-          "fw6 near-black": active,
-          gray: !active
+          fw6: active
         })}
       >
         {active && <span>>&nbsp;</span>}
@@ -54,8 +53,8 @@ export default function PlayerGame(props) {
       </div>
       <style jsx>{`
         .cards:hover {
-          background-color: #fffceb;
-          box-shadow: 0px 0px 10px 5px #fffceb;
+          background-color: var(--color-main);
+          box-shadow: 0px 0px 10px 5px var(--color-main);
         }
       `}</style>
     </div>

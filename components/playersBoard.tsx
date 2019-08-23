@@ -28,7 +28,7 @@ export default ({
 
   return (
     <div className="flex flex-column h-100 overflow-y-scroll">
-      <div className="pa2 pa4-l bg-gray-light flex-grow-1">
+      <div className="pa2 pa4-l bg-main-dark flex-grow-1">
         {otherPlayers.map((otherPlayer, i) => (
           <div key={i} className="mb4 mb4-l">
             <PlayerGame
@@ -42,7 +42,7 @@ export default ({
         ))}
       </div>
       {player && (
-        <div className="pa2 pa4-l bg-gray-light b--gray-light bt">
+        <div className="pa2 pa4-l bg-main-dark b--main bt">
           <PlayerGame
             game={game}
             player={player}

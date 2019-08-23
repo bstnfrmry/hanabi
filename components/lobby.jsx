@@ -24,7 +24,7 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
   }
 
   return (
-    <div className="pa3 bg-grey bt bg-gray-light">
+    <div className="pa3 bg-grey bt bg-main-dark">
       {player && (
         <h2>
           Joined as <PlayerName player={player} />

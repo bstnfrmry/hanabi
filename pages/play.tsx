@@ -125,7 +125,7 @@ export default function Play() {
           }
           onNotifyPlayer={onNotifyPlayer}
         />
-        <div className="flex flex-column flex-grow-1 h-100 overflow-scroll bl b--gray-light">
+        <div className="flex flex-column flex-grow-1 h-100 overflow-scroll bl b--main">
           <GameBoard
             game={game}
             onRollback={onRollback}

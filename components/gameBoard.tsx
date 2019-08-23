@@ -32,7 +32,7 @@ export default function GameBoard({
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="pa2 pa4-l bg-gray-light">
+    <div className="pa2 pa4-l bg-main-dark">
       <div className="flex flex-column-l justify-between ">
         <div className="flex flex-column">
           <PlayedCards
