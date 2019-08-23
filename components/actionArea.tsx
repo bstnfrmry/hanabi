@@ -95,21 +95,18 @@ export default ({
         )}
         <hr />
         <div className="ttu tracked">Last actions:</div>
-        {game.turnsHistory
-          .slice(-10)
-          .reverse()
-          .map((turn, i) => {
-            return (
-              <div key={i} className="mt1">
-                <Turn
-                  game={game}
-                  turn={turn}
-                  includePlayer={true}
-                  showDrawn={game.players[turn.action.from].id !== playerId}
-                />
-              </div>
-            );
-          })}
+        {[...game.turnsHistory].reverse().map((turn, i) => {
+          return (
+            <div key={i} className="mt1">
+              <Turn
+                game={game}
+                turn={turn}
+                includePlayer={true}
+                showDrawn={game.players[turn.action.from].id !== playerId}
+              />
+            </div>
+          );
+        })}
       </div>
     );
   }
