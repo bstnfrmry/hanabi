@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import shortid from "shortid";
 
 import { useDatabase } from "../context/database";
-
 import { newGame } from "../game/actions";
 import Button from "../components/button";
 
 export default function NewGame() {
   const router = useRouter();
   const db = useDatabase();
-  const [seed, setSeed] = useState(1234);
+  const [seed, setSeed] = useState(Math.round(Math.random() * 10000));
   const [playersCount, setPlayersCount] = useState(2);
   const [multicolor, setMulticolor] = useState(false);
   const [allowRollback, setAllowRollback] = useState(true);
   const [preventLoss, setPreventLoss] = useState(true);
+
+  const PlayerCounts = [2, 3, 4, 5];
 
   async function createGame() {
     const gameId = shortid();
@@ -33,52 +35,64 @@ export default function NewGame() {
   }
 
   return (
-    <div className="pa4 bg-grey bt bg-gray-light">
-      <label>
-        Seed:
-        <input
-          type="text"
-          value={seed}
-          onChange={e => setSeed(e.target.value)}
-        />
-      </label>
-      <label>
-        Players:
-        <input
-          type="number"
-          min="2"
-          max="5"
-          step="1"
-          value={playersCount}
-          onChange={e => setPlayersCount(+e.target.value)}
-        />
-      </label>
-      <label>
-        Multicolor:
-        <input
-          type="checkbox"
-          checked={multicolor}
-          onChange={e => setMulticolor(e.target.checked)}
-        />
-      </label>
-      <label>
-        Allow rollback:
-        <input
-          type="checkbox"
-          checked={allowRollback}
-          onChange={e => setAllowRollback(e.target.checked)}
-        />
-      </label>
-      <label>
-        Prevent loss:
-        <input
-          type="checkbox"
-          checked={preventLoss}
-          onChange={e => setPreventLoss(e.target.checked)}
-        />
-      </label>
+    <>
+      <Link href="/">
+        <span className="white pointer">Home</span>
+      </Link>
+      <div className="w-100 h-100 flex justify-center items-center">
+        <div className="flex flex-column w-50 pv2 ph4 bg-grey bg-gray-light">
+          <h1>New game</h1>
+          <label className="flex justify-between items-center bb b--gray-light pb2 mb2">
+            Seed
+            <input
+              className="w3 tr"
+              type="number"
+              value={seed}
+              onChange={e => setSeed(e.target.value)}
+            />
+          </label>
+          <label className="flex justify-between items-center bb b--gray-light pb2 mb2">
+            Players
+            <select
+              className="bg-white"
+              value={playersCount}
+              onChange={e => setPlayersCount(+e.target.value)}
+            >
+              {PlayerCounts.map(count => (
+                <option value={count}>{count}</option>
+              ))}
+            </select>
+          </label>
+          <label className="flex justify-between items-center bb b--gray-light pb2 mb2">
+            Multicolor
+            <input
+              type="checkbox"
+              checked={multicolor}
+              onChange={e => setMulticolor(e.target.checked)}
+            />
+          </label>
+          <label className="flex justify-between items-center bb b--gray-light pb2 mb2">
+            Allow rollback
+            <input
+              type="checkbox"
+              checked={allowRollback}
+              onChange={e => setAllowRollback(e.target.checked)}
+            />
+          </label>
+          <label className="flex justify-between items-center bb b--gray-light pb2 mb2">
+            Prevent loss
+            <input
+              type="checkbox"
+              checked={preventLoss}
+              onChange={e => setPreventLoss(e.target.checked)}
+            />
+          </label>
 
-      <Button onClick={() => createGame()}>New game</Button>
-    </div>
+          <div className="self-end">
+            <Button onClick={() => createGame()}>New game</Button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
