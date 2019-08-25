@@ -30,7 +30,7 @@ export default ({
 
   return (
     <div
-      className="flex flex-column h-100 overflow-y-scroll"
+      className="flex flex-column h-100 overflow-y-scroll w-50"
       onClick={onNoSelectedPlayer}
     >
       <div className="pa2 pa4-l bg-gray-light flex-grow-1">
