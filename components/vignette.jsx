@@ -9,7 +9,7 @@ export default function Vignette(props) {
   return (
     <div
       className={[
-        "ba pointer flex items-center justify-center mr2 br-100 h2 w2 grow fw2",
+        "outline-main-dark ba pointer flex items-center justify-center mr2 br-100 h2 w2 grow fw2",
         type === "color"
           ? `bg-${value} b--${value}`
           : "bg-main-dark b-gray-light",

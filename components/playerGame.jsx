@@ -23,13 +23,16 @@ export default function PlayerGame(props) {
   const hand = player.hand || [];
 
   return (
-    <div>
+    <div
+      className={classnames("container bg-temple pa2 shadow-5 br2", {
+        "border-box ba bw2 b--yellow": active
+      })}
+    >
       <div
-        className={classnames("f6 f4-l fw2 tracked ttu ml1 flex items-center", {
-          fw6: active
-        })}
+        className={classnames(
+          "f6 f4-l fw1 tracked ttu ml1 flex items-center bg-wood"
+        )}
       >
-        {active && <span>>&nbsp;</span>}
         <PlayerName player={player} />
         {active && !self && !player.notified && (
           <span className="ml2 pointer" onClick={() => onNotifyPlayer(player)}>
@@ -38,8 +41,8 @@ export default function PlayerGame(props) {
         )}
       </div>
 
-      <div className="cards dib mt2 mw-100">
-        <div className="flex flex-row grow pointer">
+      <div className="flex justify-center mt2 w-100">
+        <div className="flex flex-row pointer grow">
           <PoseGroup>
             {hand.map((card, i) => (
               <CardAnimationWrapper key={card.id}>
@@ -61,9 +64,9 @@ export default function PlayerGame(props) {
         </div>
       </div>
       <style jsx>{`
-        .cards:hover {
-          background-color: var(--color-main);
-          box-shadow: 0px 0px 10px 5px var(--color-main);
+        .container:hover {
+          background-color: rgba(#f4d03f, 80%);
+          box-shadow: 0px 0px 5px 2px var(--color-yellow);
         }
       `}</style>
     </div>

@@ -11,31 +11,43 @@ import PlayerName from "./playerName";
 
 interface IActionArea {
   game: IGameState;
-  selectedArea:
-    | IPlayerSelectedArea
-    | IOwnGameSelectedArea
-    | IDiscardSelectedArea;
+  selectedArea: ISelectedArea;
   player: IPlayer;
   onCommitAction: any;
 }
 
+export type ISelectedArea =
+  | IInstructionsSelectedArea
+  | IPlayerSelectedArea
+  | IOwnGameSelectedArea
+  | IDiscardSelectedArea;
+
+interface IInstructionsSelectedArea {
+  id: string;
+  type: ActionAreaType.INSTRUCTIONS;
+}
+
 interface IPlayerSelectedArea {
+  id: string;
   type: ActionAreaType.PLAYER;
   player: IPlayer;
   cardIndex?: number;
 }
 
 interface IOwnGameSelectedArea {
+  id: string;
   type: ActionAreaType.OWNGAME;
   player: IPlayer;
   cardIndex?: number;
 }
 
 interface IDiscardSelectedArea {
+  id: string;
   type: ActionAreaType.DISCARD;
 }
 
 export enum ActionAreaType {
+  INSTRUCTIONS = "instructions",
   PLAYER = "player",
   OWNGAME = "ownGame",
   DISCARD = "discard"
@@ -59,7 +71,8 @@ export default ({
   useEffect(
     () =>
       selectCard(
-        selectedArea && selectedArea.type !== ActionAreaType.DISCARD
+        selectedArea.type === ActionAreaType.OWNGAME ||
+          selectedArea.type === ActionAreaType.PLAYER
           ? selectedArea.cardIndex
           : null
       ),
@@ -71,15 +84,15 @@ export default ({
 
   if (isGameOver(game)) {
     return (
-      <div className="ph2 bg-grey bt bg-main-dark b--main pt4 flex-grow-1 f6 f4-l fw2 tracked ttu">
+      <div className="pa1 bg-grey pt4 flex-grow-1 f6 f4-l fw2 tracked ttu">
         <p>The game is over! Your score is {game.playedCards.length} 🎉</p>
       </div>
     );
   }
 
-  if (!selectedArea) {
+  if (selectedArea.type === ActionAreaType.INSTRUCTIONS) {
     return (
-      <div className="ph2 pt2 ph4-l pt4-l bt bg-main-dark b--main flex-grow-1 f6 f4-l fw2 lh-copy">
+      <div className="flex-grow-1 f6 f4-l fw2 lh-copy">
         {!isCurrentPlayer && (
           <div className="ttu tracked">
             It's <PlayerName player={currentPlayer} />
@@ -93,8 +106,9 @@ export default ({
             <div>Play or discard by tapping on your own game</div>
           </div>
         )}
-        <hr />
-        <div className="ttu tracked">Last actions:</div>
+        {game.turnsHistory.length > 0 && (
+          <div className="ttu tracked mt3">Last actions:</div>
+        )}
         {[...game.turnsHistory].reverse().map((turn, i) => {
           return (
             <div key={i} className="mt1">
@@ -113,7 +127,7 @@ export default ({
 
   if (selectedArea.type === ActionAreaType.DISCARD) {
     return (
-      <div className="pa2 pa4-l bg-main-dark bt b--main flex flex-column flex-grow-1">
+      <div className="flex flex-column flex-grow-1">
         <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1">
           Discarded cards
         </div>
@@ -126,7 +140,7 @@ export default ({
     const { player } = selectedArea;
 
     return (
-      <div className="pa2 pa4-l bg-main-dark bt b--main flex flex-column flex-grow-1">
+      <div className="flex flex-column flex-grow-1">
         <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2">
           <PlayerName player={player} />
           's game
@@ -187,8 +201,8 @@ export default ({
     const hasSelectedCard = selectedCard !== null;
 
     return (
-      <div className="pa2 pa4-l bg-main-dark bt b--main flex flex-column flex-grow-1">
-        <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 gray mb2">
+      <div className="flex flex-column flex-grow-1">
+        <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2">
           Your game
         </div>
         <div className="flex flex-row pb2">
@@ -209,7 +223,7 @@ export default ({
         </div>
         {isCurrentPlayer && (
           <>
-            <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2 gray mt3">
+            <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2 mt3">
               {hasSelectedCard && (
                 <>Card {PositionMap[selectedCard]} selected</>
               )}

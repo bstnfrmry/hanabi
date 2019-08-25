@@ -5,7 +5,7 @@ function Token({ color, amount }) {
     <>
       <div
         className={[
-          "flex items-center justify-center mr2 br-100 h2 w2 h3-l w3-l fw2 f5 f3-l white",
+          "ba flex items-center justify-center mr2 br-100 h2 w2 h3-l w3-l fw2 f5 f3-l white",
           `bg-${color}`,
           `b--${color}`
         ].join(" ")}

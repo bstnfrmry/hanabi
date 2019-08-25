@@ -11,7 +11,7 @@ export default function Hint(props) {
       {hint !== 0 && (
         <div
           className={classnames(
-            "pointer flex items-center justify-center br-100 h-100 w-100 fw2 white",
+            "outline-main-dark pointer flex items-center justify-center br-100 h-100 w-100 fw2 white",
             { [`bg-${color}`]: type === "color" },
             { [`ba bw1  b--${color}`]: type === "color" && hint === 2 },
             { [`ba`]: type === "number" && hint === 2 }

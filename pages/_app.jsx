@@ -6,6 +6,7 @@ import { DatabaseProvider, setupDatabase } from "../hooks/database";
 
 import "../styles/tachyons.css";
 import "../styles/style.css";
+import "../styles/patterns.css";
 
 export default class Hanabi extends App {
   constructor(props) {
@@ -44,7 +45,7 @@ export default class Hanabi extends App {
         </Head>
         <Container>
           <DatabaseProvider value={this.database}>
-            <div className="aspect-ratio--object">
+            <div className="aspect-ratio--object bg-stone">
               <Component {...pageProps} />
             </div>
           </DatabaseProvider>

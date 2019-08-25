@@ -24,7 +24,7 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
   }
 
   return (
-    <div className="pa3 bg-grey bt bg-main-dark">
+    <div className="pa3 bg-grey bt">
       {player && (
         <h2>
           Joined as <PlayerName player={player} />
@@ -40,6 +40,7 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
           ref={inputRef}
           type="text"
           value={shareLink}
+          readOnly
         />
         <Button onClick={copy}>Copy</Button>
       </div>
@@ -63,8 +64,10 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
             value={emoji}
             onChange={e => setEmoji(e.target.value)}
           >
-            {availableEmojis.map(e => (
-              <option value={e}>{e}</option>
+            {availableEmojis.map((emoji, i) => (
+              <option key={i} value={emoji}>
+                {emoji}
+              </option>
             ))}
           </select>
           <input

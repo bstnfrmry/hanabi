@@ -1,7 +1,6 @@
 import React from "react";
 import PlayedCards from "./playedCards";
 import TokenSpace from "./tokenSpace";
-import DrawPile from "./drawPile";
 import Button from "./button";
 import IGameState from "../game/state";
 import {
@@ -9,11 +8,13 @@ import {
   getMaximumScore,
   getMaximumPossibleScore
 } from "../game/actions";
+import { CardWrapper } from "./card";
 
 interface IGameBoard {
   game: IGameState;
   onSelectDiscard: Function;
   onMenuClick: Function;
+  onLogsClick: Function;
   onRollback: Function;
 }
 
@@ -21,10 +22,10 @@ export default function GameBoard({
   game,
   onSelectDiscard,
   onMenuClick,
+  onLogsClick,
   onRollback
 }: IGameBoard) {
   const playedCards = game.playedCards || [];
-  const discardPile = game.discardPile || [];
   const history = game.history || [];
 
   const score = getScore(game);
@@ -32,8 +33,19 @@ export default function GameBoard({
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="pa2 pa4-l bg-main-dark">
-      <div className="flex flex-column-l justify-between ">
+    <div className="pa2 pa3-l bg-temple pa2 shadow-5 br2">
+      <div className="f6 f4-l ttu">
+        Score: {score} / {maxPossibleScore}
+        {maxScore !== maxPossibleScore && (
+          <span className="strike ml1 gray">{maxScore}</span>
+        )}
+        {game.actionsLeft <= game.options.playersCount && (
+          <div className="ml2 inline-flex">
+            ·<span className="red ml2">{game.actionsLeft} turns left</span>
+          </div>
+        )}
+      </div>
+      <div className="flex flex-column-l justify-between mt1">
         <div className="flex flex-column">
           <PlayedCards
             cards={playedCards}
@@ -45,31 +57,26 @@ export default function GameBoard({
             noteTokens={game.tokens.hints}
             stormTokens={game.tokens.strikes}
           />
-          <DrawPile cards={game.drawPile} />
-
+          <div className="mr2">
+            <CardWrapper color="light-silver">
+              {game.drawPile.length}
+            </CardWrapper>
+          </div>
+          <div className="pointer" onClick={() => onSelectDiscard()}>
+            <CardWrapper color="light-silver">
+              {game.discardPile.length}
+            </CardWrapper>
+          </div>
           <div className="flex ml2">
-            <Button onClick={onSelectDiscard}>
-              Discard&nbsp;({discardPile.length})
-            </Button>
             {game.options.allowRollback && (
               <Button disabled={!history.length} onClick={onRollback}>
                 ⟲
               </Button>
             )}
+            <Button onClick={onLogsClick}>?</Button>
             <Button onClick={onMenuClick}>☰</Button>
           </div>
         </div>
-      </div>
-      <div className="ma1 f5 f4-l">
-        Score: {score} / {maxPossibleScore}
-        {maxScore !== maxPossibleScore && (
-          <span className="strike ml1 gray">{maxScore}</span>
-        )}
-        {game.actionsLeft <= game.options.playersCount && (
-          <div className="ml2 inline-flex">
-            ·<span className="red ml2">{game.actionsLeft} turns left</span>
-          </div>
-        )}
       </div>
     </div>
   );

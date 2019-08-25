@@ -103,7 +103,7 @@ export default function Card(props) {
       onClick={onClick}
     >
       <div
-        className={classnames("gray", {
+        className={classnames("white outline-main-dark", {
           f7: size === "small"
         })}
       >

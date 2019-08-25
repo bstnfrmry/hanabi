@@ -7,7 +7,6 @@
   --color-blue: #5dade2;
   --color-yellow: #f4d03f;
   --color-green: #52be80;
-  --color-multicolor: #af7ac5;
 
   --color-hints: rgb(0, 61, 181);
   --color-strikes: rgb(192, 21, 21);
@@ -19,7 +18,6 @@ body {
   font-family: -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell,
     Helvetica Neue;
   color: #f0f0f0;
-  background-color: var(--color-main-dark);
   font-family: "Kalam", cursive;
 }
 
@@ -29,6 +27,10 @@ body {
 
 .bg-main {
   background-color: var(--color-main);
+}
+
+.main-dark {
+  color: var(--color-main-dark);
 }
 
 .b--main {
@@ -60,7 +62,31 @@ body {
 }
 
 .bg-multicolor {
-  background-color: var(--color-multicolor);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-yellow),
+    var(--color-blue),
+    var(--color-red),
+    var(--color-green),
+    var(--color-red),
+    var(--color-blue),
+    var(--color-yellow)
+  );
+  background-size: 300% 300%;
+
+  animation: MovingBackground 60s ease infinite;
+}
+
+@keyframes MovingBackground {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
 }
 
 .bg-hints {
@@ -99,16 +125,18 @@ body {
   border-color: color-mod(var(--color-green) shade(20%));
 }
 
-.b--multicolor {
-  border-color: color-mod(var(--color-multicolor) shade(20%));
+.b--hints {
+  border-color: color-mod(var(--color-hints) shade(30%));
 }
 
-.b--hints {
-  border-color: color-mod(var(--color-hints) shade(20%));
+.outline-main-dark {
+  text-shadow: -1px -1px 0 var(--color-main-dark),
+    1px -1px 0 var(--color-main-dark), -1px 1px 0 var(--color-main-dark),
+    1px 1px 0 var(--color-main-dark);
 }
 
 .b--strikes {
-  border-color: color-mod(var(--color-strikes) shade(20%));
+  border-color: color-mod(var(--color-strikes) shade(30%));
 }
 
 .b--gray-light {
