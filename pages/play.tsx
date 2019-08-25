@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import shortid from "shortid";
 
-import IGameState, { fillEmptyValues, ITurn } from "~/game/state";
+import IGameState, { fillEmptyValues, ITurn, IPlayer } from "~/game/state";
 import {
   joinGame,
   commitAction,
@@ -120,6 +120,22 @@ export default function Play() {
     await db.ref(`/games/${gameId}`).set(newState);
   }
 
+  function onImpersonate(player: IPlayer) {
+    if (
+      !window.confirm(
+        `This will reveal your deck. Continue to ${player.name}'s side ?`
+      )
+    ) {
+      return;
+    }
+
+    router.push({
+      pathname: "/play",
+      query: { gameId, playerId: player.id }
+    });
+    onCloseArea();
+  }
+
   async function onRollback() {
     await db.ref(`/games/${gameId}`).set(getLastState(game));
   }
@@ -230,6 +246,7 @@ export default function Play() {
                     onCommitAction={onCommitAction}
                     onSelectDiscard={onSelectDiscard}
                     onCloseArea={onCloseArea}
+                    onImpersonate={onImpersonate}
                   />
                 )}
               </Box>

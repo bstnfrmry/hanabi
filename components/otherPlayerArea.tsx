@@ -12,10 +12,11 @@ interface Props {
   player: IPlayer;
   onCommitAction: Function;
   onCloseArea: Function;
+  onImpersonate: Function;
 }
 
 export default function OtherPlayerArea(props: Props) {
-  const { player, onCommitAction, onCloseArea } = props;
+  const { player, onCommitAction, onCloseArea, onImpersonate } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -28,11 +29,12 @@ export default function OtherPlayerArea(props: Props) {
   return (
     <div className="flex flex-column flex-grow-1">
       <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1 mb2">
-        <a onClick={() => onCloseArea()}>
+        <a onClick={() => onCloseArea()} className="flex-grow-1">
           <PlayerName player={player} />
           's game
           <span className="ml2">&times;</span>
         </a>
+        <a onClick={() => onImpersonate(player)}>🕵🏻‍♀️</a>
       </div>
       <div className="flex flex-row pb2">
         {player.hand.map((card, i) => (
