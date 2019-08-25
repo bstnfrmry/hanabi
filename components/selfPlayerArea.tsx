@@ -6,12 +6,13 @@ import Button from "~/components/ui/button";
 import Card, { ICardContext, PositionMap, ICardSize } from "~/components/card";
 
 interface Props {
-  onCommitAction: Function;
   cardIndex?: number;
+  onCommitAction: Function;
+  onCloseArea: Function;
 }
 
 export default function SelfPlayerArea(props: Props) {
-  const { onCommitAction, cardIndex } = props;
+  const { onCommitAction, cardIndex, onCloseArea } = props;
 
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
@@ -22,7 +23,10 @@ export default function SelfPlayerArea(props: Props) {
   return (
     <div className="flex flex-column flex-grow-1">
       <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1 mb2">
-        Your game
+        <a onClick={() => onCloseArea()}>
+          Your game
+          <span className="ml2">&times;</span>
+        </a>
       </div>
       <div className="flex flex-row pb2">
         {selfPlayer.hand.map((card, i) => (

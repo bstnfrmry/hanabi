@@ -167,7 +167,7 @@ export default function Play() {
     });
   }
 
-  function onCloseDiscard() {
+  function onCloseArea() {
     selectArea({
       id: "instructions",
       type: ActionAreaType.INSTRUCTIONS
@@ -229,7 +229,7 @@ export default function Play() {
                     selectedArea={selectedArea}
                     onCommitAction={onCommitAction}
                     onSelectDiscard={onSelectDiscard}
-                    onCloseDiscard={onCloseDiscard}
+                    onCloseArea={onCloseArea}
                   />
                 )}
               </Box>

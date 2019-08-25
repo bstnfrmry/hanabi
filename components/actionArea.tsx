@@ -50,16 +50,11 @@ interface Props {
   selectedArea: ISelectedArea;
   onCommitAction: Function;
   onSelectDiscard: Function;
-  onCloseDiscard: Function;
+  onCloseArea: Function;
 }
 
 export default function ActionArea(props: Props) {
-  const {
-    selectedArea,
-    onCommitAction,
-    onSelectDiscard,
-    onCloseDiscard
-  } = props;
+  const { selectedArea, onCommitAction, onSelectDiscard, onCloseArea } = props;
 
   const game = useGame();
 
@@ -76,14 +71,15 @@ export default function ActionArea(props: Props) {
   }
 
   if (selectedArea.type === ActionAreaType.DISCARD) {
-    return <DiscardArea onCloseDiscard={onCloseDiscard} />;
+    return <DiscardArea onCloseArea={onCloseArea} />;
   }
 
   if (selectedArea.type === ActionAreaType.OTHER_PLAYER) {
     return (
       <OtherPlayerArea
-        onCommitAction={onCommitAction}
         player={selectedArea.player}
+        onCommitAction={onCommitAction}
+        onCloseArea={onCloseArea}
       />
     );
   }
@@ -91,8 +87,9 @@ export default function ActionArea(props: Props) {
   if (selectedArea.type === ActionAreaType.SELF_PLAYER) {
     return (
       <SelfPlayerArea
-        onCommitAction={onCommitAction}
         cardIndex={selectedArea.cardIndex}
+        onCommitAction={onCommitAction}
+        onCloseArea={onCloseArea}
       />
     );
   }
