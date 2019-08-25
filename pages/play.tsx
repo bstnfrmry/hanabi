@@ -167,6 +167,13 @@ export default function Play() {
     });
   }
 
+  function onCloseDiscard() {
+    selectArea({
+      id: "instructions",
+      type: ActionAreaType.INSTRUCTIONS
+    });
+  }
+
   if (!game) {
     return <LoadingScreen />;
   }
@@ -181,7 +188,7 @@ export default function Play() {
               {lastTurn && (
                 <div
                   onClick={() => setLastTurn(null)}
-                  className="flex justify-center bg-white main-dark br4 shadow-4 b--yellow ba bw2 f3 pa3"
+                  className="flex justify-center bg-white main-dark br4 shadow-4 b--yellow ba bw2 f4 pa2"
                 >
                   <Turn
                     includePlayer={true}
@@ -221,6 +228,8 @@ export default function Play() {
                   <ActionArea
                     selectedArea={selectedArea}
                     onCommitAction={onCommitAction}
+                    onSelectDiscard={onSelectDiscard}
+                    onCloseDiscard={onCloseDiscard}
                   />
                 )}
               </Box>

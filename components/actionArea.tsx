@@ -49,27 +49,34 @@ export type ISelectedArea =
 interface Props {
   selectedArea: ISelectedArea;
   onCommitAction: Function;
+  onSelectDiscard: Function;
+  onCloseDiscard: Function;
 }
 
 export default function ActionArea(props: Props) {
-  const { selectedArea, onCommitAction } = props;
+  const {
+    selectedArea,
+    onCommitAction,
+    onSelectDiscard,
+    onCloseDiscard
+  } = props;
 
   const game = useGame();
 
   if (isGameOver(game)) {
     return (
-      <div className="pa1 bg-grey pt4 flex-grow-1 f6 f4-l fw2 tracked ttu">
+      <div className="pa1 bg-grey pt4 flex-grow-1 f7 f4-l ttu">
         <p>The game is over! Your score is {game.playedCards.length} 🎉</p>
       </div>
     );
   }
 
   if (selectedArea.type === ActionAreaType.INSTRUCTIONS) {
-    return <InstructionsArea />;
+    return <InstructionsArea onSelectDiscard={onSelectDiscard} />;
   }
 
   if (selectedArea.type === ActionAreaType.DISCARD) {
-    return <DiscardArea />;
+    return <DiscardArea onCloseDiscard={onCloseDiscard} />;
   }
 
   if (selectedArea.type === ActionAreaType.OTHER_PLAYER) {

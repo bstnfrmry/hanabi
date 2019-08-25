@@ -41,7 +41,7 @@ export default function Lobby(props: Props) {
     <div className="ph3 pv2 bg-grey">
       {selfPlayer && (
         <h2>
-          Joined as <PlayerName player={selfPlayer} />
+          Joined as <PlayerName player={selfPlayer} explicit={true} />
         </h2>
       )}
       <div className="flex items-center">
@@ -62,7 +62,7 @@ export default function Lobby(props: Props) {
       <h2>Players:</h2>
       <div className="flex flex-column">
         {game.players.map((player, i) => (
-          <PlayerName key={i} player={player} />
+          <PlayerName key={i} player={player} explicit={true} />
         ))}
       </div>
       {canJoin && (

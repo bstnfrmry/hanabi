@@ -21,7 +21,7 @@ export default function SelfPlayerArea(props: Props) {
 
   return (
     <div className="flex flex-column flex-grow-1">
-      <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2">
+      <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1 mb2">
         Your game
       </div>
       <div className="flex flex-row pb2">
@@ -41,7 +41,7 @@ export default function SelfPlayerArea(props: Props) {
       </div>
       {selfPlayer === currentPlayer && (
         <>
-          <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1 mb2 mt3">
+          <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1 mb2 mt3">
             {hasSelectedCard && <>Card {PositionMap[selectedCard]} selected</>}
             {!hasSelectedCard && "Select a card"}
           </div>

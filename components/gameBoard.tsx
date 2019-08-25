@@ -30,7 +30,7 @@ export default function GameBoard(props: Props) {
     <Box className="mb1">
       <div className="flex justify-between items-endmt1">
         <div className="flex flex-column">
-          <div className="f6 f4-l ttu">
+          <div className="f7 f4-l ttu">
             Score: {score} / {maxPossibleScore}
             {maxScore !== maxPossibleScore && (
               <span className="strike ml1 gray">{maxScore}</span>

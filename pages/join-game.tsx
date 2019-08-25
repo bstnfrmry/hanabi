@@ -43,7 +43,7 @@ export default function JoinGame() {
       <Box className="w-50">
         {!games.length && (
           <>
-            <h1 className="mt0 ttu">No available room</h1>
+            <h1 className="ttu">No available room</h1>
             <Button className="ma2" onClick={() => router.push("/new-game")}>
               Create a room
             </Button>
@@ -51,7 +51,7 @@ export default function JoinGame() {
         )}
         {games.length > 0 && (
           <>
-            <h1 className="mt0 ttu">Available rooms</h1>
+            <h1 className="ttu">Available rooms</h1>
             {games.map(game => (
               <div className="mb3" key={game.id}>
                 <Button onClick={() => router.push(`/play?gameId=${game.id}`)}>
