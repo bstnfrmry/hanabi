@@ -123,7 +123,7 @@ export default function Play() {
   function onImpersonate(player: IPlayer) {
     if (
       !window.confirm(
-        `This will reveal your deck. Continue to ${player.name}'s side ?`
+        `This will reveal your hand.\nContinue to ${player.name}'s side?`
       )
     ) {
       return;
