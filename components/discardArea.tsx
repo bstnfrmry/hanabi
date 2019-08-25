@@ -1,6 +1,43 @@
+import React from "react";
+import classnames from "classnames";
+import { groupBy, sortBy } from "lodash";
+
+import { ICard, IColor } from "~/game/state";
+import { getColors } from "~/game/actions";
 import { useGame } from "~/hooks/game";
 
-import DiscardPile from "~/components/discardPile";
+import Card, { CardWrapper, ICardContext, ICardSize } from "~/components/card";
+
+interface CardPileProps {
+  cards: ICard[];
+  color: IColor;
+}
+
+function CardPile(props: CardPileProps) {
+  const { cards, color } = props;
+
+  if (!cards.length) {
+    return (
+      <CardWrapper color={color} size={ICardSize.MEDIUM} className="mr1" />
+    );
+  }
+
+  const sortedCards = sortBy(cards, card => card.number);
+
+  return (
+    <div className="flex flex-column">
+      {sortedCards.map((card, i) => (
+        <Card
+          key={i}
+          card={card}
+          context={ICardContext.DISCARDED}
+          size={ICardSize.MEDIUM}
+          className={classnames("mr1", { "nt2 nt3-l": i > 0 })}
+        />
+      ))}
+    </div>
+  );
+}
 
 interface Props {
   onCloseArea: Function;
@@ -11,6 +48,11 @@ export default function DiscardArea(props: Props) {
 
   const game = useGame();
 
+  const byColor = groupBy(
+    sortBy(game.discardPile, card => card.number),
+    card => card.color
+  );
+
   return (
     <div className="flex flex-column flex-grow-1">
       <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1">
@@ -19,7 +61,11 @@ export default function DiscardArea(props: Props) {
           <span className="ml2">&times;</span>
         </a>
       </div>
-      <DiscardPile cards={game.discardPile} />
+      <div className="flex w-100">
+        {getColors(game).map((color, i) => (
+          <CardPile key={i} cards={byColor[color] || []} color={color} />
+        ))}
+      </div>
     </div>
   );
 }
