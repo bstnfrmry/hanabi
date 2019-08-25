@@ -26,7 +26,7 @@ export default function PlayerGame(props: Props) {
 
   return (
     <Box
-      className={classnames({
+      className={classnames("relative", {
         "border-box ba bw2": active
       })}
       borderColor={active ? "yellow" : "main-dark"}
@@ -34,7 +34,10 @@ export default function PlayerGame(props: Props) {
       <div className="f7 f4-l fw1 ttu ml1 flex items-center">
         <PlayerName player={player} explicit={true} className="w-100" />
         {active && !self && !player.notified && (
-          <span className="ml2 pointer" onClick={() => onNotifyPlayer(player)}>
+          <span
+            className="absolute right-0 mr1"
+            onClick={() => onNotifyPlayer(player)}
+          >
             🔔
           </span>
         )}
