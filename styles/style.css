@@ -90,48 +90,13 @@ body {
 }
 
 .bg-multicolor {
-  position: relative;
-  overflow: hidden;
-  z-index: 0;
-}
-
-.bg-multicolor:before {
-  content: "";
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  top: -50%;
-  left: -50%;
-  z-index: -1;
-  background: linear-gradient(
-    to bottom right,
-    var(--color-yellow),
-    var(--color-blue),
-    var(--color-red),
-    var(--color-green),
-    var(--color-red),
-    var(--color-blue),
-    var(--color-yellow)
+  background: conic-gradient(
+    var(--color-white) 0deg 72deg,
+    var(--color-blue) 72deg 144deg,
+    var(--color-green) 144deg 216deg,
+    var(--color-red) 216deg 288deg,
+    var(--color-yellow) 288deg 360deg
   );
-
-  background-size: 200% 200%;
-
-  animation: MovingBackground 120s ease infinite;
-}
-
-@keyframes MovingBackground {
-  0% {
-    transform: rotate(0deg);
-    background-position: 0% 0%;
-  }
-  50% {
-    transform: rotate(180deg);
-    background-position: 100% 100%;
-  }
-  100% {
-    transform: rotate(360deg);
-    background-position: 0% 0%;
-  }
 }
 
 .bg-hints {
