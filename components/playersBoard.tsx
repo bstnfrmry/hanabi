@@ -1,14 +1,16 @@
 import React from "react";
-import PlayerGame from "./playerGame";
 import { range } from "lodash";
-import { useGame, useSelfPlayer, useCurrentPlayer } from "../hooks/game";
+
+import { useGame, useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
+
+import PlayerGame from "~/components/playerGame";
 
 interface IPlayersBoard {
-  onSelectPlayer: any;
+  onSelectPlayer: Function;
   onNotifyPlayer: Function;
 }
 
-export default (props: IPlayersBoard) => {
+export default function PlayersBoard(props: IPlayersBoard) {
   const { onSelectPlayer, onNotifyPlayer } = props;
 
   const game = useGame();
@@ -48,4 +50,4 @@ export default (props: IPlayersBoard) => {
       )}
     </div>
   );
-};
+}

@@ -36,6 +36,7 @@ interface ISelfPlayerSelectedArea {
   id: string;
   type: ActionAreaType.SELF_PLAYER;
   player: IPlayer;
+  cardIndex?: number;
 }
 
 interface IDiscardSelectedArea {
@@ -81,6 +82,11 @@ export default function ActionArea(props: IActionArea) {
   }
 
   if (selectedArea.type === ActionAreaType.SELF_PLAYER) {
-    return <SelfPlayerArea onCommitAction={onCommitAction} />;
+    return (
+      <SelfPlayerArea
+        onCommitAction={onCommitAction}
+        cardIndex={selectedArea.cardIndex}
+      />
+    );
   }
 }

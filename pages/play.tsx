@@ -34,7 +34,7 @@ export default function Play() {
   });
   const { gameId, playerId } = router.query;
 
-  const player =
+  const selfPlayer =
     game && game.players && game.players.find(p => p.id === playerId);
 
   useEffect(() => {
@@ -53,15 +53,15 @@ export default function Play() {
   }, [gameId]);
 
   useEffect(() => {
-    if (!player) {
+    if (!selfPlayer) {
       return;
     }
 
-    const ref = db.ref(`/games/${gameId}/players/${player.index}/notified`);
+    const ref = db.ref(`/games/${gameId}/players/${selfPlayer.index}/notified`);
     ref.on("value", event => {
       const notified = event.val();
       if (notified) {
-        if (notified !== player.notified) {
+        if (notified !== selfPlayer.notified) {
           new Audio(`/static/sounds/bell.mp3`).play();
         }
 
@@ -143,20 +143,22 @@ export default function Play() {
 
   return (
     <GameContext.Provider value={game}>
-      <SelfPlayerContext.Provider value={player}>
+      <SelfPlayerContext.Provider value={selfPlayer}>
         <CurrentPlayerContext.Provider value={game.players[game.currentPlayer]}>
           <div className="w-100 h-100">
             <div className="flex flex-row h-100">
               <PlayersBoard
-                onSelectPlayer={(p, cardIndex) => {
-                  const self = p.id === player.id;
+                onSelectPlayer={(player, cardIndex) => {
+                  const self = player.id === selfPlayer.id;
 
                   onSelectArea({
-                    id: self ? `game-${p.id}-${cardIndex}` : `game-${p.id}`,
+                    id: self
+                      ? `game-${player.id}-${cardIndex}`
+                      : `game-${player.id}`,
                     type: self
                       ? ActionAreaType.SELF_PLAYER
                       : ActionAreaType.OTHER_PLAYER,
-                    player: p,
+                    player,
                     cardIndex
                   });
                 }}

@@ -1,17 +1,10 @@
 import React from "react";
 import Button from "./button";
 import classnames from "classnames";
-import posed, { PoseGroup } from "react-pose";
-
-import PlayerName from "./playerName";
-import Card, { CardContext } from "./card";
 import { IPlayer } from "../game/state";
-import { useGame } from "../hooks/game";
 
-const CardAnimationWrapper = posed.div({
-  enter: { opacity: 1, y: 0, transition: { duration: 1000 } },
-  exit: { opacity: 0, y: 10000, transition: { duration: 1000 } }
-});
+import PlayerName from "~/components/playerName";
+import Card, { CardContext } from "~/components/card";
 
 interface IPlayerGame {
   player: IPlayer;
@@ -29,8 +22,6 @@ export default function PlayerGame(props: IPlayerGame) {
     onSelectPlayer,
     onNotifyPlayer
   } = props;
-
-  const game = useGame();
 
   return (
     <div
@@ -59,7 +50,6 @@ export default function PlayerGame(props: IPlayerGame) {
               card={card}
               position={i}
               hidden={self}
-              multicolorOption={game.options.multicolor}
               size="medium"
               context={
                 self ? CardContext.SELF_PLAYER : CardContext.OTHER_PLAYER

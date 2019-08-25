@@ -5,17 +5,18 @@ import { useSelfPlayer, useGame, useCurrentPlayer } from "~/hooks/game";
 import Button from "~/components/button";
 import Card, { CardContext, PositionMap } from "~/components/card";
 
-interface ISelfGameArea {
+interface ISelfPlayerArea {
   onCommitAction: Function;
+  cardIndex?: number;
 }
 
-export default function SelfPlayerArea(props: ISelfGameArea) {
-  const { onCommitAction } = props;
+export default function SelfPlayerArea(props: ISelfPlayerArea) {
+  const { onCommitAction, cardIndex } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
-  const [selectedCard, selectCard] = useState<number>(null);
+  const [selectedCard, selectCard] = useState<number>(cardIndex);
 
   const hasSelectedCard = selectedCard !== null;
 
