@@ -21,25 +21,25 @@ body {
   font-family: "Kalam", cursive;
 }
 
-.bg-main-dark {
-  background-color: var(--color-main-dark);
-}
-
-.bg-main {
-  background-color: var(--color-main);
-}
+/**
+ * Text colors
+ */
 
 .main-dark {
   color: var(--color-main-dark);
 }
 
-.b--main {
-  border-color: var(--color-main);
-}
-
 /**
  * Background colors
  */
+
+.bg-main {
+  background-color: var(--color-main);
+}
+
+.bg-main-dark {
+  background-color: var(--color-main-dark);
+}
 
 .bg-white {
   background: linear-gradient(
@@ -190,18 +190,22 @@ body {
   border-color: color-mod(var(--color-hints) shade(30%));
 }
 
-.outline-main-dark {
-  text-shadow: -1px -1px 0 var(--color-main-dark),
-    1px -1px 0 var(--color-main-dark), -1px 1px 0 var(--color-main-dark),
-    1px 1px 0 var(--color-main-dark);
-}
-
 .b--strikes {
   border-color: color-mod(var(--color-strikes) shade(30%));
 }
 
 .b--gray-light {
   border-color: color-mod(var(--color-gray-light) shade(20%));
+}
+
+.b--main {
+  border-color: var(--color-main);
+}
+
+.outline-main-dark {
+  text-shadow: -1px -1px 0 var(--color-main-dark),
+    1px -1px 0 var(--color-main-dark), -1px 1px 0 var(--color-main-dark),
+    1px 1px 0 var(--color-main-dark);
 }
 
 /**
