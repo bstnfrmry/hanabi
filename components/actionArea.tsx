@@ -4,10 +4,10 @@ import { IPlayer } from "~/game/state";
 import { isGameOver } from "~/game/actions";
 import { useGame } from "~/hooks/game";
 
-import InstructionsArea from "~/components/areas/instructionsArea";
-import DiscardArea from "~/components/areas/discardArea";
-import OtherPlayerArea from "~/components/areas/otherPlayerArea";
-import SelfPlayerArea from "~/components/areas/selfPlayerArea";
+import InstructionsArea from "~/components/instructionsArea";
+import DiscardArea from "~/components/discardArea";
+import OtherPlayerArea from "~/components/otherPlayerArea";
+import SelfPlayerArea from "~/components/selfPlayerArea";
 
 interface IInstructionsSelectedArea {
   id: string;

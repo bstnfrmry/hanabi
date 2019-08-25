@@ -6,6 +6,7 @@ import { setupDatabase, DatabaseContext } from "~/hooks/database";
 
 import "../styles/tachyons.css";
 import "../styles/style.css";
+import "../styles/fonts.css";
 
 export default class Hanabi extends App {
   database: firebase.database.Database;
@@ -32,10 +33,6 @@ export default class Hanabi extends App {
     return (
       <>
         <Head>
-          <link
-            href="https://fonts.googleapis.com/css?family=Kalam&display=swap"
-            rel="stylesheet"
-          />
           <link
             rel="shortcut icon"
             href="/static/favicon.ico"

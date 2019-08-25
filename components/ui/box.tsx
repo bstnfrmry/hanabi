@@ -11,7 +11,10 @@ export default function Box(props: Props) {
 
   return (
     <div
-      className={classNames("bg-main-dark pa2 pa3-l shadow-5 br2", className)}
+      className={classNames(
+        "bg-main-dark pv3 ph2 ph3-l shadow-5 br3 ba bw2 b--white",
+        className
+      )}
     >
       {children}
     </div>

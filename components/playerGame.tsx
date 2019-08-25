@@ -31,7 +31,7 @@ export default function PlayerGame(props: Props) {
       })}
     >
       <div className="f6 f4-l fw1 tracked ttu ml1 flex items-center">
-        <PlayerName player={player} />
+        <PlayerName player={player} explicit={true} />
         {active && !self && !player.notified && (
           <span className="ml2 pointer" onClick={() => onNotifyPlayer(player)}>
             🔔

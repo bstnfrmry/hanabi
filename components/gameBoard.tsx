@@ -15,12 +15,11 @@ import Box from "~/components/ui/box";
 interface Props {
   onSelectDiscard: Function;
   onMenuClick: Function;
-  onLogsClick: Function;
   onRollback: Function;
 }
 
 export default function GameBoard(props: Props) {
-  const { onSelectDiscard, onMenuClick, onLogsClick, onRollback } = props;
+  const { onSelectDiscard, onMenuClick, onRollback } = props;
 
   const game = useGame();
   const score = getScore(game);
@@ -28,7 +27,7 @@ export default function GameBoard(props: Props) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <Box className="mb2 mb3-l">
+    <Box className="mb2">
       <div className="f6 f4-l ttu">
         Score: {score} / {maxPossibleScore}
         {maxScore !== maxPossibleScore && (
@@ -82,7 +81,6 @@ export default function GameBoard(props: Props) {
                 ⟲
               </Button>
             )}
-            <Button onClick={onLogsClick}>?</Button>
             <Button onClick={onMenuClick}>☰</Button>
           </div>
         </div>

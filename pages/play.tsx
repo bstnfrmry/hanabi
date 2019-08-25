@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import shortid from "shortid";
 
-import IGameState, { fillEmptyValues } from "~/game/state";
+import IGameState, { fillEmptyValues, ITurn } from "~/game/state";
 import {
   joinGame,
   commitAction,
@@ -22,37 +22,50 @@ import Lobby from "~/components/lobby";
 import ActionArea, {
   ActionAreaType,
   ISelectedArea
-} from "~/components/areas/actionArea";
+} from "~/components/actionArea";
+import LoadingScreen from "~/components/loadingScreen";
 import Box from "~/components/ui/box";
+import Turn from "~/components/turn";
 
 export default function Play() {
   const db = useDatabase();
   const router = useRouter();
+  const [lastTurn, setLastTurn] = useState<ITurn>(null);
   const [game, setGame] = useState<IGameState>(null);
   const [selectedArea, selectArea] = useState<ISelectedArea>({
     id: "instructions",
     type: ActionAreaType.INSTRUCTIONS
   });
   const { gameId, playerId } = router.query;
+  const selfPlayer = game && game.players.find(p => p.id === playerId);
 
-  const selfPlayer =
-    game && game.players && game.players.find(p => p.id === playerId);
-
+  /**
+   * Load game from database
+   */
   useEffect(() => {
     db.ref(`/games/${gameId}`).on("value", event => {
       setGame(fillEmptyValues(event.val()));
     });
   }, [gameId, playerId]);
 
+  /**
+   * Reset the selected area when the turn changes - remove
+   */
   useEffect(() => {
-    db.ref(`/games/${gameId}/currentPlayer`).on("value", event => {
-      selectArea({
-        id: "instructions",
-        type: ActionAreaType.INSTRUCTIONS
-      });
+    let timeout;
+    db.ref(`/games/${gameId}/turnsHistory`).on("child_added", event => {
+      setLastTurn(event.val());
+
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+      timeout = setTimeout(() => setLastTurn(null), 10000);
     });
   }, [gameId]);
 
+  /**
+   * Handle notification sounds
+   */
   useEffect(() => {
     if (!selfPlayer) {
       return;
@@ -72,10 +85,6 @@ export default function Play() {
       }
     });
   }, [gameId, playerId]);
-
-  if (!game) {
-    return "Loading";
-  }
 
   async function onJoinGame(player) {
     const playerId = shortid();
@@ -114,22 +123,19 @@ export default function Play() {
     await db.ref(`/games/${gameId}`).set(getLastState(game));
   }
 
+  async function onNotifyPlayer(player) {
+    await db.ref(`/games/${gameId}/players/${player.index}/notified`).set(true);
+  }
+
   function onMenuClick() {
     if (window.confirm("Back to menu?")) {
       router.push("/");
     }
   }
 
-  function onLogsClick() {
-    selectArea({
-      id: "instructions",
-      type: ActionAreaType.INSTRUCTIONS
-    });
-  }
-
-  async function onNotifyPlayer(player) {
-    await db.ref(`/games/${gameId}/players/${player.index}/notified`).set(true);
-  }
+  /*
+   * Area management functions
+   */
 
   function onSelectArea(area: ISelectedArea) {
     if (area.id === selectedArea.id) {
@@ -142,53 +148,78 @@ export default function Play() {
     selectArea(area);
   }
 
+  function onSelectPlayer(player, cardIndex) {
+    const self = player.id === selfPlayer.id;
+
+    onSelectArea({
+      id: self ? `game-${player.id}-${cardIndex}` : `game-${player.id}`,
+      type: self ? ActionAreaType.SELF_PLAYER : ActionAreaType.OTHER_PLAYER,
+      player,
+      cardIndex
+    });
+  }
+
+  function onSelectDiscard() {
+    onSelectArea({
+      id: "discard",
+      type: ActionAreaType.DISCARD
+    });
+  }
+
+  if (!game) {
+    return <LoadingScreen />;
+  }
+
   return (
     <GameContext.Provider value={game}>
       <SelfPlayerContext.Provider value={selfPlayer}>
         <CurrentPlayerContext.Provider value={game.players[game.currentPlayer]}>
-          <div className="w-100 h-100">
-            <div className="flex flex-row h-100">
-              <PlayersBoard
-                onSelectPlayer={(player, cardIndex) => {
-                  const self = player.id === selfPlayer.id;
+          <div className="relative flex flex-row w-100 h-100">
+            {/* Toast */}
+            <div className="absolute z-999 bottom-1 left-0 right-0 flex justify-center items-center pointer">
+              {lastTurn && (
+                <div
+                  onClick={() => setLastTurn(null)}
+                  className="flex justify-center bg-white mw-50 main-dark br4 shadow-4 b--yellow ba bw2 f3 pa3"
+                >
+                  <Turn
+                    includePlayer={true}
+                    turn={lastTurn}
+                    showDrawn={
+                      game.players[lastTurn.action.from] !== selfPlayer
+                    }
+                  />
+                  <span className="ml4">&times;</span>
+                </div>
+              )}
+            </div>
 
-                  onSelectArea({
-                    id: self
-                      ? `game-${player.id}-${cardIndex}`
-                      : `game-${player.id}`,
-                    type: self
-                      ? ActionAreaType.SELF_PLAYER
-                      : ActionAreaType.OTHER_PLAYER,
-                    player,
-                    cardIndex
-                  });
-                }}
+            {/* Left area */}
+            <div className="flex flex-column h-100 overflow-y-scroll w-50 ma2">
+              <PlayersBoard
+                onSelectPlayer={onSelectPlayer}
                 onNotifyPlayer={onNotifyPlayer}
               />
-              <div className="pa2 pl0 flex flex-column flex-grow-1 h-100 overflow-scroll">
-                <GameBoard
-                  onRollback={onRollback}
-                  onMenuClick={onMenuClick}
-                  onLogsClick={onLogsClick}
-                  onSelectDiscard={() =>
-                    onSelectArea({
-                      id: "discard",
-                      type: ActionAreaType.DISCARD
-                    })
-                  }
-                />
-                <Box className="flex-grow-1">
-                  {game.status === "lobby" && (
-                    <Lobby onJoinGame={onJoinGame} onStartGame={onStartGame} />
-                  )}
-                  {game.status === "ongoing" && (
-                    <ActionArea
-                      selectedArea={selectedArea}
-                      onCommitAction={onCommitAction}
-                    />
-                  )}
-                </Box>
-              </div>
+            </div>
+
+            {/* Right area */}
+            <div className="flex flex-column h-100 flex-grow-1 overflow-scroll ma2 ml0">
+              <GameBoard
+                onRollback={onRollback}
+                onMenuClick={onMenuClick}
+                onSelectDiscard={onSelectDiscard}
+              />
+              <Box className="flex-grow-1">
+                {game.status === "lobby" && (
+                  <Lobby onJoinGame={onJoinGame} onStartGame={onStartGame} />
+                )}
+                {game.status === "ongoing" && (
+                  <ActionArea
+                    selectedArea={selectedArea}
+                    onCommitAction={onCommitAction}
+                  />
+                )}
+              </Box>
             </div>
           </div>
         </CurrentPlayerContext.Provider>

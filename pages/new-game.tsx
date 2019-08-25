@@ -42,8 +42,8 @@ export default function NewGame() {
     <>
       <div className="w-100 h-100 flex justify-center items-center">
         <Box className="flex flex-column w-50">
-          <h1>New game</h1>
-          <label className="flex justify-between items-center pb2 mb2">
+          <h1 className="mt0 ttu">New game</h1>
+          <label className="flex justify-between items-center pb2 mb2 bb">
             Seed
             <input
               className="w3 tr"
@@ -51,7 +51,7 @@ export default function NewGame() {
               onChange={e => setSeed(e.target.value)}
             />
           </label>
-          <label className="flex justify-between items-center pb2 mb2">
+          <label className="flex justify-between items-center pb2 mb2 bb">
             Players
             <select
               className="bg-white"
@@ -65,7 +65,7 @@ export default function NewGame() {
               ))}
             </select>
           </label>
-          <label className="flex justify-between items-center pb2 mb2">
+          <label className="flex justify-between items-center pb2 mb2 bb">
             Multicolor
             <input
               type="checkbox"
@@ -73,7 +73,7 @@ export default function NewGame() {
               onChange={e => setMulticolor(e.target.checked)}
             />
           </label>
-          <label className="flex justify-between items-center pb2 mb2">
+          <label className="flex justify-between items-center pb2 mb2 bb">
             Allow rollback
             <input
               type="checkbox"
@@ -81,7 +81,7 @@ export default function NewGame() {
               onChange={e => setAllowRollback(e.target.checked)}
             />
           </label>
-          <label className="flex justify-between items-center pb2 mb2">
+          <label className="flex justify-between items-center pb2 mb2 bb">
             Prevent loss
             <input
               type="checkbox"

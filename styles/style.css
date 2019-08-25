@@ -15,10 +15,8 @@
 }
 
 body {
-  font-family: -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell,
-    Helvetica Neue;
-  color: #f0f0f0;
   font-family: "Kalam", cursive;
+  color: #f0f0f0;
 }
 
 /**
@@ -38,7 +36,12 @@ body {
 }
 
 .bg-main-dark {
-  background-color: var(--color-main-dark);
+  background: linear-gradient(
+    to bottom right,
+    color-mod(var(--color-main-dark) lightness(20%)),
+    var(--color-main-dark),
+    color-mod(var(--color-main-dark) shade(30%))
+  );
 }
 
 .bg-white {

@@ -6,6 +6,7 @@ import { useDatabase } from "~/hooks/database";
 
 import Button from "~/components/ui/button";
 import Box from "~/components/ui/box";
+import LoadingScreen from "~/components/loadingScreen";
 
 export default function JoinGame() {
   const router = useRouter();
@@ -33,40 +34,32 @@ export default function JoinGame() {
       });
   }, []);
 
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <div className="w-100 h-100 flex justify-center items-center">
       <Box className="w-50">
-        {loading && <h1>Loading...</h1>}
-
-        {!loading && (
+        {!games.length && (
           <>
-            {!games.length && (
-              <div>
-                <h1>No available room</h1>
-                <Button
-                  className="ma2"
-                  onClick={() => router.push("/new-game")}
-                >
-                  Create a room
+            <h1 className="mt0 ttu">No available room</h1>
+            <Button className="ma2" onClick={() => router.push("/new-game")}>
+              Create a room
+            </Button>
+          </>
+        )}
+        {games.length > 0 && (
+          <>
+            <h1 className="mt0 ttu">Available rooms</h1>
+            {games.map(game => (
+              <div className="mb3" key={game.id}>
+                <Button onClick={() => router.push(`/play?gameId=${game.id}`)}>
+                  {game.players.map(p => p.name).join(", ")} -{" "}
+                  {game.players.length}/{game.playersCount}
                 </Button>
               </div>
-            )}
-
-            {games.length > 0 && (
-              <>
-                <h1>Available rooms</h1>
-                {games.map(game => (
-                  <div className="mb3" key={game.id}>
-                    <Button
-                      onClick={() => router.push(`/play?gameId=${game.id}`)}
-                    >
-                      {game.players.map(p => p.name).join(", ")} -{" "}
-                      {game.players.length}/{game.playersCount}
-                    </Button>
-                  </div>
-                ))}
-              </>
-            )}
+            ))}
           </>
         )}
       </Box>
