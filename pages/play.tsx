@@ -74,6 +74,9 @@ export default function Play() {
       pathname: "/play",
       query: { gameId, playerId }
     });
+
+    localStorage.setItem("gameId", gameId.toString());
+    localStorage.setItem("playerId", playerId.toString());
   }
 
   async function onStartGame() {
@@ -113,6 +116,7 @@ export default function Play() {
         <PlayersBoard
           game={game}
           player={player}
+          onNoSelectedPlayer={() => selectArea(null)}
           onSelectPlayer={(p, cardIndex) =>
             selectArea({
               type:
