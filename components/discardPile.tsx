@@ -2,18 +2,27 @@ import React from "react";
 import { groupBy, sortBy } from "lodash";
 import classnames from "classnames";
 
-import { ICard } from "~/game/state";
+import { ICard, IColor } from "~/game/state";
 import { getColors } from "~/game/actions";
 import { useGame } from "~/hooks/game";
 
-import Card, { CardWrapper } from "~/components/card";
+import Card, { CardWrapper, ICardContext, ICardSize } from "~/components/card";
 
-function CardPile({ cards, color }) {
+interface CardPileProps {
+  cards: ICard[];
+  color: IColor;
+}
+
+function CardPile(props: CardPileProps) {
+  const { cards, color } = props;
+
   if (!cards.length) {
-    return <CardWrapper color={color} size="medium" className="ma1" />;
+    return (
+      <CardWrapper color={color} size={ICardSize.MEDIUM} className="ma1" />
+    );
   }
 
-  const sortedCards = sortBy(cards, card => card.value);
+  const sortedCards = sortBy(cards, card => card.number);
 
   return (
     <div className="flex flex-column">
@@ -21,7 +30,8 @@ function CardPile({ cards, color }) {
         <Card
           key={i}
           card={card}
-          size="medium"
+          context={ICardContext.DISCARDED}
+          size={ICardSize.MEDIUM}
           className={classnames("ma1", { "nt3 nt4-l": i > 0 })}
         />
       ))}
@@ -29,16 +39,16 @@ function CardPile({ cards, color }) {
   );
 }
 
-interface IDiscardPile {
+interface Props {
   cards: ICard[];
 }
 
-export default function DiscardPile(props: IDiscardPile) {
+export default function DiscardPile(props: Props) {
   const { cards } = props;
 
   const game = useGame();
   const byColor = groupBy(
-    sortBy(cards, card => card.value),
+    sortBy(cards, card => card.number),
     card => card.color
   );
 

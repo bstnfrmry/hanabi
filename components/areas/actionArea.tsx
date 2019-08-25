@@ -9,17 +9,6 @@ import DiscardArea from "~/components/areas/discardArea";
 import OtherPlayerArea from "~/components/areas/otherPlayerArea";
 import SelfPlayerArea from "~/components/areas/selfPlayerArea";
 
-interface IActionArea {
-  selectedArea: ISelectedArea;
-  onCommitAction: Function;
-}
-
-export type ISelectedArea =
-  | IInstructionsSelectedArea
-  | IOtherPlayerSelectedArea
-  | ISelfPlayerSelectedArea
-  | IDiscardSelectedArea;
-
 interface IInstructionsSelectedArea {
   id: string;
   type: ActionAreaType.INSTRUCTIONS;
@@ -51,7 +40,18 @@ export enum ActionAreaType {
   DISCARD
 }
 
-export default function ActionArea(props: IActionArea) {
+export type ISelectedArea =
+  | IInstructionsSelectedArea
+  | IOtherPlayerSelectedArea
+  | ISelfPlayerSelectedArea
+  | IDiscardSelectedArea;
+
+interface Props {
+  selectedArea: ISelectedArea;
+  onCommitAction: Function;
+}
+
+export default function ActionArea(props: Props) {
   const { selectedArea, onCommitAction } = props;
 
   const game = useGame();

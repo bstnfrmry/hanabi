@@ -1,3 +1,7 @@
+import { cloneDeep, findIndex, flatMap, range, last, zipObject } from "lodash";
+import assert from "assert";
+import { shuffle } from "shuffle-seed";
+
 import IGameState, {
   IAction,
   IHand,
@@ -10,10 +14,6 @@ import IGameState, {
   IGameStatus,
   INumber
 } from "./state";
-import { cloneDeep, findIndex, flatMap, range, last, zipObject } from "lodash";
-import assert from "assert";
-import { shuffle } from "shuffle-seed";
-import { lstat } from "fs";
 
 export function commitAction(state: IGameState, action: IAction): IGameState {
   // the function should be pure
@@ -258,8 +258,6 @@ export function joinGame(state: IGameState, player: IPlayer): IGameState {
 }
 
 export function newGame(options: IGameOptions): IGameState {
-  if (options.seed === undefined) options.seed = +new Date() * Math.random();
-
   assert(options.playersCount > 1 && options.playersCount < 6);
 
   // all cards but multicolors
@@ -294,6 +292,7 @@ export function newGame(options: IGameOptions): IGameState {
   const currentPlayer = shuffle(range(options.playersCount), options.seed)[0];
 
   return {
+    id: options.id,
     status: IGameStatus.LOBBY,
     playersCount: options.playersCount,
     playedCards: [],

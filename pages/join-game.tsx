@@ -1,52 +1,74 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useDatabase } from "../hooks/database";
-import IGameState from "../game/state";
-import Button from "../components/button";
+
+import IGameState, { fillEmptyValues } from "~/game/state";
+import { useDatabase } from "~/hooks/database";
+
+import Button from "~/components/button";
 
 export default function JoinGame() {
   const router = useRouter();
   const db = useDatabase();
 
-  const [games, setGames] = useState({});
+  const [loading, setLoading] = useState<boolean>(true);
+  const [games, setGames] = useState<IGameState[]>([]);
 
   useEffect(() => {
-    // @todo this fetches all available games... we need a more efficient key strategy
-    // we could have a store of game-statuses with creation date, status (lobby), etc.
-    // and keep the game state purely about the game and cards
-    db.ref(`/games`).on("value", event => {
-      setGames(event.val());
-    });
+    db.ref(`/games`)
+      .orderByChild("status")
+      .equalTo("lobby")
+      .on("value", event => {
+        const games = Object.values(event.val() || {})
+          .map(fillEmptyValues)
+          // At least one player in the room
+          .filter(game => game.players.length)
+          // There are slots remaining
+          .filter(game => +game.players.length < +game.playersCount)
+          // The game is recent
+          .filter(game => game.createdAt > Date.now() - 10 * 60 * 1000);
+
+        setLoading(false);
+        setGames(games);
+      });
   }, []);
 
   return (
-    <div className="white">
-      {Object.keys(games).map(k => {
-        const game = games[k] as IGameState;
-        console.log(game);
-        // @todo we need to filter by date, like 'created in the last 10 min'
-        if (
-          !game.players ||
-          !game.players.length ||
-          +game.players.length >= +game.playersCount ||
-          (game.createdAt || 0) < Date.now() - 10 * 60 * 1000 // 10 min
-        ) {
-          return null;
-        }
+    <div className="w-100 h-100 flex justify-center items-center">
+      <div className="w-50 bg-main-dark shadow-5 br2 pv2 ph4">
+        {loading && <h1>Loading...</h1>}
 
-        if (game.status === "lobby") {
-          return (
-            <div className="pa2" key={k}>
-              <Button onClick={() => router.push(`/play?gameId=${k}`)}>
-                {game.players.map(p => p.name).join(", ")} -{" "}
-                {game.players.length}/{game.playersCount}
-              </Button>
-            </div>
-          );
-        }
+        {!loading && (
+          <>
+            {!games.length && (
+              <div>
+                <h1>No available room</h1>
+                <Button
+                  className="ma2"
+                  onClick={() => router.push("/new-game")}
+                >
+                  Create a room
+                </Button>
+              </div>
+            )}
 
-        return null;
-      })}
+            {games.length > 0 && (
+              <>
+                <h1>Available rooms</h1>
+                {games.map(game => (
+                  <div className="mb3" key={game.id}>
+                    <Button
+                      onClick={() => router.push(`/play?gameId=${game.id}`)}
+                    >
+                      {game.players.map(p => p.name).join(", ")} -{" "}
+                      {game.players.length}/{game.playersCount}
+                    </Button>
+                  </div>
+                ))}
+              </>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }

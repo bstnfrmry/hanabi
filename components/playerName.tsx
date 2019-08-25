@@ -1,10 +1,10 @@
-import { IPlayer } from "../game/state";
+import { IPlayer } from "~/game/state";
 
-interface IPlayerName {
+interface Props {
   player: IPlayer;
 }
 
-export default function PlayerName(props: IPlayerName) {
+export default function PlayerName(props: Props) {
   const { player } = props;
 
   return (

@@ -11,14 +11,14 @@ import {
 import { CardWrapper } from "./card";
 import { useGame } from "../hooks/game";
 
-interface IGameBoard {
+interface Props {
   onSelectDiscard: Function;
   onMenuClick: Function;
   onLogsClick: Function;
   onRollback: Function;
 }
 
-export default function GameBoard(props: IGameBoard) {
+export default function GameBoard(props: Props) {
   const { onSelectDiscard, onMenuClick, onLogsClick, onRollback } = props;
 
   const game = useGame();
@@ -44,14 +44,15 @@ export default function GameBoard(props: IGameBoard) {
           <PlayedCards cards={game.playedCards} />
         </div>
         <div className="flex flex-row ph1 justify-left mt1 items-center">
-          <TokenSpace
-            noteTokens={game.tokens.hints}
-            stormTokens={game.tokens.strikes}
-          />
+          <TokenSpace hints={game.tokens.hints} strikes={game.tokens.strikes} />
           <div className="mr2 relative">
             <CardWrapper color="light-silver">
               {game.drawPile.map((card, i) => (
-                <div className="absolute" style={{ top: `-${i / 2}px` }}>
+                <div
+                  key={i}
+                  className="absolute"
+                  style={{ top: `-${i / 2}px` }}
+                >
                   <CardWrapper key={card.id} color="light-silver">
                     {i + 1}
                   </CardWrapper>
@@ -62,7 +63,11 @@ export default function GameBoard(props: IGameBoard) {
           <div className="pointer relative" onClick={() => onSelectDiscard()}>
             <CardWrapper color="light-silver">
               {game.discardPile.map((card, i) => (
-                <div className="absolute" style={{ top: `-${i / 2}px` }}>
+                <div
+                  key={i}
+                  className="absolute"
+                  style={{ top: `-${i / 2}px` }}
+                >
                   <CardWrapper key={card.id} color="light-silver">
                     {i + 1}
                   </CardWrapper>

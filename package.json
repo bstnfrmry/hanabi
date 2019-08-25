@@ -9,6 +9,8 @@
     "server": "firebase-server -p 3001"
   },
   "dependencies": {
+    "@types/classnames": "^2.2.9",
+    "@types/lodash": "^4.14.137",
     "@zeit/next-css": "^1.0.1",
     "classnames": "^2.2.6",
     "dotenv-webpack": "^1.7.0",

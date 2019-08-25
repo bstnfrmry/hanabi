@@ -1,16 +1,17 @@
-import IGameState, { ITurn } from "../game/state";
-import PlayerName from "./playerName";
-import Card from "./card";
-import Hint from "./hint";
-import { useGame } from "../hooks/game";
+import { ITurn } from "~/game/state";
+import { useGame } from "~/hooks/game";
 
-interface TurnProps {
+import PlayerName from "~/components/playerName";
+import Card, { ICardContext, ICardSize } from "~/components/card";
+import Hint from "~/components/hint";
+
+interface Props {
   turn: ITurn;
   includePlayer: boolean;
   showDrawn: boolean;
 }
 
-export default function Turn(props: TurnProps) {
+export default function Turn(props: Props) {
   const game = useGame();
   const { turn, includePlayer = false, showDrawn } = props;
 
@@ -36,21 +37,33 @@ export default function Turn(props: TurnProps) {
       {turn.action.action === "discard" && (
         <div className="ml1 inline-flex items-center">
           discarded&nbsp;
-          <Card card={turn.action.card} size="small" />
+          <Card
+            card={turn.action.card}
+            context={ICardContext.DISCARDED}
+            size={ICardSize.SMALL}
+          />
         </div>
       )}
 
       {turn.action.action === "play" && (
         <div className="ml1 inline-flex items-center">
           played&nbsp;
-          <Card card={turn.action.card} size="small" />
+          <Card
+            card={turn.action.card}
+            context={ICardContext.PLAYED}
+            size={ICardSize.SMALL}
+          />
         </div>
       )}
 
       {showDrawn && turn.card && (
         <div className="ml1 inline-flex items-center">
           & drew&nbsp;
-          <Card card={turn.card} size="small" />
+          <Card
+            card={turn.card}
+            context={ICardContext.DRAWN}
+            size={ICardSize.SMALL}
+          />
         </div>
       )}
     </div>

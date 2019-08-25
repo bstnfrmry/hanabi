@@ -5,12 +5,12 @@ import { useGame, useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
 
 import PlayerGame from "~/components/playerGame";
 
-interface IPlayersBoard {
+interface Props {
   onSelectPlayer: Function;
   onNotifyPlayer: Function;
 }
 
-export default function PlayersBoard(props: IPlayersBoard) {
+export default function PlayersBoard(props: Props) {
   const { onSelectPlayer, onNotifyPlayer } = props;
 
   const game = useGame();

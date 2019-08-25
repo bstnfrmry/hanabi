@@ -7,7 +7,14 @@ const TokenAnimationWrapper = posed.div({
   exit: { opacity: 0, y: 10000, transition: { duration: 1000 } }
 });
 
-function Token({ color, amount }) {
+interface TokenProps {
+  color: string;
+  amount: number;
+}
+
+function Token(props: TokenProps) {
+  const { color, amount } = props;
+
   return (
     <div className="relative h2 w2 h3-l w3-l mr2">
       <PoseGroup>
@@ -32,11 +39,18 @@ function Token({ color, amount }) {
   );
 }
 
-export default function TokenSpace({ noteTokens, stormTokens }) {
+interface Props {
+  hints: number;
+  strikes: number;
+}
+
+export default function TokenSpace(props: Props) {
+  const { hints, strikes } = props;
+
   return (
     <div className="flex">
-      <Token color="hints" amount={noteTokens} />
-      <Token color="strikes" amount={stormTokens} />
+      <Token color="hints" amount={hints} />
+      <Token color="strikes" amount={strikes} />
     </div>
   );
 }

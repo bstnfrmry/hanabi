@@ -5,6 +5,7 @@ import { defaults } from "lodash";
  */
 
 export default interface IGameState {
+  id: string;
   status: IGameStatus;
   playersCount: number;
   playedCards: ICard[];
@@ -27,11 +28,12 @@ export default interface IGameState {
  */
 
 export interface IGameOptions {
+  id: string;
   playersCount: number;
   multicolor: boolean;
   allowRollback: boolean;
   preventLoss: boolean;
-  seed: number;
+  seed: string;
 }
 
 export enum IGameStatus {
@@ -51,14 +53,16 @@ export enum IColor {
 
 export type INumber = 1 | 2 | 3 | 4 | 5;
 
+export type IHintLevel = 0 | 1 | 2;
+
 // an array of 2 (direct hint), 1 (still possible), or 0 (impossible)
 // e.g. a color hint onto an card turns all but one values to 0, and one value to 2.
 // a color hint onto a card give all the other cards in the hand a 0 for that color.
 // it's something public, i.e. information that has been given
 // to all players
 export interface ICardHint {
-  color: { [key in IColor]: (0 | 1 | 2) };
-  number: { [key in 0 | 1 | 2 | 3 | 4 | 5]: (0 | 1 | 2) };
+  color: { [key in IColor]: IHintLevel };
+  number: { [key in 0 | 1 | 2 | 3 | 4 | 5]: IHintLevel };
 }
 
 export type IHand = ICard[];
@@ -86,11 +90,13 @@ export interface IPlayAction {
   cardIndex: number;
 }
 
+export type IHintType = "color" | "number";
+
 export interface IHintAction {
   action: "hint";
   from: number;
   to: number;
-  type: "color" | "number";
+  type: IHintType;
   value: IColor | INumber;
 }
 

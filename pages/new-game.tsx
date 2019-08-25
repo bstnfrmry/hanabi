@@ -2,16 +2,19 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import shortid from "shortid";
 
-import { useDatabase } from "../hooks/database";
-import { newGame } from "../game/actions";
-import Button from "../components/button";
+import { useDatabase } from "~/hooks/database";
+import { newGame } from "~/game/actions";
+
+import Button from "~/components/button";
 
 const PlayerCounts = [2, 3, 4, 5];
+
+const DefaultSeed = `${Math.round(Math.random() * 10000)}`;
 
 export default function NewGame() {
   const router = useRouter();
   const db = useDatabase();
-  const [seed, setSeed] = useState(Math.round(Math.random() * 10000));
+  const [seed, setSeed] = useState<string>(DefaultSeed);
   const [playersCount, setPlayersCount] = useState(2);
   const [multicolor, setMulticolor] = useState(false);
   const [allowRollback, setAllowRollback] = useState(true);
@@ -22,6 +25,7 @@ export default function NewGame() {
 
     await db.ref(`/games/${gameId}`).set(
       newGame({
+        id: gameId,
         multicolor,
         playersCount,
         seed,
@@ -42,7 +46,6 @@ export default function NewGame() {
             Seed
             <input
               className="w3 tr"
-              type="number"
               value={seed}
               onChange={e => setSeed(e.target.value)}
             />
@@ -55,7 +58,9 @@ export default function NewGame() {
               onChange={e => setPlayersCount(+e.target.value)}
             >
               {PlayerCounts.map(count => (
-                <option value={count}>{count}</option>
+                <option key={count} value={count}>
+                  {count}
+                </option>
               ))}
             </select>
           </label>

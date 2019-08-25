@@ -1,11 +1,19 @@
 import React from "react";
 import { last, groupBy } from "lodash";
 
-import { getColors } from "../game/actions";
-import Card, { CardWrapper } from "./card";
-import { useGame } from "../hooks/game";
+import { ICard } from "~/game/state";
+import { getColors } from "~/game/actions";
+import { useGame } from "~/hooks/game";
 
-export default ({ cards }) => {
+import Card, { CardWrapper, ICardContext, ICardSize } from "~/components/card";
+
+interface Props {
+  cards: ICard[];
+}
+
+export default function PlayedCards(props: Props) {
+  const { cards } = props;
+
   const game = useGame();
   const groupedCards = groupBy(cards, c => c.color);
   const colors = getColors(game);
@@ -17,16 +25,25 @@ export default ({ cards }) => {
 
         if (!topCard) {
           return (
-            <CardWrapper key={i} size="medium" className="ma1" color={color} />
+            <CardWrapper
+              key={i}
+              size={ICardSize.MEDIUM}
+              className="ma1"
+              color={color}
+            />
           );
         }
         return (
-          <CardWrapper size="medium" className="ma1 relative" color={color}>
+          <CardWrapper
+            size={ICardSize.MEDIUM}
+            className="ma1 relative"
+            color={color}
+          >
             {groupedCards[color].map((card, i) => (
               <Card
                 card={card}
-                color={color}
-                size="medium"
+                context={ICardContext.PLAYED}
+                size={ICardSize.MEDIUM}
                 className="absolute"
                 style={{
                   top: `-${i * 2}px`,
@@ -39,4 +56,4 @@ export default ({ cards }) => {
       })}
     </div>
   );
-};
+}

@@ -1,15 +1,17 @@
 import React from "react";
-import Vignette from "./vignette";
-import { numbers, getColors } from "../game/actions";
-import { useGame } from "../hooks/game";
-import { IHintAction } from "../game/state";
 
-interface IVignettes {
+import { IHintAction } from "~/game/state";
+import { numbers, getColors } from "~/game/actions";
+import { useGame } from "~/hooks/game";
+
+import Vignette from "~/components/vignette";
+
+interface Props {
   onSelect: Function;
   pendingHint: IHintAction;
 }
 
-export default function Vignettes(props: IVignettes) {
+export default function Vignettes(props: Props) {
   const { onSelect, pendingHint } = props;
 
   const game = useGame();

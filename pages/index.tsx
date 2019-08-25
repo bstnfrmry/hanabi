@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Button from "../components/button";
+
+import Button from "~/components/button";
 
 export default function Home() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function Home() {
       <Button className="ma2" onClick={() => router.push("/join-game")}>
         Join a room
       </Button>
-      {lastGame ? (
+      {lastGame && (
         <Button
           className="ma2"
           onClick={() =>
@@ -35,7 +36,7 @@ export default function Home() {
         >
           Rejoin game
         </Button>
-      ) : null}
+      )}
     </div>
   );
 }

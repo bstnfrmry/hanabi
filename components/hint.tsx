@@ -1,7 +1,15 @@
 import React from "react";
 import classnames from "classnames";
 
-export default function Hint(props) {
+import { IHintType, INumber, IColor, IHintLevel } from "~/game/state";
+
+interface Props {
+  type: IHintType;
+  value: IColor | INumber;
+  hint: IHintLevel;
+}
+
+export default function Hint(props: Props) {
   const { type, value, hint } = props;
 
   const color = type === "color" ? value : "white";

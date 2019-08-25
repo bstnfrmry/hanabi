@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import generate from "project-name-generator";
-import Button from "./button";
-import PlayerName from "./playerName";
+import generateName from "project-name-generator";
+
 import { useGame, useSelfPlayer } from "../hooks/game";
+
+import Button from "~/components/button";
+import PlayerName from "~/components/playerName";
 
 const Emojis = ["🐶", "🦊", "🐸", "🦋", "🐯", "🐱"];
 
-interface ILobby {
+interface Props {
   onJoinGame: Function;
   onStartGame: Function;
 }
 
-export default function Lobby(props: ILobby) {
+export default function Lobby(props: Props) {
   const { onJoinGame, onStartGame } = props;
 
   const game = useGame();
@@ -25,7 +27,7 @@ export default function Lobby(props: ILobby) {
   );
 
   const router = useRouter();
-  const [name, setName] = useState(generate().dashed);
+  const [name, setName] = useState(generateName().dashed);
   const [emoji, setEmoji] = useState(availableEmojis[0]);
 
   const shareLink = `${window.location.origin}/play?gameId=${router.query.gameId}`;
@@ -36,14 +38,14 @@ export default function Lobby(props: ILobby) {
   }
 
   return (
-    <div className="pa3 bg-grey bt">
+    <div className="ph3 pv2 bg-grey">
       {selfPlayer && (
         <h2>
           Joined as <PlayerName player={selfPlayer} />
         </h2>
       )}
       <div className="flex items-center">
-        <a href={shareLink} target="_blank" className="mr2">
+        <a href={shareLink} target="_blank" className="mr2 white">
           {shareLink}
         </a>
         <input

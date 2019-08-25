@@ -1,17 +1,25 @@
-import React from "react";
+import React, { ReactNode, MouseEvent, CSSProperties } from "react";
 import classnames from "classnames";
-import { numbers, getColors } from "../game/actions";
 
-import Hint from "./hint";
-import { useGame } from "../hooks/game";
+import { ICard } from "~/game/state";
+import { numbers, getColors } from "~/game/actions";
+import { useGame } from "~/hooks/game";
+
+import Hint from "~/components/hint";
+
+export enum ICardSize {
+  SMALL = "small",
+  MEDIUM = "medium",
+  LARGE = "large",
+  EXTRA_LARGE = "extralarge"
+}
 
 // Cards possible sizes
 const SizeMap = {
-  tiny: "", // TODO h0 doesnt exist
-  small: "h1 w1 h2-l w2-l f5 f4-l",
-  medium: "h2 w2 h4-l w4-l f4 f1-l",
-  large: "h4 w4 mw4 f2 f1-l",
-  extralarge: "h4 w4 mw4 h5-l w5-l f2 f1-l"
+  [ICardSize.SMALL]: "h1 w1 h2-l w2-l f5 f4-l",
+  [ICardSize.MEDIUM]: "h2 w2 h4-l w4-l f4 f1-l",
+  [ICardSize.LARGE]: "h4 w4 mw4 f2 f1-l",
+  [ICardSize.EXTRA_LARGE]: "h4 w4 mw4 h5-l w5-l f2 f1-l"
 };
 
 export const PositionMap = {
@@ -22,17 +30,31 @@ export const PositionMap = {
   4: "E"
 };
 
-export const CardContext = {
-  SELF_PLAYER: "selfPlayer",
-  OTHER_PLAYER: "otherPlayer",
-  TARGETED_PLAYER: "targetedPlayer",
-  PLAYED: "played"
-};
+export enum ICardContext {
+  SELF_PLAYER,
+  OTHER_PLAYER,
+  TARGETED_PLAYER,
+  PLAYED,
+  DISCARDED,
+  DRAWN
+}
 
-export function CardWrapper(props) {
+interface CardWrapperProps {
+  color: string;
+  size?: ICardSize;
+  playable?: boolean;
+  context?: ICardContext;
+  className?: string;
+  borderWidth?: string;
+  style?: CSSProperties;
+  onClick?: (MouseEvent) => void;
+  children?: ReactNode;
+}
+
+export function CardWrapper(props: CardWrapperProps) {
   const {
     color,
-    size = "medium",
+    size = ICardSize.MEDIUM,
     playable = false,
     context,
     className = "",
@@ -56,20 +78,33 @@ export function CardWrapper(props) {
         borderWidth,
         `bg-${color}`,
         { pointer: playable },
-        { grow: context === CardContext.TARGETED_PLAYER }
+        { grow: context === ICardContext.TARGETED_PLAYER }
       )}
     />
   );
 }
 
-export default function Card(props) {
+interface Props {
+  card: ICard;
+  context: ICardContext;
+  hidden?: boolean;
+  position?: number;
+  selected?: boolean;
+  playable?: boolean;
+  size?: ICardSize;
+  className?: string;
+  style?: CSSProperties;
+  onClick?: (MouseEvent) => void;
+}
+
+export default function Card(props: Props) {
   const {
     card,
     context,
     onClick = () => {},
     hidden = false,
     playable = true,
-    size = "medium",
+    size = ICardSize.MEDIUM,
     className = "",
     style = {},
     position = null,
@@ -83,9 +118,9 @@ export default function Card(props) {
   const number = hidden ? null : card.number;
 
   const displayHints = [
-    CardContext.OTHER_PLAYER, // Todo: remove other when mobile (removing hints due to lack of space)
-    CardContext.TARGETED_PLAYER,
-    CardContext.SELF_PLAYER
+    ICardContext.OTHER_PLAYER, // Todo: remove other when mobile (removing hints due to lack of space)
+    ICardContext.TARGETED_PLAYER,
+    ICardContext.SELF_PLAYER
   ].includes(context);
 
   if (selected) {
@@ -101,7 +136,6 @@ export default function Card(props) {
       borderWidth={selected ? "bw2 z-5" : ""}
       playable={playable}
       className={className}
-      style={style}
       onClick={onClick}
     >
       <div

@@ -6,7 +6,7 @@ import "firebase/database";
 export const DatabaseContext = React.createContext(null);
 
 export function useDatabase() {
-  return useContext(DatabaseContext);
+  return useContext<firebase.database.Database>(DatabaseContext);
 }
 
 export function setupDatabase() {

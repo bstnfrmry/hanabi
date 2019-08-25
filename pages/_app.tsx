@@ -2,12 +2,14 @@ import React from "react";
 import App, { Container } from "next/app";
 import Head from "next/head";
 
-import { setupDatabase, DatabaseContext } from "../hooks/database";
+import { setupDatabase, DatabaseContext } from "~/hooks/database";
 
 import "../styles/tachyons.css";
 import "../styles/style.css";
 
 export default class Hanabi extends App {
+  database: firebase.database.Database;
+
   constructor(props) {
     super(props);
 

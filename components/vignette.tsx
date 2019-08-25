@@ -1,7 +1,17 @@
 import React from "react";
 
-export default function Vignette(props) {
+import { IHintType } from "~/game/state";
+
+interface Props {
+  type: IHintType;
+  value: string | number;
+  selected: boolean;
+  onClick: Function;
+}
+
+export default function Vignette(props: Props) {
   const { type, value, onClick, selected } = props;
+
   const style = {
     ...(selected && { transform: "scale(1.2)" })
   };

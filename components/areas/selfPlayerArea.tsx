@@ -1,19 +1,18 @@
 import { useState } from "react";
 
-import { useSelfPlayer, useGame, useCurrentPlayer } from "~/hooks/game";
+import { useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
 
 import Button from "~/components/button";
-import Card, { CardContext, PositionMap } from "~/components/card";
+import Card, { ICardContext, PositionMap, ICardSize } from "~/components/card";
 
-interface ISelfPlayerArea {
+interface Props {
   onCommitAction: Function;
   cardIndex?: number;
 }
 
-export default function SelfPlayerArea(props: ISelfPlayerArea) {
+export default function SelfPlayerArea(props: Props) {
   const { onCommitAction, cardIndex } = props;
 
-  const game = useGame();
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
   const [selectedCard, selectCard] = useState<number>(cardIndex);
@@ -31,10 +30,9 @@ export default function SelfPlayerArea(props: ISelfPlayerArea) {
             key={i}
             card={card}
             hidden={selfPlayer === currentPlayer}
-            multicolorOption={game.options.multicolor}
             position={i}
-            size="large"
-            context={CardContext.TARGETED_PLAYER}
+            size={ICardSize.LARGE}
+            context={ICardContext.TARGETED_PLAYER}
             className="ma1"
             onClick={() => selectCard(i)}
             selected={selectedCard === i}

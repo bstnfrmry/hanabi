@@ -1,12 +1,12 @@
 import React from "react";
-import Button from "./button";
 import classnames from "classnames";
-import { IPlayer } from "../game/state";
+
+import { IPlayer } from "~/game/state";
 
 import PlayerName from "~/components/playerName";
-import Card, { CardContext } from "~/components/card";
+import Card, { ICardContext, ICardSize } from "~/components/card";
 
-interface IPlayerGame {
+interface Props {
   player: IPlayer;
   active?: boolean;
   self?: boolean;
@@ -14,7 +14,7 @@ interface IPlayerGame {
   onNotifyPlayer?: Function;
 }
 
-export default function PlayerGame(props: IPlayerGame) {
+export default function PlayerGame(props: Props) {
   const {
     player,
     active,
@@ -46,13 +46,14 @@ export default function PlayerGame(props: IPlayerGame) {
         <div className="flex flex-row grow pointer">
           {player.hand.map((card, i) => (
             <Card
+              key={i}
               onClick={() => onSelectPlayer(player, i)}
               card={card}
               position={i}
               hidden={self}
-              size="medium"
+              size={ICardSize.MEDIUM}
               context={
-                self ? CardContext.SELF_PLAYER : CardContext.OTHER_PLAYER
+                self ? ICardContext.SELF_PLAYER : ICardContext.OTHER_PLAYER
               }
               className={i < player.hand.length - 1 ? "mr1 mr2-l" : ""}
             />

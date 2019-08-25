@@ -4,16 +4,16 @@ import { IPlayer, IHintAction, ICard } from "~/game/state";
 import { useGame, useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
 
 import PlayerName from "~/components/playerName";
-import Card, { CardContext, PositionMap } from "~/components/card";
+import Card, { ICardContext, PositionMap, ICardSize } from "~/components/card";
 import Vignettes from "~/components/vignettes";
 import Button from "~/components/button";
 
-interface IOtherPlayerArea {
+interface Props {
   player: IPlayer;
   onCommitAction: Function;
 }
 
-export default function OtherPlayerArea(props: IOtherPlayerArea) {
+export default function OtherPlayerArea(props: Props) {
   const { player, onCommitAction } = props;
 
   const game = useGame();
@@ -37,8 +37,8 @@ export default function OtherPlayerArea(props: IOtherPlayerArea) {
             card={card}
             hidden={player === selfPlayer}
             position={i}
-            size="large"
-            context={CardContext.TARGETED_PLAYER}
+            size={ICardSize.MEDIUM}
+            context={ICardContext.TARGETED_PLAYER}
             className="ma1"
             selected={isCardHintable(pendingHint, card)}
           />
