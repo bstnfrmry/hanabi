@@ -8,7 +8,7 @@ import Lobby from "../components/lobby";
 import ActionArea, {
   ActionAreaType,
   ISelectedArea
-} from "../components/actionArea";
+} from "../components/areas/actionArea";
 import { useDatabase } from "../hooks/database";
 import {
   GameContext,
@@ -150,7 +150,9 @@ export default function Play() {
 
                   onSelectArea({
                     id: self ? `game-${p.id}-${cardIndex}` : `game-${p.id}`,
-                    type: self ? ActionAreaType.OWNGAME : ActionAreaType.PLAYER,
+                    type: self
+                      ? ActionAreaType.SELF_PLAYER
+                      : ActionAreaType.OTHER_PLAYER,
                     player: p,
                     cardIndex
                   });
