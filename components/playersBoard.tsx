@@ -7,6 +7,7 @@ interface IPlayersBoard {
   game: IGameState;
   player: IPlayer | undefined;
   onSelectPlayer: any;
+  onNoSelectedPlayer: any;
   onNotifyPlayer: Function;
 }
 
@@ -14,6 +15,7 @@ export default ({
   game,
   player,
   onSelectPlayer,
+  onNoSelectedPlayer,
   onNotifyPlayer
 }: IPlayersBoard) => {
   // all the other players in order (starting with the next one)
@@ -27,7 +29,10 @@ export default ({
   }
 
   return (
-    <div className="flex flex-column h-100 overflow-y-scroll">
+    <div
+      className="flex flex-column h-100 overflow-y-scroll"
+      onClick={onNoSelectedPlayer}
+    >
       <div className="pa2 pa4-l bg-gray-light flex-grow-1">
         {otherPlayers.map((otherPlayer, i) => (
           <div key={i} className="mb4 mb4-l">

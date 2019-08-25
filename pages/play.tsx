@@ -116,6 +116,7 @@ export default function Play() {
         <PlayersBoard
           game={game}
           player={player}
+          onNoSelectedPlayer={() => selectArea(null)}
           onSelectPlayer={(p, cardIndex) =>
             selectArea({
               type:

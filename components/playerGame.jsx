@@ -45,7 +45,10 @@ export default function PlayerGame(props) {
             {hand.map((card, i) => (
               <CardAnimationWrapper key={card.id}>
                 <Card
-                  onClick={() => onSelectPlayer(player, i)}
+                  onClick={e => {
+                    e.stopPropagation();
+                    onSelectPlayer(player, i);
+                  }}
                   card={card}
                   position={i}
                   hidden={self}
