@@ -112,6 +112,7 @@ export interface IPlayer {
   hand: IHand;
   name: string;
   emoji: string;
+  reaction?: string;
   lastAction?: IAction;
   index?: number;
   notified?: boolean;

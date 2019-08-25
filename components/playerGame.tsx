@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import Popover from "react-popover";
 import classnames from "classnames";
 
 import { IPlayer } from "~/game/state";
@@ -6,6 +7,7 @@ import { IPlayer } from "~/game/state";
 import PlayerName from "~/components/playerName";
 import Card, { ICardContext, CardSize } from "~/components/card";
 import Box from "~/components/ui/box";
+import ReactionsPopover from "~/components/reactionsPopover";
 
 interface Props {
   player: IPlayer;
@@ -13,6 +15,7 @@ interface Props {
   self?: boolean;
   onSelectPlayer: Function;
   onNotifyPlayer?: Function;
+  onReaction?: Function;
 }
 
 export default function PlayerGame(props: Props) {
@@ -21,8 +24,11 @@ export default function PlayerGame(props: Props) {
     active,
     self = false,
     onSelectPlayer,
-    onNotifyPlayer
+    onNotifyPlayer,
+    onReaction
   } = props;
+
+  const [reactionsOpen, setReactionsOpen] = useState(false);
 
   return (
     <Box
@@ -32,7 +38,12 @@ export default function PlayerGame(props: Props) {
       borderColor={active ? "yellow" : "main-dark"}
     >
       <div className="f7 f4-l fw1 ttu ml1 flex items-center">
-        <PlayerName player={player} explicit={true} className="w-100" />
+        <PlayerName
+          player={player}
+          explicit={true}
+          reaction={player.reaction}
+          className="w-100"
+        />
         {active && !self && !player.notified && (
           <span
             className="absolute right-0 mr1"
@@ -40,6 +51,28 @@ export default function PlayerGame(props: Props) {
           >
             🔔
           </span>
+        )}
+        {self && (
+          <>
+            <Popover
+              isOpen={reactionsOpen}
+              onOuterAction={() => setReactionsOpen(false)}
+              body={
+                <ReactionsPopover
+                  onReaction={onReaction}
+                  onClose={() => setReactionsOpen(false)}
+                />
+              }
+              className="z-999"
+            >
+              <span
+                className="absolute right-0 mr1"
+                onClick={() => setReactionsOpen(!reactionsOpen)}
+              >
+                👍
+              </span>
+            </Popover>
+          </>
         )}
       </div>
 

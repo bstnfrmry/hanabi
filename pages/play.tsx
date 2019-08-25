@@ -144,6 +144,12 @@ export default function Play() {
     await db.ref(`/games/${gameId}/players/${player.index}/notified`).set(true);
   }
 
+  async function onReaction(reaction) {
+    await db
+      .ref(`/games/${gameId}/players/${selfPlayer.index}/reaction`)
+      .set(reaction);
+  }
+
   function onMenuClick() {
     if (window.confirm("Back to menu?")) {
       router.push("/");
@@ -230,6 +236,7 @@ export default function Play() {
               <PlayersBoard
                 onSelectPlayer={onSelectPlayer}
                 onNotifyPlayer={onNotifyPlayer}
+                onReaction={onReaction}
               />
             </div>
 

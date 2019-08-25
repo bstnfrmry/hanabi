@@ -8,10 +8,11 @@ import PlayerGame from "~/components/playerGame";
 interface Props {
   onSelectPlayer: Function;
   onNotifyPlayer: Function;
+  onReaction: Function;
 }
 
 export default function PlayersBoard(props: Props) {
-  const { onSelectPlayer, onNotifyPlayer } = props;
+  const { onSelectPlayer, onNotifyPlayer, onReaction } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -42,8 +43,9 @@ export default function PlayersBoard(props: Props) {
         <PlayerGame
           player={selfPlayer}
           self={true}
-          onSelectPlayer={onSelectPlayer}
           active={currentPlayer === selfPlayer}
+          onSelectPlayer={onSelectPlayer}
+          onReaction={onReaction}
         />
       )}
     </>

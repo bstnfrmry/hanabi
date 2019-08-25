@@ -35,12 +35,14 @@ export default function PlayedCards(props: Props) {
         }
         return (
           <CardWrapper
+            key={i}
             size={CardSize.MEDIUM}
             className="mr1 relative"
             color={color}
           >
             {groupedCards[color].map((card, i) => (
               <Card
+                key={i}
                 card={card}
                 context={ICardContext.PLAYED}
                 size={CardSize.MEDIUM}

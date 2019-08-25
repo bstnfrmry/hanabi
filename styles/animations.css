@@ -1,0 +1,13 @@
+@keyframes FontPulse {
+  0% {
+    font-size: 100%;
+  }
+
+  50% {
+    font-size: 120%;
+  }
+
+  100% {
+    font-size: 100%;
+  }
+}
