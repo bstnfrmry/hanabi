@@ -60,7 +60,7 @@ export default function Play() {
       if (timeout) {
         clearTimeout(timeout);
       }
-      timeout = setTimeout(() => setLastTurn(null), 10000);
+      timeout = setTimeout(() => setLastTurn(null), 1000000);
     });
   }, [gameId]);
 
@@ -200,9 +200,13 @@ export default function Play() {
         <CurrentPlayerContext.Provider value={game.players[game.currentPlayer]}>
           <div className="relative flex flex-row w-100 h-100">
             {/* Toast */}
-            <div className="absolute z-999 bottom-1 left-0 right-0 flex justify-center items-center pointer">
+            <div
+              className="absolute z-999 bottom-1 left-0 right-0 flex justify-center items-center pointer"
+              style={{ pointerEvents: "none" }}
+            >
               {lastTurn && (
                 <div
+                  style={{ pointerEvents: "auto" }}
                   onClick={() => setLastTurn(null)}
                   className="flex justify-center bg-white main-dark br4 shadow-4 b--yellow ba bw2 f4 pa2"
                 >
