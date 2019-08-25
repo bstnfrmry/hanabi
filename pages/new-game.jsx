@@ -36,7 +36,7 @@ export default function NewGame() {
   return (
     <>
       <div className="w-100 h-100 flex justify-center items-center">
-        <div className="flex flex-column w-50 pv2 ph4 bg-grey bg-temple shadow-5 br2">
+        <div className="flex flex-column w-50 pv2 ph4 bg-grey bg-main-dark shadow-5 br2">
           <h1>New game</h1>
           <label className="flex justify-between items-center pb2 mb2">
             Seed

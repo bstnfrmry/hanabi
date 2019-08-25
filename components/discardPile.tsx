@@ -2,8 +2,11 @@ import React from "react";
 import { groupBy, sortBy } from "lodash";
 import classnames from "classnames";
 
-import Card, { CardWrapper } from "./card";
-import { getColors } from "../game/actions";
+import { ICard } from "~/game/state";
+import { getColors } from "~/game/actions";
+import { useGame } from "~/hooks/game";
+
+import Card, { CardWrapper } from "~/components/card";
 
 function CardPile({ cards, color }) {
   if (!cards.length) {
@@ -26,7 +29,13 @@ function CardPile({ cards, color }) {
   );
 }
 
-export default function DiscardPile({ cards }) {
+interface IDiscardPile {
+  cards: ICard[];
+}
+
+export default function DiscardPile(props: IDiscardPile) {
+  const { cards } = props;
+
   const game = useGame();
   const byColor = groupBy(
     sortBy(cards, card => card.value),

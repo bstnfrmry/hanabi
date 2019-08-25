@@ -25,7 +25,7 @@ export default function PlayerGame(props: IPlayerGame) {
 
   return (
     <div
-      className={classnames("container bg-temple pa2 shadow-5 br2", {
+      className={classnames("container bg-main-dark pa2 shadow-5 br2", {
         "border-box ba bw2 b--yellow": active
       })}
     >

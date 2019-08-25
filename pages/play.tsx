@@ -176,7 +176,7 @@ export default function Play() {
                     })
                   }
                 />
-                <div className="bg-temple pa2 shadow-5 br2 mt3 flex-grow-1">
+                <div className="bg-main-dark pa2 shadow-5 br2 mt3 flex-grow-1">
                   {game.status === "lobby" && (
                     <Lobby onJoinGame={onJoinGame} onStartGame={onStartGame} />
                   )}

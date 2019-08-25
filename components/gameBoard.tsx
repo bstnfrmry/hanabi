@@ -27,7 +27,7 @@ export default function GameBoard(props: IGameBoard) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="pa2 pa3-l bg-temple pa2 shadow-5 br2">
+    <div className="pa2 pa3-l bg-main-dark pa2 shadow-5 br2">
       <div className="f6 f4-l ttu">
         Score: {score} / {maxPossibleScore}
         {maxScore !== maxPossibleScore && (
