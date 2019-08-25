@@ -63,7 +63,7 @@ export default function OtherPlayerArea(props: Props) {
                 {textualHint(pendingHint, player.hand)}
               </div>
               <Button
-                disabled={game.tokens.hints === 0}
+                disabled={!pendingHint.type || game.tokens.hints === 0}
                 onClick={() =>
                   onCommitAction({
                     action: "hint",
