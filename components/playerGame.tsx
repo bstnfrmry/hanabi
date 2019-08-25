@@ -51,26 +51,22 @@ export default function PlayerGame(props: IPlayerGame) {
         )}
       </div>
 
-      <div className="flex justify-center mt2 w-100">
-        <div className="flex flex-row pointer grow">
-          <PoseGroup>
-            {player.hand.map((card, i) => (
-              <CardAnimationWrapper key={card.id}>
-                <Card
-                  onClick={() => onSelectPlayer(player, i)}
-                  card={card}
-                  position={i}
-                  hidden={self}
-                  multicolorOption={game.options.multicolor}
-                  size="medium"
-                  context={
-                    self ? CardContext.SELF_PLAYER : CardContext.OTHER_PLAYER
-                  }
-                  className={i < player.hand.length - 1 ? "mr1 mr2-l" : ""}
-                />
-              </CardAnimationWrapper>
-            ))}
-          </PoseGroup>
+      <div className="cards dib mt2 mw-100">
+        <div className="flex flex-row grow pointer">
+          {player.hand.map((card, i) => (
+            <Card
+              onClick={() => onSelectPlayer(player, i)}
+              card={card}
+              position={i}
+              hidden={self}
+              multicolorOption={game.options.multicolor}
+              size="medium"
+              context={
+                self ? CardContext.SELF_PLAYER : CardContext.OTHER_PLAYER
+              }
+              className={i < player.hand.length - 1 ? "mr1 mr2-l" : ""}
+            />
+          ))}
         </div>
       </div>
       <style jsx>{`

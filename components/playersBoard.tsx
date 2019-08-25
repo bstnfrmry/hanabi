@@ -23,7 +23,7 @@ export default (props: IPlayersBoard) => {
     : [];
 
   return (
-    <div className="flex flex-column h-100 overflow-y-scroll">
+    <div className="flex flex-column h-100 overflow-y-scroll w-50">
       <div className="flex-grow-1">
         {otherPlayers.map((otherPlayer, i) => (
           <div key={i} className="pa2 mb4 mb4-l">

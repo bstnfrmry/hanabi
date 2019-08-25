@@ -87,6 +87,9 @@ export default function Play() {
       pathname: "/play",
       query: { gameId, playerId }
     });
+
+    localStorage.setItem("gameId", gameId.toString());
+    localStorage.setItem("playerId", playerId.toString());
   }
 
   async function onStartGame() {
