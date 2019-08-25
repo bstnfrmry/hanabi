@@ -47,24 +47,33 @@ export default function GameBoard({
       </div>
       <div className="flex flex-column-l justify-between mt1">
         <div className="flex flex-column">
-          <PlayedCards
-            cards={playedCards}
-            multicolorOption={game.options.multicolor}
-          />
+          <PlayedCards game={game} cards={playedCards} />
         </div>
         <div className="flex flex-row ph1 justify-left mt1 items-center">
           <TokenSpace
             noteTokens={game.tokens.hints}
             stormTokens={game.tokens.strikes}
           />
-          <div className="mr2">
-            <CardWrapper color="light-silver">
-              {game.drawPile.length}
+          <div className="mr2 relative">
+            <CardWrapper>
+              {game.drawPile.map((card, i) => (
+                <div className="absolute" style={{ top: `-${i / 2}px` }}>
+                  <CardWrapper key={card.id} color="light-silver">
+                    {i + 1}
+                  </CardWrapper>
+                </div>
+              ))}
             </CardWrapper>
           </div>
-          <div className="pointer" onClick={() => onSelectDiscard()}>
-            <CardWrapper color="light-silver">
-              {game.discardPile.length}
+          <div className="pointer relative" onClick={() => onSelectDiscard()}>
+            <CardWrapper>
+              {game.discardPile.map((card, i) => (
+                <div className="absolute" style={{ top: `-${i / 2}px` }}>
+                  <CardWrapper key={card.id} color="light-silver">
+                    {i + 1}
+                  </CardWrapper>
+                </div>
+              ))}
             </CardWrapper>
           </div>
           <div className="flex ml2">

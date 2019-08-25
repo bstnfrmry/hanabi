@@ -233,10 +233,10 @@ export function getColors(state: IGameState) {
  */
 
 export const colors: IColor[] = [
+  IColor.WHITE,
   IColor.BLUE,
   IColor.RED,
   IColor.GREEN,
-  IColor.WHITE,
   IColor.YELLOW,
   IColor.MULTICOLOR
 ];
