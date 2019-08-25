@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
 
-import Button from "~/components/button";
+import Button from "~/components/ui/button";
 import Card, { ICardContext, PositionMap, ICardSize } from "~/components/card";
 
 interface Props {
@@ -29,7 +29,7 @@ export default function SelfPlayerArea(props: Props) {
           <Card
             key={i}
             card={card}
-            hidden={selfPlayer === currentPlayer}
+            hidden={true}
             position={i}
             size={ICardSize.LARGE}
             context={ICardContext.TARGETED_PLAYER}

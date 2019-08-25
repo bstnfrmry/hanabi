@@ -2,7 +2,7 @@ import React from "react";
 
 import PlayedCards from "./playedCards";
 import TokenSpace from "./tokenSpace";
-import Button from "./button";
+import Button from "./ui/button";
 import {
   getScore,
   getMaximumScore,
@@ -10,6 +10,7 @@ import {
 } from "../game/actions";
 import { CardWrapper } from "./card";
 import { useGame } from "../hooks/game";
+import Box from "~/components/ui/box";
 
 interface Props {
   onSelectDiscard: Function;
@@ -27,7 +28,7 @@ export default function GameBoard(props: Props) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="pa2 pa3-l bg-main-dark pa2 shadow-5 br2">
+    <Box className="mb2 mb3-l">
       <div className="f6 f4-l ttu">
         Score: {score} / {maxPossibleScore}
         {maxScore !== maxPossibleScore && (
@@ -86,6 +87,6 @@ export default function GameBoard(props: Props) {
           </div>
         </div>
       </div>
-    </div>
+    </Box>
   );
 }

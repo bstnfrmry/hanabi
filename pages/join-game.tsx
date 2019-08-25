@@ -4,7 +4,8 @@ import { useRouter } from "next/router";
 import IGameState, { fillEmptyValues } from "~/game/state";
 import { useDatabase } from "~/hooks/database";
 
-import Button from "~/components/button";
+import Button from "~/components/ui/button";
+import Box from "~/components/ui/box";
 
 export default function JoinGame() {
   const router = useRouter();
@@ -34,7 +35,7 @@ export default function JoinGame() {
 
   return (
     <div className="w-100 h-100 flex justify-center items-center">
-      <div className="w-50 bg-main-dark shadow-5 br2 pv2 ph4">
+      <Box className="w-50">
         {loading && <h1>Loading...</h1>}
 
         {!loading && (
@@ -68,7 +69,7 @@ export default function JoinGame() {
             )}
           </>
         )}
-      </div>
+      </Box>
     </div>
   );
 }

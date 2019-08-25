@@ -5,7 +5,8 @@ import shortid from "shortid";
 import { useDatabase } from "~/hooks/database";
 import { newGame } from "~/game/actions";
 
-import Button from "~/components/button";
+import Button from "~/components/ui/button";
+import Box from "~/components/ui/box";
 
 const PlayerCounts = [2, 3, 4, 5];
 
@@ -40,7 +41,7 @@ export default function NewGame() {
   return (
     <>
       <div className="w-100 h-100 flex justify-center items-center">
-        <div className="flex flex-column w-50 pv2 ph4 bg-grey bg-main-dark shadow-5 br2">
+        <Box className="flex flex-column w-50">
           <h1>New game</h1>
           <label className="flex justify-between items-center pb2 mb2">
             Seed
@@ -92,7 +93,7 @@ export default function NewGame() {
           <div className="self-end">
             <Button onClick={() => createGame()}>New game</Button>
           </div>
-        </div>
+        </Box>
       </div>
     </>
   );

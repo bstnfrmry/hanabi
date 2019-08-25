@@ -5,6 +5,7 @@ import { IPlayer } from "~/game/state";
 
 import PlayerName from "~/components/playerName";
 import Card, { ICardContext, ICardSize } from "~/components/card";
+import Box from "~/components/ui/box";
 
 interface Props {
   player: IPlayer;
@@ -24,16 +25,12 @@ export default function PlayerGame(props: Props) {
   } = props;
 
   return (
-    <div
-      className={classnames("container bg-main-dark pa2 shadow-5 br2", {
+    <Box
+      className={classnames({
         "border-box ba bw2 b--yellow": active
       })}
     >
-      <div
-        className={classnames(
-          "f6 f4-l fw1 tracked ttu ml1 flex items-center bg-wood"
-        )}
-      >
+      <div className="f6 f4-l fw1 tracked ttu ml1 flex items-center">
         <PlayerName player={player} />
         {active && !self && !player.notified && (
           <span className="ml2 pointer" onClick={() => onNotifyPlayer(player)}>
@@ -55,17 +52,19 @@ export default function PlayerGame(props: Props) {
               context={
                 self ? ICardContext.SELF_PLAYER : ICardContext.OTHER_PLAYER
               }
-              className={i < player.hand.length - 1 ? "mr1 mr2-l" : ""}
+              className={classnames({
+                "mr1 mr2-l": i < player.hand.length - 1
+              })}
             />
           ))}
         </div>
       </div>
       <style jsx>{`
-        .container:hover {
-          background-color: rgba(#f4d03f, 80%);
+        .cards:hover {
+          background-color: rgba(171, 146, 44, 90%);
           box-shadow: 0px 0px 5px 2px var(--color-yellow);
         }
       `}</style>
-    </div>
+    </Box>
   );
 }

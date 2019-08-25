@@ -2,27 +2,28 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import shortid from "shortid";
 
-import PlayersBoard from "../components/playersBoard";
-import GameBoard from "../components/gameBoard";
-import Lobby from "../components/lobby";
-import ActionArea, {
-  ActionAreaType,
-  ISelectedArea
-} from "../components/areas/actionArea";
-import { useDatabase } from "../hooks/database";
-import {
-  GameContext,
-  SelfPlayerContext,
-  CurrentPlayerContext
-} from "../hooks/game";
+import IGameState, { fillEmptyValues } from "~/game/state";
 import {
   joinGame,
   commitAction,
   getLastState,
   getMaximumPossibleScore
-} from "../game/actions";
+} from "~/game/actions";
+import { useDatabase } from "~/hooks/database";
+import {
+  GameContext,
+  SelfPlayerContext,
+  CurrentPlayerContext
+} from "~/hooks/game";
 
-import IGameState, { fillEmptyValues } from "../game/state";
+import PlayersBoard from "~/components/playersBoard";
+import GameBoard from "~/components/gameBoard";
+import Lobby from "~/components/lobby";
+import ActionArea, {
+  ActionAreaType,
+  ISelectedArea
+} from "~/components/areas/actionArea";
+import Box from "~/components/ui/box";
 
 export default function Play() {
   const db = useDatabase();
@@ -164,7 +165,7 @@ export default function Play() {
                 }}
                 onNotifyPlayer={onNotifyPlayer}
               />
-              <div className="pa2 flex flex-column flex-grow-1 h-100 overflow-scroll">
+              <div className="pa2 pl0 flex flex-column flex-grow-1 h-100 overflow-scroll">
                 <GameBoard
                   onRollback={onRollback}
                   onMenuClick={onMenuClick}
@@ -176,7 +177,7 @@ export default function Play() {
                     })
                   }
                 />
-                <div className="bg-main-dark pa2 shadow-5 br2 mt3 flex-grow-1">
+                <Box className="flex-grow-1">
                   {game.status === "lobby" && (
                     <Lobby onJoinGame={onJoinGame} onStartGame={onStartGame} />
                   )}
@@ -186,7 +187,7 @@ export default function Play() {
                       onCommitAction={onCommitAction}
                     />
                   )}
-                </div>
+                </Box>
               </div>
             </div>
           </div>

@@ -4,7 +4,7 @@ import generateName from "project-name-generator";
 
 import { useGame, useSelfPlayer } from "../hooks/game";
 
-import Button from "~/components/button";
+import Button from "~/components/ui/button";
 import PlayerName from "~/components/playerName";
 
 const Emojis = ["🐶", "🦊", "🐸", "🦋", "🐯", "🐱"];
