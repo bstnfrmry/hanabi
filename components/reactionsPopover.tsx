@@ -1,7 +1,7 @@
 import { useSelfPlayer } from "~/hooks/game";
 
 const ClearReaction = "🚫";
-const Reactions = ["👍", "👎", "😅", "👏", "🤩", "🤔", "♻️"];
+const Reactions = ["👍", "👎", "👏", "😅", "🤩", "🤭", "🤔", "😬", "♻️"];
 
 interface Props {
   onReaction: Function;
@@ -22,16 +22,25 @@ export default function ReactionsPopover(props: Props) {
           onClick={() => {
             onClose();
             onReaction(null);
-            if (reaction !== selfPlayer.reaction) {
-              setImmediate(() => {
-                onReaction(reaction);
-              });
-            }
+            setImmediate(() => {
+              onReaction(reaction);
+            });
           }}
         >
-          {reaction === selfPlayer.reaction ? ClearReaction : reaction}
+          {reaction}
         </span>
       ))}
+      {selfPlayer.reaction && (
+        <span
+          className="ml4 pointer f4"
+          onClick={() => {
+            onClose();
+            onReaction(null);
+          }}
+        >
+          {ClearReaction}
+        </span>
+      )}
     </div>
   );
 }
