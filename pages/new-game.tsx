@@ -19,7 +19,7 @@ export default function NewGame() {
   const [playersCount, setPlayersCount] = useState(2);
   const [multicolor, setMulticolor] = useState(false);
   const [allowRollback, setAllowRollback] = useState(true);
-  const [preventLoss, setPreventLoss] = useState(true);
+  const [preventLoss, setPreventLoss] = useState(false);
 
   async function createGame() {
     const gameId = shortid();
