@@ -54,8 +54,8 @@ export default function OtherPlayerArea(props: Props) {
               onSelect={action => setPendingHint(action)}
               pendingHint={pendingHint}
             />
-            <div className="ml3">
-              <div className="h2 f5 fw3 i">
+            <div className="ml1">
+              <div className="h2 mb2 f5 fw3 i overflow-hidden">
                 {textualHint(pendingHint, player.hand)}
               </div>
               <Button

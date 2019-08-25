@@ -27,8 +27,9 @@ export default function PlayerGame(props: Props) {
   return (
     <Box
       className={classnames({
-        "border-box ba bw2 b--yellow": active
+        "border-box ba bw2": active
       })}
+      borderColor={active ? "yellow" : "main-dark"}
     >
       <div className="f6 f4-l fw1 tracked ttu ml1 flex items-center">
         <PlayerName player={player} explicit={true} className="w-100" />
