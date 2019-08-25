@@ -31,7 +31,7 @@ export default function PlayerGame(props: Props) {
       })}
     >
       <div className="f6 f4-l fw1 tracked ttu ml1 flex items-center">
-        <PlayerName player={player} explicit={true} />
+        <PlayerName player={player} explicit={true} className="w-100" />
         {active && !self && !player.notified && (
           <span className="ml2 pointer" onClick={() => onNotifyPlayer(player)}>
             🔔
@@ -39,8 +39,8 @@ export default function PlayerGame(props: Props) {
         )}
       </div>
 
-      <div className="cards dib mt2 mw-100">
-        <div className="flex flex-row grow pointer">
+      <div className="cards dib mt1 mw-100">
+        <div className="flex flex-row grow pointer ph2">
           {player.hand.map((card, i) => (
             <Card
               key={i}
@@ -61,8 +61,8 @@ export default function PlayerGame(props: Props) {
       </div>
       <style jsx>{`
         .cards:hover {
-          background-color: rgba(171, 146, 44, 90%);
-          box-shadow: 0px 0px 5px 2px var(--color-yellow);
+          background-color: var(--color-yellow);
+          box-shadow: 0px 0px 5px 5px var(--color-yellow);
         }
       `}</style>
     </Box>

@@ -27,24 +27,25 @@ export default function GameBoard(props: Props) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <Box className="mb2">
-      <div className="f6 f4-l ttu">
-        Score: {score} / {maxPossibleScore}
-        {maxScore !== maxPossibleScore && (
-          <span className="strike ml1 gray">{maxScore}</span>
-        )}
-        {game.actionsLeft <= game.options.playersCount && (
-          <div className="ml2 inline-flex">
-            ·<span className="red ml2">{game.actionsLeft} turns left</span>
-          </div>
-        )}
-      </div>
-      <div className="flex flex-column-l justify-between mt1">
+    <Box className="mb1">
+      <div className="flex justify-between items-endmt1">
         <div className="flex flex-column">
-          <PlayedCards cards={game.playedCards} />
+          <div className="f6 f4-l ttu">
+            Score: {score} / {maxPossibleScore}
+            {maxScore !== maxPossibleScore && (
+              <span className="strike ml1 gray">{maxScore}</span>
+            )}
+            {game.actionsLeft <= game.options.playersCount && (
+              <div className="ml1 inline-flex">
+                ·<span className="red ml2">{game.actionsLeft} turns left</span>
+              </div>
+            )}
+          </div>
+          <div className="flex flex-column">
+            <PlayedCards cards={game.playedCards} />
+          </div>
         </div>
-        <div className="flex flex-row ph1 justify-left mt1 items-center">
-          <TokenSpace hints={game.tokens.hints} strikes={game.tokens.strikes} />
+        <div className="flex flex-row ph1 justify-left items-end">
           <div className="mr2 relative">
             <CardWrapper color="light-silver">
               {game.drawPile.map((card, i) => (
@@ -60,7 +61,10 @@ export default function GameBoard(props: Props) {
               ))}
             </CardWrapper>
           </div>
-          <div className="pointer relative" onClick={() => onSelectDiscard()}>
+          <div
+            className="pointer relative mr2"
+            onClick={() => onSelectDiscard()}
+          >
             <CardWrapper color="light-silver">
               {game.discardPile.map((card, i) => (
                 <div
@@ -69,19 +73,27 @@ export default function GameBoard(props: Props) {
                   style={{ top: `-${i / 2}px` }}
                 >
                   <CardWrapper key={card.id} color="light-silver">
-                    {i + 1}
+                    <div className="absolute white o-50 pointer">{i + 1}</div>
+                    <div
+                      className={`absolute w-100 o-80 rotate-135 bg-white b--white`}
+                      style={{ height: "2px" }}
+                    />
                   </CardWrapper>
                 </div>
               ))}
             </CardWrapper>
           </div>
-          <div className="flex ml2">
+          <TokenSpace hints={game.tokens.hints} strikes={game.tokens.strikes} />
+
+          <div className="flex flex-column">
             {game.options.allowRollback && (
               <Button disabled={!history.length} onClick={onRollback}>
                 ⟲
               </Button>
             )}
-            <Button onClick={onMenuClick}>☰</Button>
+            <Button onClick={onMenuClick} className="mt1">
+              ☰
+            </Button>
           </div>
         </div>
       </div>

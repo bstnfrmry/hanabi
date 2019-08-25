@@ -24,11 +24,18 @@ export default function PlayersBoard(props: Props) {
       )
     : [];
 
+  const x = [
+    ...otherPlayers,
+    ...otherPlayers,
+    ...otherPlayers,
+    ...otherPlayers
+  ];
+
   return (
     <>
       <div className="flex-grow-1">
-        {otherPlayers.map((otherPlayer, i) => (
-          <div key={i} className="mb4 mb4-l">
+        {x.map((otherPlayer, i) => (
+          <div key={i} className="mb1 mb2-l">
             <PlayerGame
               player={otherPlayer}
               onSelectPlayer={onSelectPlayer}

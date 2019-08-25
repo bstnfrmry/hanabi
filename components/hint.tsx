@@ -15,11 +15,14 @@ export default function Hint(props: Props) {
   const color = type === "color" ? value : "white";
 
   return (
-    <div className="flex justify-center items-center h1 w1">
+    <div
+      className="flex justify-center items-center"
+      style={{ width: "0.5rem", height: "0.5rem" }}
+    >
       {hint !== 0 && (
         <div
           className={classnames(
-            "outline-main-dark pointer flex items-center justify-center br-100 h-100 w-100 fw2 white",
+            "outline-main-dark pointer flex items-center justify-center br-100 h-100 w-100 fw2 white f7",
             { [`bg-${color}`]: type === "color" },
             { [`ba bw1  b--${color}`]: type === "color" && hint === 2 },
             { [`ba`]: type === "number" && hint === 2 }

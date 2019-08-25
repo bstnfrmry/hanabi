@@ -49,12 +49,13 @@ export default function Play() {
   }, [gameId, playerId]);
 
   /**
-   * Reset the selected area when the turn changes - remove
+   * Display turn on turn played. Also resets the selected area
    */
   useEffect(() => {
     let timeout;
     db.ref(`/games/${gameId}/turnsHistory`).on("child_added", event => {
       setLastTurn(event.val());
+      selectArea({ id: "instructions", type: ActionAreaType.INSTRUCTIONS });
 
       if (timeout) {
         clearTimeout(timeout);
@@ -180,7 +181,7 @@ export default function Play() {
               {lastTurn && (
                 <div
                   onClick={() => setLastTurn(null)}
-                  className="flex justify-center bg-white mw-50 main-dark br4 shadow-4 b--yellow ba bw2 f3 pa3"
+                  className="flex justify-center bg-white main-dark br4 shadow-4 b--yellow ba bw2 f3 pa3"
                 >
                   <Turn
                     includePlayer={true}
@@ -195,7 +196,10 @@ export default function Play() {
             </div>
 
             {/* Left area */}
-            <div className="flex flex-column h-100 overflow-y-scroll w-50 ma2">
+            <div
+              className="flex flex-column h-100 overflow-y-scroll pa1"
+              style={{ width: "35%" }}
+            >
               <PlayersBoard
                 onSelectPlayer={onSelectPlayer}
                 onNotifyPlayer={onNotifyPlayer}
@@ -203,7 +207,7 @@ export default function Play() {
             </div>
 
             {/* Right area */}
-            <div className="flex flex-column h-100 flex-grow-1 overflow-scroll ma2 ml0">
+            <div className="flex flex-column h-100 flex-grow-1 overflow-scroll pa1 pl0">
               <GameBoard
                 onRollback={onRollback}
                 onMenuClick={onMenuClick}

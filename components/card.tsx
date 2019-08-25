@@ -10,16 +10,14 @@ import Hint from "~/components/hint";
 export enum ICardSize {
   SMALL = "small",
   MEDIUM = "medium",
-  LARGE = "large",
-  EXTRA_LARGE = "extralarge"
+  LARGE = "large"
 }
 
 // Cards possible sizes
 const SizeMap = {
   [ICardSize.SMALL]: "h1 w1 h2-l w2-l f5 f4-l",
   [ICardSize.MEDIUM]: "h2 w2 h4-l w4-l f4 f1-l",
-  [ICardSize.LARGE]: "h4 w4 mw4 f2 f1-l",
-  [ICardSize.EXTRA_LARGE]: "h4 w4 mw4 h5-l w5-l f2 f1-l"
+  [ICardSize.LARGE]: "h3 w3 mw3 f2 f1-l"
 };
 
 export const PositionMap = {
@@ -72,11 +70,13 @@ export function CardWrapper(props: CardWrapperProps) {
       children={children}
       style={style}
       className={classnames(
-        "relative flex items-center justify-center br1 ba shadow-2",
+        "relative flex items-center justify-center br1 ba",
         sizeClass,
         className,
         borderWidth,
         `bg-${color}`,
+        { "shadow-2": size.includes("large") },
+        { "shadow-1": size.includes("medium") },
         { pointer: playable },
         { grow: context === ICardContext.TARGETED_PLAYER }
       )}
@@ -140,7 +140,7 @@ export default function Card(props: Props) {
     >
       <div
         className={classnames(
-          "white outline-main-dark",
+          "white outline-main-dark f3",
           { f7: size === "small" },
           { mb3: size.includes("large") }
         )}
@@ -149,7 +149,7 @@ export default function Card(props: Props) {
       </div>
       {position >= 0 && size.includes("large") && (
         <div
-          className={classnames("absolute left-0 top-0 ma1 fw1 f3 black-20")}
+          className={classnames("absolute left-0 top-0 ma1 fw1 f6 black-20")}
         >
           {PositionMap[position]}
         </div>

@@ -14,9 +14,13 @@
   --color-gray-light: #ddd;
 }
 
+html,
 body {
   font-family: "Kalam", cursive;
+  width: 100%;
+  height: 100%;
   color: #f0f0f0;
+  background: black;
 }
 
 /**
@@ -38,9 +42,9 @@ body {
 .bg-main-dark {
   background: linear-gradient(
     to bottom right,
-    color-mod(var(--color-main-dark) lightness(20%)),
+    color-mod(var(--color-main-dark) shade(50%)),
     var(--color-main-dark),
-    color-mod(var(--color-main-dark) shade(30%))
+    color-mod(var(--color-main-dark) shade(50%))
   );
 }
 
@@ -195,6 +199,10 @@ body {
 
 .b--main {
   border-color: var(--color-main);
+}
+
+.b--main-dark {
+  border-color: var(--color-main-dark);
 }
 
 .outline-main-dark {

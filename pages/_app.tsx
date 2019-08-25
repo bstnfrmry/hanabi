@@ -43,7 +43,7 @@ export default class Hanabi extends App {
         </Head>
         <Container>
           <DatabaseContext.Provider value={this.database}>
-            <div className="aspect-ratio--object bg-silver">
+            <div className="aspect-ratio--object">
               <Component {...pageProps} />
             </div>
           </DatabaseContext.Provider>
