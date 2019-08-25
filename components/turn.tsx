@@ -2,22 +2,38 @@ import { ITurn } from "~/game/state";
 import { useGame } from "~/hooks/game";
 
 import PlayerName from "~/components/playerName";
-import Card, { ICardContext, ICardSize } from "~/components/card";
+import Card, { ICardContext, CardSize } from "~/components/card";
 import Hint from "~/components/hint";
+
+export enum TurnSize {
+  SMALL,
+  MEDIUM
+}
 
 interface Props {
   turn: ITurn;
   includePlayer: boolean;
   showDrawn: boolean;
+  size?: TurnSize;
 }
 
 export default function Turn(props: Props) {
+  const {
+    turn,
+    includePlayer = false,
+    showDrawn,
+    size = TurnSize.MEDIUM
+  } = props;
   const game = useGame();
-  const { turn, includePlayer = false, showDrawn } = props;
 
   if (!turn) {
     return null;
   }
+
+  const cardSize = {
+    [TurnSize.SMALL]: CardSize.SMALL,
+    [TurnSize.MEDIUM]: CardSize.MEDIUM
+  }[size];
 
   return (
     <div className="inline-flex items-center">
@@ -40,7 +56,7 @@ export default function Turn(props: Props) {
           <Card
             card={turn.action.card}
             context={ICardContext.DISCARDED}
-            size={ICardSize.SMALL}
+            size={cardSize}
           />
         </div>
       )}
@@ -51,7 +67,7 @@ export default function Turn(props: Props) {
           <Card
             card={turn.action.card}
             context={ICardContext.PLAYED}
-            size={ICardSize.SMALL}
+            size={cardSize}
           />
         </div>
       )}
@@ -59,11 +75,7 @@ export default function Turn(props: Props) {
       {showDrawn && turn.card && (
         <div className="ml1 inline-flex items-center">
           & drew&nbsp;
-          <Card
-            card={turn.card}
-            context={ICardContext.DRAWN}
-            size={ICardSize.SMALL}
-          />
+          <Card card={turn.card} context={ICardContext.DRAWN} size={cardSize} />
         </div>
       )}
     </div>

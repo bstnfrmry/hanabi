@@ -7,7 +7,7 @@ import { useGame } from "~/hooks/game";
 
 import Hint from "~/components/hint";
 
-export enum ICardSize {
+export enum CardSize {
   SMALL = "small",
   MEDIUM = "medium",
   LARGE = "large"
@@ -15,9 +15,9 @@ export enum ICardSize {
 
 // Cards possible sizes
 const SizeMap = {
-  [ICardSize.SMALL]: "h1 w1 h2-l w2-l f5 f4-l",
-  [ICardSize.MEDIUM]: "h2 w2 h4-l w4-l f4 f1-l",
-  [ICardSize.LARGE]: "h3 w3 mw3 f2 f1-l"
+  [CardSize.SMALL]: "h1 w1 h2-l w2-l f5 f4-l",
+  [CardSize.MEDIUM]: "h2 w2 h4-l w4-l f4 f1-l",
+  [CardSize.LARGE]: "h3 w3 mw3 f2 f1-l"
 };
 
 export const PositionMap = {
@@ -39,7 +39,7 @@ export enum ICardContext {
 
 interface CardWrapperProps {
   color: string;
-  size?: ICardSize;
+  size?: CardSize;
   playable?: boolean;
   context?: ICardContext;
   className?: string;
@@ -52,7 +52,7 @@ interface CardWrapperProps {
 export function CardWrapper(props: CardWrapperProps) {
   const {
     color,
-    size = ICardSize.MEDIUM,
+    size = CardSize.MEDIUM,
     playable = false,
     context,
     className = "",
@@ -91,7 +91,7 @@ interface Props {
   position?: number;
   selected?: boolean;
   playable?: boolean;
-  size?: ICardSize;
+  size?: CardSize;
   className?: string;
   style?: CSSProperties;
   onClick?: (MouseEvent) => void;
@@ -104,7 +104,7 @@ export default function Card(props: Props) {
     onClick = () => {},
     hidden = false,
     playable = true,
-    size = ICardSize.MEDIUM,
+    size = CardSize.MEDIUM,
     className = "",
     style = {},
     position = null,

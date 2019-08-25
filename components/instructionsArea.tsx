@@ -1,7 +1,7 @@
 import { useGame, useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
 
 import PlayerName from "~/components/playerName";
-import Turn from "~/components/turn";
+import Turn, { TurnSize } from "~/components/turn";
 
 interface Props {
   onSelectDiscard: Function;
@@ -50,6 +50,7 @@ export default function InstructionsArea(props: Props) {
                 turn={turn}
                 includePlayer={true}
                 showDrawn={game.players[turn.action.from] !== selfPlayer}
+                size={TurnSize.SMALL}
               />
             </div>
           );

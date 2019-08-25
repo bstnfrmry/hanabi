@@ -6,7 +6,7 @@ import { ICard, IColor } from "~/game/state";
 import { getColors } from "~/game/actions";
 import { useGame } from "~/hooks/game";
 
-import Card, { CardWrapper, ICardContext, ICardSize } from "~/components/card";
+import Card, { CardWrapper, ICardContext, CardSize } from "~/components/card";
 
 interface CardPileProps {
   cards: ICard[];
@@ -17,9 +17,7 @@ function CardPile(props: CardPileProps) {
   const { cards, color } = props;
 
   if (!cards.length) {
-    return (
-      <CardWrapper color={color} size={ICardSize.MEDIUM} className="mr1" />
-    );
+    return <CardWrapper color={color} size={CardSize.MEDIUM} className="mr1" />;
   }
 
   const sortedCards = sortBy(cards, card => card.number);
@@ -31,7 +29,7 @@ function CardPile(props: CardPileProps) {
           key={i}
           card={card}
           context={ICardContext.DISCARDED}
-          size={ICardSize.MEDIUM}
+          size={CardSize.MEDIUM}
           className={classnames("mr1", { "nt2 nt3-l": i > 0 })}
         />
       ))}

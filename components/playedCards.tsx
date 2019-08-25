@@ -5,7 +5,7 @@ import { ICard } from "~/game/state";
 import { getColors } from "~/game/actions";
 import { useGame } from "~/hooks/game";
 
-import Card, { CardWrapper, ICardContext, ICardSize } from "~/components/card";
+import Card, { CardWrapper, ICardContext, CardSize } from "~/components/card";
 
 interface Props {
   cards: ICard[];
@@ -27,7 +27,7 @@ export default function PlayedCards(props: Props) {
           return (
             <CardWrapper
               key={i}
-              size={ICardSize.MEDIUM}
+              size={CardSize.MEDIUM}
               className="mr1"
               color={color}
             />
@@ -35,7 +35,7 @@ export default function PlayedCards(props: Props) {
         }
         return (
           <CardWrapper
-            size={ICardSize.MEDIUM}
+            size={CardSize.MEDIUM}
             className="mr1 relative"
             color={color}
           >
@@ -43,7 +43,7 @@ export default function PlayedCards(props: Props) {
               <Card
                 card={card}
                 context={ICardContext.PLAYED}
-                size={ICardSize.MEDIUM}
+                size={CardSize.MEDIUM}
                 className="absolute"
                 style={{
                   top: `-${i * 2}px`

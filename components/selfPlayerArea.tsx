@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
 
 import Button from "~/components/ui/button";
-import Card, { ICardContext, PositionMap, ICardSize } from "~/components/card";
+import Card, { ICardContext, PositionMap, CardSize } from "~/components/card";
 
 interface Props {
   cardIndex?: number;
@@ -35,7 +35,7 @@ export default function SelfPlayerArea(props: Props) {
             card={card}
             hidden={true}
             position={i}
-            size={ICardSize.LARGE}
+            size={CardSize.LARGE}
             context={ICardContext.TARGETED_PLAYER}
             className="ma1"
             onClick={() => selectCard(i)}

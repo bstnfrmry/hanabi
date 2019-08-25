@@ -4,7 +4,7 @@ import classnames from "classnames";
 import { IPlayer } from "~/game/state";
 
 import PlayerName from "~/components/playerName";
-import Card, { ICardContext, ICardSize } from "~/components/card";
+import Card, { ICardContext, CardSize } from "~/components/card";
 import Box from "~/components/ui/box";
 
 interface Props {
@@ -52,7 +52,7 @@ export default function PlayerGame(props: Props) {
               card={card}
               position={i}
               hidden={self}
-              size={ICardSize.MEDIUM}
+              size={CardSize.MEDIUM}
               context={
                 self ? ICardContext.SELF_PLAYER : ICardContext.OTHER_PLAYER
               }
