@@ -86,14 +86,14 @@ export default function GameBoard(props: Props) {
           <TokenSpace hints={game.tokens.hints} strikes={game.tokens.strikes} />
 
           <div className="flex flex-column">
+            <Button onClick={onMenuClick} className="mb1">
+              ☰
+            </Button>
             {game.options.allowRollback && (
               <Button disabled={!history.length} onClick={onRollback}>
                 ⟲
               </Button>
             )}
-            <Button onClick={onMenuClick} className="mt1">
-              ☰
-            </Button>
           </div>
         </div>
       </div>
