@@ -11,6 +11,11 @@ import ActionArea, {
 } from "../components/actionArea";
 import { useDatabase } from "../hooks/database";
 import {
+  GameContext,
+  SelfPlayerContext,
+  CurrentPlayerContext
+} from "../hooks/game";
+import {
   joinGame,
   commitAction,
   getLastState,
@@ -134,53 +139,52 @@ export default function Play() {
   }
 
   return (
-    <div className="w-100 h-100">
-      <div className="flex flex-row h-100">
-        <PlayersBoard
-          game={game}
-          player={player}
-          onSelectPlayer={(p, cardIndex) => {
-            const self = p.id === player.id;
+    <GameContext.Provider value={game}>
+      <SelfPlayerContext.Provider value={player}>
+        <CurrentPlayerContext.Provider value={game.players[game.currentPlayer]}>
+          <div className="w-100 h-100">
+            <div className="flex flex-row h-100">
+              <PlayersBoard
+                onSelectPlayer={(p, cardIndex) => {
+                  const self = p.id === player.id;
 
-            onSelectArea({
-              id: self ? `game-${p.id}-${cardIndex}` : `game-${p.id}`,
-              type: self ? ActionAreaType.OWNGAME : ActionAreaType.PLAYER,
-              player: p,
-              cardIndex
-            });
-          }}
-          onNotifyPlayer={onNotifyPlayer}
-        />
-        <div className="pa2 flex flex-column flex-grow-1 h-100 overflow-scroll">
-          <GameBoard
-            game={game}
-            onRollback={onRollback}
-            onMenuClick={onMenuClick}
-            onLogsClick={onLogsClick}
-            onSelectDiscard={() =>
-              onSelectArea({ id: "discard", type: ActionAreaType.DISCARD })
-            }
-          />
-          <div className="bg-temple pa2 shadow-5 br2 mt3 flex-grow-1">
-            {game.status === "lobby" && (
-              <Lobby
-                game={game}
-                player={player}
-                onJoinGame={onJoinGame}
-                onStartGame={onStartGame}
+                  onSelectArea({
+                    id: self ? `game-${p.id}-${cardIndex}` : `game-${p.id}`,
+                    type: self ? ActionAreaType.OWNGAME : ActionAreaType.PLAYER,
+                    player: p,
+                    cardIndex
+                  });
+                }}
+                onNotifyPlayer={onNotifyPlayer}
               />
-            )}
-            {game.status === "ongoing" && (
-              <ActionArea
-                game={game}
-                selectedArea={selectedArea}
-                player={player}
-                onCommitAction={onCommitAction}
-              />
-            )}
+              <div className="pa2 flex flex-column flex-grow-1 h-100 overflow-scroll">
+                <GameBoard
+                  onRollback={onRollback}
+                  onMenuClick={onMenuClick}
+                  onLogsClick={onLogsClick}
+                  onSelectDiscard={() =>
+                    onSelectArea({
+                      id: "discard",
+                      type: ActionAreaType.DISCARD
+                    })
+                  }
+                />
+                <div className="bg-temple pa2 shadow-5 br2 mt3 flex-grow-1">
+                  {game.status === "lobby" && (
+                    <Lobby onJoinGame={onJoinGame} onStartGame={onStartGame} />
+                  )}
+                  {game.status === "ongoing" && (
+                    <ActionArea
+                      selectedArea={selectedArea}
+                      onCommitAction={onCommitAction}
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </CurrentPlayerContext.Provider>
+      </SelfPlayerContext.Provider>
+    </GameContext.Provider>
   );
 }

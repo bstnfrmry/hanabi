@@ -3,8 +3,10 @@ import { last, groupBy } from "lodash";
 
 import { getColors } from "../game/actions";
 import Card, { CardWrapper } from "./card";
+import { useGame } from "../hooks/game";
 
-export default ({ game, cards }) => {
+export default ({ cards }) => {
+  const game = useGame();
   const groupedCards = groupBy(cards, c => c.color);
   const colors = getColors(game);
 

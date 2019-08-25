@@ -3,16 +3,15 @@ import Card, { CardContext, PositionMap } from "./card";
 import Vignettes from "./vignettes";
 import DiscardPile from "./discardPile";
 import { useRouter } from "next/router";
-import IGameState, { IHintAction, ICard, IPlayer } from "../game/state";
+import { IHintAction, ICard, IPlayer } from "../game/state";
 import { isGameOver } from "../game/actions";
 import Turn from "./turn";
 import Button from "./button";
 import PlayerName from "./playerName";
+import { useGame, useSelfPlayer, useCurrentPlayer } from "../hooks/game";
 
 interface IActionArea {
-  game: IGameState;
   selectedArea: ISelectedArea;
-  player: IPlayer;
   onCommitAction: any;
 }
 
@@ -53,14 +52,12 @@ export enum ActionAreaType {
   DISCARD = "discard"
 }
 
-export default ({
-  game,
-  selectedArea,
-  player,
-  onCommitAction
-}: IActionArea) => {
+export default ({ selectedArea, onCommitAction }: IActionArea) => {
   const router = useRouter();
   const { playerId } = router.query;
+  const game = useGame();
+  const selfPlayer = useSelfPlayer();
+  const currentPlayer = useCurrentPlayer();
 
   const [pendingHint, setPendingHint] = useState({
     type: null,
@@ -79,8 +76,7 @@ export default ({
     [selectedArea]
   );
 
-  const currentPlayer = game.players[game.currentPlayer];
-  const isCurrentPlayer = currentPlayer === player;
+  const isCurrentPlayer = currentPlayer === selfPlayer;
 
   if (isGameOver(game)) {
     return (
@@ -113,10 +109,9 @@ export default ({
           return (
             <div key={i} className="mt1">
               <Turn
-                game={game}
                 turn={turn}
                 includePlayer={true}
-                showDrawn={game.players[turn.action.from].id !== playerId}
+                showDrawn={game.players[turn.action.from] !== selfPlayer}
               />
             </div>
           );
@@ -131,7 +126,7 @@ export default ({
         <div className="flex flex-row pb1 pb2-l f6 f4-l fw2 tracked ttu ml1">
           Discarded cards
         </div>
-        <DiscardPile game={game} cards={game.discardPile} />
+        <DiscardPile cards={game.discardPile} />
       </div>
     );
   }
@@ -150,8 +145,7 @@ export default ({
             <Card
               key={i}
               card={card}
-              hidden={player.id === playerId}
-              multicolorOption={game.options.multicolor}
+              hidden={player === selfPlayer}
               position={i}
               size="large"
               context={CardContext.TARGETED_PLAYER}
@@ -167,7 +161,6 @@ export default ({
             </div>
             <div className="flex flex-row pb2 ml1">
               <Vignettes
-                multicolorOption={game.options.multicolor}
                 onSelect={action => setPendingHint(action)}
                 pendingHint={pendingHint}
               />
@@ -255,11 +248,9 @@ export default ({
 };
 
 function isCardHintable(hint: IHintAction, card: ICard) {
-  if (hint.type === "color") {
-    return card.color === hint.value;
-  } else {
-    return card.number === hint.value;
-  }
+  return hint.type === "color"
+    ? card.color === hint.value
+    : card.number === hint.value;
 }
 
 function textualHint(hint: IHintAction, cards: ICard[]) {

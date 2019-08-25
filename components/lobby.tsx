@@ -1,23 +1,35 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import generate from "project-name-generator";
 import Button from "./button";
 import PlayerName from "./playerName";
+import { useGame, useSelfPlayer } from "../hooks/game";
 
 const Emojis = ["🐶", "🦊", "🐸", "🦋", "🐯", "🐱"];
 
-export default function Lobby({ game, player, onJoinGame, onStartGame }) {
-  const players = Object.values(game.players || {});
-  const gameFull = players.length === game.playersCount;
-  const canJoin = !player && !gameFull;
-  const availableEmojis = Emojis.filter(e => !players.find(p => p.emoji === e));
+interface ILobby {
+  onJoinGame: Function;
+  onStartGame: Function;
+}
+
+export default function Lobby(props: ILobby) {
+  const { onJoinGame, onStartGame } = props;
+
+  const game = useGame();
+  const selfPlayer = useSelfPlayer();
+
+  const gameFull = game.players.length === game.playersCount;
+  const canJoin = !selfPlayer && !gameFull;
+  const availableEmojis = Emojis.filter(
+    e => !game.players.find(p => p.emoji === e)
+  );
 
   const router = useRouter();
   const [name, setName] = useState(generate().dashed);
   const [emoji, setEmoji] = useState(availableEmojis[0]);
 
   const shareLink = `${window.location.origin}/play?gameId=${router.query.gameId}`;
-  const inputRef = React.createRef();
+  const inputRef = React.createRef<HTMLInputElement>();
   function copy() {
     inputRef.current.select();
     document.execCommand("copy");
@@ -25,9 +37,9 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
 
   return (
     <div className="pa3 bg-grey bt">
-      {player && (
+      {selfPlayer && (
         <h2>
-          Joined as <PlayerName player={player} />
+          Joined as <PlayerName player={selfPlayer} />
         </h2>
       )}
       <div className="flex items-center">
@@ -47,7 +59,7 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
 
       <h2>Players:</h2>
       <div className="flex flex-column">
-        {players.map((player, i) => (
+        {game.players.map((player, i) => (
           <PlayerName key={i} player={player} />
         ))}
       </div>
@@ -79,7 +91,7 @@ export default function Lobby({ game, player, onJoinGame, onStartGame }) {
         </form>
       )}
       {gameFull && <p>Game is full</p>}
-      {player && (
+      {selfPlayer && (
         <Button disabled={!gameFull} onClick={onStartGame}>
           Start game
         </Button>

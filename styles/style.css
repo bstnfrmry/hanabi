@@ -89,6 +89,7 @@ body {
 .bg-multicolor {
   position: relative;
   overflow: hidden;
+  z-index: 0;
 }
 
 .bg-multicolor:before {
@@ -98,7 +99,7 @@ body {
   height: 200%;
   top: -50%;
   left: -50%;
-  z-index: 1;
+  z-index: -1;
   background: linear-gradient(
     to bottom right,
     var(--color-yellow),
@@ -179,6 +180,10 @@ body {
 
 .b--green {
   border-color: color-mod(var(--color-green) shade(20%));
+}
+
+.b--multicolor {
+  border-color: color-mod(var(--color-white) shade(10%));
 }
 
 .b--hints {

@@ -1,30 +1,26 @@
 import React from "react";
 import PlayerGame from "./playerGame";
 import { range } from "lodash";
-import IGameState, { IPlayer } from "../game/state";
+import { useGame, useSelfPlayer, useCurrentPlayer } from "../hooks/game";
 
 interface IPlayersBoard {
-  game: IGameState;
-  player: IPlayer | undefined;
   onSelectPlayer: any;
   onNotifyPlayer: Function;
 }
 
-export default ({
-  game,
-  player,
-  onSelectPlayer,
-  onNotifyPlayer
-}: IPlayersBoard) => {
+export default (props: IPlayersBoard) => {
+  const { onSelectPlayer, onNotifyPlayer } = props;
+
+  const game = useGame();
+  const selfPlayer = useSelfPlayer();
+  const currentPlayer = useCurrentPlayer();
+
   // all the other players in order (starting with the next one)
-  let otherPlayers;
-  if (!player) {
-    otherPlayers = [];
-  } else {
-    otherPlayers = range(game.players.length - 1).map(
-      i => game.players[(i + player.index + 1) % game.players.length]
-    );
-  }
+  const otherPlayers = selfPlayer
+    ? range(game.players.length - 1).map(
+        i => game.players[(i + selfPlayer.index + 1) % game.players.length]
+      )
+    : [];
 
   return (
     <div className="flex flex-column h-100 overflow-y-scroll">
@@ -32,23 +28,21 @@ export default ({
         {otherPlayers.map((otherPlayer, i) => (
           <div key={i} className="pa2 mb4 mb4-l">
             <PlayerGame
-              game={game}
               player={otherPlayer}
               onSelectPlayer={onSelectPlayer}
               onNotifyPlayer={onNotifyPlayer}
-              active={game.players[game.currentPlayer] === otherPlayer}
+              active={currentPlayer === otherPlayer}
             />
           </div>
         ))}
       </div>
-      {player && (
+      {selfPlayer && (
         <div className="pa2">
           <PlayerGame
-            game={game}
-            player={player}
+            player={selfPlayer}
             self={true}
             onSelectPlayer={onSelectPlayer}
-            active={game.players[game.currentPlayer] === player}
+            active={currentPlayer === selfPlayer}
           />
         </div>
       )}

@@ -2,7 +2,7 @@ import React from "react";
 import App, { Container } from "next/app";
 import Head from "next/head";
 
-import { DatabaseProvider, setupDatabase } from "../hooks/database";
+import { setupDatabase, DatabaseContext } from "../hooks/database";
 
 import "../styles/tachyons.css";
 import "../styles/style.css";
@@ -44,11 +44,11 @@ export default class Hanabi extends App {
           <title>Hanabi</title>
         </Head>
         <Container>
-          <DatabaseProvider value={this.database}>
+          <DatabaseContext.Provider value={this.database}>
             <div className="aspect-ratio--object bg-stone">
               <Component {...pageProps} />
             </div>
-          </DatabaseProvider>
+          </DatabaseContext.Provider>
         </Container>
       </>
     );

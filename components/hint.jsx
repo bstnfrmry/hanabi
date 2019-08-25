@@ -7,7 +7,7 @@ export default function Hint(props) {
   const color = type === "color" ? value : "white";
 
   return (
-    <div className="flex justify-center items-center h1 w1 mr1">
+    <div className="flex justify-center items-center h1 w1">
       {hint !== 0 && (
         <div
           className={classnames(

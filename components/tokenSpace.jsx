@@ -9,7 +9,7 @@ const TokenAnimationWrapper = posed.div({
 
 function Token({ color, amount }) {
   return (
-    <div className="relative h2 w2 mr2">
+    <div className="relative h2 w2 h3-l w3-l mr2">
       <PoseGroup>
         {range(amount).map(i => (
           <TokenAnimationWrapper key={i}>

@@ -3,9 +3,7 @@ import React, { useContext } from "react";
 import firebase from "firebase/app";
 import "firebase/database";
 
-const DatabaseContext = React.createContext(null);
-
-export const DatabaseProvider = DatabaseContext.Provider;
+export const DatabaseContext = React.createContext(null);
 
 export function useDatabase() {
   return useContext(DatabaseContext);

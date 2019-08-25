@@ -5,22 +5,32 @@ import posed, { PoseGroup } from "react-pose";
 
 import PlayerName from "./playerName";
 import Card, { CardContext } from "./card";
+import { IPlayer } from "../game/state";
+import { useGame } from "../hooks/game";
 
 const CardAnimationWrapper = posed.div({
   enter: { opacity: 1, y: 0, transition: { duration: 1000 } },
   exit: { opacity: 0, y: 10000, transition: { duration: 1000 } }
 });
 
-export default function PlayerGame(props) {
+interface IPlayerGame {
+  player: IPlayer;
+  active?: boolean;
+  self?: boolean;
+  onSelectPlayer: Function;
+  onNotifyPlayer?: Function;
+}
+
+export default function PlayerGame(props: IPlayerGame) {
   const {
-    game,
     player,
     active,
     self = false,
     onSelectPlayer,
     onNotifyPlayer
   } = props;
-  const hand = player.hand || [];
+
+  const game = useGame();
 
   return (
     <div
@@ -44,7 +54,7 @@ export default function PlayerGame(props) {
       <div className="flex justify-center mt2 w-100">
         <div className="flex flex-row pointer grow">
           <PoseGroup>
-            {hand.map((card, i) => (
+            {player.hand.map((card, i) => (
               <CardAnimationWrapper key={card.id}>
                 <Card
                   onClick={() => onSelectPlayer(player, i)}

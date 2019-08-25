@@ -1,8 +1,9 @@
 import React from "react";
 import classnames from "classnames";
-import { colors, numbers } from "../game/actions";
+import { numbers, getColors } from "../game/actions";
 
 import Hint from "./hint";
+import { useGame } from "../hooks/game";
 
 // Cards possible sizes
 const SizeMap = {
@@ -49,7 +50,7 @@ export function CardWrapper(props) {
       children={children}
       style={style}
       className={classnames(
-        "relative flex items-center justify-center br1 ba shadow-3",
+        "relative flex items-center justify-center br1 ba shadow-2",
         sizeClass,
         className,
         borderWidth,
@@ -72,10 +73,11 @@ export default function Card(props) {
     className = "",
     style = {},
     position = null,
-    selected = false,
-    multicolorOption = false
+    selected = false
   } = props;
 
+  const game = useGame();
+  const colors = getColors(game);
   const color = hidden ? "light-silver" : card.color;
 
   const number = hidden ? null : card.number;
@@ -103,15 +105,17 @@ export default function Card(props) {
       onClick={onClick}
     >
       <div
-        className={classnames("white outline-main-dark", {
-          f7: size === "small"
-        })}
+        className={classnames(
+          "white outline-main-dark",
+          { f7: size === "small" },
+          { mb3: size.includes("large") }
+        )}
       >
         {number}
       </div>
       {position >= 0 && size.includes("large") && (
         <div
-          className={classnames("absolute left-0 top-0 ma1 fw1 f3 black-50")}
+          className={classnames("absolute left-0 top-0 ma1 fw1 f3 black-20")}
         >
           {PositionMap[position]}
         </div>
@@ -121,9 +125,8 @@ export default function Card(props) {
         <div
           className={classnames(
             "absolute top-0 mt2 fw3 br-100 w-50 h-50 flex justify-center items-center",
-            {
-              [`bg-${card.color}`]: card.hint.color[card.color] === 2
-            }
+            { [`bg-${card.color}`]: card.hint.color[card.color] === 2 },
+            { mt3: size.includes("large") }
           )}
         >
           {card.hint.number[card.number] === 2 ? card.number : null}
@@ -141,17 +144,18 @@ export default function Card(props) {
           )}
         >
           <div className="flex justify-around w-100 white">
-            {colors
-              .filter(c => (multicolorOption ? true : c !== "multicolor"))
-              .map(color => {
-                const hint = card.hint.color[color];
+            {colors.map(color => {
+              const hint = card.hint.color[color];
 
-                return (
-                  <Hint key={color} type="color" value={color} hint={hint} />
-                );
-              })}
+              return (
+                <Hint key={color} type="color" value={color} hint={hint} />
+              );
+            })}
           </div>
-          <div className="flex justify-around w-100 white mt1">
+          <div
+            className="flex justify-around white mt1"
+            style={{ width: `${(numbers.length / colors.length) * 100}%` }}
+          >
             {numbers.map(number => {
               const hint = card.hint.number[number];
 

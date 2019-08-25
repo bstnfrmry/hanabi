@@ -1,33 +1,27 @@
 import React from "react";
+
 import PlayedCards from "./playedCards";
 import TokenSpace from "./tokenSpace";
 import Button from "./button";
-import IGameState from "../game/state";
 import {
   getScore,
   getMaximumScore,
   getMaximumPossibleScore
 } from "../game/actions";
 import { CardWrapper } from "./card";
+import { useGame } from "../hooks/game";
 
 interface IGameBoard {
-  game: IGameState;
   onSelectDiscard: Function;
   onMenuClick: Function;
   onLogsClick: Function;
   onRollback: Function;
 }
 
-export default function GameBoard({
-  game,
-  onSelectDiscard,
-  onMenuClick,
-  onLogsClick,
-  onRollback
-}: IGameBoard) {
-  const playedCards = game.playedCards || [];
-  const history = game.history || [];
+export default function GameBoard(props: IGameBoard) {
+  const { onSelectDiscard, onMenuClick, onLogsClick, onRollback } = props;
 
+  const game = useGame();
   const score = getScore(game);
   const maxScore = getMaximumScore(game);
   const maxPossibleScore = getMaximumPossibleScore(game);
@@ -47,7 +41,7 @@ export default function GameBoard({
       </div>
       <div className="flex flex-column-l justify-between mt1">
         <div className="flex flex-column">
-          <PlayedCards game={game} cards={playedCards} />
+          <PlayedCards cards={game.playedCards} />
         </div>
         <div className="flex flex-row ph1 justify-left mt1 items-center">
           <TokenSpace
@@ -55,7 +49,7 @@ export default function GameBoard({
             stormTokens={game.tokens.strikes}
           />
           <div className="mr2 relative">
-            <CardWrapper>
+            <CardWrapper color="light-silver">
               {game.drawPile.map((card, i) => (
                 <div className="absolute" style={{ top: `-${i / 2}px` }}>
                   <CardWrapper key={card.id} color="light-silver">
@@ -66,7 +60,7 @@ export default function GameBoard({
             </CardWrapper>
           </div>
           <div className="pointer relative" onClick={() => onSelectDiscard()}>
-            <CardWrapper>
+            <CardWrapper color="light-silver">
               {game.discardPile.map((card, i) => (
                 <div className="absolute" style={{ top: `-${i / 2}px` }}>
                   <CardWrapper key={card.id} color="light-silver">

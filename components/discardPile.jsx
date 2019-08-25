@@ -26,7 +26,8 @@ function CardPile({ cards, color }) {
   );
 }
 
-export default function DiscardPile({ game, cards }) {
+export default function DiscardPile({ cards }) {
+  const game = useGame();
   const byColor = groupBy(
     sortBy(cards, card => card.value),
     card => card.color
