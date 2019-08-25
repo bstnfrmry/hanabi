@@ -49,7 +49,7 @@ export function CardWrapper(props) {
       children={children}
       style={style}
       className={classnames(
-        "relative flex items-center justify-center br1 ba",
+        "relative flex items-center justify-center br1 ba shadow-3",
         sizeClass,
         className,
         borderWidth,

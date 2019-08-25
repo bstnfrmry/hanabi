@@ -42,26 +42,63 @@ body {
  */
 
 .bg-white {
-  background-color: var(--color-white);
+  background: linear-gradient(
+    to bottom right,
+    color-mod(var(--color-white) lightness(80%)),
+    var(--color-white),
+    color-mod(var(--color-white) shade(20%))
+  );
 }
 
 .bg-red {
-  background-color: var(--color-red);
+  background: linear-gradient(
+    to bottom right,
+    color-mod(var(--color-red) lightness(70%)),
+    var(--color-red),
+    color-mod(var(--color-red) shade(30%))
+  );
 }
 
 .bg-blue {
-  background-color: var(--color-blue);
+  background: linear-gradient(
+    to bottom right,
+    color-mod(var(--color-blue) lightness(70%)),
+    var(--color-blue),
+    color-mod(var(--color-blue) shade(30%))
+  );
 }
 
 .bg-yellow {
-  background-color: var(--color-yellow);
+  background: linear-gradient(
+    to bottom right,
+    color-mod(var(--color-yellow) lightness(70%)),
+    var(--color-yellow),
+    color-mod(var(--color-yellow) shade(30%))
+  );
 }
 
 .bg-green {
-  background-color: var(--color-green);
+  background: linear-gradient(
+    to bottom right,
+    color-mod(var(--color-green) lightness(70%)),
+    var(--color-green),
+    color-mod(var(--color-green) shade(20%))
+  );
 }
 
 .bg-multicolor {
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-multicolor:before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  z-index: 1;
   background: linear-gradient(
     to bottom right,
     var(--color-yellow),
@@ -72,33 +109,52 @@ body {
     var(--color-blue),
     var(--color-yellow)
   );
-  background-size: 300% 300%;
 
-  animation: MovingBackground 60s ease infinite;
+  background-size: 200% 200%;
+
+  animation: MovingBackground 120s ease infinite;
 }
 
 @keyframes MovingBackground {
   0% {
+    transform: rotate(0deg);
     background-position: 0% 0%;
   }
   50% {
+    transform: rotate(180deg);
     background-position: 100% 100%;
   }
   100% {
+    transform: rotate(360deg);
     background-position: 0% 0%;
   }
 }
 
 .bg-hints {
-  background-color: var(--color-hints);
+  background: linear-gradient(
+    to bottom right,
+    color-mod(var(--color-hints) lightness(70%)),
+    var(--color-hints),
+    color-mod(var(--color-hints) shade(20%))
+  );
 }
 
 .bg-strikes {
-  background-color: var(--color-strikes);
+  background: linear-gradient(
+    to bottom right,
+    color-mod(var(--color-strikes) lightness(70%)),
+    var(--color-strikes),
+    color-mod(var(--color-strikes) shade(20%))
+  );
 }
 
 .bg-gray-light {
-  background-color: var(--color-gray-light);
+  background: linear-gradient(
+    to bottom right,
+    color-mod(var(--color-gray-light) lightness(70%)),
+    var(--color-gray-light),
+    color-mod(var(--color-gray-light) shade(20%))
+  );
 }
 
 /**
