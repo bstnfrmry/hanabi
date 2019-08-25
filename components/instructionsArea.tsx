@@ -40,17 +40,20 @@ export default function InstructionsArea(props: Props) {
       {game.turnsHistory.length > 0 && (
         <div className="ttu mt3">Last actions:</div>
       )}
-      {[...game.turnsHistory].reverse().map((turn, i) => {
-        return (
-          <div key={i} className="mt1">
-            <Turn
-              turn={turn}
-              includePlayer={true}
-              showDrawn={game.players[turn.action.from] !== selfPlayer}
-            />
-          </div>
-        );
-      })}
+      {game.turnsHistory
+        .slice(-10)
+        .reverse()
+        .map((turn, i) => {
+          return (
+            <div key={i} className="mt1">
+              <Turn
+                turn={turn}
+                includePlayer={true}
+                showDrawn={game.players[turn.action.from] !== selfPlayer}
+              />
+            </div>
+          );
+        })}
     </div>
   );
 }

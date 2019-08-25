@@ -55,7 +55,7 @@ export default function DiscardArea(props: Props) {
 
   return (
     <div className="flex flex-column flex-grow-1">
-      <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1">
+      <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1 mb2">
         <a onClick={() => onCloseArea()}>
           Discarded cards
           <span className="ml2">&times;</span>

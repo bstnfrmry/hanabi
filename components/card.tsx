@@ -133,7 +133,7 @@ export default function Card(props: Props) {
       color={color}
       context={context}
       size={size}
-      borderWidth={selected ? "bw2 z-5" : ""}
+      borderWidth={selected ? "bw1 z-5" : ""}
       playable={playable}
       className={className}
       onClick={onClick}

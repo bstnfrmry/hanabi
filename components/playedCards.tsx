@@ -46,8 +46,7 @@ export default function PlayedCards(props: Props) {
                 size={ICardSize.MEDIUM}
                 className="absolute"
                 style={{
-                  top: `-${i * 2}px`,
-                  left: `${i}px`
+                  top: `-${i * 2}px`
                 }}
               />
             ))}

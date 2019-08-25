@@ -28,12 +28,20 @@ export default function GameBoard(props: Props) {
 
   return (
     <Box className="mb1">
-      <div className="flex justify-between items-endmt1">
+      <div className="flex justify-between items-end">
         <div className="flex flex-column">
           <div className="f7 f4-l ttu">
             Score: {score} / {maxPossibleScore}
             {maxScore !== maxPossibleScore && (
               <span className="strike ml1 gray">{maxScore}</span>
+            )}
+            {game.drawPile.length < 5 && (
+              <div className="ml1 inline-flex">
+                ·
+                <span className="yellow ml2">
+                  {game.drawPile.length} cards left
+                </span>
+              </div>
             )}
             {game.actionsLeft <= game.options.playersCount && (
               <div className="ml1 inline-flex">
@@ -41,7 +49,7 @@ export default function GameBoard(props: Props) {
               </div>
             )}
           </div>
-          <div className="flex flex-column">
+          <div className="flex flex-column mt1">
             <PlayedCards cards={game.playedCards} />
           </div>
         </div>
