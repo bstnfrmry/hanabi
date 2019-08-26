@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import posed, { PoseGroup } from "react-pose";
 import { useRouter } from "next/router";
 import shortid from "shortid";
 
@@ -26,6 +27,11 @@ import ActionArea, {
 import LoadingScreen from "~/components/loadingScreen";
 import Box from "~/components/ui/box";
 import Turn from "~/components/turn";
+
+const ReactionWrapper = posed.div({
+  enter: { y: 0, transition: { ease: "easeOut", duration: 3500 } },
+  exit: { y: 1000, transition: { ease: "easeOut", duration: 3500 } }
+});
 
 export default function Play() {
   const db = useDatabase();
@@ -148,6 +154,8 @@ export default function Play() {
     await db
       .ref(`/games/${gameId}/players/${selfPlayer.index}/reaction`)
       .set(reaction);
+
+    await db.ref(`/games/${gameId}/reactions`).push(reaction);
   }
 
   function onMenuClick() {
@@ -226,6 +234,20 @@ export default function Play() {
                   <span className="ml4">&times;</span>
                 </div>
               )}
+            </div>
+
+            {/* Reactions */}
+            <div
+              className="absolute z-999 right-1 h-100 justify-center items-center pointer f1"
+              style={{ pointerEvents: "none", top: "-200px" }}
+            >
+              <PoseGroup>
+                {Object.values(game.reactions).map((reaction, i) => (
+                  <ReactionWrapper key={i}>
+                    <span className="absolute right-1">{reaction}</span>
+                  </ReactionWrapper>
+                ))}
+              </PoseGroup>
             </div>
 
             {/* Left area */}

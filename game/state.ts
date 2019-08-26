@@ -21,6 +21,7 @@ export default interface IGameState {
   turnsHistory: ITurn[];
   history: IGameState[];
   createdAt: number;
+  reactions?: [];
 }
 
 /**
@@ -134,6 +135,7 @@ export function fillEmptyValues(state: IGameState): IGameState {
     discardPile: [],
     players: [],
     turnsHistory: [],
-    history: []
+    history: [],
+    reactions: []
   });
 }
