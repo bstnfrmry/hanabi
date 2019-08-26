@@ -308,6 +308,7 @@ export function newGame(options: IGameOptions): IGameState {
     actionsLeft: options.playersCount + 1, // this will be decreased when the draw pile is empty
     turnsHistory: [],
     history: [],
+    reactions: [],
     createdAt: Date.now()
   };
 }

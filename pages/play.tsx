@@ -238,7 +238,7 @@ export default function Play() {
 
             {/* Reactions */}
             <div
-              className="absolute z-999 right-1 h-100 justify-center items-center pointer f1"
+              className="absolute z-999 right-1 h-100 w1 justify-center items-center pointer f1"
               style={{ pointerEvents: "none", top: "-200px" }}
             >
               <PoseGroup>
