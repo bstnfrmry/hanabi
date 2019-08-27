@@ -16,12 +16,11 @@ import { CardWrapper } from "~/components/card";
 
 interface Props {
   onSelectDiscard: Function;
-  onMenuClick: Function;
   onRollback: Function;
 }
 
 export default function GameBoard(props: Props) {
-  const { onSelectDiscard, onMenuClick, onRollback } = props;
+  const { onSelectDiscard, onRollback } = props;
 
   const game = useGame();
   const score = getScore(game);
@@ -57,14 +56,14 @@ export default function GameBoard(props: Props) {
         </div>
         <div className="flex flex-row ph1 justify-left items-end">
           <div className="mr2 relative">
-            <CardWrapper color="light-silver">
+            <CardWrapper color="main">
               {game.drawPile.map((card, i) => (
                 <div
                   key={i}
                   className="absolute"
                   style={{ top: `-${i / 2}px` }}
                 >
-                  <CardWrapper key={card.id} color="light-silver">
+                  <CardWrapper key={card.id} color="main">
                     {i + 1}
                   </CardWrapper>
                 </div>
@@ -72,10 +71,10 @@ export default function GameBoard(props: Props) {
             </CardWrapper>
           </div>
           <div
-            className="pointer relative mr2"
+            className="pointer relative mr3"
             onClick={() => onSelectDiscard()}
           >
-            <CardWrapper color="light-silver">
+            <CardWrapper color="light-silver relative">
               {game.discardPile.map((card, i) => (
                 <div
                   key={i}
@@ -83,24 +82,29 @@ export default function GameBoard(props: Props) {
                   style={{ top: `-${i / 2}px` }}
                 >
                   <CardWrapper key={card.id} color="light-silver">
-                    <div className="absolute white o-50 pointer">{i + 1}</div>
-                    <div
-                      className={`absolute w-100 o-80 rotate-135 bg-white b--white`}
-                      style={{ height: "2px" }}
-                    />
+                    <div className="absolute pointer">{i + 1}</div>
                   </CardWrapper>
                 </div>
               ))}
+              <div
+                className={`absolute w-100 o-50 rotate-135 bg-white b--white`}
+                style={{ height: "2px" }}
+              />
             </CardWrapper>
           </div>
-          <TokenSpace hints={game.tokens.hints} strikes={game.tokens.strikes} />
+          <div className="mr3">
+            <TokenSpace
+              hints={game.tokens.hints}
+              strikes={game.tokens.strikes}
+            />
+          </div>
 
           <div className="flex flex-column">
             <HomeButton className="mb1" />
             {game.options.allowRollback && (
               <Button
                 size={IButtonSize.TINY}
-                disabled={!history.length}
+                disabled={!game.history.length}
                 onClick={onRollback}
               >
                 ⟲

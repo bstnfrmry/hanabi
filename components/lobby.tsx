@@ -38,26 +38,33 @@ export default function Lobby(props: Props) {
   }
 
   return (
-    <div className="flex flex-column ph3 pv2 h-100">
+    <div className="flex flex-column pa2 h-100">
       {game.players.length > 0 && (
-        <div className="mb2">
-          <h2 className="ttu f5 flex items-center">
-            Players
-            <span className="ml2 f7 gray">
-              · {game.players.length} / {game.options.playersCount}
-            </span>
-          </h2>
-          <div className="flex flex-column justify-center mb2 ttu">
-            {game.players.map((player, i) => (
-              <div key={i} className="mb1">
-                <PlayerName player={player} explicit={true} />
-              </div>
-            ))}
+        <div className="flex justify-between items-start flex-grow-1 align-start w-100 mb2">
+          <div>
+            <h2 className="mt0 ttu f5 flex items-center">
+              Players
+              <span className="ml2 f7 gray">
+                · {game.players.length} / {game.options.playersCount}
+              </span>
+            </h2>
+            <div className="flex flex-column justify-center mb2 ttu">
+              {game.players.map((player, i) => (
+                <div key={i} className="mb2">
+                  <PlayerName player={player} explicit={true} />
+                </div>
+              ))}
+            </div>
           </div>
+          {selfPlayer && (
+            <Button disabled={!gameFull} onClick={onStartGame}>
+              Start game
+            </Button>
+          )}
         </div>
       )}
       {game.players.length === 0 && (
-        <h2 className="mb2 ttu f5">Game is empty</h2>
+        <h2 className="mt0 ttu f5">Game is empty</h2>
       )}
 
       {canJoin && (
@@ -88,14 +95,6 @@ export default function Lobby(props: Props) {
           />
           <Button>Join</Button>
         </form>
-      )}
-
-      {selfPlayer && (
-        <div className="w-100 flex-grow-1">
-          <Button disabled={!gameFull} onClick={onStartGame}>
-            Start game
-          </Button>
-        </div>
       )}
 
       <div className="flex items-center justify-between mt4">

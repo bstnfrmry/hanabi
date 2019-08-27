@@ -158,12 +158,6 @@ export default function Play() {
     await db.ref(`/games/${gameId}/reactions`).push(reaction);
   }
 
-  function onMenuClick() {
-    if (window.confirm("Back to menu?")) {
-      router.push("/");
-    }
-  }
-
   /*
    * Area management functions
    */
@@ -266,7 +260,6 @@ export default function Play() {
             <div className="flex flex-column h-100 flex-grow-1 overflow-scroll pa1 pl0">
               <GameBoard
                 onRollback={onRollback}
-                onMenuClick={onMenuClick}
                 onSelectDiscard={onSelectDiscard}
               />
               <Box className="flex-grow-1" borderColor="yellow-light">
