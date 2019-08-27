@@ -31,7 +31,7 @@ export default function JoinGame() {
           .filter(game => game.createdAt > Date.now() - 10 * 60 * 1000);
 
         setLoading(false);
-        setGames([...games, ...games, ...games, ...games]);
+        setGames(games);
       });
   }, []);
 
