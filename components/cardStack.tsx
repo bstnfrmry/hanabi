@@ -11,7 +11,7 @@ interface Props {
   color: IColor;
 }
 
-export default function CardPile(props: Props) {
+export default function CardStack(props: Props) {
   const { cards, color } = props;
 
   if (!cards.length) {
