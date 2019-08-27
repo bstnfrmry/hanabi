@@ -1,7 +1,22 @@
 import React, { ReactNode } from "react";
 import classnames from "classnames";
 
+export enum IButtonSize {
+  TINY,
+  SMALL,
+  MEDIUM,
+  LARGE
+}
+
+const ButtonSizes = {
+  [IButtonSize.TINY]: "pa1 bw1 f6",
+  [IButtonSize.SMALL]: "pv1 ph2 bw1 f6 f4-l",
+  [IButtonSize.MEDIUM]: "pv2 ph3 bw2 f6 f4-l",
+  [IButtonSize.LARGE]: "pv3 ph4 bw2 f3 f3-l"
+};
+
 interface Props {
+  size?: IButtonSize;
   onClick?: any;
   className?: string;
   children: ReactNode;
@@ -9,15 +24,25 @@ interface Props {
 }
 
 export default function Button(props: Props) {
-  const { onClick, className, children, disabled } = props;
+  const {
+    size = IButtonSize.MEDIUM,
+    onClick,
+    className,
+    children,
+    disabled
+  } = props;
 
   return (
     <button
       disabled={disabled}
       className={classnames(
         className,
-        "ba br2 fw2 f6 f4-l lh-copy ttu ml1 dark-gray bg-near-white hover-bg-white grow outline-0",
-        { pointer: !disabled, "bg-light-gray gray": disabled }
+        ButtonSizes[size],
+        "ba br2 fw2 shadow-2 ttu tracked outline-0",
+        {
+          "bg-white hover-bg-white pointer main-dark b--yellow grow": !disabled
+        },
+        { "bg-light-gray o-80": disabled }
       )}
       onClick={onClick}
     >

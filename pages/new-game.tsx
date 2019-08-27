@@ -5,8 +5,9 @@ import shortid from "shortid";
 import { useDatabase } from "~/hooks/database";
 import { newGame } from "~/game/actions";
 
-import Button from "~/components/ui/button";
+import Button, { IButtonSize } from "~/components/ui/button";
 import Box from "~/components/ui/box";
+import HomeButton from "~/components/homeButton";
 
 const PlayerCounts = [2, 3, 4, 5];
 
@@ -21,7 +22,7 @@ export default function NewGame() {
   const [allowRollback, setAllowRollback] = useState(true);
   const [preventLoss, setPreventLoss] = useState(false);
 
-  async function createGame() {
+  async function onCreateGame() {
     const gameId = shortid();
 
     await db.ref(`/games/${gameId}`).set(
@@ -39,62 +40,65 @@ export default function NewGame() {
   }
 
   return (
-    <>
-      <div className="w-100 h-100 flex justify-center items-center">
-        <Box className="flex flex-column w-50">
-          <h1 className="mt0 ttu">New game</h1>
-          <label className="flex justify-between items-center pb2 mb2 bb">
-            Seed
-            <input
-              className="w3 tr"
-              value={seed}
-              onChange={e => setSeed(e.target.value)}
-            />
-          </label>
-          <label className="flex justify-between items-center pb2 mb2 bb">
-            Players
-            <select
-              className="bg-white"
-              value={playersCount}
-              onChange={e => setPlayersCount(+e.target.value)}
-            >
-              {PlayerCounts.map(count => (
-                <option key={count} value={count}>
-                  {count}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="flex justify-between items-center pb2 mb2 bb">
-            Multicolor
-            <input
-              type="checkbox"
-              checked={multicolor}
-              onChange={e => setMulticolor(e.target.checked)}
-            />
-          </label>
-          <label className="flex justify-between items-center pb2 mb2 bb">
-            Allow rollback
-            <input
-              type="checkbox"
-              checked={allowRollback}
-              onChange={e => setAllowRollback(e.target.checked)}
-            />
-          </label>
-          <label className="flex justify-between items-center pb2 mb2 bb">
-            Prevent loss
-            <input
-              type="checkbox"
-              checked={preventLoss}
-              onChange={e => setPreventLoss(e.target.checked)}
-            />
-          </label>
+    <Box className="w-100 h-100 flex justify-center items-center relative">
+      <HomeButton className="absolute top-1 right-1" />
+      <div className="flex flex-column justify-center w-50 f4">
+        <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
+          Seed
+          <input
+            className="w3 h1 tr bg-white pv2 ph3 br2 ba b--yellow"
+            value={seed}
+            onChange={e => setSeed(e.target.value)}
+          />
+        </label>
+        <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
+          Players
+          <select
+            className="w3 h2 bg-white br2 tc indent ba b--yellow"
+            value={playersCount}
+            onChange={e => setPlayersCount(+e.target.value)}
+          >
+            {PlayerCounts.map(count => (
+              <option key={count} value={count}>
+                {count}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
+          Multicolor
+          <input
+            className="w1 h1"
+            type="checkbox"
+            checked={multicolor}
+            onChange={e => setMulticolor(e.target.checked)}
+          />
+        </label>
+        <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
+          Allow rollback
+          <input
+            className="w1 h1"
+            type="checkbox"
+            checked={allowRollback}
+            onChange={e => setAllowRollback(e.target.checked)}
+          />
+        </label>
+        <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
+          Prevent loss
+          <input
+            className="w1 h1"
+            type="checkbox"
+            checked={preventLoss}
+            onChange={e => setPreventLoss(e.target.checked)}
+          />
+        </label>
 
-          <div className="self-end">
-            <Button onClick={() => createGame()}>New game</Button>
-          </div>
-        </Box>
+        <div className="self-end mt3">
+          <Button size={IButtonSize.LARGE} onClick={onCreateGame}>
+            New game
+          </Button>
+        </div>
       </div>
-    </>
+    </Box>
   );
 }

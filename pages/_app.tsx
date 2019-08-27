@@ -8,6 +8,7 @@ import "../styles/tachyons.css";
 import "../styles/style.css";
 import "../styles/fonts.css";
 import "../styles/animations.css";
+import "../styles/patterns.css";
 
 export default class Hanabi extends App {
   database: firebase.database.Database;

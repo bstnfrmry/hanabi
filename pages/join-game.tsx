@@ -4,9 +4,10 @@ import { useRouter } from "next/router";
 import IGameState, { fillEmptyValues } from "~/game/state";
 import { useDatabase } from "~/hooks/database";
 
-import Button from "~/components/ui/button";
+import Button, { IButtonSize } from "~/components/ui/button";
 import Box from "~/components/ui/box";
 import LoadingScreen from "~/components/loadingScreen";
+import HomeButton from "~/components/homeButton";
 
 export default function JoinGame() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function JoinGame() {
           .filter(game => game.createdAt > Date.now() - 10 * 60 * 1000);
 
         setLoading(false);
-        setGames(games);
+        setGames([...games, ...games, ...games, ...games]);
       });
   }, []);
 
@@ -39,12 +40,17 @@ export default function JoinGame() {
   }
 
   return (
-    <div className="w-100 h-100 flex justify-center items-center">
-      <Box className="w-50">
+    <Box className="w-100 h-100 flex justify-center items-center overflow-y-scroll relative">
+      <HomeButton className="absolute top-1 right-1" />
+      <div className="w-50 h-100">
         {!games.length && (
           <>
             <h1 className="ttu">No available room</h1>
-            <Button className="ma2" onClick={() => router.push("/new-game")}>
+            <Button
+              size={IButtonSize.LARGE}
+              className="ma2"
+              onClick={() => router.push("/new-game")}
+            >
               Create a room
             </Button>
           </>
@@ -54,15 +60,22 @@ export default function JoinGame() {
             <h1 className="ttu">Available rooms</h1>
             {games.map(game => (
               <div className="mb3" key={game.id}>
-                <Button onClick={() => router.push(`/play?gameId=${game.id}`)}>
-                  {game.players.map(p => p.name).join(", ")} -{" "}
-                  {game.players.length}/{game.playersCount}
+                <Button
+                  className="w-100 flex justify-center"
+                  onClick={() => router.push(`/play?gameId=${game.id}`)}
+                >
+                  <span className="flex-grow-1">
+                    {game.players.map(p => p.name).join(", ")}
+                  </span>
+                  <span>
+                    {game.players.length}/{game.playersCount}
+                  </span>
                 </Button>
               </div>
             ))}
           </>
         )}
-      </Box>
-    </div>
+      </div>
+    </Box>
   );
 }

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-import Button from "~/components/ui/button";
+import Button, { IButtonSize } from "~/components/ui/button";
+import Box from "~/components/ui/box";
 
 export default function Home() {
   const router = useRouter();
@@ -17,26 +18,40 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="w-100 h-100 flex flex-column justify-center items-center">
-      <Button className="ma2" onClick={() => router.push("/new-game")}>
-        Create a room
-      </Button>
-      <Button className="ma2" onClick={() => router.push("/join-game")}>
-        Join a room
-      </Button>
-      {lastGame && (
+    <Box className="w-100 h-100 flex flex-row justify-center items-center">
+      <div className="flex flex-column items-center">
+        <img className="mw4 mb4" src="/static/hanabi.png" />
+        <h1 className="f2 ttu tracked outline-main-dark">Hanabi</h1>
+      </div>
+      <div className="flex flex-column ml5">
         <Button
-          className="ma2"
-          onClick={() =>
-            router.replace({
-              pathname: "/play",
-              query: lastGame
-            })
-          }
+          size={IButtonSize.LARGE}
+          className="mb4"
+          onClick={() => router.push("/new-game")}
         >
-          Rejoin game
+          Create a room
         </Button>
-      )}
-    </div>
+        <Button
+          size={IButtonSize.LARGE}
+          className="mb4"
+          onClick={() => router.push("/join-game")}
+        >
+          Join a room
+        </Button>
+        {lastGame && (
+          <Button
+            size={IButtonSize.LARGE}
+            onClick={() =>
+              router.replace({
+                pathname: "/play",
+                query: lastGame
+              })
+            }
+          >
+            Rejoin game
+          </Button>
+        )}
+      </div>
+    </Box>
   );
 }
