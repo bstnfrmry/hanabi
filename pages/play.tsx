@@ -66,7 +66,7 @@ export default function Play() {
       if (timeout) {
         clearTimeout(timeout);
       }
-      timeout = setTimeout(() => setLastTurn(null), 1000000);
+      timeout = setTimeout(() => setLastTurn(null), 8000);
     });
   }, [gameId]);
 

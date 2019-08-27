@@ -92,9 +92,7 @@ function isCardHintable(hint: IHintAction, card: ICard) {
 }
 
 function textualHint(hint: IHintAction, cards: ICard[]) {
-  if (hint.value === null) {
-    return "";
-  }
+  if (hint.value === null) return "";
 
   const hintableCards = cards
     .map((c, i) => (isCardHintable(hint, c) ? i : null))
@@ -104,13 +102,16 @@ function textualHint(hint: IHintAction, cards: ICard[]) {
   if (hintableCards.length === 0) {
     if (hint.type === "color") return `You have no ${hint.value} cards.`;
     else return `You have no ${hint.value}s.`;
-  } else if (hintableCards.length === 1) {
-    if (hint.type === "color")
-      return `Your card ${hintableCards[0]} is ${hint.value}!`;
-    else return `Your card ${hintableCards[0]} is a ${hint.value}!`;
-  } else {
-    if (hint.type === "color")
-      return `Your cards ${hintableCards.join(", ")} are ${hint.value}!`;
-    else return `Your cards ${hintableCards.join(", ")} are ${hint.value}s!`;
   }
+
+  if (hintableCards.length === 1) {
+    if (hint.type === "color")
+      return `Your card ${hintableCards[0]} is ${hint.value}`;
+    else return `Your card ${hintableCards[0]} is a ${hint.value}`;
+  }
+
+  if (hint.type === "color")
+    return `Your cards ${hintableCards.join(", ")} are ${hint.value}`;
+
+  return `Your cards ${hintableCards.join(", ")} are ${hint.value}s`;
 }
