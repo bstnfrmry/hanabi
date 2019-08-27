@@ -52,7 +52,7 @@ export default function OtherPlayerArea(props: Props) {
       </div>
       {selfPlayer === currentPlayer && (
         <>
-          <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1 mb2 mt3">
+          <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1 mb2 mt5">
             Select a hint below
           </div>
           <div className="flex flex-row pb2 ml1">
@@ -60,8 +60,8 @@ export default function OtherPlayerArea(props: Props) {
               onSelect={action => setPendingHint(action)}
               pendingHint={pendingHint}
             />
-            <div className="ml1">
-              <div className="h2 mb2 f6 fw3 i overflow-hidden">
+            <div className="ml2">
+              <div className="h2 f6 fw3 i overflow-hidden">
                 {textualHint(pendingHint, player.hand)}
               </div>
               <Button

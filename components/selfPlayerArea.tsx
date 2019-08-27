@@ -45,7 +45,7 @@ export default function SelfPlayerArea(props: Props) {
       </div>
       {selfPlayer === currentPlayer && (
         <>
-          <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1 mb2 mt3">
+          <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1 mb2 mt5">
             {hasSelectedCard && <>Card {PositionMap[selectedCard]} selected</>}
             {!hasSelectedCard && "Select a card"}
           </div>
@@ -54,6 +54,7 @@ export default function SelfPlayerArea(props: Props) {
               {["play", "discard"].map(action => (
                 <Button
                   key={action}
+                  className="mr2"
                   onClick={() =>
                     onCommitAction({
                       action,

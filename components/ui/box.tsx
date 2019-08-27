@@ -8,13 +8,13 @@ interface Props {
 }
 
 export default function Box(props: Props) {
-  const { className, children, borderColor = "main-dark" } = props;
+  const { className, children, borderColor } = props;
 
   return (
     <div
       className={classNames(
-        "bg-main-dark pv2 ph2 ph3-l shadow-5 br3 ba",
-        `b--${borderColor}`,
+        "pv2 ph2 ph3-l shadow-5 br3",
+        { [`ba b--${borderColor}`]: borderColor },
         className
       )}
     >

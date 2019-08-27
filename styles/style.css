@@ -169,7 +169,7 @@ body {
 }
 
 .b--yellow-light {
-  border-color: color-mod(var(--color-yellow) lightness(30%));
+  border-color: color-mod(var(--color-yellow) lightness(15%));
 }
 
 .b--green {

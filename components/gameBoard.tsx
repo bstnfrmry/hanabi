@@ -29,7 +29,7 @@ export default function GameBoard(props: Props) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <Box className="mb1">
+    <Box className="mb1" borderColor="yellow-light">
       <div className="flex justify-between items-end">
         <div className="flex flex-column">
           <div className="f7 f4-l ttu">

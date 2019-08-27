@@ -49,7 +49,9 @@ export default function Lobby(props: Props) {
           </h2>
           <div className="flex flex-column justify-center mb2 ttu">
             {game.players.map((player, i) => (
-              <PlayerName key={i} player={player} explicit={true} />
+              <div key={i} className="mb1">
+                <PlayerName player={player} explicit={true} />
+              </div>
             ))}
           </div>
         </div>

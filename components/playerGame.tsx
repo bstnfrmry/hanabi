@@ -35,7 +35,7 @@ export default function PlayerGame(props: Props) {
       className={classnames("relative", {
         "border-box ba bw2": active
       })}
-      borderColor={active ? "yellow" : "main-dark"}
+      borderColor={active ? "yellow" : null}
     >
       <div className="f7 f4-l fw1 ttu ml1 flex items-center">
         <PlayerName

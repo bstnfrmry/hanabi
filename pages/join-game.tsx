@@ -40,7 +40,7 @@ export default function JoinGame() {
   }
 
   return (
-    <Box className="w-100 h-100 flex justify-center items-center overflow-y-scroll relative">
+    <Box className="w-100 h-100 flex justify-center items-center overflow-y-scroll relative bg-main-dark">
       <HomeButton className="absolute top-1 right-1" />
       <div className="w-50 h-100">
         {!games.length && (

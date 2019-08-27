@@ -18,7 +18,7 @@ export default function Home() {
   }, []);
 
   return (
-    <Box className="w-100 h-100 flex flex-row justify-center items-center">
+    <Box className="w-100 h-100 flex flex-row justify-center items-center bg-main-dark">
       <div className="flex flex-column items-center">
         <img className="mw4 mb4" src="/static/hanabi.png" />
         <h1 className="f2 ttu tracked outline-main-dark">Hanabi</h1>

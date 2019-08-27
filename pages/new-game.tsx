@@ -40,7 +40,7 @@ export default function NewGame() {
   }
 
   return (
-    <Box className="w-100 h-100 flex justify-center items-center relative">
+    <Box className="w-100 h-100 flex justify-center items-center relative bg-main-dark">
       <HomeButton className="absolute top-1 right-1" />
       <div className="flex flex-column justify-center w-50 f4">
         <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">

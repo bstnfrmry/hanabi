@@ -212,7 +212,7 @@ export default function Play() {
     <GameContext.Provider value={game}>
       <SelfPlayerContext.Provider value={selfPlayer}>
         <CurrentPlayerContext.Provider value={game.players[game.currentPlayer]}>
-          <div className="relative flex flex-row w-100 h-100">
+          <div className="bg-main-dark relative flex flex-row w-100 h-100">
             {/* Toast */}
             <div
               className="absolute z-999 bottom-1 left-0 right-0 flex justify-center items-center pointer"
@@ -222,7 +222,7 @@ export default function Play() {
                 <div
                   style={{ pointerEvents: "auto" }}
                   onClick={() => setLastTurn(null)}
-                  className="flex justify-center bg-white main-dark br4 shadow-4 b--yellow ba bw2 f4 pa2"
+                  className="flex justify-center items-center bg-white main-dark br4 shadow-4 b--yellow ba bw2 f4 pa2"
                 >
                   <Turn
                     includePlayer={true}
@@ -269,7 +269,7 @@ export default function Play() {
                 onMenuClick={onMenuClick}
                 onSelectDiscard={onSelectDiscard}
               />
-              <Box className="flex-grow-1">
+              <Box className="flex-grow-1" borderColor="yellow-light">
                 {game.status === "lobby" && (
                   <Lobby onJoinGame={onJoinGame} onStartGame={onStartGame} />
                 )}
