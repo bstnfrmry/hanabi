@@ -29,8 +29,8 @@ export default function GameBoard(props: Props) {
 
   return (
     <Box className="mb1" borderColor="yellow-light">
-      <div className="flex justify-between items-end">
-        <div className="flex flex-column">
+      <div className="flex justify-between flex-column-l items-end items-start-l">
+        <div className="flex flex-column mb5-l">
           <div className="f7 f3-l ttu">
             Score: {score} / {maxPossibleScore}
             {maxScore !== maxPossibleScore && (
