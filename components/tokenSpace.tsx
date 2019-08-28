@@ -48,7 +48,7 @@ export default function TokenSpace(props: Props) {
   const { hints, strikes } = props;
 
   return (
-    <div className="flex">
+    <div className="flex flex-column-l">
       <Token color="hints" amount={hints} />
       <Token color="strikes" amount={strikes} />
     </div>

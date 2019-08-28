@@ -31,7 +31,7 @@ export default function GameBoard(props: Props) {
     <Box className="mb1" borderColor="yellow-light">
       <div className="flex justify-between items-end">
         <div className="flex flex-column">
-          <div className="f7 f4-l ttu">
+          <div className="f7 f3-l ttu">
             Score: {score} / {maxPossibleScore}
             {maxScore !== maxPossibleScore && (
               <span className="strike ml1 gray">{maxScore}</span>
@@ -99,7 +99,7 @@ export default function GameBoard(props: Props) {
             />
           </div>
 
-          <div className="flex flex-column">
+          <div className="flex flex-column absolute-l top-1 right-1">
             <HomeButton className="mb1" />
             {game.options.allowRollback && (
               <Button

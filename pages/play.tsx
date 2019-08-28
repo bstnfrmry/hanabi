@@ -26,7 +26,7 @@ import ActionArea, {
 } from "~/components/actionArea";
 import LoadingScreen from "~/components/loadingScreen";
 import Box from "~/components/ui/box";
-import Turn from "~/components/turn";
+import Turn, { TurnSize } from "~/components/turn";
 
 const ReactionWrapper = posed.div({
   enter: { y: 0, transition: { ease: "easeOut", duration: 3500 } },
@@ -66,7 +66,7 @@ export default function Play() {
       if (timeout) {
         clearTimeout(timeout);
       }
-      timeout = setTimeout(() => setLastTurn(null), 8000);
+      timeout = setTimeout(() => setLastTurn(null), 80000);
     });
   }, [gameId]);
 
@@ -219,6 +219,7 @@ export default function Play() {
                   className="flex justify-center items-center bg-white main-dark br4 shadow-4 b--yellow ba bw2 f4 pa2"
                 >
                   <Turn
+                    size={TurnSize.SMALL}
                     includePlayer={true}
                     turn={lastTurn}
                     showDrawn={
@@ -247,7 +248,7 @@ export default function Play() {
             {/* Left area */}
             <div
               className="flex flex-column h-100 overflow-y-scroll pa1"
-              style={{ width: "35%" }}
+              style={{ minWidth: "35%" }}
             >
               <PlayersBoard
                 onSelectPlayer={onSelectPlayer}

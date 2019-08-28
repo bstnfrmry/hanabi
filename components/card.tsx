@@ -15,9 +15,9 @@ export enum CardSize {
 
 // Cards possible sizes
 const SizeMap = {
-  [CardSize.SMALL]: "h1 w1 h2-l w2-l f5 f4-l",
-  [CardSize.MEDIUM]: "h2 w2 h4-l w4-l f4 f1-l",
-  [CardSize.LARGE]: "h3 w3 mw3 f2 f1-l"
+  [CardSize.SMALL]: "h1.5 w1.5 h2-l w2-l f5 f3-l",
+  [CardSize.MEDIUM]: "h2 w2 h4-l w4-l f4 f2-l",
+  [CardSize.LARGE]: "h3 w3 h4.5-l w4.5-l f3 f1-l"
 };
 
 export const PositionMap = {
@@ -140,9 +140,10 @@ export default function Card(props: Props) {
     >
       <div
         className={classnames(
-          "white outline-main-dark f3",
+          "white outline-main-dark",
           { f7: size === "small" },
-          { mb3: size.includes("large") }
+          { mb3: size.includes("large") },
+          { "mb4-l": size === "medium" }
         )}
       >
         {number}
@@ -187,7 +188,7 @@ export default function Card(props: Props) {
             })}
           </div>
           <div
-            className="flex justify-around white mt1"
+            className="flex justify-around white mt1 mt2-l"
             style={{ width: `${(numbers.length / colors.length) * 100}%` }}
           >
             {numbers.map(number => {

@@ -16,7 +16,7 @@ export default function InstructionsArea(props: Props) {
   const isCurrentPlayer = currentPlayer === selfPlayer;
 
   return (
-    <div className="flex-grow-1 f7 f4-l fw2 lh-copy">
+    <div className="flex-grow-1 f7 f3-l fw2 lh-copy">
       {!isCurrentPlayer && (
         <div className="ttu">
           It's <PlayerName player={currentPlayer} />
@@ -45,7 +45,7 @@ export default function InstructionsArea(props: Props) {
         .reverse()
         .map((turn, i) => {
           return (
-            <div key={i} className="mt1">
+            <div key={i} className="mt1 f4">
               <Turn
                 turn={turn}
                 includePlayer={true}

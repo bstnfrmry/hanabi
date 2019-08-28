@@ -24,6 +24,40 @@ body {
   background: color-mod(var(--color-blue) shade(90%));
 }
 
+.h1\.5 {
+  height: 1.5rem;
+}
+
+.w1\.5 {
+  width: 1.5rem;
+}
+
+.h2\.5 {
+  height: 3rem;
+}
+
+.w2\.5 {
+  width: 3rem;
+}
+
+@media screen and (min-width: 60em) {
+  .h2\.5-l {
+    height: 3rem;
+  }
+
+  .w2\.5-l {
+    width: 3rem;
+  }
+
+  .h4\.5-l {
+    height: 12rem;
+  }
+
+  .w4\.5-l {
+    width: 12rem;
+  }
+}
+
 /**
  * Text colors
  */

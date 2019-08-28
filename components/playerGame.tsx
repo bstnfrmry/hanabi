@@ -37,7 +37,7 @@ export default function PlayerGame(props: Props) {
       })}
       borderColor={active ? "yellow" : null}
     >
-      <div className="f7 f4-l fw1 ttu ml1 flex items-center">
+      <div className="f7 f3-l fw1 ttu ml1 flex items-center">
         <PlayerName
           player={player}
           explicit={true}
@@ -46,7 +46,7 @@ export default function PlayerGame(props: Props) {
         />
         {active && !self && !player.notified && (
           <span
-            className="absolute right-0 mr1"
+            className="absolute right-0 mr1 mr4-l"
             onClick={() => onNotifyPlayer(player)}
           >
             🔔
@@ -66,7 +66,7 @@ export default function PlayerGame(props: Props) {
               className="z-999"
             >
               <span
-                className="absolute right-0 mr1"
+                className="absolute right-0 mr1 mr4-l"
                 onClick={() => setReactionsOpen(!reactionsOpen)}
               >
                 👍

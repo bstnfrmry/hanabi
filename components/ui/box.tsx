@@ -13,7 +13,7 @@ export default function Box(props: Props) {
   return (
     <div
       className={classNames(
-        "pv2 ph2 ph3-l shadow-5 br3",
+        "pa2 pv4-l ph3-l shadow-5 br3",
         { [`ba b--${borderColor}`]: borderColor },
         className
       )}

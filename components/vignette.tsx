@@ -19,7 +19,7 @@ export default function Vignette(props: Props) {
   return (
     <div
       className={[
-        "outline-main-dark ba pointer flex items-center justify-center mr1 br-100 h2 w2 grow fw2 border-box",
+        "outline-main-dark ba pointer flex items-center justify-center mr1 mr3-l br-100 h2 w2 h3-l w3-l grow fw2 border-box",
         type === "color"
           ? `bg-${value} b--${value}`
           : "bg-main-dark b-gray-light",

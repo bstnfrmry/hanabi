@@ -61,7 +61,7 @@ export default function OtherPlayerArea(props: Props) {
               pendingHint={pendingHint}
             />
             <div className="ml2">
-              <div className="h2 f6 fw3 i overflow-hidden">
+              <div className="h2 f6 f4-l fw3 i overflow-hidden">
                 {textualHint(pendingHint, player.hand)}
               </div>
               <Button
