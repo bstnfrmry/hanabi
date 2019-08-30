@@ -14,7 +14,7 @@ interface Props {
 export default function MenuArea(props: Props) {
   const { onCloseArea } = props;
 
-  const [showRules, setShowRules] = useState(true);
+  const [showRules, setShowRules] = useState(false);
   const { reset } = useContext(TutorialContext);
   const router = useRouter();
 
