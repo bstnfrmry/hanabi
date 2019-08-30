@@ -94,7 +94,7 @@ export default function GameBoard(props: Props) {
               />
             </CardWrapper>
           </div>
-          <div className="mr3">
+          <div className="mr2 mr3-l">
             <TokenSpace
               hints={game.tokens.hints}
               strikes={game.tokens.strikes}
