@@ -51,7 +51,11 @@ export default function Play() {
    */
   useEffect(() => {
     db.ref(`/games/${gameId}`).on("value", event => {
-      setGame(fillEmptyValues(event.val()));
+      const snapshot = event.val();
+      if (!snapshot) {
+        router.push("/404");
+      }
+      setGame(fillEmptyValues(snapshot));
     });
   }, [gameId, playerId]);
 
