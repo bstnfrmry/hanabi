@@ -6,6 +6,7 @@ import { TutorialContext } from "~/components/tutorial";
 import Card, { CardSize, CardWrapper, ICardContext } from "~/components/card";
 import { IColor } from "~/game/state";
 import Vignette from "~/components/vignette";
+import { useGame } from "~/hooks/game";
 
 interface Props {
   onCloseArea: Function;
@@ -17,6 +18,7 @@ export default function MenuArea(props: Props) {
   const [showRules, setShowRules] = useState(false);
   const { reset } = useContext(TutorialContext);
   const router = useRouter();
+  const game = useGame();
 
   function onMenuClick() {
     router.push("/");
@@ -31,13 +33,15 @@ export default function MenuArea(props: Props) {
     <div className="flex justify-center items-center w-100 h-100">
       {!showRules && (
         <div className="flex flex-column w-50 h-50">
-          <Button
-            size={IButtonSize.SMALL}
-            onClick={onTutorialClick}
-            className="mb4"
-          >
-            Watch tutorial again
-          </Button>
+          {game.status === "ongoing" && (
+            <Button
+              size={IButtonSize.SMALL}
+              onClick={onTutorialClick}
+              className="mb4"
+            >
+              Watch tutorial again
+            </Button>
+          )}
           <Button
             size={IButtonSize.TINY}
             onClick={() => setShowRules(true)}

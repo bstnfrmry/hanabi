@@ -8,7 +8,6 @@ import InstructionsArea from "~/components/instructionsArea";
 import DiscardArea from "~/components/discardArea";
 import OtherPlayerArea from "~/components/otherPlayerArea";
 import SelfPlayerArea from "~/components/selfPlayerArea";
-import MenuArea from "~/components/menuArea";
 
 interface IInstructionsSelectedArea {
   id: string;
@@ -79,10 +78,6 @@ export default function ActionArea(props: Props) {
         <p>The game is over! Your score is {game.playedCards.length} 🎉</p>
       </div>
     );
-  }
-
-  if (selectedArea.type === ActionAreaType.MENU) {
-    return <MenuArea onCloseArea={onCloseArea} />;
   }
 
   if (selectedArea.type === ActionAreaType.INSTRUCTIONS) {

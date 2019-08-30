@@ -28,6 +28,7 @@ import LoadingScreen from "~/components/loadingScreen";
 import Box from "~/components/ui/box";
 import Turn, { TurnSize } from "~/components/turn";
 import { TutorialProvider } from "~/components/tutorial";
+import MenuArea from "~/components/menuArea";
 
 const ReactionWrapper = posed.div({
   enter: { y: 0, transition: { ease: "easeOut", duration: 3500 } },
@@ -280,17 +281,27 @@ export default function Play() {
                   onSelectDiscard={onSelectDiscard}
                 />
                 <Box className="flex-grow-1" borderColor="yellow-light">
-                  {game.status === "lobby" && (
-                    <Lobby onJoinGame={onJoinGame} onStartGame={onStartGame} />
+                  {selectedArea.type === ActionAreaType.MENU && (
+                    <MenuArea onCloseArea={onCloseArea} />
                   )}
-                  {game.status === "ongoing" && (
-                    <ActionArea
-                      selectedArea={selectedArea}
-                      onCommitAction={onCommitAction}
-                      onSelectDiscard={onSelectDiscard}
-                      onCloseArea={onCloseArea}
-                      onImpersonate={onImpersonate}
-                    />
+                  {selectedArea.type !== ActionAreaType.MENU && (
+                    <>
+                      {game.status === "lobby" && (
+                        <Lobby
+                          onJoinGame={onJoinGame}
+                          onStartGame={onStartGame}
+                        />
+                      )}
+                      {game.status === "ongoing" && (
+                        <ActionArea
+                          selectedArea={selectedArea}
+                          onCommitAction={onCommitAction}
+                          onSelectDiscard={onSelectDiscard}
+                          onCloseArea={onCloseArea}
+                          onImpersonate={onImpersonate}
+                        />
+                      )}
+                    </>
                   )}
                 </Box>
               </div>
