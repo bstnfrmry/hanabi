@@ -34,7 +34,8 @@ export enum ICardContext {
   TARGETED_PLAYER,
   PLAYED,
   DISCARDED,
-  DRAWN
+  DRAWN,
+  OTHER
 }
 
 interface CardWrapperProps {
