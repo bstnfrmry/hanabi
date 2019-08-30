@@ -58,7 +58,7 @@ export default function Lobby(props: Props) {
                     <PlayerName player={player} explicit={true} />
                   </div>
                 ))}
-                {!gameFull && (
+                {selfPlayer && !gameFull && (
                   <a
                     onClick={() => onAddBot()}
                     className="underline gray pointer ml3"
