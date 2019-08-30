@@ -17,22 +17,23 @@ export default function JoinGame() {
   const [games, setGames] = useState<IGameState[]>([]);
 
   useEffect(() => {
-    db.ref(`/games`)
-      .orderByChild("status")
-      .equalTo("lobby")
-      .on("value", event => {
-        const games = Object.values(event.val() || {})
-          .map(fillEmptyValues)
-          // At least one player in the room
-          .filter(game => game.players.length)
-          // There are slots remaining
-          .filter(game => +game.players.length < +game.playersCount)
-          // The game is recent
-          .filter(game => game.createdAt > Date.now() - 10 * 60 * 1000);
+    db.ref(`/games`).on("value", event => {
+      const games = Object.values(event.val() || {})
+        .map(fillEmptyValues)
+        // Game is public
+        .filter(game => !game.options.private)
+        // Game is in lobby state
+        .filter(game => game.status === "lobby")
+        // At least one player in the room
+        .filter(game => game.players.length)
+        // There are slots remaining
+        .filter(game => +game.players.length < +game.playersCount)
+        // The game is recent
+        .filter(game => game.createdAt > Date.now() - 10 * 60 * 1000);
 
-        setLoading(false);
-        setGames(games);
-      });
+      setLoading(false);
+      setGames(games);
+    });
   }, []);
 
   if (loading) {
