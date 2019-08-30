@@ -67,19 +67,19 @@ export default function MenuArea(props: Props) {
 
           <h1 className="w-100 tc f2 f1-l mt2">Hanabi</h1>
           <h2 className="f4 f2-l">Objective</h2>
-          <p className="f6 f3-l">
+          <div className="f6 f3-l pv3">
             Hanabi is a cooperative game, which means a game in which players
             are not against each other but assemble to reach a common goal. They
             incarn here distracted arsonists who - by inattention - mixed their
             powder, wicks and rockets for a large fireworks display. The show
             will begin soon and the situation is a bit chaotic. They will need
             to help each other to prevent the show turning to disaster.
-          </p>
-          <p className="f6 f3-l">
+          </div>
+          <div className="f6 f3-l pv3">
             J'ai pas non plus envie de traduire tout le manuel, mais c'est un
             bon début.
-          </p>
-          <p className="f6 f3-l">
+          </div>
+          <div className="f6 f3-l pv3">
             On devrait facilement pouvoir reprendre les composants visuels pour
             mieux illustrer, par exemple
             <Card
@@ -90,7 +90,7 @@ export default function MenuArea(props: Props) {
             />
             ou
             <Vignette className="inline-flex mh1" type="number" value={5} />
-          </p>
+          </div>
         </div>
       )}
     </div>
