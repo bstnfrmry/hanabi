@@ -4,15 +4,20 @@ import Button, { IButtonSize } from "./ui/button";
 
 interface Props {
   className?: string;
+  onClick?: Function;
 }
 
 export default function HomeButton(props: Props) {
-  const { className } = props;
+  const { className, onClick } = props;
 
   const router = useRouter();
 
   function onMenuClick() {
-    router.push("/");
+    if (onClick) {
+      return onClick();
+    } else {
+      router.push("/");
+    }
   }
 
   return (

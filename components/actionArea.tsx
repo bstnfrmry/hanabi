@@ -8,6 +8,7 @@ import InstructionsArea from "~/components/instructionsArea";
 import DiscardArea from "~/components/discardArea";
 import OtherPlayerArea from "~/components/otherPlayerArea";
 import SelfPlayerArea from "~/components/selfPlayerArea";
+import MenuArea from "~/components/menuArea";
 
 interface IInstructionsSelectedArea {
   id: string;
@@ -33,18 +34,25 @@ interface IDiscardSelectedArea {
   type: ActionAreaType.DISCARD;
 }
 
+interface IMenuArea {
+  id: string;
+  type: ActionAreaType.MENU;
+}
+
 export enum ActionAreaType {
   INSTRUCTIONS,
   OTHER_PLAYER,
   SELF_PLAYER,
-  DISCARD
+  DISCARD,
+  MENU
 }
 
 export type ISelectedArea =
   | IInstructionsSelectedArea
   | IOtherPlayerSelectedArea
   | ISelfPlayerSelectedArea
-  | IDiscardSelectedArea;
+  | IDiscardSelectedArea
+  | IMenuArea;
 
 interface Props {
   selectedArea: ISelectedArea;
@@ -71,6 +79,10 @@ export default function ActionArea(props: Props) {
         <p>The game is over! Your score is {game.playedCards.length} 🎉</p>
       </div>
     );
+  }
+
+  if (selectedArea.type === ActionAreaType.MENU) {
+    return <MenuArea onCloseArea={onCloseArea} />;
   }
 
   if (selectedArea.type === ActionAreaType.INSTRUCTIONS) {

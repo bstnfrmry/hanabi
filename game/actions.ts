@@ -39,7 +39,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
         }
       } else {
         // strike !
-        s.tokens.strikes -= 1;
+        s.tokens.strikes += 1;
         s.discardPile.push(card);
       }
     } else {
@@ -164,7 +164,7 @@ export function emptyPlayer(id: string, name: string): IPlayer {
 export function isGameOver(state: IGameState) {
   return (
     state.actionsLeft <= 0 ||
-    state.tokens.strikes <= 0 ||
+    state.tokens.strikes >= 3 ||
     (state.playedCards || []).length === (state.options.multicolor ? 30 : 25)
   );
 }
@@ -301,7 +301,7 @@ export function newGame(options: IGameOptions): IGameState {
     players: [],
     tokens: {
       hints: 8,
-      strikes: 3
+      strikes: 0
     },
     currentPlayer,
     options,

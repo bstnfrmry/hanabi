@@ -24,6 +24,10 @@ body {
   background: color-mod(var(--color-blue) shade(90%));
 }
 
+/**
+ * Custom sizes
+ */
+
 .h1\.5 {
   height: 1.5rem;
 }

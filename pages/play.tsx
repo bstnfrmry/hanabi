@@ -27,6 +27,7 @@ import ActionArea, {
 import LoadingScreen from "~/components/loadingScreen";
 import Box from "~/components/ui/box";
 import Turn, { TurnSize } from "~/components/turn";
+import { TutorialProvider } from "~/components/tutorial";
 
 const ReactionWrapper = posed.div({
   enter: { y: 0, transition: { ease: "easeOut", duration: 3500 } },
@@ -191,6 +192,13 @@ export default function Play() {
     });
   }
 
+  function onMenuClick() {
+    onSelectArea({
+      id: "menu",
+      type: ActionAreaType.MENU
+    });
+  }
+
   function onCloseArea() {
     selectArea({
       id: "instructions",
@@ -203,84 +211,89 @@ export default function Play() {
   }
 
   return (
-    <GameContext.Provider value={game}>
-      <SelfPlayerContext.Provider value={selfPlayer}>
-        <CurrentPlayerContext.Provider value={game.players[game.currentPlayer]}>
-          <div className="bg-main-dark relative flex flex-row w-100 h-100">
-            {/* Toast */}
-            <div
-              className="absolute z-999 bottom-1 left-0 right-0 flex justify-center items-center pointer"
-              style={{ pointerEvents: "none" }}
-            >
-              {lastTurn && (
-                <div
-                  style={{ pointerEvents: "auto" }}
-                  onClick={() => setLastTurn(null)}
-                  className="flex justify-center items-center bg-white main-dark br4 shadow-4 b--yellow ba bw2 f4 pa2"
-                >
-                  <Turn
-                    size={TurnSize.SMALL}
-                    includePlayer={true}
-                    turn={lastTurn}
-                    showDrawn={
-                      game.players[lastTurn.action.from] !== selfPlayer
-                    }
-                  />
-                  <span className="ml4">&times;</span>
-                </div>
-              )}
-            </div>
-
-            {/* Reactions */}
-            <div
-              className="absolute z-999 right-1 h-100 w1 justify-center items-center pointer f1"
-              style={{ pointerEvents: "none", top: "-200px" }}
-            >
-              <PoseGroup>
-                {Object.values(game.reactions).map((reaction, i) => (
-                  <ReactionWrapper key={i}>
-                    <span className="absolute right-1">{reaction}</span>
-                  </ReactionWrapper>
-                ))}
-              </PoseGroup>
-            </div>
-
-            {/* Left area */}
-            <div
-              className="flex flex-column h-100 overflow-y-scroll pa1"
-              style={{ minWidth: "35%" }}
-            >
-              <PlayersBoard
-                onSelectPlayer={onSelectPlayer}
-                onNotifyPlayer={onNotifyPlayer}
-                onReaction={onReaction}
-              />
-            </div>
-
-            {/* Right area */}
-            <div className="flex flex-column h-100 flex-grow-1 overflow-scroll pa1 pl0">
-              <GameBoard
-                onRollback={onRollback}
-                onSelectDiscard={onSelectDiscard}
-              />
-              <Box className="flex-grow-1" borderColor="yellow-light">
-                {game.status === "lobby" && (
-                  <Lobby onJoinGame={onJoinGame} onStartGame={onStartGame} />
+    <TutorialProvider>
+      <GameContext.Provider value={game}>
+        <SelfPlayerContext.Provider value={selfPlayer}>
+          <CurrentPlayerContext.Provider
+            value={game.players[game.currentPlayer]}
+          >
+            <div className="bg-main-dark relative flex flex-row w-100 h-100">
+              {/* Toast */}
+              <div
+                className="absolute z-999 bottom-1 left-0 right-0 flex justify-center items-center pointer"
+                style={{ pointerEvents: "none" }}
+              >
+                {lastTurn && (
+                  <div
+                    style={{ pointerEvents: "auto" }}
+                    onClick={() => setLastTurn(null)}
+                    className="flex justify-center items-center bg-white main-dark br4 shadow-4 b--yellow ba bw2 f4 pa2"
+                  >
+                    <Turn
+                      size={TurnSize.SMALL}
+                      includePlayer={true}
+                      turn={lastTurn}
+                      showDrawn={
+                        game.players[lastTurn.action.from] !== selfPlayer
+                      }
+                    />
+                    <span className="ml4">&times;</span>
+                  </div>
                 )}
-                {game.status === "ongoing" && (
-                  <ActionArea
-                    selectedArea={selectedArea}
-                    onCommitAction={onCommitAction}
-                    onSelectDiscard={onSelectDiscard}
-                    onCloseArea={onCloseArea}
-                    onImpersonate={onImpersonate}
-                  />
-                )}
-              </Box>
+              </div>
+
+              {/* Reactions */}
+              <div
+                className="absolute z-999 right-1 h-100 w1 justify-center items-center pointer f1"
+                style={{ pointerEvents: "none", top: "-200px" }}
+              >
+                <PoseGroup>
+                  {Object.values(game.reactions).map((reaction, i) => (
+                    <ReactionWrapper key={i}>
+                      <span className="absolute right-1">{reaction}</span>
+                    </ReactionWrapper>
+                  ))}
+                </PoseGroup>
+              </div>
+
+              {/* Left area */}
+              <div
+                className="flex flex-column h-100 overflow-y-scroll pa1"
+                style={{ minWidth: "35%" }}
+              >
+                <PlayersBoard
+                  onSelectPlayer={onSelectPlayer}
+                  onNotifyPlayer={onNotifyPlayer}
+                  onReaction={onReaction}
+                />
+              </div>
+
+              {/* Right area */}
+              <div className="flex flex-column h-100 flex-grow-1 overflow-scroll pa1 pl0">
+                <GameBoard
+                  onRollback={onRollback}
+                  onMenuClick={onMenuClick}
+                  onSelectDiscard={onSelectDiscard}
+                />
+                <Box className="flex-grow-1" borderColor="yellow-light">
+                  {game.status === "lobby" && (
+                    <Lobby onJoinGame={onJoinGame} onStartGame={onStartGame} />
+                  )}
+                  {game.status === "ongoing" && (
+                    <ActionArea
+                      selectedArea={selectedArea}
+                      onCommitAction={onCommitAction}
+                      onSelectDiscard={onSelectDiscard}
+                      onCloseArea={onCloseArea}
+                      onImpersonate={onImpersonate}
+                    />
+                  )}
+                </Box>
+              </div>
             </div>
-          </div>
-        </CurrentPlayerContext.Provider>
-      </SelfPlayerContext.Provider>
-    </GameContext.Provider>
+          </CurrentPlayerContext.Provider>
+        </SelfPlayerContext.Provider>
+      </GameContext.Provider>
+    </TutorialProvider>
   );
 }

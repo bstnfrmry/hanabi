@@ -4,6 +4,7 @@ import { range } from "lodash";
 import { useGame, useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
 
 import PlayerGame from "~/components/playerGame";
+import Tutorial, { ITutorialStep } from "~/components/tutorial";
 
 interface Props {
   onSelectPlayer: Function;
@@ -28,25 +29,29 @@ export default function PlayersBoard(props: Props) {
   return (
     <>
       <div className="flex-grow-1">
-        {otherPlayers.map((otherPlayer, i) => (
-          <div key={i} className="mb1 mb2-l">
-            <PlayerGame
-              player={otherPlayer}
-              onSelectPlayer={onSelectPlayer}
-              onNotifyPlayer={onNotifyPlayer}
-              active={currentPlayer === otherPlayer}
-            />
-          </div>
-        ))}
+        <Tutorial step={ITutorialStep.OTHER_PLAYERS}>
+          {otherPlayers.map((otherPlayer, i) => (
+            <div key={i} className="mb1 mb2-l">
+              <PlayerGame
+                player={otherPlayer}
+                onSelectPlayer={onSelectPlayer}
+                onNotifyPlayer={onNotifyPlayer}
+                active={currentPlayer === otherPlayer}
+              />
+            </div>
+          ))}
+        </Tutorial>
       </div>
       {selfPlayer && (
-        <PlayerGame
-          player={selfPlayer}
-          self={true}
-          active={currentPlayer === selfPlayer}
-          onSelectPlayer={onSelectPlayer}
-          onReaction={onReaction}
-        />
+        <Tutorial step={ITutorialStep.SELF_PLAYER}>
+          <PlayerGame
+            player={selfPlayer}
+            self={true}
+            active={currentPlayer === selfPlayer}
+            onSelectPlayer={onSelectPlayer}
+            onReaction={onReaction}
+          />
+        </Tutorial>
       )}
     </>
   );

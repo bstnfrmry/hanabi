@@ -2,6 +2,7 @@ import { useGame, useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
 
 import PlayerName from "~/components/playerName";
 import Turn, { TurnSize } from "~/components/turn";
+import Tutorial, { ITutorialStep } from "~/components/tutorial";
 
 interface Props {
   onSelectDiscard: Function;
@@ -19,26 +20,28 @@ export default function InstructionsArea(props: Props) {
 
   return (
     <div className="flex-grow-1 f7 f3-l fw2 lh-copy">
-      {!isCurrentPlayer && (
-        <div className="ttu">
-          It's <PlayerName player={currentPlayer} />
-          's turn
-        </div>
-      )}
-      {isCurrentPlayer && (
-        <div>
-          <div className="ttu mb2">Your turn!</div>
-          <div className="mb1">
-            - Give a hint by tapping on your playmates' hand
+      <Tutorial step={ITutorialStep.WELCOME} placement="below">
+        {!isCurrentPlayer && (
+          <div className="ttu">
+            It's <PlayerName player={currentPlayer} />
+            's turn
           </div>
-          <div className="mb1">
-            - Play or discard by tapping on your own game
+        )}
+        {isCurrentPlayer && (
+          <div>
+            <div className="ttu mb2">Your turn!</div>
+            <div className="mb1">
+              - Give a hint by tapping on your playmates' hand
+            </div>
+            <div className="mb1">
+              - Play or discard by tapping on your own game
+            </div>
+            <a onClick={() => onSelectDiscard()}>
+              - <span className="underline">Check discarded cards</span>
+            </a>
           </div>
-          <a onClick={() => onSelectDiscard()}>
-            - <span className="underline">Check discarded cards</span>
-          </a>
-        </div>
-      )}
+        )}
+      </Tutorial>
 
       {showHistory && (
         <>
