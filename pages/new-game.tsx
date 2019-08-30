@@ -16,11 +16,13 @@ const DefaultSeed = `${Math.round(Math.random() * 10000)}`;
 export default function NewGame() {
   const router = useRouter();
   const db = useDatabase();
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [seed, setSeed] = useState<string>(DefaultSeed);
-  const [playersCount, setPlayersCount] = useState(2);
+  const [playersCount, setPlayersCount] = useState(3);
   const [multicolor, setMulticolor] = useState(false);
   const [allowRollback, setAllowRollback] = useState(true);
   const [preventLoss, setPreventLoss] = useState(false);
+  const [private_, setPrivate] = useState(false);
 
   async function onCreateGame() {
     const gameId = shortid();
@@ -32,7 +34,8 @@ export default function NewGame() {
         playersCount,
         seed,
         allowRollback,
-        preventLoss
+        preventLoss,
+        private: private_
       })
     );
 
@@ -40,17 +43,10 @@ export default function NewGame() {
   }
 
   return (
-    <Box className="w-100 h-100 flex justify-center items-center relative bg-main-dark">
+    <Box className="w-100 h-100 overflow-y-scroll pv4 flex justify-center items-start pv6-l relative bg-main-dark">
       <HomeButton className="absolute top-1 right-1" />
+
       <div className="flex flex-column justify-center w-50 f4">
-        <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
-          Seed
-          <input
-            className="w3 h1 tr bg-white pv2 ph3 br2 ba b--yellow"
-            value={seed}
-            onChange={e => setSeed(e.target.value)}
-          />
-        </label>
         <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
           Players
           <select
@@ -65,6 +61,7 @@ export default function NewGame() {
             ))}
           </select>
         </label>
+
         <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
           Multicolor
           <input
@@ -74,24 +71,54 @@ export default function NewGame() {
             onChange={e => setMulticolor(e.target.checked)}
           />
         </label>
-        <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
-          Allow rollback
+
+        <label className="flex justify-between items-center pb2 ph1 h2">
+          Private
           <input
             className="w1 h1"
             type="checkbox"
-            checked={allowRollback}
-            onChange={e => setAllowRollback(e.target.checked)}
+            checked={private_}
+            onChange={e => setPrivate(e.target.checked)}
           />
         </label>
-        <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
-          Prevent loss
-          <input
-            className="w1 h1"
-            type="checkbox"
-            checked={preventLoss}
-            onChange={e => setPreventLoss(e.target.checked)}
-          />
-        </label>
+
+        <a
+          className="mv4 self-end underline pointer silver"
+          onClick={() => setShowAdvanced(!showAdvanced)}
+        >
+          Advanced options
+        </a>
+
+        {showAdvanced && (
+          <>
+            <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
+              Seed
+              <input
+                className="w3 h1 tr bg-white pv2 ph3 br2 ba b--yellow"
+                value={seed}
+                onChange={e => setSeed(e.target.value)}
+              />
+            </label>
+            <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
+              Allow rollback
+              <input
+                className="w1 h1"
+                type="checkbox"
+                checked={allowRollback}
+                onChange={e => setAllowRollback(e.target.checked)}
+              />
+            </label>
+            <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
+              Prevent loss
+              <input
+                className="w1 h1"
+                type="checkbox"
+                checked={preventLoss}
+                onChange={e => setPreventLoss(e.target.checked)}
+              />
+            </label>
+          </>
+        )}
 
         <div className="self-end mt3">
           <Button size={IButtonSize.LARGE} onClick={onCreateGame}>

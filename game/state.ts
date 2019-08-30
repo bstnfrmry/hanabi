@@ -35,6 +35,7 @@ export interface IGameOptions {
   allowRollback: boolean;
   preventLoss: boolean;
   seed: string;
+  private: boolean;
 }
 
 export enum IGameStatus {

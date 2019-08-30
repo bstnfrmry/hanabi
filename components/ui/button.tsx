@@ -9,7 +9,7 @@ export enum IButtonSize {
 }
 
 const ButtonSizes = {
-  [IButtonSize.TINY]: "pa1 bw1 f6",
+  [IButtonSize.TINY]: "pa1 bw1 pa2-l f6 f4-l",
   [IButtonSize.SMALL]: "pv1 ph2 bw1 f6 f4-l",
   [IButtonSize.MEDIUM]: "h2.5 pv2 ph3 bw2 f6 f4-l",
   [IButtonSize.LARGE]: "pv3 ph4 bw2 f3 f3-l"

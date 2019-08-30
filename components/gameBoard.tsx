@@ -19,6 +19,8 @@ interface Props {
   onRollback: Function;
 }
 
+export { CardWrapper } from "~/components/card";
+
 export default function GameBoard(props: Props) {
   const { onSelectDiscard, onRollback } = props;
 
