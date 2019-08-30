@@ -81,7 +81,6 @@ export function getHintDeductions(
   hint: ICardHint,
   possibleCards: ICard[]
 ): IDeduction[] {
-  return [];
   let deductions: IDeduction[] = [];
   colors.forEach(color => {
     numbers.forEach(number => {
@@ -179,7 +178,6 @@ export function chooseAction(
       const player = Object.values(state.players)[pIndex];
 
       for (let card of player.hand) {
-        break;
         if (
           isPlayable(card, state.playedCards) &&
           (card.hint.color[card.color] < 2 || card.hint.number[card.number] < 2)

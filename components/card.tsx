@@ -162,7 +162,7 @@ export default function Card(props: Props) {
       {displayHints && hidden && (
         <div
           className={classnames(
-            "absolute top-0 mt2 fw3 br-100 w-50 h-50 flex justify-center items-center",
+            "absolute top-0 mt2 fw3 br-100 w-50 h-50 flex justify-center items-center outline-main-dark",
             { [`bg-${card.color}`]: card.hint.color[card.color] === 2 },
             { mt3: size.includes("large") }
           )}

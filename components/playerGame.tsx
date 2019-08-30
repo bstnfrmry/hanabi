@@ -44,7 +44,7 @@ export default function PlayerGame(props: Props) {
           reaction={player.reaction}
           className="w-100"
         />
-        {active && !self && !player.notified && (
+        {active && !self && !player.notified && !player.bot && (
           <span
             className="absolute right-0 mr1 mr4-l"
             onClick={() => onNotifyPlayer(player)}

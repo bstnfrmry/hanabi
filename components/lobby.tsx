@@ -9,13 +9,16 @@ import PlayerName from "~/components/playerName";
 
 const Emojis = ["🐶", "🦊", "🐸", "🦋", "🐯", "🐱"];
 
+export const BotEmojis = ["🤖", "👽", "👾", "🤡"];
+
 interface Props {
   onJoinGame: Function;
+  onAddBot: Function;
   onStartGame: Function;
 }
 
 export default function Lobby(props: Props) {
-  const { onJoinGame, onStartGame } = props;
+  const { onJoinGame, onAddBot, onStartGame } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -49,12 +52,20 @@ export default function Lobby(props: Props) {
                   · {game.players.length} / {game.options.playersCount}
                 </span>
               </h2>
-              <div className="flex flex-column justify-center mb2 ttu">
+              <div className="flex flex-column justify-center mb2">
                 {game.players.map((player, i) => (
-                  <div key={i} className="mb2 f3-l">
+                  <div key={i} className="mb2 f3-l ttu">
                     <PlayerName player={player} explicit={true} />
                   </div>
                 ))}
+                {!gameFull && (
+                  <a
+                    onClick={() => onAddBot()}
+                    className="underline gray pointer ml3"
+                  >
+                    + add AI
+                  </a>
+                )}
               </div>
             </div>
             {selfPlayer && (

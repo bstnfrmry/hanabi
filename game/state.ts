@@ -122,13 +122,14 @@ export interface ITurn {
 
 export interface IPlayer {
   id: string;
-  hand: IHand;
   name: string;
   emoji: string;
+  hand?: IHand;
   reaction?: string;
   lastAction?: IAction;
   index?: number;
   notified?: boolean;
+  bot: boolean;
 }
 
 // the *remaining* strikes and hints.

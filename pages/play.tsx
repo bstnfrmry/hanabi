@@ -19,7 +19,7 @@ import {
 
 import PlayersBoard from "~/components/playersBoard";
 import GameBoard from "~/components/gameBoard";
-import Lobby from "~/components/lobby";
+import Lobby, { BotEmojis } from "~/components/lobby";
 import ActionArea, {
   ActionAreaType,
   ISelectedArea
@@ -29,6 +29,7 @@ import Box from "~/components/ui/box";
 import Turn, { TurnSize } from "~/components/turn";
 import { TutorialProvider } from "~/components/tutorial";
 import MenuArea from "~/components/menuArea";
+import play from "~/game/ai";
 
 const ReactionWrapper = posed.div({
   enter: { y: 0, transition: { ease: "easeOut", duration: 3500 } },
@@ -99,12 +100,43 @@ export default function Play() {
     });
   }, [gameId, playerId]);
 
+  /**
+   * Play for bots
+   */
+  useEffect(() => {
+    db.ref(`/games/${gameId}/currentPlayer`).once("value", event => {
+      if (
+        !game ||
+        game.status !== "ongoing" ||
+        !selfPlayer ||
+        selfPlayer.index
+      ) {
+        return;
+      }
+
+      const currentPlayer = game.players[event.val()];
+      if (!currentPlayer || !currentPlayer.bot) {
+        return;
+      }
+
+      db.ref(`/games/${gameId}/players/${currentPlayer.index}/reaction`).set(
+        "🧠"
+      );
+      setTimeout(() => {
+        db.ref(`/games/${gameId}`).set(play(game));
+        db.ref(`/games/${gameId}/players/${currentPlayer.index}/reaction`).set(
+          null
+        );
+      }, 3000);
+    });
+  }, [game, game ? game.currentPlayer : 0, selfPlayer]);
+
   async function onJoinGame(player) {
     const playerId = shortid();
 
     await db
       .ref(`/games/${gameId}`)
-      .set(joinGame(game, { id: playerId, ...player }));
+      .set(joinGame(game, { id: playerId, ...player, bot: false }));
 
     router.replace({
       pathname: "/play",
@@ -113,6 +145,20 @@ export default function Play() {
 
     localStorage.setItem("gameId", gameId.toString());
     localStorage.setItem("playerId", playerId.toString());
+  }
+
+  async function onAddBot() {
+    const playerId = shortid();
+    const botsCount = game.players.filter(p => p.bot).length;
+
+    const bot = {
+      emoji: BotEmojis[botsCount],
+      name: `AI #${botsCount + 1}`
+    };
+
+    await db
+      .ref(`/games/${gameId}`)
+      .set(joinGame(game, { id: playerId, ...bot, bot: true }));
   }
 
   async function onStartGame() {
@@ -289,6 +335,7 @@ export default function Play() {
                       {game.status === "lobby" && (
                         <Lobby
                           onJoinGame={onJoinGame}
+                          onAddBot={onAddBot}
                           onStartGame={onStartGame}
                         />
                       )}
