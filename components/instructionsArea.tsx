@@ -15,6 +15,8 @@ export default function InstructionsArea(props: Props) {
   const currentPlayer = useCurrentPlayer();
   const isCurrentPlayer = currentPlayer === selfPlayer;
 
+  const showHistory = game.options.turnsHistory && game.turnsHistory.length > 0;
+
   return (
     <div className="flex-grow-1 f7 f3-l fw2 lh-copy">
       {!isCurrentPlayer && (
@@ -37,24 +39,27 @@ export default function InstructionsArea(props: Props) {
           </a>
         </div>
       )}
-      {game.turnsHistory.length > 0 && (
-        <div className="ttu mt3">Last actions:</div>
+
+      {showHistory && (
+        <>
+          <div className="ttu mt3">Last actions:</div>
+          {game.turnsHistory
+            .slice(-10)
+            .reverse()
+            .map((turn, i) => {
+              return (
+                <div key={i} className="mt1 f4">
+                  <Turn
+                    turn={turn}
+                    includePlayer={true}
+                    showDrawn={game.players[turn.action.from] !== selfPlayer}
+                    size={TurnSize.SMALL}
+                  />
+                </div>
+              );
+            })}
+        </>
       )}
-      {game.turnsHistory
-        .slice(-10)
-        .reverse()
-        .map((turn, i) => {
-          return (
-            <div key={i} className="mt1 f4">
-              <Turn
-                turn={turn}
-                includePlayer={true}
-                showDrawn={game.players[turn.action.from] !== selfPlayer}
-                size={TurnSize.SMALL}
-              />
-            </div>
-          );
-        })}
     </div>
   );
 }

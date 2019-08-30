@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import shortid from "shortid";
 
 import { useDatabase } from "~/hooks/database";
+import { IGameHintsLevel } from "~/game/state";
 import { newGame } from "~/game/actions";
 
 import Button, { IButtonSize } from "~/components/ui/button";
@@ -10,6 +11,11 @@ import Box from "~/components/ui/box";
 import HomeButton from "~/components/homeButton";
 
 const PlayerCounts = [2, 3, 4, 5];
+
+const HintsLevels = {
+  [IGameHintsLevel.DIRECT]: "Show direct hints",
+  [IGameHintsLevel.NONE]: "Do not show hints"
+};
 
 const DefaultSeed = `${Math.round(Math.random() * 10000)}`;
 
@@ -23,6 +29,8 @@ export default function NewGame() {
   const [allowRollback, setAllowRollback] = useState(true);
   const [preventLoss, setPreventLoss] = useState(false);
   const [private_, setPrivate] = useState(false);
+  const [hintsLevel, setHintsLevel] = useState(IGameHintsLevel.DIRECT);
+  const [turnsHistory, setTurnsHistory] = useState(true);
 
   async function onCreateGame() {
     const gameId = shortid();
@@ -35,7 +43,9 @@ export default function NewGame() {
         seed,
         allowRollback,
         preventLoss,
-        private: private_
+        private: private_,
+        hintsLevel,
+        turnsHistory
       })
     );
 
@@ -99,6 +109,7 @@ export default function NewGame() {
                 onChange={e => setSeed(e.target.value)}
               />
             </label>
+
             <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
               Allow rollback
               <input
@@ -108,6 +119,7 @@ export default function NewGame() {
                 onChange={e => setAllowRollback(e.target.checked)}
               />
             </label>
+
             <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
               Prevent loss
               <input
@@ -115,6 +127,31 @@ export default function NewGame() {
                 type="checkbox"
                 checked={preventLoss}
                 onChange={e => setPreventLoss(e.target.checked)}
+              />
+            </label>
+
+            <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
+              Hints
+              <select
+                className="h2 bg-white br2 tc ph3 ba b--yellow"
+                value={hintsLevel}
+                onChange={e => setHintsLevel(e.target.value as IGameHintsLevel)}
+              >
+                {Object.keys(HintsLevels).map(level => (
+                  <option key={level} value={level}>
+                    {HintsLevels[level]}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
+              Turns history
+              <input
+                className="w1 h1"
+                type="checkbox"
+                checked={turnsHistory}
+                onChange={e => setTurnsHistory(e.target.checked)}
               />
             </label>
           </>

@@ -1,7 +1,7 @@
 import React, { ReactNode, MouseEvent, CSSProperties } from "react";
 import classnames from "classnames";
 
-import { ICard } from "~/game/state";
+import { ICard, IGameHintsLevel } from "~/game/state";
 import { numbers, getColors } from "~/game/actions";
 import { useGame } from "~/hooks/game";
 
@@ -117,11 +117,13 @@ export default function Card(props: Props) {
 
   const number = hidden ? null : card.number;
 
-  const displayHints = [
-    ICardContext.OTHER_PLAYER, // Todo: remove other when mobile (removing hints due to lack of space)
-    ICardContext.TARGETED_PLAYER,
-    ICardContext.SELF_PLAYER
-  ].includes(context);
+  const displayHints =
+    game.options.hintsLevel !== IGameHintsLevel.NONE &&
+    [
+      ICardContext.OTHER_PLAYER,
+      ICardContext.TARGETED_PLAYER,
+      ICardContext.SELF_PLAYER
+    ].includes(context);
 
   if (selected) {
     style.transform = "scale(1.20)";
@@ -142,8 +144,8 @@ export default function Card(props: Props) {
         className={classnames(
           "white outline-main-dark",
           { f7: size === "small" },
-          { mb3: size.includes("large") },
-          { "mb4-l": size === "medium" }
+          { mb3: displayHints && size.includes("large") },
+          { "mb4-l": displayHints && size === "medium" }
         )}
       >
         {number}

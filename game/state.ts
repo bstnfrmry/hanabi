@@ -36,6 +36,17 @@ export interface IGameOptions {
   preventLoss: boolean;
   seed: string;
   private: boolean;
+  hintsLevel: IGameHintsLevel;
+  turnsHistory: boolean;
+}
+
+export enum IGameHintsLevel {
+  // Direct hints & game deductions are displayed (TBD)
+  ALL = "all",
+  // Direct hints are displayed
+  DIRECT = "direct",
+  // No hints displayd
+  NONE = "none"
 }
 
 export enum IGameStatus {
