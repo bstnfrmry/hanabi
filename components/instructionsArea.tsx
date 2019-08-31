@@ -3,16 +3,18 @@ import React from "react";
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
+import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { IGameStatus } from "~/game/state";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
   onSelectDiscard: Function;
+  onTurnPeak: (turn: number) => void;
 }
 
 export default function InstructionsArea(props: Props) {
-  const { onSelectDiscard } = props;
+  const { onSelectDiscard, onTurnPeak } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -72,11 +74,15 @@ export default function InstructionsArea(props: Props) {
             value="Last actions"
           />
           {game.turnsHistory
-            .slice(-5)
+            .slice(-20)
             .reverse()
             .map((turn, i) => {
               return (
-                <div key={i} className="mt1 mt3-l">
+                <div
+                  key={i}
+                  className="mt1 mt3-l pointer"
+                  onClick={() => onTurnPeak(i + 1)}
+                >
                   <Turn
                     includePlayer={true}
                     showDrawn={game.players[turn.action.from] !== selfPlayer}

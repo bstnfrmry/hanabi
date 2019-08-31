@@ -76,7 +76,7 @@ interface TutorialProviderProps {
   children: ReactNode;
 }
 
-export const TutorialProvider = (props: TutorialProviderProps) => {
+export function TutorialProvider(props: TutorialProviderProps) {
   const { children } = props;
 
   const [currentStep, setCurrentStep] = useState(
@@ -105,7 +105,7 @@ export const TutorialProvider = (props: TutorialProviderProps) => {
       {children}
     </TutorialContext.Provider>
   );
-};
+}
 
 interface Props {
   step: ITutorialStep;

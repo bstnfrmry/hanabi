@@ -163,20 +163,26 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
 }
 
 /**
- * Return the last state before the given state
+ * Rollback the state for the given amount of turns
  */
-export function getLastState(state: IGameState) {
+export function goBackToState(state: IGameState, turnsBack = 1) {
   const lastState = last(state.history);
 
   if (!lastState) {
     return null;
   }
 
-  return {
-    ...lastState,
+  const previousState = {
     history: state.history.slice(0, -1),
-    turnsHistory: state.turnsHistory.slice(0, -1)
+    turnsHistory: state.turnsHistory.slice(0, -1),
+    ...lastState
   };
+
+  if (--turnsBack === 0) {
+    return previousState;
+  }
+
+  return goBackToState(previousState, turnsBack);
 }
 
 export function emptyPlayer(id: string, name: string): IPlayer {

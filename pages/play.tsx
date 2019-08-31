@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import { last } from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -14,17 +15,25 @@ import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
 import Turn from "~/components/turn";
 import { TutorialProvider } from "~/components/tutorial";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import {
   commitAction,
-  getLastState,
   getMaximumPossibleScore,
+  goBackToState,
   joinGame
 } from "~/game/actions";
 import play from "~/game/ai";
-import IGameState, { IGameStatus, IPlayer, ITurn } from "~/game/state";
+import IGameState, {
+  fillEmptyValues,
+  IGameStatus,
+  IPlayer,
+  ITurn
+} from "~/game/state";
 import {
   CurrentPlayerContext,
   GameContext,
+  GameView,
+  GameViewContext,
   SelfPlayerContext
 } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
@@ -34,11 +43,13 @@ export default function Play() {
   const router = useRouter();
   const [lastTurn, setLastTurn] = useState<ITurn>(null);
   const [game, setGame] = useState<IGameState>(null);
+  const [view, setView] = useState<GameView>(GameView.LIVE);
   const [selectedArea, selectArea] = useState<ISelectedArea>({
     id: "instructions",
     type: ActionAreaType.INSTRUCTIONS
   });
   const { gameId, playerId } = router.query;
+
   const selfPlayer = game && game.players.find(p => p.id === playerId);
   const currentPlayer = game && game.players[game.currentPlayer];
 
@@ -49,13 +60,15 @@ export default function Play() {
     if (!gameId) return;
 
     return network.subscribeToGame(gameId as string, game => {
+      if (view === GameView.PEAK) return;
+
       if (!game) {
         return router.push("/404");
       }
 
       setGame(game);
     });
-  }, [gameId]);
+  }, [gameId, view]);
 
   /**
    * Display turn on turn played.
@@ -66,7 +79,7 @@ export default function Play() {
 
     setLastTurn(last(game.turnsHistory));
     selectArea({ id: "instructions", type: ActionAreaType.INSTRUCTIONS });
-    const timeout = setTimeout(() => setLastTurn(null), 80000);
+    const timeout = setTimeout(() => setLastTurn(null), 10000);
 
     return () => clearTimeout(timeout);
   }, [game && game.turnsHistory.length]);
@@ -96,11 +109,15 @@ export default function Play() {
     if (!selfPlayer || selfPlayer.index) return;
     if (!currentPlayer.bot) return;
 
-    network.setReaction(game, currentPlayer, "🧠");
+    if (game.options.botsWait === 0) {
+      network.updateGame(play(game));
+      return;
+    }
 
+    network.setReaction(game, currentPlayer, "🧠");
     const timeout = setTimeout(() => {
       network.updateGame(play(game));
-      network.setReaction(game, currentPlayer, null);
+      game.options.botsWait && network.setReaction(game, currentPlayer, null);
     }, game.options.botsWait);
 
     return () => clearTimeout(timeout);
@@ -173,7 +190,7 @@ export default function Play() {
   }
 
   async function onRollback() {
-    network.updateGame(getLastState(game));
+    network.updateGame(goBackToState(game));
   }
 
   async function onNotifyPlayer(player) {
@@ -224,88 +241,125 @@ export default function Play() {
     });
   }
 
+  function onTurnPeak(turn: number) {
+    setGame(fillEmptyValues(goBackToState(game, turn)));
+    setView(GameView.PEAK);
+  }
+
+  function onExitPeakMode() {
+    setView(GameView.LIVE);
+  }
+
   if (!game) {
     return <LoadingScreen />;
   }
 
   return (
     <TutorialProvider>
-      <GameContext.Provider value={game}>
-        <SelfPlayerContext.Provider value={selfPlayer}>
-          <CurrentPlayerContext.Provider value={currentPlayer}>
-            <div className="bg-main-dark relative flex flex-row w-100 h-100">
-              {/* Toast */}
-              <div
-                className="absolute z-999 bottom-1 left-0 right-0 flex justify-center items-center pointer"
-                style={{ pointerEvents: "none" }}
-              >
-                {lastTurn && (
-                  <div
-                    className="flex justify-center items-center bg-white main-dark br4 shadow-4 b--yellow ba bw2 pa2"
-                    style={{ pointerEvents: "auto" }}
-                    onClick={() => setLastTurn(null)}
-                  >
-                    <Turn
-                      includePlayer={true}
-                      showDrawn={
-                        game.players[lastTurn.action.from] !== selfPlayer
-                      }
-                      turn={lastTurn}
-                    />
-                    <span className="ml4">&times;</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Left area */}
-              <div
-                className="flex flex-column h-100 overflow-y-scroll pa1"
-                style={{ minWidth: "35%" }}
-              >
-                <PlayersBoard
-                  onNotifyPlayer={onNotifyPlayer}
-                  onReaction={onReaction}
-                  onSelectPlayer={onSelectPlayer}
-                />
-              </div>
-
-              {/* Right area */}
-              <div className="flex flex-column h-100 flex-grow-1 overflow-hidden pa1 pl0">
-                <GameBoard
-                  onMenuClick={onMenuClick}
-                  onRollback={onRollback}
-                  onSelectDiscard={onSelectDiscard}
-                />
-                <div className="flex-grow-1 pa2 pv4-l ph3-l shadow-5 br3 ba b--yellow-light">
-                  {selectedArea.type === ActionAreaType.MENU && (
-                    <MenuArea onCloseArea={onCloseArea} />
-                  )}
-                  {selectedArea.type !== ActionAreaType.MENU && (
-                    <>
-                      {game.status === IGameStatus.LOBBY && (
-                        <Lobby
-                          onAddBot={onAddBot}
-                          onJoinGame={onJoinGame}
-                          onStartGame={onStartGame}
-                        />
-                      )}
-                      {game.status !== IGameStatus.LOBBY && (
-                        <ActionArea
-                          selectedArea={selectedArea}
-                          onCloseArea={onCloseArea}
-                          onCommitAction={onCommitAction}
-                          onImpersonate={onImpersonate}
-                          onSelectDiscard={onSelectDiscard}
-                        />
-                      )}
-                    </>
+      <GameViewContext.Provider value={view}>
+        <GameContext.Provider value={game}>
+          <SelfPlayerContext.Provider value={selfPlayer}>
+            <CurrentPlayerContext.Provider value={currentPlayer}>
+              <div className="bg-main-dark relative flex flex-row w-100 h-100">
+                {/* Toast */}
+                <div
+                  className="absolute z-999 bottom-1 left-0 right-0 flex justify-center items-center pointer"
+                  style={{ pointerEvents: "none" }}
+                >
+                  {view === GameView.LIVE && lastTurn && (
+                    <div
+                      className="flex justify-center items-center bg-white main-dark br4 shadow-4 b--yellow ba bw2 pa2"
+                      style={{ pointerEvents: "auto" }}
+                      onClick={() => setLastTurn(null)}
+                    >
+                      <Turn
+                        includePlayer={true}
+                        showDrawn={
+                          game.players[lastTurn.action.from] !== selfPlayer
+                        }
+                        turn={lastTurn}
+                      />
+                      <span className="ml4">&times;</span>
+                    </div>
                   )}
                 </div>
+
+                {/* Peak mode */}
+                {view === GameView.PEAK && (
+                  <div
+                    className="absolute z-999 bottom-1 right-1 bg-white main-dark br4 shadow-4 b--yellow ba bw2 pa2 pointer flex flex-column items-center"
+                    onClick={onExitPeakMode}
+                  >
+                    <div className="flex w-100 mb1 justify-between items-center">
+                      <Txt size={TxtSize.MEDIUM} value="Peak mode" />
+                      <Txt className="mr2" value="×" />
+                    </div>
+                    <Txt
+                      multiline
+                      value="You are watching a snapshot of the game"
+                    />
+                  </div>
+                )}
+
+                {/* Left area */}
+                <div
+                  className={classnames(
+                    "flex flex-column h-100 overflow-y-scroll pa1",
+                    { "o-70": view === GameView.PEAK }
+                  )}
+                  style={{ minWidth: "35%" }}
+                >
+                  <PlayersBoard
+                    onNotifyPlayer={onNotifyPlayer}
+                    onReaction={onReaction}
+                    onSelectPlayer={onSelectPlayer}
+                  />
+                </div>
+
+                {/* Right area */}
+                <div
+                  className={classnames(
+                    "flex flex-column h-100 flex-grow-1 overflow-y-scroll pa1 pl0",
+                    { "o-70": view === GameView.PEAK }
+                  )}
+                >
+                  <GameBoard
+                    onMenuClick={onMenuClick}
+                    onRollback={onRollback}
+                    onSelectDiscard={onSelectDiscard}
+                  />
+                  <div className="flex-grow-1 pa2 pv4-l ph3-l shadow-5 br3 ba b--yellow-light">
+                    {selectedArea.type === ActionAreaType.MENU && (
+                      <MenuArea onCloseArea={onCloseArea} />
+                    )}
+                    {selectedArea.type !== ActionAreaType.MENU && (
+                      <>
+                        {game.status === IGameStatus.LOBBY && (
+                          <Lobby
+                            onAddBot={onAddBot}
+                            onJoinGame={onJoinGame}
+                            onStartGame={onStartGame}
+                          />
+                        )}
+                        {game.status !== IGameStatus.LOBBY && (
+                          <ActionArea
+                            selectedArea={selectedArea}
+                            onCloseArea={onCloseArea}
+                            onCommitAction={onCommitAction}
+                            onImpersonate={onImpersonate}
+                            onSelectDiscard={onSelectDiscard}
+                            onTurnPeak={onTurnPeak}
+                          />
+                        )}
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-          </CurrentPlayerContext.Provider>
-        </SelfPlayerContext.Provider>
-      </GameContext.Provider>
+            </CurrentPlayerContext.Provider>
+          </SelfPlayerContext.Provider>
+        </GameContext.Provider>
+      </GameViewContext.Provider>
     </TutorialProvider>
   );
 }

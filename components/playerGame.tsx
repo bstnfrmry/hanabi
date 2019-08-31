@@ -7,7 +7,7 @@ import PlayerName from "~/components/playerName";
 import ReactionsPopover from "~/components/reactionsPopover";
 import Txt from "~/components/ui/txt";
 import { IGameStatus, IPlayer } from "~/game/state";
-import { useGame, useSelfPlayer } from "~/hooks/game";
+import { GameView, useGame, useGameView, useSelfPlayer } from "~/hooks/game";
 
 interface Props extends HTMLAttributes<HTMLElement> {
   player: IPlayer;
@@ -30,6 +30,7 @@ export default function PlayerGame(props: Props) {
   } = props;
 
   const game = useGame();
+  const view = useGameView();
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const selfPlayer = useSelfPlayer();
   const hideCards = game.status !== IGameStatus.OVER && (self || !selfPlayer);
@@ -51,15 +52,19 @@ export default function PlayerGame(props: Props) {
           player={player}
           reaction={player.reaction}
         />
-        {active && !self && !player.notified && !player.bot && (
-          <a
-            className="absolute right-0 mr1 mr4-l"
-            onClick={() => onNotifyPlayer(player)}
-          >
-            <Txt value="🔔" />
-          </a>
-        )}
-        {self && (
+        {view === GameView.LIVE &&
+          active &&
+          !self &&
+          !player.notified &&
+          !player.bot && (
+            <a
+              className="absolute right-0 mr1 mr4-l"
+              onClick={() => onNotifyPlayer(player)}
+            >
+              <Txt value="🔔" />
+            </a>
+          )}
+        {view === GameView.LIVE && self && (
           <>
             <Popover
               body={
