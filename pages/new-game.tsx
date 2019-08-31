@@ -9,7 +9,7 @@ import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
 import Txt from "~/components/ui/txt";
 import { newGame } from "~/game/actions";
 import { IGameHintsLevel } from "~/game/state";
-import { useDatabase } from "~/hooks/database";
+import useNetwork from "~/hooks/network";
 
 const PlayerCounts = [2, 3, 4, 5];
 
@@ -28,7 +28,7 @@ const DefaultSeed = `${Math.round(Math.random() * 10000)}`;
 
 export default function NewGame() {
   const router = useRouter();
-  const db = useDatabase();
+  const network = useNetwork();
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [seed, setSeed] = useState<string>(DefaultSeed);
   const [playersCount, setPlayersCount] = useState(3);
@@ -43,7 +43,7 @@ export default function NewGame() {
   async function onCreateGame() {
     const gameId = shortid();
 
-    await db.ref(`/games/${gameId}`).set(
+    await network.updateGame(
       newGame({
         id: gameId,
         multicolor,

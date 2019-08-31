@@ -9,15 +9,16 @@ import App, { Container } from "next/app";
 import Head from "next/head";
 import React from "react";
 
-import { DatabaseContext, setupDatabase } from "~/hooks/database";
+import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
+import { Network, NetworkContext } from "~/hooks/network";
 
 export default class Hanabi extends App {
-  database: firebase.database.Database;
+  network: Network;
 
   constructor(props) {
     super(props);
 
-    this.database = setupDatabase();
+    this.network = new FirebaseNetwork(setupFirebase());
   }
 
   static async getInitialProps({ Component, ctx }) {
@@ -45,11 +46,11 @@ export default class Hanabi extends App {
           <title>Hanabi</title>
         </Head>
         <Container>
-          <DatabaseContext.Provider value={this.database}>
+          <NetworkContext.Provider value={this.network}>
             <div className="aspect-ratio--object">
               <Component {...pageProps} />
             </div>
-          </DatabaseContext.Provider>
+          </NetworkContext.Provider>
         </Container>
       </>
     );

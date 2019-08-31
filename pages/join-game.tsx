@@ -5,37 +5,20 @@ import HomeButton from "~/components/homeButton";
 import LoadingScreen from "~/components/loadingScreen";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import IGameState, { fillEmptyValues } from "~/game/state";
-import { useDatabase } from "~/hooks/database";
+import IGameState from "~/game/state";
+import useNetwork from "~/hooks/network";
 
 export default function JoinGame() {
   const router = useRouter();
-  const db = useDatabase();
+  const network = useNetwork();
 
   const [loading, setLoading] = useState<boolean>(true);
   const [games, setGames] = useState<IGameState[]>([]);
 
   useEffect(() => {
-    const gamesRef = db.ref(`/games`);
-
-    db.ref(`/games`).on("value", event => {
-      const games = Object.values(event.val() || {})
-        .map(fillEmptyValues)
-        // Game is public
-        .filter(game => !game.options.private)
-        // Game is in lobby state
-        .filter(game => game.status === "lobby")
-        // At least one player in the room
-        .filter(game => game.players.length)
-        // There are slots remaining
-        .filter(game => +game.players.length < +game.playersCount)
-        // The game is recent
-        .filter(game => game.createdAt > Date.now() - 10 * 60 * 1000);
-
+    network.subscribeToPublicGames(games => {
       setLoading(false);
       setGames(games);
-
-      return () => gamesRef.off();
     });
   }, []);
 

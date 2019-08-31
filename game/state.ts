@@ -21,7 +21,6 @@ export default interface IGameState {
   turnsHistory: ITurn[];
   history: IGameState[];
   createdAt: number;
-  reactions?: string[];
 }
 
 /**

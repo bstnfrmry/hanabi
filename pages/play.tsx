@@ -1,7 +1,6 @@
 import { last } from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import posed, { PoseGroup } from "react-pose";
 import shortid from "shortid";
 
 import ActionArea, {
@@ -15,7 +14,6 @@ import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
 import Turn from "~/components/turn";
 import { TutorialProvider } from "~/components/tutorial";
-import Txt, { TxtSize } from "~/components/ui/txt";
 import {
   commitAction,
   getLastState,
@@ -24,21 +22,16 @@ import {
   joinGame
 } from "~/game/actions";
 import play from "~/game/ai";
-import IGameState, { fillEmptyValues, IPlayer, ITurn } from "~/game/state";
-import { useDatabase } from "~/hooks/database";
+import IGameState, { IPlayer, ITurn } from "~/game/state";
 import {
   CurrentPlayerContext,
   GameContext,
   SelfPlayerContext
 } from "~/hooks/game";
-
-const ReactionWrapper = posed.div({
-  enter: { y: 0, transition: { ease: "easeOut", duration: 3500 } },
-  exit: { y: 1000, transition: { ease: "easeOut", duration: 3500 } }
-});
+import useNetwork from "~/hooks/network";
 
 export default function Play() {
-  const db = useDatabase();
+  const network = useNetwork();
   const router = useRouter();
   const [lastTurn, setLastTurn] = useState<ITurn>(null);
   const [game, setGame] = useState<IGameState>(null);
@@ -56,21 +49,18 @@ export default function Play() {
   useEffect(() => {
     if (!gameId) return;
 
-    const ref = db.ref(`/games/${gameId}`);
-
-    ref.on("value", event => {
-      const snapshot = event.val();
-      if (!snapshot) {
-        router.push("/404");
+    return network.subscribeToGame(gameId as string, game => {
+      if (!game) {
+        return router.push("/404");
       }
-      setGame(fillEmptyValues(snapshot));
-    });
 
-    return () => ref.off();
+      setGame(game);
+    });
   }, [gameId]);
 
   /**
-   * Display turn on turn played. Also resets the selected area
+   * Display turn on turn played.
+   * Also resets the selected area.
    */
   useEffect(() => {
     if (!game) return;
@@ -81,24 +71,23 @@ export default function Play() {
   }, [game && game.turnsHistory.length]);
 
   /**
-   * Handle notification sounds
+   * Handle notification sounds.
    */
   useEffect(() => {
     if (!selfPlayer) return;
     if (!selfPlayer.notified) return;
 
     new Audio(`/static/sounds/bell.mp3`).play();
-    const timeout = setTimeout(() => {
-      db.ref(`/games/${gameId}/players/${selfPlayer.index}/notified`).set(
-        false
-      );
-    }, 10000);
+    const timeout = setTimeout(
+      () => network.setNotification(game, selfPlayer, false),
+      10000
+    );
 
     return () => clearTimeout(timeout);
   }, [selfPlayer && selfPlayer.notified]);
 
   /**
-   * Play for bots
+   * Play for bots.
    */
   useEffect(() => {
     if (!game) return;
@@ -107,25 +96,20 @@ export default function Play() {
     if (!selfPlayer || selfPlayer.index) return;
     if (!currentPlayer.bot) return;
 
-    db.ref(`/games/${gameId}/players/${currentPlayer.index}/reaction`).set(
-      "🧠"
-    );
+    network.setReaction(game, currentPlayer, "🧠");
+
     const timeout = setTimeout(() => {
-      db.ref(`/games/${gameId}`).set(play(game));
-      db.ref(`/games/${gameId}/players/${currentPlayer.index}/reaction`).set(
-        null
-      );
+      network.updateGame(play(game));
+      network.setReaction(game, currentPlayer, null);
     }, game.options.botsWait);
 
     return () => clearTimeout(timeout);
   }, [game && game.currentPlayer, game && game.status]);
 
-  async function onJoinGame(player) {
+  function onJoinGame(player) {
     const playerId = shortid();
 
-    await db
-      .ref(`/games/${gameId}`)
-      .set(joinGame(game, { id: playerId, ...player }));
+    network.updateGame(joinGame(game, { id: playerId, ...player }));
 
     router.replace({
       pathname: "/play",
@@ -136,7 +120,7 @@ export default function Play() {
     localStorage.setItem("playerId", playerId.toString());
   }
 
-  async function onAddBot() {
+  function onAddBot() {
     const playerId = shortid();
     const botsCount = game.players.filter(p => p.bot).length;
 
@@ -145,13 +129,11 @@ export default function Play() {
       name: `AI #${botsCount + 1}`
     };
 
-    await db
-      .ref(`/games/${gameId}`)
-      .set(joinGame(game, { id: playerId, ...bot, bot: true }));
+    network.updateGame(joinGame(game, { id: playerId, ...bot, bot: true }));
   }
 
   async function onStartGame() {
-    await db.ref(`/games/${gameId}/status`).set("ongoing");
+    network.startGame(game);
   }
 
   async function onCommitAction(action) {
@@ -164,7 +146,7 @@ export default function Play() {
       }
     }
 
-    await db.ref(`/games/${gameId}`).set(newState);
+    network.updateGame(newState);
   }
 
   function onCloseArea() {
@@ -191,19 +173,15 @@ export default function Play() {
   }
 
   async function onRollback() {
-    await db.ref(`/games/${gameId}`).set(getLastState(game));
+    network.updateGame(getLastState(game));
   }
 
   async function onNotifyPlayer(player) {
-    await db.ref(`/games/${gameId}/players/${player.index}/notified`).set(true);
+    network.setNotification(game, player, true);
   }
 
   async function onReaction(reaction) {
-    await db
-      .ref(`/games/${gameId}/players/${selfPlayer.index}/reaction`)
-      .set(reaction);
-
-    await db.ref(`/games/${gameId}/reactions`).push(reaction);
+    network.setReaction(game, selfPlayer, reaction);
   }
 
   /*
@@ -277,24 +255,6 @@ export default function Play() {
                     <span className="ml4">&times;</span>
                   </div>
                 )}
-              </div>
-
-              {/* Reactions */}
-              <div
-                className="absolute z-999 right-1 h-100 w1 justify-center items-center pointer"
-                style={{ pointerEvents: "none", top: "-200px" }}
-              >
-                <PoseGroup>
-                  {Object.values(game.reactions).map((reaction, i) => (
-                    <ReactionWrapper key={i}>
-                      <Txt
-                        className="absolute right-1"
-                        size={TxtSize.LARGE}
-                        value={reaction}
-                      />
-                    </ReactionWrapper>
-                  ))}
-                </PoseGroup>
               </div>
 
               {/* Left area */}
