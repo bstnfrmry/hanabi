@@ -1,10 +1,9 @@
 import React from "react";
 
-import { useGame, useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
-
 import PlayerName from "~/components/playerName";
 import Turn, { TurnSize } from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
+import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
   onSelectDiscard: Function;

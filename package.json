@@ -32,6 +32,7 @@
   "devDependencies": {
     "@types/node": "^12.6.9",
     "@types/react": "^16.8.24",
+    "@types/shuffle-seed": "^1.1.0",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "babel-plugin-root-import": "^6.4.1",
@@ -39,6 +40,7 @@
     "eslint-config-prettier": "^6.1.0",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-simple-import-sort": "^4.0.0",
     "firebase-server": "^1.0.2",
     "husky": "^3.0.4",
     "lint-staged": "^9.2.5",

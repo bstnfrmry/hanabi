@@ -1,12 +1,11 @@
+import { groupBy, last } from "lodash";
 import React from "react";
-import { last, groupBy } from "lodash";
 
-import { ICard } from "~/game/state";
-import { getColors } from "~/game/actions";
-import { useGame } from "~/hooks/game";
-
-import Card, { CardWrapper, ICardContext, CardSize } from "~/components/card";
+import Card, { CardSize, CardWrapper, ICardContext } from "~/components/card";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
+import { getColors } from "~/game/actions";
+import { ICard } from "~/game/state";
+import { useGame } from "~/hooks/game";
 
 interface Props {
   cards: ICard[];

@@ -1,19 +1,19 @@
-import { cloneDeep, findIndex, flatMap, range, last, zipObject } from "lodash";
 import assert from "assert";
+import { cloneDeep, findIndex, flatMap, last, range, zipObject } from "lodash";
 import { shuffle } from "shuffle-seed";
 
 import IGameState, {
   IAction,
-  IHand,
   ICard,
   ICardHint,
-  IHintAction,
-  IGameOptions,
   IColor,
-  IPlayer,
+  IGameOptions,
   IGameStatus,
-  INumber
-} from "./state";
+  IHand,
+  IHintAction,
+  INumber,
+  IPlayer
+} from "~/game/state";
 
 export const colors: IColor[] = [
   IColor.WHITE,

@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import "firebase/database";
 
 import firebase from "firebase/app";
-import "firebase/database";
+import React, { useContext } from "react";
 
 export const DatabaseContext = React.createContext(null);
 

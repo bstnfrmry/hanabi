@@ -1,5 +1,5 @@
-import React from "react";
 import { range } from "lodash";
+import React from "react";
 import posed, { PoseGroup } from "react-pose";
 
 import Tutorial, { ITutorialStep } from "~/components/tutorial";

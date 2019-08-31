@@ -1,10 +1,9 @@
 import React from "react";
 
-import { IHintAction } from "~/game/state";
-import { numbers, getColors } from "~/game/actions";
-import { useGame } from "~/hooks/game";
-
 import Vignette from "~/components/vignette";
+import { getColors, numbers } from "~/game/actions";
+import { IHintAction } from "~/game/state";
+import { useGame } from "~/hooks/game";
 
 interface Props {
   onSelect: Function;

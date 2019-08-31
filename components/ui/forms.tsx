@@ -1,10 +1,12 @@
+import classnames from "classnames";
 import React, {
   InputHTMLAttributes,
-  SelectHTMLAttributes,
+  LabelHTMLAttributes,
   ReactNode,
-  LabelHTMLAttributes
+  SelectHTMLAttributes
 } from "react";
-import classnames from "classnames";
+
+import Txt, { TxtSize } from "~/components/ui/txt";
 
 interface FieldProps extends LabelHTMLAttributes<HTMLLabelElement> {
   label: string;
@@ -21,7 +23,7 @@ export function Field(props: FieldProps) {
         className
       )}
     >
-      {label}
+      <Txt size={TxtSize.MEDIUM} content={label} />
       {children}
     </label>
   );

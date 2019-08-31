@@ -1,14 +1,14 @@
-import React from "react";
-import App, { Container } from "next/app";
-import Head from "next/head";
-
-import { setupDatabase, DatabaseContext } from "~/hooks/database";
-
 import "../styles/tachyons.css";
 import "../styles/style.css";
 import "../styles/fonts.css";
 import "../styles/animations.css";
 import "../styles/patterns.css";
+
+import App, { Container } from "next/app";
+import Head from "next/head";
+import React from "react";
+
+import { DatabaseContext, setupDatabase } from "~/hooks/database";
 
 export default class Hanabi extends App {
   database: firebase.database.Database;

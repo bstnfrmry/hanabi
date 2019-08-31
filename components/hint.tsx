@@ -1,7 +1,7 @@
-import React from "react";
 import classnames from "classnames";
+import React from "react";
 
-import { IHintType, INumber, IColor, IHintLevel } from "~/game/state";
+import { IColor, IHintLevel, IHintType, INumber } from "~/game/state";
 
 interface Props {
   type: IHintType;

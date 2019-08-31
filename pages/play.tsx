@@ -1,35 +1,34 @@
-import React, { useState, useEffect } from "react";
-import posed, { PoseGroup } from "react-pose";
 import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import posed, { PoseGroup } from "react-pose";
 import shortid from "shortid";
 
-import IGameState, { fillEmptyValues, ITurn, IPlayer } from "~/game/state";
-import {
-  joinGame,
-  commitAction,
-  getLastState,
-  getMaximumPossibleScore
-} from "~/game/actions";
-import { useDatabase } from "~/hooks/database";
-import {
-  GameContext,
-  SelfPlayerContext,
-  CurrentPlayerContext
-} from "~/hooks/game";
-
-import PlayersBoard from "~/components/playersBoard";
-import GameBoard from "~/components/gameBoard";
-import Lobby, { BotEmojis } from "~/components/lobby";
 import ActionArea, {
   ActionAreaType,
   ISelectedArea
 } from "~/components/actionArea";
+import GameBoard from "~/components/gameBoard";
 import LoadingScreen from "~/components/loadingScreen";
-import Box from "~/components/ui/box";
+import Lobby, { BotEmojis } from "~/components/lobby";
+import MenuArea from "~/components/menuArea";
+import PlayersBoard from "~/components/playersBoard";
 import Turn, { TurnSize } from "~/components/turn";
 import { TutorialProvider } from "~/components/tutorial";
-import MenuArea from "~/components/menuArea";
+import Box from "~/components/ui/box";
+import {
+  commitAction,
+  getLastState,
+  getMaximumPossibleScore,
+  joinGame
+} from "~/game/actions";
 import play from "~/game/ai";
+import IGameState, { fillEmptyValues, IPlayer, ITurn } from "~/game/state";
+import { useDatabase } from "~/hooks/database";
+import {
+  CurrentPlayerContext,
+  GameContext,
+  SelfPlayerContext
+} from "~/hooks/game";
 
 const ReactionWrapper = posed.div({
   enter: { y: 0, transition: { ease: "easeOut", duration: 3500 } },

@@ -1,7 +1,7 @@
-import React from "react";
 import { useRouter } from "next/router";
+import React from "react";
 
-import Button, { IButtonSize } from "./ui/button";
+import Button, { ButtonSize } from "~/components/ui/button";
 
 interface Props {
   className?: string;
@@ -23,7 +23,7 @@ export default function HomeButton(props: Props) {
 
   return (
     <Button
-      size={IButtonSize.TINY}
+      size={ButtonSize.TINY}
       onClick={onMenuClick}
       className={className}
       text="☰"

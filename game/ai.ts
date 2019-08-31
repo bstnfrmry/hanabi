@@ -1,13 +1,13 @@
 import { cloneDeep } from "lodash";
 
+import { colors, commitAction, isPlayable, numbers } from "~/game/actions";
 import IGameState, {
+  IAction,
+  ICard,
   ICardHint,
   INumber,
-  ICard,
-  IAction,
   IPlayer
-} from "./state";
-import { colors, numbers, commitAction, isPlayable } from "./actions";
+} from "~/game/state";
 
 export enum IDeductionStatus {
   PLAYABLE = 0, // the card value is such that it can be played right now

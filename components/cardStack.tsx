@@ -1,10 +1,9 @@
-import React from "react";
-import { sortBy } from "lodash";
 import classnames from "classnames";
+import { sortBy } from "lodash";
+import React from "react";
 
+import Card, { CardSize, CardWrapper, ICardContext } from "~/components/card";
 import { ICard, IColor } from "~/game/state";
-
-import Card, { CardWrapper, ICardContext, CardSize } from "~/components/card";
 
 interface Props {
   cards: ICard[];

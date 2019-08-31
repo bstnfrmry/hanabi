@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { useRouter } from "next/router";
-import shortid from "shortid";
 import { keyBy } from "lodash";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import shortid from "shortid";
 
-import { IGameHintsLevel } from "~/game/state";
-import { newGame } from "~/game/actions";
-import { useDatabase } from "~/hooks/database";
-
-import Button, { IButtonSize } from "~/components/ui/button";
-import { Checkbox, TextInput, Select, Field } from "~/components/ui/forms";
-import Box from "~/components/ui/box";
 import HomeButton from "~/components/homeButton";
+import Box from "~/components/ui/box";
+import Button, { ButtonSize } from "~/components/ui/button";
+import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
+import Txt from "~/components/ui/txt";
+import { newGame } from "~/game/actions";
+import { IGameHintsLevel } from "~/game/state";
+import { useDatabase } from "~/hooks/database";
 
 const PlayerCounts = [2, 3, 4, 5];
 
@@ -58,7 +58,7 @@ export default function NewGame() {
     <Box className="w-100 h-100 overflow-y-scroll pv4 flex justify-center items-start pv6-l relative bg-main-dark">
       <HomeButton className="absolute top-1 right-1" />
 
-      <div className="flex flex-column justify-center w-50 f4">
+      <div className="flex flex-column justify-center w-50">
         <Field label="Players" className="pb2 mb2 bb b--yellow-light">
           <Select
             className="w3 indent"
@@ -86,7 +86,7 @@ export default function NewGame() {
           className="mv4 self-end underline pointer silver"
           onClick={() => setShowAdvanced(!showAdvanced)}
         >
-          Advanced options
+          <Txt content="Advanced options" />
         </a>
 
         {showAdvanced && (
@@ -135,7 +135,7 @@ export default function NewGame() {
         )}
 
         <Button
-          size={IButtonSize.LARGE}
+          size={ButtonSize.LARGE}
           onClick={onCreateGame}
           className="self-end mt3"
           text="New game"

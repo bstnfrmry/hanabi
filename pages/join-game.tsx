@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
+import HomeButton from "~/components/homeButton";
+import LoadingScreen from "~/components/loadingScreen";
+import Box from "~/components/ui/box";
+import Button, { ButtonSize } from "~/components/ui/button";
 import IGameState, { fillEmptyValues } from "~/game/state";
 import { useDatabase } from "~/hooks/database";
-
-import Button, { IButtonSize } from "~/components/ui/button";
-import Box from "~/components/ui/box";
-import LoadingScreen from "~/components/loadingScreen";
-import HomeButton from "~/components/homeButton";
 
 export default function JoinGame() {
   const router = useRouter();
@@ -48,7 +47,7 @@ export default function JoinGame() {
           <>
             <h1 className="ttu">No available room</h1>
             <Button
-              size={IButtonSize.LARGE}
+              size={ButtonSize.LARGE}
               className="ma2"
               onClick={() => router.push("/new-game")}
               text="Create a room"

@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
 import { useRouter } from "next/router";
+import React, { useContext, useState } from "react";
 
-import Button, { IButtonSize } from "~/components/ui/button";
-import { TutorialContext } from "~/components/tutorial";
 import Card, { CardSize, ICardContext } from "~/components/card";
-import { IColor } from "~/game/state";
+import { TutorialContext } from "~/components/tutorial";
+import Button, { ButtonSize } from "~/components/ui/button";
 import Vignette from "~/components/vignette";
+import { IColor } from "~/game/state";
 import { useGame } from "~/hooks/game";
 
 interface Props {
@@ -35,20 +35,20 @@ export default function MenuArea(props: Props) {
         <div className="flex flex-column w-50 h-50">
           {game.status === "ongoing" && (
             <Button
-              size={IButtonSize.SMALL}
+              size={ButtonSize.SMALL}
               onClick={onTutorialClick}
               className="mb4"
               text="Watch tutorial again"
             />
           )}
           <Button
-            size={IButtonSize.TINY}
+            size={ButtonSize.TINY}
             onClick={() => setShowRules(true)}
             className="mb4"
             text="Show rules"
           />
           <Button
-            size={IButtonSize.TINY}
+            size={ButtonSize.TINY}
             onClick={onMenuClick}
             text="Back to menu"
           />
@@ -59,7 +59,7 @@ export default function MenuArea(props: Props) {
         <div className="w-100 h-100 w-75-l ph4 relative tj lh-copy">
           <Button
             className="absolute left-2 top-1"
-            size={IButtonSize.TINY}
+            size={ButtonSize.TINY}
             onClick={() => setShowRules(false)}
             text="<"
           />

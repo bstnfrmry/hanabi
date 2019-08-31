@@ -1,19 +1,18 @@
 import React from "react";
 
-import { useGame } from "../hooks/game";
-import {
-  getScore,
-  getMaximumScore,
-  getMaximumPossibleScore
-} from "../game/actions";
-
-import Button, { IButtonSize } from "./ui/button";
-import Box from "~/components/ui/box";
+import { CardWrapper } from "~/components/card";
 import HomeButton from "~/components/homeButton";
 import PlayedCards from "~/components/playedCards";
 import TokenSpace from "~/components/tokenSpace";
-import { CardWrapper } from "~/components/card";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
+import Box from "~/components/ui/box";
+import Button, { ButtonSize } from "~/components/ui/button";
+import {
+  getMaximumPossibleScore,
+  getMaximumScore,
+  getScore
+} from "~/game/actions";
+import { useGame } from "~/hooks/game";
 
 interface Props {
   onSelectDiscard: Function;
@@ -109,7 +108,7 @@ export default function GameBoard(props: Props) {
             <HomeButton className="mb1" onClick={onMenuClick} />
             {game.options.allowRollback && (
               <Button
-                size={IButtonSize.TINY}
+                size={ButtonSize.TINY}
                 disabled={!game.history.length}
                 onClick={() => onRollback()}
                 text="⟲"

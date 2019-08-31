@@ -1,5 +1,5 @@
-import React from "react";
 import Router from "next/router";
+import React from "react";
 
 import Box from "~/components/ui/box";
 import Button from "~/components/ui/button";

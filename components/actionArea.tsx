@@ -1,13 +1,13 @@
 import React from "react";
 
-import { IPlayer } from "~/game/state";
-import { isGameOver } from "~/game/actions";
-import { useGame } from "~/hooks/game";
-
-import InstructionsArea from "~/components/instructionsArea";
 import DiscardArea from "~/components/discardArea";
+import GameOverArea from "~/components/gameOverArea";
+import InstructionsArea from "~/components/instructionsArea";
 import OtherPlayerArea from "~/components/otherPlayerArea";
 import SelfPlayerArea from "~/components/selfPlayerArea";
+import { isGameOver } from "~/game/actions";
+import { IPlayer } from "~/game/state";
+import { useGame } from "~/hooks/game";
 
 interface IInstructionsSelectedArea {
   id: string;
@@ -73,11 +73,7 @@ export default function ActionArea(props: Props) {
   const game = useGame();
 
   if (isGameOver(game)) {
-    return (
-      <div className="pa1 bg-grey pt4 flex-grow-1 f7 f4-l ttu">
-        <p>The game is over! Your score is {game.playedCards.length} 🎉</p>
-      </div>
-    );
+    return <GameOverArea />;
   }
 
   if (selectedArea.type === ActionAreaType.INSTRUCTIONS) {

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
-import Button, { IButtonSize } from "~/components/ui/button";
 import Box from "~/components/ui/box";
+import Button, { ButtonSize } from "~/components/ui/button";
+import Txt, { TxtSize } from "~/components/ui/txt";
 
 export default function Home() {
   const router = useRouter();
@@ -21,24 +22,24 @@ export default function Home() {
     <Box className="w-100 h-100 flex flex-row justify-center items-center bg-main-dark">
       <div className="flex flex-column items-center">
         <img className="mw4 mb4" src="/static/hanabi.png" />
-        <h1 className="f2 ttu tracked outline-main-dark">Hanabi</h1>
+        <Txt size={TxtSize.LARGE} content="Hanabi" />
       </div>
       <div className="flex flex-column ml5">
         <Button
-          size={IButtonSize.LARGE}
+          size={ButtonSize.LARGE}
           className="mb4"
           onClick={() => router.push("/new-game")}
           text="Create a room"
         />
         <Button
-          size={IButtonSize.LARGE}
+          size={ButtonSize.LARGE}
           className="mb4"
           onClick={() => router.push("/join-game")}
           text="Join a room"
         />
         {lastGame && (
           <Button
-            size={IButtonSize.LARGE}
+            size={ButtonSize.LARGE}
             onClick={() =>
               router.replace({
                 pathname: "/play",

@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
-import IGameState, { IPlayer } from "../game/state";
+
+import IGameState, { IPlayer } from "~/game/state";
 
 export const GameContext = React.createContext(null);
 export const SelfPlayerContext = React.createContext(null);

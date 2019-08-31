@@ -1,11 +1,10 @@
-import React, { CSSProperties, ReactNode, MouseEventHandler } from "react";
 import classnames from "classnames";
-
-import { ICard, IGameHintsLevel } from "~/game/state";
-import { numbers, getColors } from "~/game/actions";
-import { useGame } from "~/hooks/game";
+import React, { CSSProperties, MouseEventHandler, ReactNode } from "react";
 
 import Hint from "~/components/hint";
+import { getColors, numbers } from "~/game/actions";
+import { ICard, IGameHintsLevel } from "~/game/state";
+import { useGame } from "~/hooks/game";
 
 export enum CardSize {
   SMALL = "small",
@@ -13,7 +12,6 @@ export enum CardSize {
   LARGE = "large"
 }
 
-// Cards possible sizes
 const SizeMap = {
   [CardSize.SMALL]: "h1.5 w1.5 h2-l w2-l f5 f3-l",
   [CardSize.MEDIUM]: "h2 w2 h4-l w4-l f4 f2-l",

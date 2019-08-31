@@ -1,9 +1,8 @@
-import React, { ReactNode, useState, useEffect, useContext } from "react";
-
+import React, { ReactNode, useContext, useEffect, useState } from "react";
 import Popover, { PopoverPlace } from "react-popover";
-
-import Button, { IButtonSize } from "~/components/ui/button";
 import posed from "react-pose";
+
+import Button, { ButtonSize } from "~/components/ui/button";
 
 export const TutorialContext = React.createContext(null);
 
@@ -162,13 +161,13 @@ export default function Tutorial(props: Props) {
                 <>
                   <Button
                     onClick={skip}
-                    size={IButtonSize.TINY}
+                    size={ButtonSize.TINY}
                     className="mr1 mr2-l"
                     text="Skip"
                   />
                   <Button
                     onClick={nextStep}
-                    size={IButtonSize.TINY}
+                    size={ButtonSize.TINY}
                     text="Go !"
                   />
                 </>
@@ -179,14 +178,14 @@ export default function Tutorial(props: Props) {
                   {step > 1 && (
                     <Button
                       onClick={previousStep}
-                      size={IButtonSize.TINY}
+                      size={ButtonSize.TINY}
                       className="mr1 mr2-l"
                       text="<"
                     />
                   )}
                   <Button
                     onClick={nextStep}
-                    size={IButtonSize.TINY}
+                    size={ButtonSize.TINY}
                     text={lastStep ? "✓" : ">"}
                   />
                 </>

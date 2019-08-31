@@ -1,22 +1,31 @@
-import React, { ReactNode, MouseEventHandler } from "react";
 import classnames from "classnames";
+import React, { MouseEventHandler, ReactNode } from "react";
 
-export enum IButtonSize {
+import Txt, { TxtSize } from "~/components/ui/txt";
+
+export enum ButtonSize {
   TINY,
   SMALL,
   MEDIUM,
   LARGE
 }
 
-const ButtonSizes = {
-  [IButtonSize.TINY]: "pa1 bw1 pa2-l f6 f4-l",
-  [IButtonSize.SMALL]: "pv1 ph2 bw1 f6 f4-l",
-  [IButtonSize.MEDIUM]: "h2.5 pv2 ph3 bw2 f6 f4-l",
-  [IButtonSize.LARGE]: "pv3 ph4 bw2 f3 f3-l"
+const ButtonClasses = {
+  [ButtonSize.TINY]: "pa1 bw1 pa2-l",
+  [ButtonSize.SMALL]: "pv1 ph2 bw1",
+  [ButtonSize.MEDIUM]: "h2.5 pv2 ph3 bw2",
+  [ButtonSize.LARGE]: "pv3 ph4 bw2"
+};
+
+const ButtonTextSizes = {
+  [ButtonSize.TINY]: TxtSize.SMALL,
+  [ButtonSize.SMALL]: TxtSize.SMALL,
+  [ButtonSize.MEDIUM]: TxtSize.MEDIUM,
+  [ButtonSize.LARGE]: TxtSize.MEDIUM
 };
 
 interface Props {
-  size?: IButtonSize;
+  size?: ButtonSize;
   onClick?: MouseEventHandler;
   className?: string;
   disabled?: boolean;
@@ -26,7 +35,7 @@ interface Props {
 
 export default function Button(props: Props) {
   const {
-    size = IButtonSize.MEDIUM,
+    size = ButtonSize.MEDIUM,
     onClick,
     className,
     text,
@@ -39,7 +48,7 @@ export default function Button(props: Props) {
       disabled={disabled}
       className={classnames(
         className,
-        ButtonSizes[size],
+        ButtonClasses[size],
         "ba br2 fw2 shadow-2 ttu tracked outline-0",
         {
           "bg-white hover-bg-white pointer main-dark b--yellow grow": !disabled
@@ -48,7 +57,8 @@ export default function Button(props: Props) {
       )}
       onClick={onClick}
     >
-      {text || children}
+      {text && <Txt size={ButtonTextSizes[size]} content={text} />}
+      {!text && children}
     </button>
   );
 }

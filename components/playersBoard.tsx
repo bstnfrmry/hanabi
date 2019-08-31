@@ -1,10 +1,9 @@
-import React from "react";
 import { range } from "lodash";
-
-import { useGame, useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
+import React from "react";
 
 import PlayerGame from "~/components/playerGame";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
+import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
   onSelectPlayer: Function;

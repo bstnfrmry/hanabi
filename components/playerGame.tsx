@@ -1,13 +1,12 @@
+import classnames from "classnames";
 import React, { useState } from "react";
 import Popover from "react-popover";
-import classnames from "classnames";
 
-import { IPlayer } from "~/game/state";
-
+import Card, { CardSize, ICardContext } from "~/components/card";
 import PlayerName from "~/components/playerName";
-import Card, { ICardContext, CardSize } from "~/components/card";
-import Box from "~/components/ui/box";
 import ReactionsPopover from "~/components/reactionsPopover";
+import Box from "~/components/ui/box";
+import { IPlayer } from "~/game/state";
 
 interface Props {
   player: IPlayer;

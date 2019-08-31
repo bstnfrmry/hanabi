@@ -1,8 +1,8 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import posed from "react-pose";
 
 import Box from "~/components/ui/box";
-import { useState, useEffect } from "react";
 
 const Animation = posed.div({
   attention: {

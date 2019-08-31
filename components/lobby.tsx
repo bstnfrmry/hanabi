@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import { keyBy } from "lodash";
 import { useRouter } from "next/router";
 import generateName from "project-name-generator";
-import { keyBy } from "lodash";
+import React, { useState } from "react";
 
-import { useGame, useSelfPlayer } from "../hooks/game";
-
-import Button, { IButtonSize } from "~/components/ui/button";
 import PlayerName from "~/components/playerName";
-import { TextInput, Select } from "~/components/ui/forms";
+import Button, { ButtonSize } from "~/components/ui/button";
+import { Select, TextInput } from "~/components/ui/forms";
+import { useGame, useSelfPlayer } from "~/hooks/game";
 
 export const Emojis = ["🐶", "🦊", "🐸", "🦋", "🐯", "🐱"];
 
@@ -126,7 +125,7 @@ export default function Lobby(props: Props) {
             value={shareLink}
             readOnly
           />
-          <Button size={IButtonSize.SMALL} onClick={copy} text="Copy" />
+          <Button size={ButtonSize.SMALL} onClick={copy} text="Copy" />
         </div>
       </div>
     </div>

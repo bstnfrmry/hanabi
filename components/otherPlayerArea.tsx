@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 
-import { IPlayer, IHintAction, ICard } from "~/game/state";
-import { useGame, useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
-
+import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import PlayerName from "~/components/playerName";
-import Card, { ICardContext, PositionMap, CardSize } from "~/components/card";
-import Vignettes from "~/components/vignettes";
 import Button from "~/components/ui/button";
+import Vignettes from "~/components/vignettes";
+import { ICard, IHintAction, IPlayer } from "~/game/state";
+import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 function isCardHintable(hint: IHintAction, card: ICard) {
   return hint.type === "color"

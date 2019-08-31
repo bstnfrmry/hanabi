@@ -1,10 +1,9 @@
 import React from "react";
 import { useState } from "react";
 
-import { useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
-
+import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Button from "~/components/ui/button";
-import Card, { ICardContext, PositionMap, CardSize } from "~/components/card";
+import { useCurrentPlayer, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
   cardIndex?: number;

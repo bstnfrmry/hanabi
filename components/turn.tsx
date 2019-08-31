@@ -1,11 +1,10 @@
 import React from "react";
 
+import Card, { CardSize, ICardContext } from "~/components/card";
+import Hint from "~/components/hint";
+import PlayerName from "~/components/playerName";
 import { ITurn } from "~/game/state";
 import { useGame } from "~/hooks/game";
-
-import PlayerName from "~/components/playerName";
-import Card, { ICardContext, CardSize } from "~/components/card";
-import Hint from "~/components/hint";
 
 export enum TurnSize {
   SMALL,
