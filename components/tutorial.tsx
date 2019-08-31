@@ -127,10 +127,12 @@ export default function Tutorial(props: Props) {
   } = useContext(TutorialContext);
 
   useEffect(() => {
-    if (step === currentStep) {
-      setTimeout(() => setPose("attention"), 100);
-    }
-  });
+    if (step !== currentStep) return;
+
+    const interval = setTimeout(() => setPose("attention"), 100);
+
+    return () => clearInterval(interval);
+  }, [currentStep]);
 
   if (step !== currentStep) {
     return children ? <>{children}</> : null;

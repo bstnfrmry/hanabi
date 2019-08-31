@@ -16,6 +16,8 @@ export default function JoinGame() {
   const [games, setGames] = useState<IGameState[]>([]);
 
   useEffect(() => {
+    const gamesRef = db.ref(`/games`);
+
     db.ref(`/games`).on("value", event => {
       const games = Object.values(event.val() || {})
         .map(fillEmptyValues)
@@ -32,6 +34,8 @@ export default function JoinGame() {
 
       setLoading(false);
       setGames(games);
+
+      return () => gamesRef.off();
     });
   }, []);
 

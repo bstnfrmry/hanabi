@@ -19,7 +19,9 @@ export default function LoadingScreen() {
   const [pose, setPose] = useState(null);
 
   useEffect(() => {
-    setTimeout(() => setPose("attention"), 100);
+    const interval = setTimeout(() => setPose("attention"), 100);
+
+    return () => clearInterval(interval);
   });
 
   return (

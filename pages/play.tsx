@@ -1,3 +1,4 @@
+import { last } from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import posed, { PoseGroup } from "react-pose";
@@ -47,93 +48,76 @@ export default function Play() {
   });
   const { gameId, playerId } = router.query;
   const selfPlayer = game && game.players.find(p => p.id === playerId);
+  const currentPlayer = game && game.players[game.currentPlayer];
 
   /**
    * Load game from database
    */
   useEffect(() => {
-    db.ref(`/games/${gameId}`).on("value", event => {
+    if (!gameId) return;
+
+    const ref = db.ref(`/games/${gameId}`);
+
+    ref.on("value", event => {
       const snapshot = event.val();
       if (!snapshot) {
         router.push("/404");
       }
       setGame(fillEmptyValues(snapshot));
     });
-  }, [gameId, playerId]);
+
+    return () => ref.off();
+  }, [gameId]);
 
   /**
    * Display turn on turn played. Also resets the selected area
    */
   useEffect(() => {
-    let timeout;
-    db.ref(`/games/${gameId}/turnsHistory`).on("child_added", event => {
-      setLastTurn(event.val());
-      selectArea({ id: "instructions", type: ActionAreaType.INSTRUCTIONS });
+    if (!game) return;
 
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-      timeout = setTimeout(() => setLastTurn(null), 80000);
-    });
-  }, [gameId]);
+    setLastTurn(last(game.turnsHistory));
+    selectArea({ id: "instructions", type: ActionAreaType.INSTRUCTIONS });
+    setTimeout(() => setLastTurn(null), 80000);
+  }, [game && game.turnsHistory.length]);
 
   /**
    * Handle notification sounds
    */
   useEffect(() => {
-    if (!selfPlayer) {
-      return;
-    }
+    if (!selfPlayer) return;
+    if (!selfPlayer.notified) return;
 
-    const ref = db.ref(`/games/${gameId}/players/${selfPlayer.index}/notified`);
-    ref.on("value", event => {
-      const notified = event.val();
-      if (notified) {
-        if (notified !== selfPlayer.notified) {
-          new Audio(`/static/sounds/bell.mp3`).play();
-        }
+    new Audio(`/static/sounds/bell.mp3`).play();
+    const timeout = setTimeout(() => {
+      db.ref(`/games/${gameId}/players/${selfPlayer.index}/notified`).set(
+        false
+      );
+    }, 10000);
 
-        setTimeout(() => {
-          ref.set(false);
-        }, 10000);
-      }
-    });
-  }, [gameId, playerId]);
+    return () => clearTimeout(timeout);
+  }, [selfPlayer && selfPlayer.notified]);
 
   /**
    * Play for bots
    */
   useEffect(() => {
-    const ref = db.ref(`/games/${gameId}/currentPlayer`);
+    if (!game) return;
+    if (game.status !== "ongoing") return;
+    if (isGameOver(game)) return;
+    if (!selfPlayer || selfPlayer.index) return;
+    if (!currentPlayer.bot) return;
 
-    ref.once("value", event => {
-      if (
-        !game ||
-        isGameOver(game) ||
-        game.status !== "ongoing" ||
-        !selfPlayer ||
-        selfPlayer.index
-      ) {
-        return;
-      }
-
-      const currentPlayer = game.players[event.val()];
-      if (!currentPlayer || !currentPlayer.bot) {
-        return;
-      }
-
+    db.ref(`/games/${gameId}/players/${currentPlayer.index}/reaction`).set(
+      "🧠"
+    );
+    const timeout = setTimeout(() => {
+      db.ref(`/games/${gameId}`).set(play(game));
       db.ref(`/games/${gameId}/players/${currentPlayer.index}/reaction`).set(
-        "🧠"
+        null
       );
-      setTimeout(() => {
-        db.ref(`/games/${gameId}`).set(play(game));
-        db.ref(`/games/${gameId}/players/${currentPlayer.index}/reaction`).set(
-          null
-        );
-      }, game.options.botsWait);
-    });
+    }, game.options.botsWait);
 
-    return ref.off();
+    return () => clearTimeout(timeout);
   }, [game && game.currentPlayer, game && game.status]);
 
   async function onJoinGame(player) {
@@ -270,9 +254,7 @@ export default function Play() {
     <TutorialProvider>
       <GameContext.Provider value={game}>
         <SelfPlayerContext.Provider value={selfPlayer}>
-          <CurrentPlayerContext.Provider
-            value={game.players[game.currentPlayer]}
-          >
+          <CurrentPlayerContext.Provider value={currentPlayer}>
             <div className="bg-main-dark relative flex flex-row w-100 h-100">
               {/* Toast */}
               <div
