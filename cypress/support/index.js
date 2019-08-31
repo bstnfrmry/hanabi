@@ -58,6 +58,8 @@ Cypress.Commands.add("skipTutorial", () => {
 
 Cypress.Commands.add("waitForTurn", () => {
   cy.get("#your-turn", { timeout: 10000 });
+
+  return cy;
 });
 
 Cypress.Commands.add("giveHint", (playerPosition, hintType, hintValue) => {

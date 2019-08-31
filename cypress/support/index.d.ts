@@ -2,7 +2,7 @@
 
 declare namespace Cypress {
   interface Chainable<Subject> {
-    waitForTurn(): void;
+    waitForTurn(): Chainable<Subject>;
 
     createGame(options: object): void;
 
