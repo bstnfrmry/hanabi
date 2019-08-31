@@ -11,7 +11,7 @@ import { useGame, useSelfPlayer } from "~/hooks/game";
 
 export const Emojis = ["🐶", "🦊", "🐸", "🦋", "🐯", "🐱"];
 
-export const BotEmojis = ["🤖", "👽", "👾", "🤡"];
+export const BotEmojis = ["🤖", "👽", "👾", "🤡", "🐲"];
 
 interface Props {
   onJoinGame: Function;

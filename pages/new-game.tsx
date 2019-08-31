@@ -19,7 +19,7 @@ const HintsLevels = {
 };
 
 const BotsSpeeds = {
-  100: "Faster",
+  0: "Faster",
   1000: "Fast",
   3000: "Slow"
 };

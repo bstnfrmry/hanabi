@@ -34,15 +34,15 @@ export default function GameBoard(props: Props) {
     <div className="pa2 pv4-l ph3-l shadow-5 br3 mb1 ba b--yellow-light">
       <div className="flex justify-between flex-column-l items-end items-start-l">
         <div className="flex flex-column mb5-l">
-          <div>
+          <div className="flex items-center h2 nt2">
             <Txt uppercase value={`Score: ${score} / ${maxPossibleScore}`} />
 
             {maxScore !== maxPossibleScore && (
               <Txt uppercase className="strike ml1 gray" value={maxScore} />
             )}
 
-            {game.drawPile.length < 5 && (
-              <div className="ml2 inline-flex">
+            {game.drawPile.length > 0 && game.drawPile.length < 5 && (
+              <div className="ml2 flex items-center">
                 ·
                 <Txt
                   uppercase
@@ -52,16 +52,17 @@ export default function GameBoard(props: Props) {
               </div>
             )}
 
-            {game.actionsLeft <= game.options.playersCount && (
-              <div className="ml2 inline-flex">
-                ·
-                <Txt
-                  uppercase
-                  className="red ml2"
-                  value={`${game.actionsLeft} turns left`}
-                />
-              </div>
-            )}
+            {game.actionsLeft > 0 &&
+              game.actionsLeft <= game.options.playersCount && (
+                <div className="ml2 flex items-center">
+                  ·
+                  <Txt
+                    uppercase
+                    className="red ml2"
+                    value={`${game.actionsLeft} turns left`}
+                  />
+                </div>
+              )}
           </div>
           <div className="flex flex-column mt1">
             <PlayedCards cards={game.playedCards} />
@@ -110,7 +111,10 @@ export default function GameBoard(props: Props) {
                 ))}
                 <div
                   className={`absolute w-100 o-50 rotate-135 bg-white b--white`}
-                  style={{ height: "2px" }}
+                  style={{
+                    height: "2px",
+                    bottom: `${game.discardPile.length}px`
+                  }}
                 />
               </CardWrapper>
             </Tutorial>

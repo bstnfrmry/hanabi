@@ -19,6 +19,7 @@ import {
   commitAction,
   getLastState,
   getMaximumPossibleScore,
+  isGameOver,
   joinGame
 } from "~/game/actions";
 import play from "~/game/ai";
@@ -103,9 +104,12 @@ export default function Play() {
    * Play for bots
    */
   useEffect(() => {
-    db.ref(`/games/${gameId}/currentPlayer`).once("value", event => {
+    const ref = db.ref(`/games/${gameId}/currentPlayer`);
+
+    ref.once("value", event => {
       if (
         !game ||
+        isGameOver(game) ||
         game.status !== "ongoing" ||
         !selfPlayer ||
         selfPlayer.index
@@ -128,7 +132,9 @@ export default function Play() {
         );
       }, game.options.botsWait);
     });
-  }, [game, game ? game.currentPlayer : 0, selfPlayer]);
+
+    return ref.off();
+  }, [game && game.currentPlayer, game && game.status]);
 
   async function onJoinGame(player) {
     const playerId = shortid();
