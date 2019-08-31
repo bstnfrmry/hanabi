@@ -15,4 +15,6 @@ specify("Hanabi AI", () => {
   cy.startGame();
 
   cy.skipTutorial();
+
+  cy.expectGameOver();
 });

@@ -12,7 +12,6 @@ specify("Hanabi", () => {
   cy.addAI();
   cy.addAI();
   cy.addAI();
-  cy.addAI();
 
   cy.startGame();
 
@@ -63,4 +62,14 @@ specify("Hanabi", () => {
   cy.play("C");
 
   cy.waitForTurn();
+  cy.giveHint(1, "number", 2);
+
+  cy.waitForTurn();
+  cy.discard("D");
+
+  cy.waitForTurn();
+  cy.discard("D");
+
+  cy.expectGameOver();
+  cy.expectScore(20);
 });

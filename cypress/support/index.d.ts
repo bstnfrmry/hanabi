@@ -23,5 +23,9 @@ declare namespace Cypress {
     discard(cardPosition: "A" | "B" | "C" | "D" | "E"): void;
 
     play(cardPosition: "A" | "B" | "C" | "D" | "E"): void;
+
+    expectGameOver(): void;
+
+    expectScore(score: number): void;
   }
 }

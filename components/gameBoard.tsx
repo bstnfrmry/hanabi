@@ -35,7 +35,11 @@ export default function GameBoard(props: Props) {
       <div className="flex justify-between flex-column-l items-end items-start-l">
         <div className="flex flex-column mb5-l">
           <div className="flex items-center h2 nt2">
-            <Txt uppercase value={`Score: ${score} / ${maxPossibleScore}`} />
+            <Txt
+              uppercase
+              id="score"
+              value={`Score: ${score} / ${maxPossibleScore}`}
+            />
 
             {maxScore !== maxPossibleScore && (
               <Txt uppercase className="strike ml1 gray" value={maxScore} />

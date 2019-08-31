@@ -75,3 +75,11 @@ Cypress.Commands.add("play", cardPosition => {
   cy.get(`#player-game-self [data-card="${cardPosition}"]`).click();
   cy.get("#play").click();
 });
+
+Cypress.Commands.add("expectGameOver", () => {
+  cy.contains("The game is over!", { timeout: 20000 }).should("be.visible");
+});
+
+Cypress.Commands.add("expectScore", score => {
+  cy.contains(`Score: ${score}`).should("be.visible");
+});
