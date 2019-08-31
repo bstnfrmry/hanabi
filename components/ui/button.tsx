@@ -19,8 +19,9 @@ interface Props {
   size?: IButtonSize;
   onClick?: MouseEventHandler;
   className?: string;
-  children: ReactNode;
   disabled?: boolean;
+  children?: ReactNode;
+  text?: string;
 }
 
 export default function Button(props: Props) {
@@ -28,6 +29,7 @@ export default function Button(props: Props) {
     size = IButtonSize.MEDIUM,
     onClick,
     className,
+    text,
     children,
     disabled
   } = props;
@@ -46,7 +48,7 @@ export default function Button(props: Props) {
       )}
       onClick={onClick}
     >
-      {children}
+      {text || children}
     </button>
   );
 }

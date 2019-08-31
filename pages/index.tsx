@@ -28,16 +28,14 @@ export default function Home() {
           size={IButtonSize.LARGE}
           className="mb4"
           onClick={() => router.push("/new-game")}
-        >
-          Create a room
-        </Button>
+          text="Create a room"
+        />
         <Button
           size={IButtonSize.LARGE}
           className="mb4"
           onClick={() => router.push("/join-game")}
-        >
-          Join a room
-        </Button>
+          text="Join a room"
+        />
         {lastGame && (
           <Button
             size={IButtonSize.LARGE}
@@ -47,9 +45,8 @@ export default function Home() {
                 query: lastGame
               })
             }
-          >
-            Rejoin game
-          </Button>
+            text="Rejoin game"
+          />
         )}
       </div>
     </Box>

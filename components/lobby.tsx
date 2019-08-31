@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import generateName from "project-name-generator";
+import { keyBy } from "lodash";
 
 import { useGame, useSelfPlayer } from "../hooks/game";
 
 import Button, { IButtonSize } from "~/components/ui/button";
 import PlayerName from "~/components/playerName";
+import { TextInput, Select } from "~/components/ui/forms";
 
 export const Emojis = ["🐶", "🦊", "🐸", "🦋", "🐯", "🐱"];
 
@@ -69,9 +71,11 @@ export default function Lobby(props: Props) {
               </div>
             </div>
             {selfPlayer && (
-              <Button disabled={!gameFull} onClick={() => onStartGame()}>
-                Start game
-              </Button>
+              <Button
+                disabled={!gameFull}
+                onClick={() => onStartGame()}
+                text="Start game"
+              />
             )}
           </div>
         )}
@@ -87,25 +91,19 @@ export default function Lobby(props: Props) {
               onJoinGame({ name, emoji });
             }}
           >
-            <select
-              className="w3 h2.5 bg-white br2 tc indent ba b--yellow mr2 pl1"
+            <Select
+              options={keyBy(availableEmojis)}
+              className="w3 h2.5 indent mr2 pl1"
               value={emoji}
               onChange={e => setEmoji(e.target.value)}
-            >
-              {availableEmojis.map((emoji, i) => (
-                <option key={i} value={emoji}>
-                  {emoji}
-                </option>
-              ))}
-            </select>
-            <input
-              type="text"
-              className="flex-grow-1 h2.5 bg-white pv2 ph3 br2 ba b--yellow mr2"
+            />
+            <TextInput
+              className="flex-grow-1 h2.5 ph3 mr2"
               style={{ width: "12rem" }}
               value={name}
               onChange={e => setName(e.target.value)}
             />
-            <Button>Join</Button>
+            <Button text="Join" />
           </form>
         )}
 
@@ -122,16 +120,13 @@ export default function Lobby(props: Props) {
             </a>
           </div>
           <input
-            className="fixed"
-            style={{ top: -100, left: -100 }}
+            className="fixed top--2 left--2"
             ref={inputRef}
             type="text"
             value={shareLink}
             readOnly
           />
-          <Button size={IButtonSize.SMALL} onClick={copy}>
-            Copy
-          </Button>
+          <Button size={IButtonSize.SMALL} onClick={copy} text="Copy" />
         </div>
       </div>
     </div>

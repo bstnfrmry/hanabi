@@ -112,9 +112,8 @@ export default function GameBoard(props: Props) {
                 size={IButtonSize.TINY}
                 disabled={!game.history.length}
                 onClick={() => onRollback()}
-              >
-                ⟲
-              </Button>
+                text="⟲"
+              />
             )}
           </div>
         </div>

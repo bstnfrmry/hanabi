@@ -97,6 +97,7 @@ export default function OtherPlayerArea(props: Props) {
               </div>
               <Button
                 disabled={!pendingHint.type || game.tokens.hints === 0}
+                text="Give hint"
                 onClick={() =>
                   onCommitAction({
                     action: "hint",
@@ -105,9 +106,7 @@ export default function OtherPlayerArea(props: Props) {
                     ...pendingHint
                   } as IHintAction)
                 }
-              >
-                Give hint
-              </Button>
+              />
             </div>
           </div>
         </>

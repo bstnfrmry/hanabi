@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import shortid from "shortid";
+import { keyBy } from "lodash";
 
-import { useDatabase } from "~/hooks/database";
 import { IGameHintsLevel } from "~/game/state";
 import { newGame } from "~/game/actions";
+import { useDatabase } from "~/hooks/database";
 
 import Button, { IButtonSize } from "~/components/ui/button";
+import { Checkbox, TextInput, Select, Field } from "~/components/ui/forms";
 import Box from "~/components/ui/box";
-import Field from "~/components/ui/field";
 import HomeButton from "~/components/homeButton";
 
 const PlayerCounts = [2, 3, 4, 5];
@@ -58,42 +59,28 @@ export default function NewGame() {
       <HomeButton className="absolute top-1 right-1" />
 
       <div className="flex flex-column justify-center w-50 f4">
-        <Field
-          label="Players"
-          className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2"
-        >
-          <select
-            className="w3 h2 bg-white br2 tc indent ba b--yellow"
+        <Field label="Players" className="pb2 mb2 bb b--yellow-light">
+          <Select
+            className="w3 indent"
+            options={keyBy(PlayerCounts)}
             value={playersCount}
             onChange={e => setPlayersCount(+e.target.value)}
-          >
-            {PlayerCounts.map(count => (
-              <option key={count} value={count}>
-                {count}
-              </option>
-            ))}
-          </select>
+          />
         </Field>
 
-        <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
-          Multicolor
-          <input
-            className="w1 h1"
-            type="checkbox"
+        <Field label="Multicolor" className="pb2 mb2 bb b--yellow-light">
+          <Checkbox
             checked={multicolor}
             onChange={e => setMulticolor(e.target.checked)}
           />
-        </label>
+        </Field>
 
-        <label className="flex justify-between items-center pb2 ph1 h2">
-          Private
-          <input
-            className="w1 h1"
-            type="checkbox"
+        <Field label="Private">
+          <Checkbox
             checked={private_}
             onChange={e => setPrivate(e.target.checked)}
           />
-        </label>
+        </Field>
 
         <a
           className="mv4 self-end underline pointer silver"
@@ -104,67 +91,55 @@ export default function NewGame() {
 
         {showAdvanced && (
           <>
-            <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
-              Seed
-              <input
-                className="w3 h1 tr bg-white pv2 ph3 br2 ba b--yellow"
+            <Field label="Seed" className="pb2 mb2 bb b--yellow-light">
+              <TextInput
+                className="w3 tr"
                 value={seed}
                 onChange={e => setSeed(e.target.value)}
               />
-            </label>
+            </Field>
 
-            <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
-              Allow rollback
-              <input
-                className="w1 h1"
-                type="checkbox"
+            <Field
+              label="Allow rollback"
+              className="pb2 mb2 bb b--yellow-light"
+            >
+              <Checkbox
                 checked={allowRollback}
                 onChange={e => setAllowRollback(e.target.checked)}
               />
-            </label>
+            </Field>
 
-            <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
-              Prevent loss
-              <input
-                className="w1 h1"
-                type="checkbox"
+            <Field label="Prevent loss" className="pb2 mb2 bb b--yellow-light">
+              <Checkbox
                 checked={preventLoss}
                 onChange={e => setPreventLoss(e.target.checked)}
               />
-            </label>
+            </Field>
 
-            <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
-              Hints
-              <select
-                className="h2 bg-white br2 tc ph3 ba b--yellow"
+            <Field label="Hints" className="pb2 mb2 bb b--yellow-light">
+              <Select
+                className="pl3"
+                options={HintsLevels}
                 value={hintsLevel}
                 onChange={e => setHintsLevel(e.target.value as IGameHintsLevel)}
-              >
-                {Object.keys(HintsLevels).map(level => (
-                  <option key={level} value={level}>
-                    {HintsLevels[level]}
-                  </option>
-                ))}
-              </select>
-            </label>
+              />
+            </Field>
 
-            <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
-              Turns history
-              <input
-                className="w1 h1"
-                type="checkbox"
+            <Field label="Turns history" className="pb2 mb2 bb b--yellow-light">
+              <Checkbox
                 checked={turnsHistory}
                 onChange={e => setTurnsHistory(e.target.checked)}
               />
-            </label>
+            </Field>
           </>
         )}
 
-        <div className="self-end mt3">
-          <Button size={IButtonSize.LARGE} onClick={onCreateGame}>
-            New game
-          </Button>
-        </div>
+        <Button
+          size={IButtonSize.LARGE}
+          onClick={onCreateGame}
+          className="self-end mt3"
+          text="New game"
+        />
       </div>
     </Box>
   );

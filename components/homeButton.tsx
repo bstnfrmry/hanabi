@@ -22,8 +22,11 @@ export default function HomeButton(props: Props) {
   }
 
   return (
-    <Button size={IButtonSize.TINY} onClick={onMenuClick} className={className}>
-      ☰
-    </Button>
+    <Button
+      size={IButtonSize.TINY}
+      onClick={onMenuClick}
+      className={className}
+      text="☰"
+    />
   );
 }

@@ -56,6 +56,7 @@ export default function SelfPlayerArea(props: Props) {
                 <Button
                   key={action}
                   className="mr2"
+                  text={action}
                   onClick={() =>
                     onCommitAction({
                       action,
@@ -63,9 +64,7 @@ export default function SelfPlayerArea(props: Props) {
                       cardIndex: selectedCard
                     })
                   }
-                >
-                  {action}
-                </Button>
+                />
               ))}
             </div>
           )}

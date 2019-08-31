@@ -51,9 +51,8 @@ export default function JoinGame() {
               size={IButtonSize.LARGE}
               className="ma2"
               onClick={() => router.push("/new-game")}
-            >
-              Create a room
-            </Button>
+              text="Create a room"
+            />
           </>
         )}
         {games.length > 0 && (

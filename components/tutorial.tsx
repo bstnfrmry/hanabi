@@ -164,12 +164,13 @@ export default function Tutorial(props: Props) {
                     onClick={skip}
                     size={IButtonSize.TINY}
                     className="mr1 mr2-l"
-                  >
-                    Skip
-                  </Button>
-                  <Button onClick={nextStep} size={IButtonSize.TINY}>
-                    Go !
-                  </Button>
+                    text="Skip"
+                  />
+                  <Button
+                    onClick={nextStep}
+                    size={IButtonSize.TINY}
+                    text="Go !"
+                  />
                 </>
               )}
 
@@ -180,14 +181,14 @@ export default function Tutorial(props: Props) {
                       onClick={previousStep}
                       size={IButtonSize.TINY}
                       className="mr1 mr2-l"
-                    >
-                      &lt;
-                    </Button>
+                      text="<"
+                    />
                   )}
-                  <Button onClick={nextStep} size={IButtonSize.TINY}>
-                    {lastStep && <>✓</>}
-                    {!lastStep && <>&gt;</>}
-                  </Button>
+                  <Button
+                    onClick={nextStep}
+                    size={IButtonSize.TINY}
+                    text={lastStep ? "✓" : ">"}
+                  />
                 </>
               )}
             </div>

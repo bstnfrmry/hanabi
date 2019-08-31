@@ -38,20 +38,20 @@ export default function MenuArea(props: Props) {
               size={IButtonSize.SMALL}
               onClick={onTutorialClick}
               className="mb4"
-            >
-              Watch tutorial again
-            </Button>
+              text="Watch tutorial again"
+            />
           )}
           <Button
             size={IButtonSize.TINY}
             onClick={() => setShowRules(true)}
             className="mb4"
-          >
-            Show rules
-          </Button>
-          <Button size={IButtonSize.TINY} onClick={onMenuClick}>
-            Back to menu
-          </Button>
+            text="Show rules"
+          />
+          <Button
+            size={IButtonSize.TINY}
+            onClick={onMenuClick}
+            text="Back to menu"
+          />
         </div>
       )}
 
@@ -61,9 +61,8 @@ export default function MenuArea(props: Props) {
             className="absolute left-2 top-1"
             size={IButtonSize.TINY}
             onClick={() => setShowRules(false)}
-          >
-            {"<"}
-          </Button>
+            text="<"
+          />
           <img
             className="absolute top-0 right-0 mw4 o-50"
             src="/static/hanabi.png"
