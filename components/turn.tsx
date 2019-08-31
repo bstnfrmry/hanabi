@@ -32,7 +32,7 @@ export default function Turn(props: Props) {
           {"hinted "}
           <PlayerName player={game.players[turn.action.to]} />
           {" about "}
-          <Hint hint={1} type={turn.action.type} value={turn.action.value} />
+          <Hint hint={2} type={turn.action.type} value={turn.action.value} />
           {turn.action.type === "color" && " cards"}
           {turn.action.type === "number" && "s"}
         </Txt>

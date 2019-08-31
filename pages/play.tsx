@@ -14,7 +14,6 @@ import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
 import Turn from "~/components/turn";
 import { TutorialProvider } from "~/components/tutorial";
-import Box from "~/components/ui/box";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import {
   commitAction,
@@ -329,7 +328,7 @@ export default function Play() {
                   onRollback={onRollback}
                   onSelectDiscard={onSelectDiscard}
                 />
-                <Box borderColor="yellow-light" className="flex-grow-1">
+                <div className="flex-grow-1 pa2 pv4-l ph3-l shadow-5 br3 ba b--yellow-light">
                   {selectedArea.type === ActionAreaType.MENU && (
                     <MenuArea onCloseArea={onCloseArea} />
                   )}
@@ -353,7 +352,7 @@ export default function Play() {
                       )}
                     </>
                   )}
-                </Box>
+                </div>
               </div>
             </div>
           </CurrentPlayerContext.Provider>

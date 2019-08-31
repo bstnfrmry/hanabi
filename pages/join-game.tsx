@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 
 import HomeButton from "~/components/homeButton";
 import LoadingScreen from "~/components/loadingScreen";
-import Box from "~/components/ui/box";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import IGameState, { fillEmptyValues } from "~/game/state";
@@ -41,7 +40,7 @@ export default function JoinGame() {
   }
 
   return (
-    <Box className="w-100 h-100 flex justify-center items-center overflow-y-scroll relative bg-main-dark">
+    <div className="w-100 h-100 flex justify-center items-center overflow-y-scroll relative bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
       <HomeButton className="absolute top-1 right-1" />
       <div className="w-50 h-100">
         {!games.length && (
@@ -75,6 +74,6 @@ export default function JoinGame() {
           </>
         )}
       </div>
-    </Box>
+    </div>
   );
 }

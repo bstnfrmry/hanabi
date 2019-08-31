@@ -5,7 +5,6 @@ import Popover from "react-popover";
 import Card, { CardSize, ICardContext } from "~/components/card";
 import PlayerName from "~/components/playerName";
 import ReactionsPopover from "~/components/reactionsPopover";
-import Box from "~/components/ui/box";
 import Txt from "~/components/ui/txt";
 import { IPlayer } from "~/game/state";
 import { useSelfPlayer } from "~/hooks/game";
@@ -34,11 +33,13 @@ export default function PlayerGame(props: Props) {
   const hideCards = self || !selfPlayer;
 
   return (
-    <Box
-      borderColor={active ? "yellow" : null}
-      className={classnames("relative", {
-        "border-box ba bw2": active
-      })}
+    <div
+      className={classnames(
+        "flex w-100 flex-column justify-center bg-main-dark pa2 pv4-l ph3-l br3 relative",
+        {
+          "b--yellow border-box ba bw2": active
+        }
+      )}
     >
       <div className="ml1 flex items-center">
         <PlayerName
@@ -79,8 +80,8 @@ export default function PlayerGame(props: Props) {
         )}
       </div>
 
-      <div className="cards dib mt2 mw-100">
-        <div className="flex flex-row grow pointer ph2">
+      <div className="cards dib mt2">
+        <div className="flex flex-row justify-center grow pointer ph2">
           {player.hand.map((card, i) => (
             <Card
               key={i}
@@ -105,6 +106,6 @@ export default function PlayerGame(props: Props) {
           box-shadow: 0px 0px 5px 5px var(--color-yellow);
         }
       `}</style>
-    </Box>
+    </div>
   );
 }

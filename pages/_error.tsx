@@ -1,7 +1,6 @@
 import Router from "next/router";
 import React from "react";
 
-import Box from "~/components/ui/box";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 
@@ -19,11 +18,11 @@ export default class Error extends React.Component<Props> {
     const { statusCode } = this.props;
 
     return (
-      <Box className="bg-main-dark flex flex-column justify-center items-center w-100 h-100">
+      <div className="pa2 pv4-l ph3-l shadow-5 br3 bg-main-dark flex flex-column justify-center items-center w-100 h-100">
         <Txt className="red" size={TxtSize.LARGE} value={statusCode} />
         <Txt className="mb4" value="We're sorry, something went wrong 😕" />
         <Button text="Back to menu" onClick={() => Router.replace("/")} />
-      </Box>
+      </div>
     );
   }
 }

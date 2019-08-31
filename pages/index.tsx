@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-import Box from "~/components/ui/box";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 
@@ -19,7 +18,7 @@ export default function Home() {
   }, []);
 
   return (
-    <Box className="w-100 h-100 flex flex-row justify-center items-center bg-main-dark">
+    <div className="w-100 h-100 flex flex-row justify-center items-center bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
       <div className="flex flex-column items-center">
         <img className="mw4 mb4" src="/static/hanabi.png" />
         <Txt size={TxtSize.LARGE} value="Hanabi" />
@@ -50,6 +49,6 @@ export default function Home() {
           />
         )}
       </div>
-    </Box>
+    </div>
   );
 }

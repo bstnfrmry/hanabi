@@ -7,7 +7,7 @@ export enum TxtSize {
   LARGE = "large"
 }
 
-const TxtClasses = {
+const TxtSizes = {
   [TxtSize.SMALL]: "f7 f3-l",
   [TxtSize.MEDIUM]: "f4 f2-l",
   [TxtSize.LARGE]: "ttu f2 f1-l tracked"
@@ -36,7 +36,7 @@ export default function Txt(props: Props) {
   return (
     <span
       className={classnames(
-        TxtClasses[size],
+        TxtSizes[size],
         { ttu: uppercase },
         { i: italic },
         { pre: multiline },

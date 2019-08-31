@@ -23,7 +23,7 @@ export default function Hint(props: Props) {
             className={classnames(
               "outline-main-dark pointer flex items-center justify-center br-100 h-100 w-100 white",
               { [`bg-${color}`]: type === "color" },
-              { [`ba bw1  b--${color}`]: type === "color" && hint === 2 },
+              { [`ba bw0.5 b--${color}`]: type === "color" && hint === 2 },
               { [`ba`]: type === "number" && hint === 2 }
             )}
           >

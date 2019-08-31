@@ -145,7 +145,9 @@ export default function Card(props: Props) {
     >
       {/* Card value */}
       <Txt
-        className="white outline-main-dark"
+        className={classnames("white outline-main-dark", {
+          mb3: displayHints && size === CardSize.LARGE
+        })}
         size={CardTextSizes[size]}
         value={number}
       />

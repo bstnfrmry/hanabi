@@ -14,14 +14,14 @@ export enum ButtonSize {
   LARGE
 }
 
-const ButtonClasses = {
+const ButtonSizes = {
   [ButtonSize.TINY]: "pa1 bw1 pa2-l fw1",
   [ButtonSize.SMALL]: "pv1 ph2 bw1 fw2",
   [ButtonSize.MEDIUM]: "pv2 ph3 bw2 fw2",
   [ButtonSize.LARGE]: "pv3 ph4 bw2 fw2"
 };
 
-const ButtonTextSizes = {
+const ButtonTxtSizes = {
   [ButtonSize.TINY]: TxtSize.SMALL,
   [ButtonSize.SMALL]: TxtSize.SMALL,
   [ButtonSize.MEDIUM]: TxtSize.MEDIUM,
@@ -52,7 +52,7 @@ export default function Button(props: Props) {
     <button
       className={classnames(
         className,
-        ButtonClasses[size],
+        ButtonSizes[size],
         "ba br2 shadow-2 ttu tracked outline-0",
         {
           "bg-white hover-bg-white pointer main-dark b--yellow grow": !disabled
@@ -63,7 +63,7 @@ export default function Button(props: Props) {
       onClick={onClick}
       {...attributes}
     >
-      {text && <Txt size={ButtonTextSizes[size]} value={text} />}
+      {text && <Txt size={ButtonTxtSizes[size]} value={text} />}
       {!text && children}
     </button>
   );

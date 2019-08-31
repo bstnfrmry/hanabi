@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import shortid from "shortid";
 
 import HomeButton from "~/components/homeButton";
-import Box from "~/components/ui/box";
 import Button, { ButtonSize } from "~/components/ui/button";
 import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
 import Txt from "~/components/ui/txt";
@@ -55,7 +54,7 @@ export default function NewGame() {
   }
 
   return (
-    <Box className="w-100 h-100 overflow-y-scroll pv4 flex justify-center items-start pv6-l relative bg-main-dark">
+    <div className="w-100 h-100 overflow-y-scroll pv4 flex justify-center items-start pv6-l relative bg-main-dark ph2 ph3-l shadow-5 br3">
       <HomeButton className="absolute top-1 right-1" />
 
       <div className="flex flex-column justify-center w-50">
@@ -141,6 +140,6 @@ export default function NewGame() {
           onClick={onCreateGame}
         />
       </div>
-    </Box>
+    </div>
   );
 }

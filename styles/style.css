@@ -52,6 +52,10 @@ body {
   width: 3rem;
 }
 
+.bw0\.5 {
+  border-width: 0.075rem;
+}
+
 @media screen and (min-width: 60em) {
   .h2\.5-l {
     height: 3rem;

@@ -5,7 +5,6 @@ import HomeButton from "~/components/homeButton";
 import PlayedCards from "~/components/playedCards";
 import TokenSpace from "~/components/tokenSpace";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
-import Box from "~/components/ui/box";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import {
@@ -32,7 +31,7 @@ export default function GameBoard(props: Props) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <Box borderColor="yellow-light" className="mb1">
+    <div className="pa2 pv4-l ph3-l shadow-5 br3 mb1 ba b--yellow-light">
       <div className="flex justify-between flex-column-l items-end items-start-l">
         <div className="flex flex-column mb5-l">
           <div>
@@ -136,6 +135,6 @@ export default function GameBoard(props: Props) {
           </div>
         </div>
       </div>
-    </Box>
+    </div>
   );
 }
