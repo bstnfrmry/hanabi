@@ -8,9 +8,9 @@ export enum TxtSize {
 }
 
 const TxtClasses = {
-  [TxtSize.SMALL]: "f7",
-  [TxtSize.MEDIUM]: "f4",
-  [TxtSize.LARGE]: "ttu f2 tracked"
+  [TxtSize.SMALL]: "f7 f3-l",
+  [TxtSize.MEDIUM]: "f4 f2-l",
+  [TxtSize.LARGE]: "ttu f2 f1-l tracked"
 };
 
 interface Props extends HTMLAttributes<HTMLSpanElement> {

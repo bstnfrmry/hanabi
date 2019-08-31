@@ -7,7 +7,7 @@ import TokenSpace from "~/components/tokenSpace";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Box from "~/components/ui/box";
 import Button, { ButtonSize } from "~/components/ui/button";
-import Txt from "~/components/ui/txt";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import {
   getMaximumPossibleScore,
   getMaximumScore,
@@ -78,7 +78,11 @@ export default function GameBoard(props: Props) {
                   style={{ top: `-${i / 2}px` }}
                 >
                   <CardWrapper key={card.id} color="main">
-                    <Txt className="outline-main-dark" value={i + 1} />
+                    <Txt
+                      className="outline-main-dark"
+                      size={TxtSize.MEDIUM}
+                      value={i + 1}
+                    />
                   </CardWrapper>
                 </div>
               ))}
@@ -97,7 +101,11 @@ export default function GameBoard(props: Props) {
                     style={{ top: `-${i / 2}px` }}
                   >
                     <CardWrapper key={card.id} color="light-silver">
-                      <Txt className="absolute pointer" value={i + 1} />
+                      <Txt
+                        className="absolute pointer"
+                        size={TxtSize.MEDIUM}
+                        value={i + 1}
+                      />
                     </CardWrapper>
                   </div>
                 ))}

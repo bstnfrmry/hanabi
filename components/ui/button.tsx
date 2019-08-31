@@ -1,5 +1,9 @@
 import classnames from "classnames";
-import React, { MouseEventHandler, ReactNode } from "react";
+import React, {
+  ButtonHTMLAttributes,
+  MouseEventHandler,
+  ReactNode
+} from "react";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
 
@@ -13,7 +17,7 @@ export enum ButtonSize {
 const ButtonClasses = {
   [ButtonSize.TINY]: "pa1 bw1 pa2-l fw1",
   [ButtonSize.SMALL]: "pv1 ph2 bw1 fw2",
-  [ButtonSize.MEDIUM]: "h2.5 pv2 ph3 bw2 fw2",
+  [ButtonSize.MEDIUM]: "pv2 ph3 bw2 fw2",
   [ButtonSize.LARGE]: "pv3 ph4 bw2 fw2"
 };
 
@@ -24,7 +28,7 @@ const ButtonTextSizes = {
   [ButtonSize.LARGE]: TxtSize.MEDIUM
 };
 
-interface Props {
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   onClick?: MouseEventHandler;
   className?: string;
@@ -40,7 +44,8 @@ export default function Button(props: Props) {
     className,
     text,
     children,
-    disabled
+    disabled,
+    ...attributes
   } = props;
 
   return (
@@ -56,6 +61,7 @@ export default function Button(props: Props) {
       )}
       disabled={disabled}
       onClick={onClick}
+      {...attributes}
     >
       {text && <Txt size={ButtonTextSizes[size]} value={text} />}
       {!text && children}

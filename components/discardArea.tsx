@@ -17,7 +17,7 @@ function CardPile(props: CardPileProps) {
   const { cards, color } = props;
 
   if (!cards.length) {
-    return <CardWrapper className="ma1" color={color} size={CardSize.LARGE} />;
+    return <CardWrapper className="mr1" color={color} size={CardSize.MEDIUM} />;
   }
 
   const sortedCards = sortBy(cards, card => card.number);
@@ -28,9 +28,9 @@ function CardPile(props: CardPileProps) {
         <Card
           key={i}
           card={card}
-          className={classnames("ma1", { "nt2 nt3-l": i > 0 })}
+          className={classnames("mr1", { "nt2 nt4-l": i > 0 })}
           context={ICardContext.DISCARDED}
-          size={CardSize.LARGE}
+          size={CardSize.MEDIUM}
         />
       ))}
     </div>

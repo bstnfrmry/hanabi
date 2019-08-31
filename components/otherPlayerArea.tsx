@@ -15,8 +15,6 @@ function isCardHintable(hint: IHintAction, card: ICard) {
 }
 
 function textualHint(hint: IHintAction, cards: ICard[]) {
-  if (hint.value === null) return "";
-
   const hintableCards = cards
     .map((c, i) => (isCardHintable(hint, c) ? i : null))
     .filter(i => i !== null)
@@ -90,10 +88,15 @@ export default function OtherPlayerArea(props: Props) {
               pendingHint={pendingHint}
               onSelect={action => setPendingHint(action)}
             />
-            <div className="ml2">
-              <Txt italic value={textualHint(pendingHint, player.hand)} />
+
+            <div className="ml2 flex flex-column">
+              {pendingHint.value && (
+                <Txt italic value={textualHint(pendingHint, player.hand)} />
+              )}
+
               <Button
                 disabled={!pendingHint.type || game.tokens.hints === 0}
+                style={{ marginTop: "auto" }}
                 text="Give hint"
                 onClick={() =>
                   onCommitAction({

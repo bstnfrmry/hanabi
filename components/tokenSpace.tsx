@@ -4,7 +4,7 @@ import React from "react";
 import posed, { PoseGroup } from "react-pose";
 
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
-import Txt from "~/components/ui/txt";
+import Txt, { TxtSize } from "~/components/ui/txt";
 
 const TokenAnimationWrapper = posed.div({
   enter: { opacity: 1, y: 0, transition: { duration: 1000 } },
@@ -27,6 +27,7 @@ function Token(props: TokenProps) {
           `bg-${color}`,
           `b--${color}`
         )}
+        size={TxtSize.MEDIUM}
         value={0}
       />
     );
@@ -43,6 +44,7 @@ function Token(props: TokenProps) {
                 `bg-${color}`,
                 `b--${color}`
               )}
+              size={TxtSize.MEDIUM}
               style={{
                 top: `-${i * 3}px`
               }}

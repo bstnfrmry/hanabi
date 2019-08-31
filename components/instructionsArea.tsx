@@ -67,7 +67,7 @@ export default function InstructionsArea(props: Props) {
             .reverse()
             .map((turn, i) => {
               return (
-                <div key={i} className="mt1">
+                <div key={i} className="mt1 mt3-l">
                   <Turn
                     includePlayer={true}
                     showDrawn={game.players[turn.action.from] !== selfPlayer}

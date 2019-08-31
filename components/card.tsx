@@ -49,7 +49,6 @@ interface CardWrapperProps {
   playable?: boolean;
   context?: ICardContext;
   className?: string;
-  borderWidth?: string;
   style?: CSSProperties;
   onClick?: MouseEventHandler;
   children?: ReactNode;
@@ -62,7 +61,6 @@ export function CardWrapper(props: CardWrapperProps) {
     playable = false,
     context,
     className = "",
-    borderWidth = "",
     style = {},
     onClick,
     children
@@ -76,7 +74,6 @@ export function CardWrapper(props: CardWrapperProps) {
         "relative flex items-center justify-center br1 ba",
         sizeClass,
         className,
-        borderWidth,
         `bg-${color}`,
         { "shadow-2": size.includes("large") },
         { "shadow-1": size.includes("medium") },
@@ -138,8 +135,7 @@ export default function Card(props: Props) {
 
   return (
     <CardWrapper
-      borderWidth={selected ? "bw1 z-5" : ""}
-      className={className}
+      className={classnames({ "bw1 z-5": selected }, className)}
       color={color}
       context={context}
       playable={playable}
@@ -149,17 +145,13 @@ export default function Card(props: Props) {
     >
       {/* Card value */}
       <Txt
-        className={classnames(
-          "white outline-main-dark",
-          { mb3: displayHints && size === "large" },
-          { "mb4-l": displayHints && size === "medium" }
-        )}
+        className="white outline-main-dark"
         size={CardTextSizes[size]}
         value={number}
       />
 
       {/* Card position */}
-      {position !== null && size === "large" && (
+      {position !== null && size === CardSize.LARGE && (
         <Txt
           className="absolute left-0 top-0 ma1 black-20"
           value={PositionMap[position]}
@@ -170,18 +162,17 @@ export default function Card(props: Props) {
       {displayHints && hidden && (
         <div
           className={classnames(
-            "absolute top-0 mt2 br-100 w-50 h-50 flex justify-center items-center outline-main-dark",
-            { [`bg-${card.color}`]: card.hint.color[card.color] === 2 },
-            { mt3: size === "large" }
+            "absolute top-0 mt2 mt4-l br-100 w-50 h-50 flex justify-center items-center outline-main-dark",
+            { [`bg-${card.color}`]: card.hint.color[card.color] === 2 }
           )}
         >
-          {card.hint.number[card.number] === 2 ? card.number : null}
+          {card.hint.number[card.number] === 2 && <Txt value={card.number} />}
         </div>
       )}
 
       {/* show other hints, including negative hints */}
-      {displayHints && size === "large" && (
-        <div className="flex absolute w-100 right-0 bottom-0 pv1 flex-l items-center flex-column bg-black-50">
+      {displayHints && size === CardSize.LARGE && (
+        <div className="flex absolute w-100 right-0 bottom-0 pv1 pv2-l flex-l items-center flex-column bg-black-50">
           <div className="flex justify-around w-100">
             {colors.map(color => (
               <Hint
