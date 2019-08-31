@@ -70,14 +70,17 @@ export default function GameBoard(props: Props) {
         </div>
         <div className="flex flex-row ph1 justify-left items-end">
           <div className="mr2 relative">
-            <CardWrapper color="main">
+            <CardWrapper color={game.drawPile.length > 5 ? "main" : "strikes"}>
               {game.drawPile.map((card, i) => (
                 <div
                   key={i}
                   className="absolute"
                   style={{ top: `-${i / 2}px` }}
                 >
-                  <CardWrapper key={card.id} color="main">
+                  <CardWrapper
+                    key={card.id}
+                    color={game.drawPile.length > 5 ? "main" : "strikes"}
+                  >
                     <Txt
                       className="outline-main-dark"
                       size={TxtSize.MEDIUM}
@@ -109,13 +112,6 @@ export default function GameBoard(props: Props) {
                     </CardWrapper>
                   </div>
                 ))}
-                <div
-                  className={`absolute w-100 o-50 rotate-135 bg-white b--white`}
-                  style={{
-                    height: "2px",
-                    bottom: `${game.discardPile.length}px`
-                  }}
-                />
               </CardWrapper>
             </Tutorial>
           </div>
