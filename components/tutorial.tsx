@@ -72,7 +72,13 @@ const steps = {
   }
 };
 
-export const TutorialProvider = ({ children }) => {
+interface TutorialProviderProps {
+  children: ReactNode;
+}
+
+export const TutorialProvider = (props: TutorialProviderProps) => {
+  const { children } = props;
+
   const [currentStep, setCurrentStep] = useState(
     +localStorage.getItem(LocalStorageKey) || ITutorialStep.WELCOME
   );
@@ -175,12 +181,12 @@ export default function Tutorial(props: Props) {
                       size={IButtonSize.TINY}
                       className="mr1 mr2-l"
                     >
-                      {"<"}
+                      &lt;
                     </Button>
                   )}
                   <Button onClick={nextStep} size={IButtonSize.TINY}>
                     {lastStep && <>✓</>}
-                    {!lastStep && <>></>}
+                    {!lastStep && <>&gt;</>}
                   </Button>
                 </>
               )}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { IPlayer, IHintAction, ICard } from "~/game/state";
 import { useGame, useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
@@ -7,6 +7,37 @@ import PlayerName from "~/components/playerName";
 import Card, { ICardContext, PositionMap, CardSize } from "~/components/card";
 import Vignettes from "~/components/vignettes";
 import Button from "~/components/ui/button";
+
+function isCardHintable(hint: IHintAction, card: ICard) {
+  return hint.type === "color"
+    ? card.color === hint.value
+    : card.number === hint.value;
+}
+
+function textualHint(hint: IHintAction, cards: ICard[]) {
+  if (hint.value === null) return "";
+
+  const hintableCards = cards
+    .map((c, i) => (isCardHintable(hint, c) ? i : null))
+    .filter(i => i !== null)
+    .map(i => PositionMap[i]);
+
+  if (hintableCards.length === 0) {
+    if (hint.type === "color") return `You have no ${hint.value} cards.`;
+    else return `You have no ${hint.value}s.`;
+  }
+
+  if (hintableCards.length === 1) {
+    if (hint.type === "color")
+      return `Your card ${hintableCards[0]} is ${hint.value}`;
+    else return `Your card ${hintableCards[0]} is a ${hint.value}`;
+  }
+
+  if (hint.type === "color")
+    return `Your cards ${hintableCards.join(", ")} are ${hint.value}`;
+
+  return `Your cards ${hintableCards.join(", ")} are ${hint.value}s`;
+}
 
 interface Props {
   player: IPlayer;
@@ -31,7 +62,7 @@ export default function OtherPlayerArea(props: Props) {
       <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1 mb2">
         <a onClick={() => onCloseArea()} className="flex-grow-1">
           <PlayerName player={player} />
-          's game
+          &apos;s game
           <span className="ml2">&times;</span>
         </a>
         <a onClick={() => onImpersonate(player)}>🕵🏻‍♀️</a>
@@ -83,35 +114,4 @@ export default function OtherPlayerArea(props: Props) {
       )}
     </div>
   );
-}
-
-function isCardHintable(hint: IHintAction, card: ICard) {
-  return hint.type === "color"
-    ? card.color === hint.value
-    : card.number === hint.value;
-}
-
-function textualHint(hint: IHintAction, cards: ICard[]) {
-  if (hint.value === null) return "";
-
-  const hintableCards = cards
-    .map((c, i) => (isCardHintable(hint, c) ? i : null))
-    .filter(i => i !== null)
-    .map(i => PositionMap[i]);
-
-  if (hintableCards.length === 0) {
-    if (hint.type === "color") return `You have no ${hint.value} cards.`;
-    else return `You have no ${hint.value}s.`;
-  }
-
-  if (hintableCards.length === 1) {
-    if (hint.type === "color")
-      return `Your card ${hintableCards[0]} is ${hint.value}`;
-    else return `Your card ${hintableCards[0]} is a ${hint.value}`;
-  }
-
-  if (hint.type === "color")
-    return `Your cards ${hintableCards.join(", ")} are ${hint.value}`;
-
-  return `Your cards ${hintableCards.join(", ")} are ${hint.value}s`;
 }

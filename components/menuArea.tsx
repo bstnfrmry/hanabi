@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useRouter } from "next/router";
 
 import Button, { IButtonSize } from "~/components/ui/button";
 import { TutorialContext } from "~/components/tutorial";
-import Card, { CardSize, CardWrapper, ICardContext } from "~/components/card";
+import Card, { CardSize, ICardContext } from "~/components/card";
 import { IColor } from "~/game/state";
 import Vignette from "~/components/vignette";
 import { useGame } from "~/hooks/game";
@@ -80,8 +80,8 @@ export default function MenuArea(props: Props) {
             to help each other to prevent the show turning to disaster.
           </div>
           <div className="f6 f3-l pv3">
-            J'ai pas non plus envie de traduire tout le manuel, mais c'est un
-            bon début.
+            J&apos;ai pas non plus envie de traduire tout le manuel, mais
+            c&apos;est un bon début.
           </div>
           <div className="f6 f3-l pv3">
             On devrait facilement pouvoir reprendre les composants visuels pour

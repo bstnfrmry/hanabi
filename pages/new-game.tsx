@@ -8,6 +8,7 @@ import { newGame } from "~/game/actions";
 
 import Button, { IButtonSize } from "~/components/ui/button";
 import Box from "~/components/ui/box";
+import Field from "~/components/ui/field";
 import HomeButton from "~/components/homeButton";
 
 const PlayerCounts = [2, 3, 4, 5];
@@ -57,8 +58,10 @@ export default function NewGame() {
       <HomeButton className="absolute top-1 right-1" />
 
       <div className="flex flex-column justify-center w-50 f4">
-        <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
-          Players
+        <Field
+          label="Players"
+          className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2"
+        >
           <select
             className="w3 h2 bg-white br2 tc indent ba b--yellow"
             value={playersCount}
@@ -70,7 +73,7 @@ export default function NewGame() {
               </option>
             ))}
           </select>
-        </label>
+        </Field>
 
         <label className="flex justify-between items-center pb2 mb2 bb b--yellow-light ph1 h2">
           Multicolor

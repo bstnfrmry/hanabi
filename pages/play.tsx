@@ -178,6 +178,13 @@ export default function Play() {
     await db.ref(`/games/${gameId}`).set(newState);
   }
 
+  function onCloseArea() {
+    selectArea({
+      id: "instructions",
+      type: ActionAreaType.INSTRUCTIONS
+    });
+  }
+
   function onImpersonate(player: IPlayer) {
     if (
       !window.confirm(
@@ -247,13 +254,6 @@ export default function Play() {
     onSelectArea({
       id: "menu",
       type: ActionAreaType.MENU
-    });
-  }
-
-  function onCloseArea() {
-    selectArea({
-      id: "instructions",
-      type: ActionAreaType.INSTRUCTIONS
     });
   }
 

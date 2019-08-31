@@ -1,3 +1,4 @@
+import React from "react";
 import posed from "react-pose";
 
 import Box from "~/components/ui/box";

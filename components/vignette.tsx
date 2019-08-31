@@ -28,7 +28,7 @@ export default function Vignette(props: Props) {
         { bw1: selected }
       )}
       style={style}
-      onClick={e => onClick && onClick({ type, value })}
+      onClick={() => onClick && onClick({ type, value })}
     >
       {type === "number" && value}
     </div>

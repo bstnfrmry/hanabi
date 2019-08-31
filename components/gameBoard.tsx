@@ -111,7 +111,7 @@ export default function GameBoard(props: Props) {
               <Button
                 size={IButtonSize.TINY}
                 disabled={!game.history.length}
-                onClick={onRollback}
+                onClick={() => onRollback()}
               >
                 ⟲
               </Button>

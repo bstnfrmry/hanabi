@@ -1,4 +1,4 @@
-import React, { ReactNode, MouseEvent, CSSProperties } from "react";
+import React, { CSSProperties, ReactNode, MouseEventHandler } from "react";
 import classnames from "classnames";
 
 import { ICard, IGameHintsLevel } from "~/game/state";
@@ -46,7 +46,7 @@ interface CardWrapperProps {
   className?: string;
   borderWidth?: string;
   style?: CSSProperties;
-  onClick?: (MouseEvent) => void;
+  onClick?: MouseEventHandler;
   children?: ReactNode;
 }
 
@@ -68,7 +68,6 @@ export function CardWrapper(props: CardWrapperProps) {
   return (
     <div
       onClick={onClick}
-      children={children}
       style={style}
       className={classnames(
         "relative flex items-center justify-center br1 ba",
@@ -81,7 +80,9 @@ export function CardWrapper(props: CardWrapperProps) {
         { pointer: playable },
         { grow: context === ICardContext.TARGETED_PLAYER }
       )}
-    />
+    >
+      {children}
+    </div>
   );
 }
 
@@ -95,7 +96,7 @@ interface Props {
   size?: CardSize;
   className?: string;
   style?: CSSProperties;
-  onClick?: (MouseEvent) => void;
+  onClick?: MouseEventHandler;
 }
 
 export default function Card(props: Props) {

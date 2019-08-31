@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, MouseEventHandler } from "react";
 import classnames from "classnames";
 
 export enum IButtonSize {
@@ -17,7 +17,7 @@ const ButtonSizes = {
 
 interface Props {
   size?: IButtonSize;
-  onClick?: any;
+  onClick?: MouseEventHandler;
   className?: string;
   children: ReactNode;
   disabled?: boolean;

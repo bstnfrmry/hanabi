@@ -20,7 +20,7 @@ export default class Error extends React.Component<Props> {
     return (
       <Box className="bg-main-dark flex flex-column justify-center items-center w-100 h-100">
         <h1 className="f1 red">{statusCode}</h1>
-        <p className="mb4">We're sorry, something went wrong 😕</p>
+        <p className="mb4">We&apos;re sorry, something went wrong 😕</p>
         <Button onClick={() => Router.replace("/")}>Back to menu</Button>
       </Box>
     );

@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useGame, useSelfPlayer, useCurrentPlayer } from "~/hooks/game";
 
 import PlayerName from "~/components/playerName";
@@ -23,15 +25,15 @@ export default function InstructionsArea(props: Props) {
       <Tutorial step={ITutorialStep.WELCOME} placement="below">
         {!isCurrentPlayer && (
           <div className="ttu">
-            It's <PlayerName player={currentPlayer} />
-            's turn
+            It&apos;s <PlayerName player={currentPlayer} />
+            &apos;s turn
           </div>
         )}
         {isCurrentPlayer && (
           <div>
             <div className="ttu mb2">Your turn!</div>
             <div className="mb1">
-              - Give a hint by tapping on your playmates' hand
+              - Give a hint by tapping on your playmates&apos; hand
             </div>
             <div className="mb1">
               - Play or discard by tapping on your own game

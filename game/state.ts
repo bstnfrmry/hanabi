@@ -82,7 +82,7 @@ export type IHand = ICard[];
 
 export interface ICard {
   color: IColor;
-  number: number;
+  number: INumber;
   hint?: ICardHint;
   id?: number;
 }

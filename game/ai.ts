@@ -35,6 +35,49 @@ export interface IHiddenCard {
 }
 
 /**
+ * Check whether the current card can be in hand
+ */
+function isCardPossible(card: ICard, possibleCards: ICard[]): boolean {
+  return (
+    possibleCards.findIndex(
+      c => c.number === card.number && c.color === card.color
+    ) > -1
+  );
+}
+
+export function getHintDeductions(
+  hint: ICardHint,
+  possibleCards: ICard[]
+): IDeduction[] {
+  const deductions: IDeduction[] = [];
+  colors.forEach(color => {
+    numbers.forEach(number => {
+      if (
+        hint.color[color] > 0 &&
+        hint.number[number] > 0 &&
+        isCardPossible({ color, number } as ICard, possibleCards)
+      ) {
+        deductions.push({
+          number: number as INumber,
+          color,
+          deductionLevel: 0
+        } as IDeduction);
+      }
+    });
+  });
+  return deductions;
+}
+
+function getPossibleCards(state: IGameState, player: number): ICard[] {
+  return [...state.drawPile, ...Object.values(state.players)[player].hand].map(
+    c => ({
+      color: c.color,
+      number: c.number
+    })
+  );
+}
+
+/**
  * A deduction is a possible value for a card, inferred from different deduction levels.
  * Level 0: all possible values (color, number) given the card's hints are of level 0 (or more)
  * Level 1: all possible values given the card's hints and all observable cards (other players games, discard pile) are of level 1 (or more)
@@ -77,50 +120,7 @@ export function gameStateToGameView(gameState: IGameState): IGameView {
   return state;
 }
 
-export function getHintDeductions(
-  hint: ICardHint,
-  possibleCards: ICard[]
-): IDeduction[] {
-  let deductions: IDeduction[] = [];
-  colors.forEach(color => {
-    numbers.forEach(number => {
-      if (
-        hint.color[color] > 0 &&
-        hint.number[number] > 0 &&
-        isCardPossible({ color, number } as ICard, possibleCards)
-      ) {
-        deductions.push({
-          number: number as INumber,
-          color,
-          deductionLevel: 0
-        } as IDeduction);
-      }
-    });
-  });
-  return deductions;
-}
-
-function getPossibleCards(state: IGameState, player: number): ICard[] {
-  return [...state.drawPile, ...Object.values(state.players)[player].hand].map(
-    c => ({
-      color: c.color,
-      number: c.number
-    })
-  );
-}
-
-/**
- * Check whether the current card can be in hand
- */
-function isCardPossible(card: ICard, possibleCards: ICard[]): boolean {
-  return (
-    possibleCards.findIndex(
-      c => c.number === card.number && c.color === card.color
-    ) > -1
-  );
-}
-
-function commitViewAction(state: IGameView, action: IAction): IGameView {
+export function commitViewAction(state: IGameView, action: IAction): IGameView {
   // change how players change their views given a certain action
   const newState = commitAction(state, action) as IGameView;
   newState.gameViews = state.gameViews;
@@ -133,11 +133,7 @@ function commitViewAction(state: IGameView, action: IAction): IGameView {
   return newState;
 }
 
-export function chooseAction(
-  state: IGameView,
-  lookAhead: number = 0,
-  lookBehind: number = 0
-): IAction {
+export function chooseAction(state: IGameView): IAction {
   // this function finds the most suitable action given the current player's playerView (what they know about the game)
   // first only implement the case where we play the best card with level 1 deductions
   // then when it works make the function:
@@ -177,12 +173,12 @@ export function chooseAction(
       const pIndex = (state.currentPlayer + i) % state.options.playersCount;
       const player = Object.values(state.players)[pIndex];
 
-      for (let card of player.hand) {
+      for (const card of player.hand) {
         if (
           isPlayable(card, state.playedCards) &&
           (card.hint.color[card.color] < 2 || card.hint.number[card.number] < 2)
         ) {
-          let type = card.hint.color[card.color] < 2 ? "color" : "number";
+          const type = card.hint.color[card.color] < 2 ? "color" : "number";
           return {
             action: "hint",
             from: state.currentPlayer,

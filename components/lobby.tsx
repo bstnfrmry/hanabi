@@ -7,7 +7,7 @@ import { useGame, useSelfPlayer } from "../hooks/game";
 import Button, { IButtonSize } from "~/components/ui/button";
 import PlayerName from "~/components/playerName";
 
-const Emojis = ["🐶", "🦊", "🐸", "🦋", "🐯", "🐱"];
+export const Emojis = ["🐶", "🦊", "🐸", "🦋", "🐯", "🐱"];
 
 export const BotEmojis = ["🤖", "👽", "👾", "🤡"];
 
@@ -69,7 +69,7 @@ export default function Lobby(props: Props) {
               </div>
             </div>
             {selfPlayer && (
-              <Button disabled={!gameFull} onClick={onStartGame}>
+              <Button disabled={!gameFull} onClick={() => onStartGame()}>
                 Start game
               </Button>
             )}
@@ -112,7 +112,12 @@ export default function Lobby(props: Props) {
         <div className="flex items-center justify-between mt4">
           <div className="flex flex-column mr2 f7 f4-l">
             <span className="ttu mb1">Share this game</span>
-            <a href={shareLink} target="_blank" className="gray flex-1">
+            <a
+              href={shareLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="gray flex-1"
+            >
               {shareLink}
             </a>
           </div>

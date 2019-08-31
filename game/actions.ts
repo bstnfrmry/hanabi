@@ -15,6 +15,74 @@ import IGameState, {
   INumber
 } from "./state";
 
+export const colors: IColor[] = [
+  IColor.WHITE,
+  IColor.BLUE,
+  IColor.RED,
+  IColor.GREEN,
+  IColor.YELLOW,
+  IColor.MULTICOLOR
+];
+
+export const numbers: INumber[] = [1, 2, 3, 4, 5];
+
+const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
+
+export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
+  const isPreviousHere =
+    card.number === 1 || // first card on the pile
+    findIndex(
+      playedCards,
+      c => card.number === c.number + 1 && card.color === c.color
+    ) > -1; // previous card belongs to the playedCards
+
+  const isSameNotHere =
+    findIndex(
+      playedCards,
+      c => c.number === card.number && c.color === card.color
+    ) === -1;
+
+  return isPreviousHere && isSameNotHere;
+}
+
+/**
+ * Side effect function that applies the given hint on a given hand's cards
+ */
+function applyHint(hand: IHand, hint: IHintAction) {
+  hand.forEach(card => {
+    if (card[hint.type] === hint.value) {
+      // positive hint, e.g. card is a red 5 and the hint is "color red"
+      Object.keys(card.hint[hint.type]).forEach(value => {
+        if (value == hint.value) {
+          // == because we want '2' == 2
+          // it has to be this value
+          card.hint[hint.type][value] = 2;
+        } else {
+          // all other values are impossible
+          card.hint[hint.type][value] = 0;
+        }
+      });
+    } else {
+      // negative hint
+      card.hint[hint.type][hint.value] = 0;
+    }
+  });
+}
+
+export function emptyHint(options: IGameOptions): ICardHint {
+  return {
+    color: {
+      blue: 1,
+      red: 1,
+      green: 1,
+      white: 1,
+      yellow: 1,
+      multicolor: options.multicolor ? 1 : 0
+    },
+    number: { 0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
+  };
+}
+
 export function commitAction(state: IGameState, action: IAction): IGameState {
   // the function should be pure
   const s = cloneDeep(state) as IGameState;
@@ -97,61 +165,6 @@ export function getLastState(state: IGameState) {
   };
 }
 
-/**
- * Side effect function that applies the given hint on a given hand's cards
- */
-function applyHint(hand: IHand, hint: IHintAction) {
-  hand.forEach(card => {
-    if (card[hint.type] === hint.value) {
-      // positive hint, e.g. card is a red 5 and the hint is "color red"
-      Object.keys(card.hint[hint.type]).forEach(value => {
-        if (value == hint.value) {
-          // == because we want '2' == 2
-          // it has to be this value
-          card.hint[hint.type][value] = 2;
-        } else {
-          // all other values are impossible
-          card.hint[hint.type][value] = 0;
-        }
-      });
-    } else {
-      // negative hint
-      card.hint[hint.type][hint.value] = 0;
-    }
-  });
-}
-
-export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
-  const isPreviousHere =
-    card.number === 1 || // first card on the pile
-    findIndex(
-      playedCards,
-      c => card.number === c.number + 1 && card.color === c.color
-    ) > -1; // previous card belongs to the playedCards
-
-  const isSameNotHere =
-    findIndex(
-      playedCards,
-      c => c.number === card.number && c.color === card.color
-    ) === -1;
-
-  return isPreviousHere && isSameNotHere;
-}
-
-export function emptyHint(options: IGameOptions): ICardHint {
-  return {
-    color: {
-      blue: 1,
-      red: 1,
-      green: 1,
-      white: 1,
-      yellow: 1,
-      multicolor: options.multicolor ? 1 : 0
-    },
-    number: { 0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
-  };
-}
-
 export function emptyPlayer(id: string, name: string): IPlayer {
   return {
     hand: [],
@@ -160,6 +173,10 @@ export function emptyPlayer(id: string, name: string): IPlayer {
     id,
     bot: false
   };
+}
+
+export function getColors(state: IGameState) {
+  return state.options.multicolor ? colors : colors.slice(0, -1);
 }
 
 export function isGameOver(state: IGameState) {
@@ -176,6 +193,21 @@ export function getScore(state: IGameState) {
 
 export function getMaximumScore(state: IGameState) {
   return state.options.multicolor ? 30 : 25;
+}
+
+export function getPlayedCardsPile(state: IGameState) {
+  const colors = getColors(state);
+
+  return zipObject(
+    colors,
+    colors.map(color => {
+      const topCard = last(
+        state.playedCards.filter(card => card.color === color)
+      );
+
+      return topCard ? topCard.number : 0;
+    })
+  );
 }
 
 /**
@@ -209,42 +241,6 @@ export function getMaximumPossibleScore(state: IGameState): number {
 
   return maxScore;
 }
-
-export function getPlayedCardsPile(state: IGameState) {
-  const colors = getColors(state);
-
-  return zipObject(
-    colors,
-    colors.map(color => {
-      const topCard = last(
-        state.playedCards.filter(card => card.color === color)
-      );
-
-      return topCard ? topCard.number : 0;
-    })
-  );
-}
-
-export function getColors(state: IGameState) {
-  return state.options.multicolor ? colors : colors.slice(0, -1);
-}
-
-/**
- * new game utilities
- */
-
-export const colors: IColor[] = [
-  IColor.WHITE,
-  IColor.BLUE,
-  IColor.RED,
-  IColor.GREEN,
-  IColor.YELLOW,
-  IColor.MULTICOLOR
-];
-
-export const numbers: INumber[] = [1, 2, 3, 4, 5];
-
-const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
 
 export function joinGame(state: IGameState, player: IPlayer): IGameState {
   const game = cloneDeep(state) as IGameState;

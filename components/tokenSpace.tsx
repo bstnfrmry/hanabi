@@ -1,6 +1,7 @@
 import React from "react";
 import { range } from "lodash";
 import posed, { PoseGroup } from "react-pose";
+
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 
 const TokenAnimationWrapper = posed.div({
