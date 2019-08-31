@@ -96,6 +96,7 @@ export default function OtherPlayerArea(props: Props) {
 
               <Button
                 disabled={!pendingHint.type || game.tokens.hints === 0}
+                id="give-hint"
                 style={{ marginTop: "auto" }}
                 text="Give hint"
                 onClick={() =>

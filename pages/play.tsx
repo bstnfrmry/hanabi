@@ -126,7 +126,7 @@ export default function Play() {
         db.ref(`/games/${gameId}/players/${currentPlayer.index}/reaction`).set(
           null
         );
-      }, 3000);
+      }, game.options.botsWait);
     });
   }, [game, game ? game.currentPlayer : 0, selfPlayer]);
 
@@ -135,7 +135,7 @@ export default function Play() {
 
     await db
       .ref(`/games/${gameId}`)
-      .set(joinGame(game, { id: playerId, ...player, bot: false }));
+      .set(joinGame(game, { id: playerId, ...player }));
 
     router.replace({
       pathname: "/play",
@@ -322,7 +322,7 @@ export default function Play() {
               </div>
 
               {/* Right area */}
-              <div className="flex flex-column h-100 flex-grow-1 overflow-scroll pa1 pl0">
+              <div className="flex flex-column h-100 flex-grow-1 overflow-hidden pa1 pl0">
                 <GameBoard
                   onMenuClick={onMenuClick}
                   onRollback={onRollback}

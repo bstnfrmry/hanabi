@@ -38,6 +38,7 @@ export interface IGameOptions {
   private: boolean;
   hintsLevel: IGameHintsLevel;
   turnsHistory: boolean;
+  botsWait: number;
 }
 
 export enum IGameHintsLevel {

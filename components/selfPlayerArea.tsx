@@ -58,6 +58,7 @@ export default function SelfPlayerArea(props: Props) {
                 <Button
                   key={action}
                   className="mr2"
+                  id={action}
                   text={action}
                   onClick={() =>
                     onCommitAction({

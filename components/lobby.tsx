@@ -5,7 +5,7 @@ import React, { useState } from "react";
 
 import PlayerName from "~/components/playerName";
 import Button, { ButtonSize } from "~/components/ui/button";
-import { Select, TextInput } from "~/components/ui/forms";
+import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 
@@ -34,6 +34,7 @@ export default function Lobby(props: Props) {
   const router = useRouter();
   const [name, setName] = useState(generateName().dashed);
   const [emoji, setEmoji] = useState(availableEmojis[0]);
+  const [bot, setBot] = useState(false);
 
   const shareLink = `${window.location.origin}/play?gameId=${router.query.gameId}`;
   const inputRef = React.createRef<HTMLInputElement>();
@@ -64,6 +65,7 @@ export default function Lobby(props: Props) {
                 {selfPlayer && !gameFull && (
                   <a
                     className="underline gray pointer ml3"
+                    id="add-ai"
                     onClick={() => onAddBot()}
                   >
                     <Txt value="+ add AI" />
@@ -74,6 +76,7 @@ export default function Lobby(props: Props) {
             {selfPlayer && (
               <Button
                 disabled={!gameFull}
+                id="start-game"
                 text="Start game"
                 onClick={() => onStartGame()}
               />
@@ -86,25 +89,41 @@ export default function Lobby(props: Props) {
 
         {canJoin && (
           <form
-            className="flex items-center w-100 flex-grow-1"
+            className="flex items-start mt5 w-100 flex-grow-1"
             onSubmit={e => {
               e.preventDefault();
-              onJoinGame({ name, emoji });
+              onJoinGame({ name, emoji, bot });
             }}
           >
             <Select
               className="w3 h2.5 indent mr2 pl1"
+              id="player-emoji"
               options={keyBy(availableEmojis)}
               value={emoji}
               onChange={e => setEmoji(e.target.value)}
             />
-            <TextInput
-              className="flex-grow-1 h2.5 ph3 mr2 ttu"
-              style={{ width: "12rem" }}
-              value={name}
-              onChange={e => setName(e.target.value)}
-            />
-            <Button text="Join" />
+            <div className="flex flex-column justify-center items-end mr2">
+              <TextInput
+                className="flex-grow-1 h2.5 ttu"
+                id="player-name"
+                style={{ width: "12rem" }}
+                value={name}
+                onChange={e => setName(e.target.value)}
+              />
+              <Field
+                label={
+                  <Txt className="gray" size={TxtSize.SMALL} value="Autoplay" />
+                }
+              >
+                <Checkbox
+                  checked={bot}
+                  className="ml2"
+                  id="autoplay"
+                  onChange={e => setBot(e.target.checked)}
+                />
+              </Field>
+            </div>
+            <Button id="join-game" text="Join" />
           </form>
         )}
 

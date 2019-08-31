@@ -28,6 +28,7 @@ export default function Vignette(props: Props) {
         { "bg-main-dark b-gray-light": type === "number" },
         { bw1: selected }
       )}
+      id={`hint-${type}-${value}`}
       style={style}
       onClick={() => onClick && onClick({ type, value })}
     >

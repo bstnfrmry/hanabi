@@ -31,6 +31,7 @@ export default function PlayersBoard(props: Props) {
             <div key={i} className="mb1 mb2-l">
               <PlayerGame
                 active={currentPlayer === otherPlayer}
+                id={`player-game-${i + 1}`}
                 player={otherPlayer}
                 onNotifyPlayer={onNotifyPlayer}
                 onSelectPlayer={onSelectPlayer}
@@ -43,6 +44,7 @@ export default function PlayersBoard(props: Props) {
         <Tutorial step={ITutorialStep.SELF_PLAYER}>
           <PlayerGame
             active={currentPlayer === selfPlayer}
+            id="player-game-self"
             player={selfPlayer}
             self={true}
             onReaction={onReaction}

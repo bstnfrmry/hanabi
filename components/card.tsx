@@ -1,5 +1,11 @@
 import classnames from "classnames";
-import React, { CSSProperties, MouseEventHandler, ReactNode } from "react";
+import React, {
+  Attributes,
+  CSSProperties,
+  HTMLAttributes,
+  MouseEventHandler,
+  ReactNode
+} from "react";
 
 import Hint from "~/components/hint";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -43,7 +49,7 @@ export enum ICardContext {
   OTHER
 }
 
-interface CardWrapperProps {
+interface CardWrapperProps extends HTMLAttributes<HTMLElement> {
   color: string;
   size?: CardSize;
   playable?: boolean;
@@ -63,7 +69,8 @@ export function CardWrapper(props: CardWrapperProps) {
     className = "",
     style = {},
     onClick,
-    children
+    children,
+    ...attributes
   } = props;
 
   const sizeClass = CardClasses[size];
@@ -82,6 +89,7 @@ export function CardWrapper(props: CardWrapperProps) {
       )}
       style={style}
       onClick={onClick}
+      {...attributes}
     >
       {children}
     </div>
@@ -138,6 +146,7 @@ export default function Card(props: Props) {
       className={classnames({ "bw1 z-5": selected }, className)}
       color={color}
       context={context}
+      data-card={PositionMap[position]}
       playable={playable}
       size={size}
       style={style}

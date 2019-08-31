@@ -9,7 +9,7 @@ import React, {
 import Txt, { TxtSize } from "~/components/ui/txt";
 
 interface FieldProps extends LabelHTMLAttributes<HTMLLabelElement> {
-  label: string;
+  label: ReactNode;
 }
 
 export function Field(props: FieldProps) {

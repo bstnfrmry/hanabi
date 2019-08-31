@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import React, { useState } from "react";
+import React, { HTMLAttributes, useState } from "react";
 import Popover from "react-popover";
 
 import Card, { CardSize, ICardContext } from "~/components/card";
@@ -9,7 +9,7 @@ import Txt from "~/components/ui/txt";
 import { IPlayer } from "~/game/state";
 import { useSelfPlayer } from "~/hooks/game";
 
-interface Props {
+interface Props extends HTMLAttributes<HTMLElement> {
   player: IPlayer;
   active?: boolean;
   self?: boolean;
@@ -25,7 +25,8 @@ export default function PlayerGame(props: Props) {
     self = false,
     onSelectPlayer,
     onNotifyPlayer,
-    onReaction
+    onReaction,
+    ...attributes
   } = props;
 
   const [reactionsOpen, setReactionsOpen] = useState(false);
@@ -40,6 +41,7 @@ export default function PlayerGame(props: Props) {
           "b--yellow border-box ba bw2": active
         }
       )}
+      {...attributes}
     >
       <div className="ml1 flex items-center">
         <PlayerName

@@ -1,6 +1,6 @@
 import React from "react";
 
-import PlayerName from "~/components/playerName";
+import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -26,7 +26,7 @@ export default function InstructionsArea(props: Props) {
         {!isCurrentPlayer && (
           <Txt uppercase className="db mb3" size={TxtSize.MEDIUM}>
             {"It's "}
-            <PlayerName player={currentPlayer} />
+            <PlayerName player={currentPlayer} size={PlayerNameSize.MEDIUM} />
             {"s turn"}
           </Txt>
         )}
@@ -35,6 +35,7 @@ export default function InstructionsArea(props: Props) {
             <Txt
               uppercase
               className="mb3"
+              id="your-turn"
               size={TxtSize.MEDIUM}
               value="Your turn!"
             />

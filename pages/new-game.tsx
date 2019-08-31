@@ -18,6 +18,12 @@ const HintsLevels = {
   [IGameHintsLevel.NONE]: "Do not show hints"
 };
 
+const BotsSpeeds = {
+  100: "Faster",
+  1000: "Fast",
+  3000: "Slow"
+};
+
 const DefaultSeed = `${Math.round(Math.random() * 10000)}`;
 
 export default function NewGame() {
@@ -32,6 +38,7 @@ export default function NewGame() {
   const [private_, setPrivate] = useState(false);
   const [hintsLevel, setHintsLevel] = useState(IGameHintsLevel.DIRECT);
   const [turnsHistory, setTurnsHistory] = useState(true);
+  const [botsWait, setBotsWait] = useState(3000);
 
   async function onCreateGame() {
     const gameId = shortid();
@@ -46,7 +53,8 @@ export default function NewGame() {
         preventLoss,
         private: private_,
         hintsLevel,
-        turnsHistory
+        turnsHistory,
+        botsWait
       })
     );
 
@@ -61,6 +69,7 @@ export default function NewGame() {
         <Field className="pb2 mb2 bb b--yellow-light" label="Players">
           <Select
             className="w3 indent"
+            id="players-count"
             options={keyBy(PlayerCounts)}
             value={playersCount}
             onChange={e => setPlayersCount(+e.target.value)}
@@ -70,6 +79,7 @@ export default function NewGame() {
         <Field className="pb2 mb2 bb b--yellow-light" label="Multicolor">
           <Checkbox
             checked={multicolor}
+            id="multicolor"
             onChange={e => setMulticolor(e.target.checked)}
           />
         </Field>
@@ -83,6 +93,7 @@ export default function NewGame() {
 
         <a
           className="mv4 self-end underline pointer silver"
+          id="advanced-options"
           onClick={() => setShowAdvanced(!showAdvanced)}
         >
           <Txt value="Advanced options" />
@@ -93,6 +104,7 @@ export default function NewGame() {
             <Field className="pb2 mb2 bb b--yellow-light" label="Seed">
               <TextInput
                 className="w3 tr"
+                id="seed"
                 value={seed}
                 onChange={e => setSeed(e.target.value)}
               />
@@ -130,11 +142,22 @@ export default function NewGame() {
                 onChange={e => setTurnsHistory(e.target.checked)}
               />
             </Field>
+
+            <Field className="pb2 mb2 bb b--yellow-light" label="Bots speed">
+              <Select
+                className="pl3"
+                id="bots-speed"
+                options={BotsSpeeds}
+                value={botsWait}
+                onChange={e => setBotsWait(+e.target.value)}
+              />
+            </Field>
           </>
         )}
 
         <Button
           className="self-end mt3"
+          id="new-game"
           size={ButtonSize.LARGE}
           text="New game"
           onClick={onCreateGame}

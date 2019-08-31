@@ -155,6 +155,7 @@ export default function Tutorial(props: Props) {
               <>
                 <Button
                   className="mr1 mr2-l"
+                  id="skip-tutorial"
                   size={ButtonSize.TINY}
                   text="Skip"
                   onClick={skip}

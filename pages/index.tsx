@@ -26,18 +26,21 @@ export default function Home() {
       <div className="flex flex-column ml5">
         <Button
           className="mb4"
+          id="create-room"
           size={ButtonSize.LARGE}
           text="Create a room"
           onClick={() => router.push("/new-game")}
         />
         <Button
           className="mb4"
+          id="join-room"
           size={ButtonSize.LARGE}
           text="Join a room"
           onClick={() => router.push("/join-game")}
         />
         {lastGame && (
           <Button
+            id="rejoin-game"
             size={ButtonSize.LARGE}
             text="Rejoin game"
             onClick={() =>
