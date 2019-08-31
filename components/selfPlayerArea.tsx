@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Button from "~/components/ui/button";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import { useCurrentPlayer, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
@@ -22,33 +23,35 @@ export default function SelfPlayerArea(props: Props) {
 
   return (
     <div className="flex flex-column flex-grow-1">
-      <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1 mb2">
-        <a onClick={() => onCloseArea()}>
-          Your game
-          <span className="ml2">&times;</span>
-        </a>
-      </div>
+      <a className="pb1 pb2-l ml1 mb2" onClick={() => onCloseArea()}>
+        <Txt uppercase size={TxtSize.MEDIUM} value="Your game" />
+        <Txt className="ml2" value="×" />
+      </a>
       <div className="flex flex-row pb2">
         {selfPlayer.hand.map((card, i) => (
           <Card
             key={i}
             card={card}
+            className="ma1"
+            context={ICardContext.TARGETED_PLAYER}
             hidden={true}
             position={i}
-            size={CardSize.LARGE}
-            context={ICardContext.TARGETED_PLAYER}
-            className="ma1"
-            onClick={() => selectCard(i)}
             selected={selectedCard === i}
+            size={CardSize.LARGE}
+            onClick={() => selectCard(i)}
           />
         ))}
       </div>
       {selfPlayer === currentPlayer && (
         <>
-          <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1 mb2 mt5">
-            {hasSelectedCard && <>Card {PositionMap[selectedCard]} selected</>}
-            {!hasSelectedCard && "Select a card"}
-          </div>
+          <Txt
+            className="pb1 pb2-l ml1 mb2 mt5"
+            value={
+              hasSelectedCard
+                ? `Card ${PositionMap[selectedCard]} selected`
+                : "Select a card"
+            }
+          />
           {hasSelectedCard && (
             <div className="flex flex-row pb2 ml1">
               {["play", "discard"].map(action => (

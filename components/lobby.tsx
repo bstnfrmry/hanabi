@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import PlayerName from "~/components/playerName";
 import Button, { ButtonSize } from "~/components/ui/button";
 import { Select, TextInput } from "~/components/ui/forms";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 
 export const Emojis = ["🐶", "🦊", "🐸", "🦋", "🐯", "🐱"];
@@ -47,24 +48,25 @@ export default function Lobby(props: Props) {
         {game.players.length > 0 && (
           <div className="flex justify-between items-start flex-grow-1 align-start w-100 mb2">
             <div>
-              <h2 className="mt0 ttu f5 f3-l flex items-center">
-                Players
-                <span className="ml2 f7 f5-l gray">
-                  · {game.players.length} / {game.options.playersCount}
-                </span>
-              </h2>
+              <div className="mb3 ttu flex items-center">
+                <Txt size={TxtSize.MEDIUM} value="Players" />
+                <Txt
+                  className="ml2 gray"
+                  value={`· ${game.players.length} / ${game.options.playersCount}`}
+                />
+              </div>
               <div className="flex flex-column justify-center mb2">
                 {game.players.map((player, i) => (
-                  <div key={i} className="mb2 f3-l ttu">
-                    <PlayerName player={player} explicit={true} />
+                  <div key={i} className="mb2">
+                    <PlayerName explicit={true} player={player} />
                   </div>
                 ))}
                 {selfPlayer && !gameFull && (
                   <a
-                    onClick={() => onAddBot()}
                     className="underline gray pointer ml3"
+                    onClick={() => onAddBot()}
                   >
-                    + add AI
+                    <Txt value="+ add AI" />
                   </a>
                 )}
               </div>
@@ -72,14 +74,14 @@ export default function Lobby(props: Props) {
             {selfPlayer && (
               <Button
                 disabled={!gameFull}
-                onClick={() => onStartGame()}
                 text="Start game"
+                onClick={() => onStartGame()}
               />
             )}
           </div>
         )}
         {game.players.length === 0 && (
-          <h2 className="mt0 ttu f5 f3-l">Game is empty</h2>
+          <Txt size={TxtSize.MEDIUM} value="Game is empty" />
         )}
 
         {canJoin && (
@@ -91,13 +93,13 @@ export default function Lobby(props: Props) {
             }}
           >
             <Select
-              options={keyBy(availableEmojis)}
               className="w3 h2.5 indent mr2 pl1"
+              options={keyBy(availableEmojis)}
               value={emoji}
               onChange={e => setEmoji(e.target.value)}
             />
             <TextInput
-              className="flex-grow-1 h2.5 ph3 mr2"
+              className="flex-grow-1 h2.5 ph3 mr2 ttu"
               style={{ width: "12rem" }}
               value={name}
               onChange={e => setName(e.target.value)}
@@ -107,25 +109,25 @@ export default function Lobby(props: Props) {
         )}
 
         <div className="flex items-center justify-between mt4">
-          <div className="flex flex-column mr2 f7 f4-l">
-            <span className="ttu mb1">Share this game</span>
+          <div className="flex flex-column mr2">
+            <Txt className="mb1" value="Share this game" />
             <a
-              href={shareLink}
-              target="_blank"
-              rel="noopener noreferrer"
               className="gray flex-1"
+              href={shareLink}
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              {shareLink}
+              <Txt value={shareLink} />
             </a>
           </div>
           <input
-            className="fixed top--2 left--2"
             ref={inputRef}
+            readOnly
+            className="fixed top--2 left--2"
             type="text"
             value={shareLink}
-            readOnly
           />
-          <Button size={ButtonSize.SMALL} onClick={copy} text="Copy" />
+          <Button size={ButtonSize.SMALL} text="Copy" onClick={copy} />
         </div>
       </div>
     </div>

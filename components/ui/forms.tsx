@@ -23,7 +23,7 @@ export function Field(props: FieldProps) {
         className
       )}
     >
-      <Txt size={TxtSize.MEDIUM} content={label} />
+      <Txt size={TxtSize.MEDIUM} value={label} />
       {children}
     </label>
   );
@@ -36,8 +36,8 @@ export function TextInput(props: InputProps) {
 
   return (
     <input
-      type="text"
       className={classnames("h2 pa2 bg-white ba br2 b--yellow", className)}
+      type="text"
       {...attributes}
     />
   );
@@ -48,8 +48,8 @@ export function Checkbox(props: InputProps) {
 
   return (
     <input
-      type="checkbox"
       className={classnames("w1 h1", className)}
+      type="checkbox"
       {...attributes}
     />
   );

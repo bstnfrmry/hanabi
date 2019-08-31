@@ -7,6 +7,7 @@ import TokenSpace from "~/components/tokenSpace";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Box from "~/components/ui/box";
 import Button, { ButtonSize } from "~/components/ui/button";
+import Txt from "~/components/ui/txt";
 import {
   getMaximumPossibleScore,
   getMaximumScore,
@@ -31,25 +32,35 @@ export default function GameBoard(props: Props) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <Box className="mb1" borderColor="yellow-light">
+    <Box borderColor="yellow-light" className="mb1">
       <div className="flex justify-between flex-column-l items-end items-start-l">
         <div className="flex flex-column mb5-l">
-          <div className="f7 f3-l ttu">
-            Score: {score} / {maxPossibleScore}
+          <div>
+            <Txt uppercase value={`Score: ${score} / ${maxPossibleScore}`} />
+
             {maxScore !== maxPossibleScore && (
-              <span className="strike ml1 gray">{maxScore}</span>
+              <Txt uppercase className="strike ml1 gray" value={maxScore} />
             )}
+
             {game.drawPile.length < 5 && (
-              <div className="ml1 inline-flex">
+              <div className="ml2 inline-flex">
                 ·
-                <span className="yellow ml2">
-                  {game.drawPile.length} cards left
-                </span>
+                <Txt
+                  uppercase
+                  className="yellow ml2"
+                  value={`${game.drawPile.length} cards left`}
+                />
               </div>
             )}
+
             {game.actionsLeft <= game.options.playersCount && (
-              <div className="ml1 inline-flex">
-                ·<span className="red ml2">{game.actionsLeft} turns left</span>
+              <div className="ml2 inline-flex">
+                ·
+                <Txt
+                  uppercase
+                  className="red ml2"
+                  value={`${game.actionsLeft} turns left`}
+                />
               </div>
             )}
           </div>
@@ -67,7 +78,7 @@ export default function GameBoard(props: Props) {
                   style={{ top: `-${i / 2}px` }}
                 >
                   <CardWrapper key={card.id} color="main">
-                    {i + 1}
+                    <Txt className="outline-main-dark" value={i + 1} />
                   </CardWrapper>
                 </div>
               ))}
@@ -77,7 +88,7 @@ export default function GameBoard(props: Props) {
             className="pointer relative mr3"
             onClick={() => onSelectDiscard()}
           >
-            <Tutorial step={ITutorialStep.DISCARD_PILE} placement="left">
+            <Tutorial placement="left" step={ITutorialStep.DISCARD_PILE}>
               <CardWrapper color="light-silver relative">
                 {game.discardPile.map((card, i) => (
                   <div
@@ -86,7 +97,7 @@ export default function GameBoard(props: Props) {
                     style={{ top: `-${i / 2}px` }}
                   >
                     <CardWrapper key={card.id} color="light-silver">
-                      <div className="absolute pointer">{i + 1}</div>
+                      <Txt className="absolute pointer" value={i + 1} />
                     </CardWrapper>
                   </div>
                 ))}
@@ -108,10 +119,10 @@ export default function GameBoard(props: Props) {
             <HomeButton className="mb1" onClick={onMenuClick} />
             {game.options.allowRollback && (
               <Button
-                size={ButtonSize.TINY}
                 disabled={!game.history.length}
-                onClick={() => onRollback()}
+                size={ButtonSize.TINY}
                 text="⟲"
+                onClick={() => onRollback()}
               />
             )}
           </div>

@@ -23,10 +23,10 @@ export default function HomeButton(props: Props) {
 
   return (
     <Button
-      size={ButtonSize.TINY}
-      onClick={onMenuClick}
       className={className}
+      size={ButtonSize.TINY}
       text="☰"
+      onClick={onMenuClick}
     />
   );
 }

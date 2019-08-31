@@ -1,4 +1,3 @@
-import { range } from "lodash";
 import React from "react";
 
 import PlayerGame from "~/components/playerGame";
@@ -18,12 +17,11 @@ export default function PlayersBoard(props: Props) {
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
 
-  // all the other players in order (starting with the next one)
-  const otherPlayers = selfPlayer
-    ? range(game.players.length - 1).map(
-        i => game.players[(i + selfPlayer.index + 1) % game.players.length]
-      )
-    : [];
+  const position = selfPlayer ? selfPlayer.index : game.players.length;
+  const otherPlayers = [
+    ...game.players.slice(0, position),
+    ...game.players.slice(position + 1)
+  ];
 
   return (
     <>
@@ -32,10 +30,10 @@ export default function PlayersBoard(props: Props) {
           {otherPlayers.map((otherPlayer, i) => (
             <div key={i} className="mb1 mb2-l">
               <PlayerGame
-                player={otherPlayer}
-                onSelectPlayer={onSelectPlayer}
-                onNotifyPlayer={onNotifyPlayer}
                 active={currentPlayer === otherPlayer}
+                player={otherPlayer}
+                onNotifyPlayer={onNotifyPlayer}
+                onSelectPlayer={onSelectPlayer}
               />
             </div>
           ))}
@@ -44,11 +42,11 @@ export default function PlayersBoard(props: Props) {
       {selfPlayer && (
         <Tutorial step={ITutorialStep.SELF_PLAYER}>
           <PlayerGame
+            active={currentPlayer === selfPlayer}
             player={selfPlayer}
             self={true}
-            active={currentPlayer === selfPlayer}
-            onSelectPlayer={onSelectPlayer}
             onReaction={onReaction}
+            onSelectPlayer={onSelectPlayer}
           />
         </Tutorial>
       )}

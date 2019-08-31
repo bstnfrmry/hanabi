@@ -32,7 +32,6 @@
   "devDependencies": {
     "@types/node": "^12.6.9",
     "@types/react": "^16.8.24",
-    "@types/shuffle-seed": "^1.1.0",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "babel-plugin-root-import": "^6.4.1",

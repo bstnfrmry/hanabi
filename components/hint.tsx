@@ -1,6 +1,7 @@
 import classnames from "classnames";
 import React from "react";
 
+import Txt from "~/components/ui/txt";
 import { IColor, IHintLevel, IHintType, INumber } from "~/game/state";
 
 interface Props {
@@ -20,19 +21,19 @@ export default function Hint(props: Props) {
         {hint !== 0 && (
           <div
             className={classnames(
-              "outline-main-dark pointer flex items-center justify-center br-100 h-100 w-100 fw2 white f7 f4-l",
+              "outline-main-dark pointer flex items-center justify-center br-100 h-100 w-100 white",
               { [`bg-${color}`]: type === "color" },
               { [`ba bw1  b--${color}`]: type === "color" && hint === 2 },
               { [`ba`]: type === "number" && hint === 2 }
             )}
           >
-            {type === "number" && value}
+            {type === "number" && <Txt value={value} />}
           </div>
         )}
         {hint === 0 && (
-          <div className="w-100 h-100 relative flex justify-center items-center fw2">
+          <div className="w-100 h-100 relative flex justify-center items-center">
             {type === "number" && (
-              <div className="absolute white o-50">{value}</div>
+              <Txt className="absolute white o-50" value={value} />
             )}
             <div
               className={`absolute w-100 o-80 rotate-135 bg-${color} b--${color}`}

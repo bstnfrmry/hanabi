@@ -3,6 +3,7 @@ import { groupBy, sortBy } from "lodash";
 import React from "react";
 
 import Card, { CardSize, CardWrapper, ICardContext } from "~/components/card";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import { getColors } from "~/game/actions";
 import { ICard, IColor } from "~/game/state";
 import { useGame } from "~/hooks/game";
@@ -16,7 +17,7 @@ function CardPile(props: CardPileProps) {
   const { cards, color } = props;
 
   if (!cards.length) {
-    return <CardWrapper color={color} size={CardSize.LARGE} className="ma1" />;
+    return <CardWrapper className="ma1" color={color} size={CardSize.LARGE} />;
   }
 
   const sortedCards = sortBy(cards, card => card.number);
@@ -27,9 +28,9 @@ function CardPile(props: CardPileProps) {
         <Card
           key={i}
           card={card}
+          className={classnames("ma1", { "nt2 nt3-l": i > 0 })}
           context={ICardContext.DISCARDED}
           size={CardSize.LARGE}
-          className={classnames("ma1", { "nt2 nt3-l": i > 0 })}
         />
       ))}
     </div>
@@ -52,10 +53,10 @@ export default function DiscardArea(props: Props) {
 
   return (
     <div className="flex flex-column flex-grow-1">
-      <div className="flex flex-row pb1 pb2-l f7 f3-l fw2 ttu ml1 mb2">
+      <div className="flex flex-row pb1 pb2-l ttu ml1 mb2">
         <a onClick={() => onCloseArea()}>
-          Discarded cards
-          <span className="ml2">&times;</span>
+          <Txt uppercase size={TxtSize.MEDIUM} value="Discarded cards" />
+          <Txt className="ml2" value="×" />
         </a>
       </div>
       <div className="flex w-100">

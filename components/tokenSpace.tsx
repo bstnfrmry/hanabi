@@ -1,8 +1,10 @@
+import classnames from "classnames";
 import { range } from "lodash";
 import React from "react";
 import posed, { PoseGroup } from "react-pose";
 
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
+import Txt from "~/components/ui/txt";
 
 const TokenAnimationWrapper = posed.div({
   enter: { opacity: 1, y: 0, transition: { duration: 1000 } },
@@ -19,17 +21,14 @@ function Token(props: TokenProps) {
 
   if (!amount) {
     return (
-      <div className="relative h2 w2 h3-l w3-l mr2">
-        <div
-          className={[
-            "absolute ba flex items-center justify-center br-100 h2 w2 h3-l w3-l fw2 f5 f3-l o-70 gray ba",
-            `bg-${color}`,
-            `b--${color}`
-          ].join(" ")}
-        >
-          0
-        </div>
-      </div>
+      <Txt
+        className={classnames(
+          "ba flex items-center justify-center br-100 h2 w2 h3-l w3-l o-70 gray ba mr2",
+          `bg-${color}`,
+          `b--${color}`
+        )}
+        value={0}
+      />
     );
   }
 
@@ -38,18 +37,17 @@ function Token(props: TokenProps) {
       <PoseGroup>
         {range(amount).map(i => (
           <TokenAnimationWrapper key={i}>
-            <div
+            <Txt
+              className={classnames(
+                "outline-main-dark absolute ba flex items-center justify-center br-100 h2 w2 h3-l w3-l ba mr2",
+                `bg-${color}`,
+                `b--${color}`
+              )}
               style={{
                 top: `-${i * 3}px`
               }}
-              className={[
-                "absolute ba flex items-center justify-center br-100 h2 w2 h3-l w3-l fw2 f5 f3-l white ba",
-                `bg-${color}`,
-                `b--${color}`
-              ].join(" ")}
-            >
-              {i + 1}
-            </div>
+              value={i + 1}
+            />
           </TokenAnimationWrapper>
         ))}
       </PoseGroup>
@@ -67,11 +65,11 @@ export default function TokenSpace(props: Props) {
 
   return (
     <div className="flex flex-column-l">
-      <Tutorial step={ITutorialStep.HINT_TOKENS} placement="left">
-        <Token color="hints" amount={hints} />
+      <Tutorial placement="left" step={ITutorialStep.HINT_TOKENS}>
+        <Token amount={hints} color="hints" />
       </Tutorial>
-      <Tutorial step={ITutorialStep.STRIKE_TOKENS} placement="left">
-        <Token color="strikes" amount={strikes} />
+      <Tutorial placement="left" step={ITutorialStep.STRIKE_TOKENS}>
+        <Token amount={strikes} color="strikes" />
       </Tutorial>
     </div>
   );

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
-import PlayerName from "~/components/playerName";
+import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import Button from "~/components/ui/button";
+import Txt from "~/components/ui/txt";
 import Vignettes from "~/components/vignettes";
 import { ICard, IHintAction, IPlayer } from "~/game/state";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
@@ -58,52 +59,49 @@ export default function OtherPlayerArea(props: Props) {
 
   return (
     <div className="flex flex-column flex-grow-1">
-      <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1 mb2">
-        <a onClick={() => onCloseArea()} className="flex-grow-1">
-          <PlayerName player={player} />
-          &apos;s game
-          <span className="ml2">&times;</span>
+      <div className="flex flex-row pb1 pb2-l ttu ml1 mb2">
+        <a className="flex-grow-1" onClick={() => onCloseArea()}>
+          <PlayerName player={player} size={PlayerNameSize.MEDIUM} />
+          <Txt className="ml2" value="×" />
         </a>
-        <a onClick={() => onImpersonate(player)}>🕵🏻‍♀️</a>
+        <a onClick={() => onImpersonate(player)}>
+          <Txt value="🕵🏻‍♀️" />
+        </a>
       </div>
       <div className="flex flex-row pb2">
         {player.hand.map((card, i) => (
           <Card
             key={i}
             card={card}
+            className="ma1"
+            context={ICardContext.TARGETED_PLAYER}
             hidden={false}
             position={i}
-            size={CardSize.LARGE}
-            context={ICardContext.TARGETED_PLAYER}
-            className="ma1"
             selected={isCardHintable(pendingHint, card)}
+            size={CardSize.LARGE}
           />
         ))}
       </div>
       {selfPlayer === currentPlayer && (
         <>
-          <div className="flex flex-row pb1 pb2-l f7 f4-l fw2 ttu ml1 mb2 mt5">
-            Select a hint below
-          </div>
-          <div className="flex flex-row pb2 ml1">
+          <Txt className="mb2 mt5" value="Select a hint below" />
+          <div className="flex flex-row pb2">
             <Vignettes
-              onSelect={action => setPendingHint(action)}
               pendingHint={pendingHint}
+              onSelect={action => setPendingHint(action)}
             />
             <div className="ml2">
-              <div className="h2 f6 f4-l fw3 i overflow-hidden">
-                {textualHint(pendingHint, player.hand)}
-              </div>
+              <Txt italic value={textualHint(pendingHint, player.hand)} />
               <Button
                 disabled={!pendingHint.type || game.tokens.hints === 0}
                 text="Give hint"
                 onClick={() =>
                   onCommitAction({
                     action: "hint",
-                    from: game.currentPlayer,
+                    from: currentPlayer.index,
                     to: player.index,
                     ...pendingHint
-                  } as IHintAction)
+                  })
                 }
               />
             </div>

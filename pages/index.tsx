@@ -22,31 +22,31 @@ export default function Home() {
     <Box className="w-100 h-100 flex flex-row justify-center items-center bg-main-dark">
       <div className="flex flex-column items-center">
         <img className="mw4 mb4" src="/static/hanabi.png" />
-        <Txt size={TxtSize.LARGE} content="Hanabi" />
+        <Txt size={TxtSize.LARGE} value="Hanabi" />
       </div>
       <div className="flex flex-column ml5">
         <Button
-          size={ButtonSize.LARGE}
           className="mb4"
-          onClick={() => router.push("/new-game")}
+          size={ButtonSize.LARGE}
           text="Create a room"
+          onClick={() => router.push("/new-game")}
         />
         <Button
-          size={ButtonSize.LARGE}
           className="mb4"
-          onClick={() => router.push("/join-game")}
+          size={ButtonSize.LARGE}
           text="Join a room"
+          onClick={() => router.push("/join-game")}
         />
         {lastGame && (
           <Button
             size={ButtonSize.LARGE}
+            text="Rejoin game"
             onClick={() =>
               router.replace({
                 pathname: "/play",
                 query: lastGame
               })
             }
-            text="Rejoin game"
           />
         )}
       </div>

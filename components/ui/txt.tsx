@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import React, { HTMLAttributes } from "react";
+import React, { HTMLAttributes, ReactNode } from "react";
 
 export enum TxtSize {
   SMALL = "small",
@@ -7,23 +7,44 @@ export enum TxtSize {
   LARGE = "large"
 }
 
-const SizeMap = {
-  [TxtSize.SMALL]: "",
+const TxtClasses = {
+  [TxtSize.SMALL]: "f7",
   [TxtSize.MEDIUM]: "f4",
-  [TxtSize.LARGE]: "ttu f2 tracked outline-main-dark"
+  [TxtSize.LARGE]: "ttu f2 tracked"
 };
 
 interface Props extends HTMLAttributes<HTMLSpanElement> {
+  italic?: boolean;
+  uppercase?: boolean;
+  multiline?: boolean;
   size?: TxtSize;
-  content?: string;
+  value?: ReactNode;
 }
 
 export default function Txt(props: Props) {
-  const { size = TxtSize.SMALL, content, children, ...attributes } = props;
+  const {
+    size = TxtSize.SMALL,
+    italic = false,
+    uppercase = false,
+    multiline = false,
+    value: content,
+    children,
+    className,
+    ...attributes
+  } = props;
 
   return (
-    <span className={classnames(SizeMap[size], classnames)} {...attributes}>
-      {content || children}
+    <span
+      className={classnames(
+        TxtClasses[size],
+        { ttu: uppercase },
+        { i: italic },
+        { pre: multiline },
+        className
+      )}
+      {...attributes}
+    >
+      {content !== undefined ? content : children}
     </span>
   );
 }

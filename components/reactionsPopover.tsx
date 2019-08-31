@@ -1,5 +1,6 @@
 import React from "react";
 
+import Txt, { TxtSize } from "~/components/ui/txt";
 import { useSelfPlayer } from "~/hooks/game";
 
 const ClearReaction = "🚫";
@@ -16,11 +17,11 @@ export default function ReactionsPopover(props: Props) {
   const selfPlayer = useSelfPlayer();
 
   return (
-    <div className="flex items-center justify-center b--yellow ba bw1 bg-white pa2 pt3 pr3 br2 main-dark f2">
+    <div className="flex items-center justify-center b--yellow ba bw1 bg-white pa2 pt3 pr3 br2">
       {Reactions.map((reaction, i) => (
-        <span
-          className="mh1 pointer"
+        <a
           key={i}
+          className="mh1"
           onClick={() => {
             onClose();
             onReaction(null);
@@ -29,19 +30,19 @@ export default function ReactionsPopover(props: Props) {
             });
           }}
         >
-          {reaction}
-        </span>
+          <Txt size={TxtSize.LARGE} value={reaction} />
+        </a>
       ))}
       {selfPlayer.reaction && (
-        <span
-          className="ml4 pointer f4"
+        <a
+          className="ml4"
           onClick={() => {
             onClose();
             onReaction(null);
           }}
         >
-          {ClearReaction}
-        </span>
+          <Txt size={TxtSize.MEDIUM} value={ClearReaction} />
+        </a>
       )}
     </div>
   );

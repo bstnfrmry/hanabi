@@ -14,7 +14,7 @@ export default function CardStack(props: Props) {
   const { cards, color } = props;
 
   if (!cards.length) {
-    return <CardWrapper color={color} size={CardSize.MEDIUM} className="ma1" />;
+    return <CardWrapper className="ma1" color={color} size={CardSize.MEDIUM} />;
   }
 
   const sortedCards = sortBy(cards, card => card.number);
@@ -25,9 +25,9 @@ export default function CardStack(props: Props) {
         <Card
           key={i}
           card={card}
+          className={classnames("ma1", { "nt3 nt4-l": i > 0 })}
           context={ICardContext.DISCARDED}
           size={CardSize.MEDIUM}
-          className={classnames("ma1", { "nt3 nt4-l": i > 0 })}
         />
       ))}
     </div>

@@ -59,7 +59,7 @@ export default function NewGame() {
       <HomeButton className="absolute top-1 right-1" />
 
       <div className="flex flex-column justify-center w-50">
-        <Field label="Players" className="pb2 mb2 bb b--yellow-light">
+        <Field className="pb2 mb2 bb b--yellow-light" label="Players">
           <Select
             className="w3 indent"
             options={keyBy(PlayerCounts)}
@@ -68,7 +68,7 @@ export default function NewGame() {
           />
         </Field>
 
-        <Field label="Multicolor" className="pb2 mb2 bb b--yellow-light">
+        <Field className="pb2 mb2 bb b--yellow-light" label="Multicolor">
           <Checkbox
             checked={multicolor}
             onChange={e => setMulticolor(e.target.checked)}
@@ -86,12 +86,12 @@ export default function NewGame() {
           className="mv4 self-end underline pointer silver"
           onClick={() => setShowAdvanced(!showAdvanced)}
         >
-          <Txt content="Advanced options" />
+          <Txt value="Advanced options" />
         </a>
 
         {showAdvanced && (
           <>
-            <Field label="Seed" className="pb2 mb2 bb b--yellow-light">
+            <Field className="pb2 mb2 bb b--yellow-light" label="Seed">
               <TextInput
                 className="w3 tr"
                 value={seed}
@@ -100,8 +100,8 @@ export default function NewGame() {
             </Field>
 
             <Field
-              label="Allow rollback"
               className="pb2 mb2 bb b--yellow-light"
+              label="Allow rollback"
             >
               <Checkbox
                 checked={allowRollback}
@@ -109,14 +109,14 @@ export default function NewGame() {
               />
             </Field>
 
-            <Field label="Prevent loss" className="pb2 mb2 bb b--yellow-light">
+            <Field className="pb2 mb2 bb b--yellow-light" label="Prevent loss">
               <Checkbox
                 checked={preventLoss}
                 onChange={e => setPreventLoss(e.target.checked)}
               />
             </Field>
 
-            <Field label="Hints" className="pb2 mb2 bb b--yellow-light">
+            <Field className="pb2 mb2 bb b--yellow-light" label="Hints">
               <Select
                 className="pl3"
                 options={HintsLevels}
@@ -125,7 +125,7 @@ export default function NewGame() {
               />
             </Field>
 
-            <Field label="Turns history" className="pb2 mb2 bb b--yellow-light">
+            <Field className="pb2 mb2 bb b--yellow-light" label="Turns history">
               <Checkbox
                 checked={turnsHistory}
                 onChange={e => setTurnsHistory(e.target.checked)}
@@ -135,10 +135,10 @@ export default function NewGame() {
         )}
 
         <Button
-          size={ButtonSize.LARGE}
-          onClick={onCreateGame}
           className="self-end mt3"
+          size={ButtonSize.LARGE}
           text="New game"
+          onClick={onCreateGame}
         />
       </div>
     </Box>

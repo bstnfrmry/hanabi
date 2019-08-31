@@ -2,6 +2,7 @@ import classnames from "classnames";
 import React, { CSSProperties, MouseEventHandler, ReactNode } from "react";
 
 import Hint from "~/components/hint";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import { getColors, numbers } from "~/game/actions";
 import { ICard, IGameHintsLevel } from "~/game/state";
 import { useGame } from "~/hooks/game";
@@ -12,10 +13,16 @@ export enum CardSize {
   LARGE = "large"
 }
 
-const SizeMap = {
-  [CardSize.SMALL]: "h1.5 w1.5 h2-l w2-l f5 f3-l",
-  [CardSize.MEDIUM]: "h2 w2 h4-l w4-l f4 f2-l",
-  [CardSize.LARGE]: "h3 w3 h4.5-l w4.5-l f3 f1-l"
+const CardClasses = {
+  [CardSize.SMALL]: "h1.25 w1.25 h2-l w2-l",
+  [CardSize.MEDIUM]: "h2 w2 h4-l w4-l",
+  [CardSize.LARGE]: "h3 w3 h4.5-l w4.5-l"
+};
+
+const CardTextSizes = {
+  [CardSize.SMALL]: TxtSize.SMALL,
+  [CardSize.MEDIUM]: TxtSize.MEDIUM,
+  [CardSize.LARGE]: TxtSize.MEDIUM
 };
 
 export const PositionMap = {
@@ -61,12 +68,10 @@ export function CardWrapper(props: CardWrapperProps) {
     children
   } = props;
 
-  const sizeClass = SizeMap[size];
+  const sizeClass = CardClasses[size];
 
   return (
     <div
-      onClick={onClick}
-      style={style}
       className={classnames(
         "relative flex items-center justify-center br1 ba",
         sizeClass,
@@ -78,6 +83,8 @@ export function CardWrapper(props: CardWrapperProps) {
         { pointer: playable },
         { grow: context === ICardContext.TARGETED_PLAYER }
       )}
+      style={style}
+      onClick={onClick}
     >
       {children}
     </div>
@@ -131,75 +138,72 @@ export default function Card(props: Props) {
 
   return (
     <CardWrapper
-      style={style}
+      borderWidth={selected ? "bw1 z-5" : ""}
+      className={className}
       color={color}
       context={context}
-      size={size}
-      borderWidth={selected ? "bw1 z-5" : ""}
       playable={playable}
-      className={className}
+      size={size}
+      style={style}
       onClick={onClick}
     >
-      <div
+      {/* Card value */}
+      <Txt
         className={classnames(
           "white outline-main-dark",
-          { f7: size === "small" },
-          { mb3: displayHints && size.includes("large") },
+          { mb3: displayHints && size === "large" },
           { "mb4-l": displayHints && size === "medium" }
         )}
-      >
-        {number}
-      </div>
-      {position >= 0 && size.includes("large") && (
-        <div
-          className={classnames("absolute left-0 top-0 ma1 fw1 f6 black-20")}
-        >
-          {PositionMap[position]}
-        </div>
+        size={CardTextSizes[size]}
+        value={number}
+      />
+
+      {/* Card position */}
+      {position !== null && size === "large" && (
+        <Txt
+          className="absolute left-0 top-0 ma1 black-20"
+          value={PositionMap[position]}
+        />
       )}
-      {/* show positive hints with a larger type*/}
+
+      {/* show positive hints with a larger type */}
       {displayHints && hidden && (
         <div
           className={classnames(
-            "absolute top-0 mt2 fw3 br-100 w-50 h-50 flex justify-center items-center outline-main-dark",
+            "absolute top-0 mt2 br-100 w-50 h-50 flex justify-center items-center outline-main-dark",
             { [`bg-${card.color}`]: card.hint.color[card.color] === 2 },
-            { mt3: size.includes("large") }
+            { mt3: size === "large" }
           )}
         >
           {card.hint.number[card.number] === 2 ? card.number : null}
         </div>
       )}
-      {/* show other hints, including negative hints */}
-      {displayHints && (size.includes("large") || size === "medium") && (
-        <div
-          className={classnames(
-            "absolute w-100 right-0 bottom-0 pv1 f5 fw1 flex-l items-center flex-column bg-black-50",
-            {
-              dn: size === "medium" || size === "small",
-              flex: size.includes("large")
-            }
-          )}
-        >
-          <div className="flex justify-around w-100 white">
-            {colors.map(color => {
-              const hint = card.hint.color[color];
 
-              return (
-                <Hint key={color} type="color" value={color} hint={hint} />
-              );
-            })}
+      {/* show other hints, including negative hints */}
+      {displayHints && size === "large" && (
+        <div className="flex absolute w-100 right-0 bottom-0 pv1 flex-l items-center flex-column bg-black-50">
+          <div className="flex justify-around w-100">
+            {colors.map(color => (
+              <Hint
+                key={color}
+                hint={card.hint.color[color]}
+                type="color"
+                value={color}
+              />
+            ))}
           </div>
           <div
             className="flex justify-around white mt1 mt2-l"
             style={{ width: `${(numbers.length / colors.length) * 100}%` }}
           >
-            {numbers.map(number => {
-              const hint = card.hint.number[number];
-
-              return (
-                <Hint key={number} type="number" value={number} hint={hint} />
-              );
-            })}
+            {numbers.map(number => (
+              <Hint
+                key={number}
+                hint={card.hint.number[number]}
+                type="number"
+                value={number}
+              />
+            ))}
           </div>
         </div>
       )}

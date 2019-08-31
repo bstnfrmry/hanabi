@@ -1,8 +1,9 @@
 import React from "react";
 
 import PlayerName from "~/components/playerName";
-import Turn, { TurnSize } from "~/components/turn";
+import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
@@ -20,25 +21,34 @@ export default function InstructionsArea(props: Props) {
   const showHistory = game.options.turnsHistory && game.turnsHistory.length > 0;
 
   return (
-    <div className="flex-grow-1 f7 f3-l fw2 lh-copy">
-      <Tutorial step={ITutorialStep.WELCOME} placement="below">
+    <div className="flex-grow-1">
+      <Tutorial placement="below" step={ITutorialStep.WELCOME}>
         {!isCurrentPlayer && (
-          <div className="ttu">
-            It&apos;s <PlayerName player={currentPlayer} />
-            &apos;s turn
-          </div>
+          <Txt uppercase className="db mb3" size={TxtSize.MEDIUM}>
+            {"It's "}
+            <PlayerName player={currentPlayer} />
+            {"s turn"}
+          </Txt>
         )}
         {isCurrentPlayer && (
-          <div>
-            <div className="ttu mb2">Your turn!</div>
-            <div className="mb1">
-              - Give a hint by tapping on your playmates&apos; hand
-            </div>
-            <div className="mb1">
-              - Play or discard by tapping on your own game
-            </div>
-            <a onClick={() => onSelectDiscard()}>
-              - <span className="underline">Check discarded cards</span>
+          <div className="flex flex-column">
+            <Txt
+              uppercase
+              className="mb3"
+              size={TxtSize.MEDIUM}
+              value="Your turn!"
+            />
+            <Txt
+              className="mb2"
+              value="Give a hint by tapping on your playmates' hand"
+            />
+            <Txt
+              className="mb2"
+              value="Play or discard by tapping on your own game"
+            />
+
+            <a className="underline" onClick={() => onSelectDiscard()}>
+              <Txt value="Check discarded cards" />
             </a>
           </div>
         )}
@@ -46,18 +56,22 @@ export default function InstructionsArea(props: Props) {
 
       {showHistory && (
         <>
-          <div className="ttu mt3">Last actions:</div>
+          <Txt
+            uppercase
+            className="dib mt4"
+            size={TxtSize.MEDIUM}
+            value="Last actions"
+          />
           {game.turnsHistory
-            .slice(-10)
+            .slice(-5)
             .reverse()
             .map((turn, i) => {
               return (
-                <div key={i} className="mt1 f4">
+                <div key={i} className="mt1">
                   <Turn
-                    turn={turn}
                     includePlayer={true}
                     showDrawn={game.players[turn.action.from] !== selfPlayer}
-                    size={TurnSize.SMALL}
+                    turn={turn}
                   />
                 </div>
               );

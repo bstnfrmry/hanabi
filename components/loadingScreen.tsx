@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import posed from "react-pose";
 
 import Box from "~/components/ui/box";
+import Txt, { TxtSize } from "~/components/ui/txt";
 
 const Animation = posed.div({
   attention: {
@@ -23,8 +24,10 @@ export default function LoadingScreen() {
   });
 
   return (
-    <Box className="w-100 h-100 flex flex-column justify-center items-center f1 outline-main-dark ttu bg-main-dark">
-      <Animation pose={pose}>Loading...</Animation>
+    <Box className="w-100 h-100 flex flex-column justify-center items-center bg-main-dark">
+      <Animation pose={pose}>
+        <Txt size={TxtSize.LARGE} value="Loading..." />
+      </Animation>
     </Box>
   );
 }

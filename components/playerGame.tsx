@@ -6,7 +6,9 @@ import Card, { CardSize, ICardContext } from "~/components/card";
 import PlayerName from "~/components/playerName";
 import ReactionsPopover from "~/components/reactionsPopover";
 import Box from "~/components/ui/box";
+import Txt from "~/components/ui/txt";
 import { IPlayer } from "~/game/state";
+import { useSelfPlayer } from "~/hooks/game";
 
 interface Props {
   player: IPlayer;
@@ -28,48 +30,50 @@ export default function PlayerGame(props: Props) {
   } = props;
 
   const [reactionsOpen, setReactionsOpen] = useState(false);
+  const selfPlayer = useSelfPlayer();
+  const hideCards = self || !selfPlayer;
 
   return (
     <Box
+      borderColor={active ? "yellow" : null}
       className={classnames("relative", {
         "border-box ba bw2": active
       })}
-      borderColor={active ? "yellow" : null}
     >
-      <div className="f7 f3-l fw1 ttu ml1 flex items-center">
+      <div className="ml1 flex items-center">
         <PlayerName
-          player={player}
-          explicit={true}
-          reaction={player.reaction}
           className="w-100"
+          explicit={true}
+          player={player}
+          reaction={player.reaction}
         />
         {active && !self && !player.notified && !player.bot && (
-          <span
+          <a
             className="absolute right-0 mr1 mr4-l"
             onClick={() => onNotifyPlayer(player)}
           >
-            🔔
-          </span>
+            <Txt value="🔔" />
+          </a>
         )}
         {self && (
           <>
             <Popover
-              isOpen={reactionsOpen}
-              onOuterAction={() => setReactionsOpen(false)}
               body={
                 <ReactionsPopover
-                  onReaction={onReaction}
                   onClose={() => setReactionsOpen(false)}
+                  onReaction={onReaction}
                 />
               }
               className="z-999"
+              isOpen={reactionsOpen}
+              onOuterAction={() => setReactionsOpen(false)}
             >
-              <span
+              <a
                 className="absolute right-0 mr1 mr4-l"
                 onClick={() => setReactionsOpen(!reactionsOpen)}
               >
-                👍
-              </span>
+                <Txt value="👍" />
+              </a>
             </Popover>
           </>
         )}
@@ -80,17 +84,17 @@ export default function PlayerGame(props: Props) {
           {player.hand.map((card, i) => (
             <Card
               key={i}
-              onClick={() => onSelectPlayer(player, i)}
               card={card}
-              position={i}
-              hidden={self}
-              size={CardSize.MEDIUM}
-              context={
-                self ? ICardContext.SELF_PLAYER : ICardContext.OTHER_PLAYER
-              }
               className={classnames({
                 "mr1 mr2-l": i < player.hand.length - 1
               })}
+              context={
+                self ? ICardContext.SELF_PLAYER : ICardContext.OTHER_PLAYER
+              }
+              hidden={hideCards}
+              position={i}
+              size={CardSize.MEDIUM}
+              onClick={() => onSelectPlayer(player, i)}
             />
           ))}
         </div>

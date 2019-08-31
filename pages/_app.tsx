@@ -3,6 +3,7 @@ import "../styles/style.css";
 import "../styles/fonts.css";
 import "../styles/animations.css";
 import "../styles/patterns.css";
+import "../styles/popover.css";
 
 import App, { Container } from "next/app";
 import Head from "next/head";
@@ -36,11 +37,11 @@ export default class Hanabi extends App {
       <>
         <Head>
           <link
-            rel="shortcut icon"
             href="/static/favicon.ico"
+            rel="shortcut icon"
             type="image/x-icon"
           />
-          <link rel="manifest" href="/static/manifest.json" />
+          <link href="/static/manifest.json" rel="manifest" />
           <title>Hanabi</title>
         </Head>
         <Container>

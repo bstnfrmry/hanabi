@@ -19,7 +19,7 @@ export default function PlayedCards(props: Props) {
   const colors = getColors(game);
 
   return (
-    <Tutorial step={ITutorialStep.PLAYED_CARDS} placement="below">
+    <Tutorial placement="below" step={ITutorialStep.PLAYED_CARDS}>
       <div className="flex flex-row mt1">
         {colors.map((color, i) => {
           const topCard = last(groupedCards[color]);
@@ -28,26 +28,26 @@ export default function PlayedCards(props: Props) {
             return (
               <CardWrapper
                 key={i}
-                size={CardSize.MEDIUM}
                 className="mr1"
                 color={color}
+                size={CardSize.MEDIUM}
               />
             );
           }
           return (
             <CardWrapper
               key={i}
-              size={CardSize.MEDIUM}
               className="mr1 relative"
               color={color}
+              size={CardSize.MEDIUM}
             >
               {groupedCards[color].map((card, i) => (
                 <Card
                   key={i}
                   card={card}
+                  className="absolute"
                   context={ICardContext.PLAYED}
                   size={CardSize.MEDIUM}
-                  className="absolute"
                   style={{
                     top: `-${i * 2}px`
                   }}

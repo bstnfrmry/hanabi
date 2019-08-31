@@ -1153,10 +1153,6 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@types/shuffle-seed@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@types/shuffle-seed/-/shuffle-seed-1.1.0.tgz#b301d4b1dc88f603b8187329bee9cdb9e814f12d"
-
 "@typescript-eslint/eslint-plugin@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-2.0.0.tgz#609a5d7b00ce21a6f94d7ef282eba9da57ca1e42"

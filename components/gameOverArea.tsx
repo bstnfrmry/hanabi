@@ -6,7 +6,7 @@ export default function GameOverArea() {
   return (
     <div className="pa1 bg-grey pt4 flex-grow-1">
       <Txt
-        content={`The game is over! Your score is {game.playedCards.length} 🎉`}
+        value={`The game is over! Your score is {game.playedCards.length} 🎉`}
       />
     </div>
   );

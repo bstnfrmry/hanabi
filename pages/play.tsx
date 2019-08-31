@@ -12,9 +12,10 @@ import LoadingScreen from "~/components/loadingScreen";
 import Lobby, { BotEmojis } from "~/components/lobby";
 import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
-import Turn, { TurnSize } from "~/components/turn";
+import Turn from "~/components/turn";
 import { TutorialProvider } from "~/components/tutorial";
 import Box from "~/components/ui/box";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import {
   commitAction,
   getLastState,
@@ -275,17 +276,16 @@ export default function Play() {
               >
                 {lastTurn && (
                   <div
+                    className="flex justify-center items-center bg-white main-dark br4 shadow-4 b--yellow ba bw2 pa2"
                     style={{ pointerEvents: "auto" }}
                     onClick={() => setLastTurn(null)}
-                    className="flex justify-center items-center bg-white main-dark br4 shadow-4 b--yellow ba bw2 f4 pa2"
                   >
                     <Turn
-                      size={TurnSize.SMALL}
                       includePlayer={true}
-                      turn={lastTurn}
                       showDrawn={
                         game.players[lastTurn.action.from] !== selfPlayer
                       }
+                      turn={lastTurn}
                     />
                     <span className="ml4">&times;</span>
                   </div>
@@ -294,13 +294,17 @@ export default function Play() {
 
               {/* Reactions */}
               <div
-                className="absolute z-999 right-1 h-100 w1 justify-center items-center pointer f1"
+                className="absolute z-999 right-1 h-100 w1 justify-center items-center pointer"
                 style={{ pointerEvents: "none", top: "-200px" }}
               >
                 <PoseGroup>
                   {Object.values(game.reactions).map((reaction, i) => (
                     <ReactionWrapper key={i}>
-                      <span className="absolute right-1">{reaction}</span>
+                      <Txt
+                        className="absolute right-1"
+                        size={TxtSize.LARGE}
+                        value={reaction}
+                      />
                     </ReactionWrapper>
                   ))}
                 </PoseGroup>
@@ -312,20 +316,20 @@ export default function Play() {
                 style={{ minWidth: "35%" }}
               >
                 <PlayersBoard
-                  onSelectPlayer={onSelectPlayer}
                   onNotifyPlayer={onNotifyPlayer}
                   onReaction={onReaction}
+                  onSelectPlayer={onSelectPlayer}
                 />
               </div>
 
               {/* Right area */}
               <div className="flex flex-column h-100 flex-grow-1 overflow-scroll pa1 pl0">
                 <GameBoard
-                  onRollback={onRollback}
                   onMenuClick={onMenuClick}
+                  onRollback={onRollback}
                   onSelectDiscard={onSelectDiscard}
                 />
-                <Box className="flex-grow-1" borderColor="yellow-light">
+                <Box borderColor="yellow-light" className="flex-grow-1">
                   {selectedArea.type === ActionAreaType.MENU && (
                     <MenuArea onCloseArea={onCloseArea} />
                   )}
@@ -333,18 +337,18 @@ export default function Play() {
                     <>
                       {game.status === "lobby" && (
                         <Lobby
-                          onJoinGame={onJoinGame}
                           onAddBot={onAddBot}
+                          onJoinGame={onJoinGame}
                           onStartGame={onStartGame}
                         />
                       )}
                       {game.status === "ongoing" && (
                         <ActionArea
                           selectedArea={selectedArea}
-                          onCommitAction={onCommitAction}
-                          onSelectDiscard={onSelectDiscard}
                           onCloseArea={onCloseArea}
+                          onCommitAction={onCommitAction}
                           onImpersonate={onImpersonate}
+                          onSelectDiscard={onSelectDiscard}
                         />
                       )}
                     </>

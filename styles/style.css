@@ -28,6 +28,14 @@ body {
  * Custom sizes
  */
 
+.h1\.25 {
+  height: 1.25rem;
+}
+
+.w1\.25 {
+  width: 1.25rem;
+}
+
 .h1\.5 {
   height: 1.5rem;
 }
@@ -240,9 +248,9 @@ body {
 }
 
 .outline-main-dark {
-  text-shadow: -1px -1px 0 var(--color-main-dark),
-    1px -1px 0 var(--color-main-dark), -1px 1px 0 var(--color-main-dark),
-    1px 1px 0 var(--color-main-dark);
+  text-shadow: -0.5px -0.5px 0 var(--color-main-dark),
+    0.5px -0.5px 0 var(--color-main-dark), -0.5px 0.5px 0 var(--color-main-dark),
+    0.5px 0.5px 0 var(--color-main-dark);
 }
 
 /**

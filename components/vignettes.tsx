@@ -6,7 +6,7 @@ import { IHintAction } from "~/game/state";
 import { useGame } from "~/hooks/game";
 
 interface Props {
-  onSelect: Function;
+  onSelect: (action: IHintAction) => void;
   pendingHint: IHintAction;
 }
 
@@ -21,13 +21,13 @@ export default function Vignettes(props: Props) {
       <div className="flex flex-row mb1 mb3-l">
         {colors.map((color, i) => (
           <Vignette
-            type="color"
             key={i}
-            value={color}
-            onClick={onSelect}
             selected={
               pendingHint.type === "color" && pendingHint.value === color
             }
+            type="color"
+            value={color}
+            onClick={onSelect}
           />
         ))}
       </div>
@@ -37,13 +37,13 @@ export default function Vignettes(props: Props) {
       >
         {numbers.map(number => (
           <Vignette
-            type="number"
             key={number}
-            value={number}
-            onClick={onSelect}
             selected={
               pendingHint.type === "number" && pendingHint.value === number
             }
+            type="number"
+            value={number}
+            onClick={onSelect}
           />
         ))}
       </div>

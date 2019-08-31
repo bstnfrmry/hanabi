@@ -88,8 +88,8 @@ export default function ActionArea(props: Props) {
     return (
       <OtherPlayerArea
         player={selectedArea.player}
-        onCommitAction={onCommitAction}
         onCloseArea={onCloseArea}
+        onCommitAction={onCommitAction}
         onImpersonate={onImpersonate}
       />
     );
@@ -99,8 +99,8 @@ export default function ActionArea(props: Props) {
     return (
       <SelfPlayerArea
         cardIndex={selectedArea.cardIndex}
-        onCommitAction={onCommitAction}
         onCloseArea={onCloseArea}
+        onCommitAction={onCommitAction}
       />
     );
   }

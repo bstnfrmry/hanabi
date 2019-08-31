@@ -3,81 +3,72 @@ import React from "react";
 import Card, { CardSize, ICardContext } from "~/components/card";
 import Hint from "~/components/hint";
 import PlayerName from "~/components/playerName";
+import Txt from "~/components/ui/txt";
 import { ITurn } from "~/game/state";
 import { useGame } from "~/hooks/game";
-
-export enum TurnSize {
-  SMALL,
-  MEDIUM
-}
 
 interface Props {
   turn: ITurn;
   includePlayer: boolean;
   showDrawn: boolean;
-  size?: TurnSize;
 }
 
 export default function Turn(props: Props) {
-  const {
-    turn,
-    includePlayer = false,
-    showDrawn,
-    size = TurnSize.MEDIUM
-  } = props;
+  const { turn, includePlayer = false, showDrawn } = props;
+
   const game = useGame();
 
-  if (!turn) {
-    return null;
-  }
-
-  const cardSize = {
-    [TurnSize.SMALL]: CardSize.SMALL,
-    [TurnSize.MEDIUM]: CardSize.MEDIUM
-  }[size];
-
   return (
-    <div className="inline-flex items-center">
-      {includePlayer && <PlayerName player={game.players[turn.action.from]} />}
+    <div className="inline-flex items-center pre">
+      {includePlayer && (
+        <>
+          <PlayerName player={game.players[turn.action.from]} />
+          <Txt value=" " />
+        </>
+      )}
 
       {turn.action.action === "hint" && (
-        <div className="ml1 inline-flex items-center">
-          hinted&nbsp;
+        <Txt className="inline-flex items-center">
+          {"hinted "}
           <PlayerName player={game.players[turn.action.to]} />
-          &nbsp;about&nbsp;
-          <Hint type={turn.action.type} value={turn.action.value} hint={1} />
-          {turn.action.type === "color" && <>&nbsp;cards</>}
-          {turn.action.type === "number" && <>s</>}
-        </div>
+          {" about "}
+          <Hint hint={1} type={turn.action.type} value={turn.action.value} />
+          {turn.action.type === "color" && " cards"}
+          {turn.action.type === "number" && "s"}
+        </Txt>
       )}
 
       {turn.action.action === "discard" && (
-        <div className="ml1 inline-flex items-center">
-          discarded&nbsp;
+        <Txt className="inline-flex items-center">
+          {"discarded "}
           <Card
             card={turn.action.card}
             context={ICardContext.DISCARDED}
-            size={cardSize}
+            size={CardSize.SMALL}
           />
-        </div>
+        </Txt>
       )}
 
       {turn.action.action === "play" && (
-        <div className="ml1 inline-flex items-center">
-          played&nbsp;
+        <Txt className="inline-flex items-center">
+          {"played "}
           <Card
             card={turn.action.card}
             context={ICardContext.PLAYED}
-            size={cardSize}
+            size={CardSize.SMALL}
           />
-        </div>
+        </Txt>
       )}
 
       {showDrawn && turn.card && (
-        <div className="ml1 inline-flex items-center">
-          & drew&nbsp;
-          <Card card={turn.card} context={ICardContext.DRAWN} size={cardSize} />
-        </div>
+        <Txt className="inline-flex items-center">
+          {" & drew "}
+          <Card
+            card={turn.card}
+            context={ICardContext.DRAWN}
+            size={CardSize.SMALL}
+          />
+        </Txt>
       )}
     </div>
   );

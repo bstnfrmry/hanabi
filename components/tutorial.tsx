@@ -3,6 +3,7 @@ import Popover, { PopoverPlace } from "react-popover";
 import posed from "react-pose";
 
 import Button, { ButtonSize } from "~/components/ui/button";
+import Txt, { TxtSize } from "~/components/ui/txt";
 
 export const TutorialContext = React.createContext(null);
 
@@ -138,69 +139,56 @@ export default function Tutorial(props: Props) {
   const { title, body } = steps[step];
 
   return (
-    <>
-      <Popover
-        isOpen={true}
-        className="z-999"
-        preferPlace={placement}
-        enterExitTransitionDurationMs={0}
-        body={
-          <div className="flex flex-column b--yellow ba bw1 bg-white pa2 pa3-l br2 main-dark">
-            <span className="flex items-center justify-between">
-              <span className="f4 f2-l">{title}</span>
-              {step > 0 && (
-                <span className="gray f7 f4-l mr2">
-                  {step} / {totalSteps - 1}
-                </span>
-              )}
-            </span>
-            <div className="flex items-center mt2 mt4-l">
-              <span className="f7 f3-l pre mr4">{body}</span>
+    <Popover
+      body={
+        <div className="flex flex-column b--yellow ba bw1 bg-white pa2 pa3-l br2 main-dark">
+          <span className="flex items-center justify-between">
+            <Txt size={TxtSize.MEDIUM} value={title} />
+            {step > 0 && (
+              <Txt className="gray mr2" value={`${step} / ${totalSteps - 1}`} />
+            )}
+          </span>
+          <div className="flex items-center mt2 mt4-l">
+            <Txt multiline className="mr4" value={body} />
 
-              {step === ITutorialStep.WELCOME && (
-                <>
+            {step === ITutorialStep.WELCOME && (
+              <>
+                <Button
+                  className="mr1 mr2-l"
+                  size={ButtonSize.TINY}
+                  text="Skip"
+                  onClick={skip}
+                />
+                <Button size={ButtonSize.TINY} text="Go !" onClick={nextStep} />
+              </>
+            )}
+
+            {step !== ITutorialStep.WELCOME && (
+              <>
+                {step > 1 && (
                   <Button
-                    onClick={skip}
-                    size={ButtonSize.TINY}
                     className="mr1 mr2-l"
-                    text="Skip"
-                  />
-                  <Button
-                    onClick={nextStep}
                     size={ButtonSize.TINY}
-                    text="Go !"
+                    text="<"
+                    onClick={previousStep}
                   />
-                </>
-              )}
-
-              {step !== ITutorialStep.WELCOME && (
-                <>
-                  {step > 1 && (
-                    <Button
-                      onClick={previousStep}
-                      size={ButtonSize.TINY}
-                      className="mr1 mr2-l"
-                      text="<"
-                    />
-                  )}
-                  <Button
-                    onClick={nextStep}
-                    size={ButtonSize.TINY}
-                    text={lastStep ? "✓" : ">"}
-                  />
-                </>
-              )}
-            </div>
+                )}
+                <Button
+                  size={ButtonSize.TINY}
+                  text={lastStep ? "✓" : ">"}
+                  onClick={nextStep}
+                />
+              </>
+            )}
           </div>
-        }
-      >
-        <HighlightedArea pose={pose}>{children}</HighlightedArea>
-      </Popover>
-      <style global jsx>{`
-        .Popover-tip {
-          fill: rgb(195, 166, 50);
-        }
-      `}</style>
-    </>
+        </div>
+      }
+      className="z-999"
+      enterExitTransitionDurationMs={0}
+      isOpen={true}
+      preferPlace={placement}
+    >
+      <HighlightedArea pose={pose}>{children}</HighlightedArea>
+    </Popover>
   );
 }

@@ -5,6 +5,7 @@ import HomeButton from "~/components/homeButton";
 import LoadingScreen from "~/components/loadingScreen";
 import Box from "~/components/ui/box";
 import Button, { ButtonSize } from "~/components/ui/button";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import IGameState, { fillEmptyValues } from "~/game/state";
 import { useDatabase } from "~/hooks/database";
 
@@ -45,30 +46,29 @@ export default function JoinGame() {
       <div className="w-50 h-100">
         {!games.length && (
           <>
-            <h1 className="ttu">No available room</h1>
+            <Txt size={TxtSize.LARGE} value="No available room" />
             <Button
-              size={ButtonSize.LARGE}
               className="ma2"
-              onClick={() => router.push("/new-game")}
+              size={ButtonSize.LARGE}
               text="Create a room"
+              onClick={() => router.push("/new-game")}
             />
           </>
         )}
         {games.length > 0 && (
           <>
-            <h1 className="ttu">Available rooms</h1>
+            <Txt size={TxtSize.LARGE} value="Available rooms" />
             {games.map(game => (
-              <div className="mb3" key={game.id}>
+              <div key={game.id} className="mb3">
                 <Button
                   className="w-100 flex justify-center"
                   onClick={() => router.push(`/play?gameId=${game.id}`)}
                 >
-                  <span className="flex-grow-1">
-                    {game.players.map(p => p.name).join(", ")}
-                  </span>
-                  <span>
-                    {game.players.length}/{game.playersCount}
-                  </span>
+                  <Txt
+                    className="flex-grow-1"
+                    value={`${game.players.map(p => p.name).join(", ")}`}
+                  />
+                  <Txt value={`${game.players.length}/${game.playersCount}`} />
                 </Button>
               </div>
             ))}
