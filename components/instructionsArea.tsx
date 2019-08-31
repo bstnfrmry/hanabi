@@ -4,6 +4,7 @@ import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Txt, { TxtSize } from "~/components/ui/txt";
+import { IGameStatus } from "~/game/state";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
@@ -23,14 +24,20 @@ export default function InstructionsArea(props: Props) {
   return (
     <div className="flex-grow-1">
       <Tutorial placement="below" step={ITutorialStep.WELCOME}>
-        {!isCurrentPlayer && (
+        {game.status === IGameStatus.OVER && (
+          <Txt
+            size={TxtSize.MEDIUM}
+            value={`The game is over! Your score is ${game.playedCards.length} 🎉`}
+          />
+        )}
+        {game.status !== IGameStatus.OVER && !isCurrentPlayer && (
           <Txt uppercase className="db mb3" size={TxtSize.MEDIUM}>
             {"It's "}
             <PlayerName player={currentPlayer} size={PlayerNameSize.MEDIUM} />
             {"s turn"}
           </Txt>
         )}
-        {isCurrentPlayer && (
+        {game.status !== IGameStatus.OVER && isCurrentPlayer && (
           <div className="flex flex-column">
             <Txt
               uppercase

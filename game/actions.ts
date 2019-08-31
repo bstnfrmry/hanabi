@@ -83,6 +83,14 @@ export function emptyHint(options: IGameOptions): ICardHint {
   };
 }
 
+export function isGameOver(state: IGameState) {
+  return (
+    state.actionsLeft <= 0 ||
+    state.tokens.strikes >= 3 ||
+    (state.playedCards || []).length === (state.options.multicolor ? 30 : 25)
+  );
+}
+
 export function commitAction(state: IGameState, action: IAction): IGameState {
   // the function should be pure
   const s = cloneDeep(state) as IGameState;
@@ -146,6 +154,11 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
 
   // update history
   s.turnsHistory.push({ action, card: newCard });
+
+  if (isGameOver(s)) {
+    s.status = IGameStatus.OVER;
+  }
+
   return s;
 }
 
@@ -177,14 +190,6 @@ export function emptyPlayer(id: string, name: string): IPlayer {
 
 export function getColors(state: IGameState) {
   return state.options.multicolor ? colors : colors.slice(0, -1);
-}
-
-export function isGameOver(state: IGameState) {
-  return (
-    state.actionsLeft <= 0 ||
-    state.tokens.strikes >= 3 ||
-    (state.playedCards || []).length === (state.options.multicolor ? 30 : 25)
-  );
 }
 
 export function getScore(state: IGameState) {

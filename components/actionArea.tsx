@@ -5,14 +5,7 @@ import GameOverArea from "~/components/gameOverArea";
 import InstructionsArea from "~/components/instructionsArea";
 import OtherPlayerArea from "~/components/otherPlayerArea";
 import SelfPlayerArea from "~/components/selfPlayerArea";
-import { isGameOver } from "~/game/actions";
 import { IPlayer } from "~/game/state";
-import { useGame } from "~/hooks/game";
-
-interface IInstructionsSelectedArea {
-  id: string;
-  type: ActionAreaType.INSTRUCTIONS;
-}
 
 interface IOtherPlayerSelectedArea {
   id: string;
@@ -28,13 +21,18 @@ interface ISelfPlayerSelectedArea {
   cardIndex?: number;
 }
 
+interface IInstructionsSelectedArea {
+  id: "instructions";
+  type: ActionAreaType.INSTRUCTIONS;
+}
+
 interface IDiscardSelectedArea {
-  id: string;
+  id: "discard";
   type: ActionAreaType.DISCARD;
 }
 
 interface IMenuArea {
-  id: string;
+  id: "menu";
   type: ActionAreaType.MENU;
 }
 
@@ -69,12 +67,6 @@ export default function ActionArea(props: Props) {
     onCloseArea,
     onImpersonate
   } = props;
-
-  const game = useGame();
-
-  if (isGameOver(game)) {
-    return <GameOverArea />;
-  }
 
   if (selectedArea.type === ActionAreaType.INSTRUCTIONS) {
     return <InstructionsArea onSelectDiscard={onSelectDiscard} />;

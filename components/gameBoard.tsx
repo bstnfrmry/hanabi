@@ -51,7 +51,9 @@ export default function GameBoard(props: Props) {
                 <Txt
                   uppercase
                   className="yellow ml2"
-                  value={`${game.drawPile.length} cards left`}
+                  value={`${game.drawPile.length} card${
+                    game.drawPile.length > 1 ? "s" : ""
+                  } left`}
                 />
               </div>
             )}
@@ -63,7 +65,9 @@ export default function GameBoard(props: Props) {
                   <Txt
                     uppercase
                     className="red ml2"
-                    value={`${game.actionsLeft} turns left`}
+                    value={`${game.actionsLeft} turn${
+                      game.actionsLeft > 1 ? "s" : ""
+                    } left`}
                   />
                 </div>
               )}

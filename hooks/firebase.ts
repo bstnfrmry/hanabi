@@ -2,7 +2,11 @@ import "firebase/database";
 
 import firebase from "firebase/app";
 
-import IGameState, { fillEmptyValues, IPlayer } from "~/game/state";
+import IGameState, {
+  fillEmptyValues,
+  IGameStatus,
+  IPlayer
+} from "~/game/state";
 import { GameHandler, GamesHandler, Network } from "~/hooks/network";
 
 export function setupFirebase() {
@@ -44,7 +48,7 @@ export default class FirebaseNetwork implements Network {
         // Game is public
         .filter(game => !game.options.private)
         // Game is in lobby state
-        .filter(game => game.status === "lobby")
+        .filter(game => game.status === IGameStatus.LOBBY)
         // At least one player in the room
         .filter(game => game.players.length)
         // There are slots remaining

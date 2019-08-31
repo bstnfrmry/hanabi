@@ -4,6 +4,7 @@ import React, { useContext, useState } from "react";
 import { TutorialContext } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
+import { IGameStatus } from "~/game/state";
 import { useGame } from "~/hooks/game";
 
 interface Props {
@@ -31,7 +32,7 @@ export default function MenuArea(props: Props) {
     <div className="flex justify-center items-center w-100 h-100">
       {!showRules && (
         <div className="flex flex-column w-50 h-50">
-          {game.status === "ongoing" && (
+          {game.status === IGameStatus.ONGOING && (
             <Button
               className="mb4"
               size={ButtonSize.SMALL}

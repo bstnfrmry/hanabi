@@ -18,11 +18,10 @@ import {
   commitAction,
   getLastState,
   getMaximumPossibleScore,
-  isGameOver,
   joinGame
 } from "~/game/actions";
 import play from "~/game/ai";
-import IGameState, { IPlayer, ITurn } from "~/game/state";
+import IGameState, { IGameStatus, IPlayer, ITurn } from "~/game/state";
 import {
   CurrentPlayerContext,
   GameContext,
@@ -91,8 +90,7 @@ export default function Play() {
    */
   useEffect(() => {
     if (!game) return;
-    if (game.status !== "ongoing") return;
-    if (isGameOver(game)) return;
+    if (game.status !== IGameStatus.ONGOING) return;
     if (!selfPlayer || selfPlayer.index) return;
     if (!currentPlayer.bot) return;
 
@@ -282,14 +280,14 @@ export default function Play() {
                   )}
                   {selectedArea.type !== ActionAreaType.MENU && (
                     <>
-                      {game.status === "lobby" && (
+                      {game.status === IGameStatus.LOBBY && (
                         <Lobby
                           onAddBot={onAddBot}
                           onJoinGame={onJoinGame}
                           onStartGame={onStartGame}
                         />
                       )}
-                      {game.status === "ongoing" && (
+                      {game.status !== IGameStatus.LOBBY && (
                         <ActionArea
                           selectedArea={selectedArea}
                           onCloseArea={onCloseArea}
