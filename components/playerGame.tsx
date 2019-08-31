@@ -6,8 +6,8 @@ import Card, { CardSize, ICardContext } from "~/components/card";
 import PlayerName from "~/components/playerName";
 import ReactionsPopover from "~/components/reactionsPopover";
 import Txt from "~/components/ui/txt";
-import { IPlayer } from "~/game/state";
-import { useSelfPlayer } from "~/hooks/game";
+import { IGameStatus, IPlayer } from "~/game/state";
+import { useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props extends HTMLAttributes<HTMLElement> {
   player: IPlayer;
@@ -29,9 +29,10 @@ export default function PlayerGame(props: Props) {
     ...attributes
   } = props;
 
+  const game = useGame();
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const selfPlayer = useSelfPlayer();
-  const hideCards = self || !selfPlayer;
+  const hideCards = game.status !== IGameStatus.OVER && (self || !selfPlayer);
 
   return (
     <div

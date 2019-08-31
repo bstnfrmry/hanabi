@@ -66,7 +66,9 @@ export default function Play() {
 
     setLastTurn(last(game.turnsHistory));
     selectArea({ id: "instructions", type: ActionAreaType.INSTRUCTIONS });
-    setTimeout(() => setLastTurn(null), 80000);
+    const timeout = setTimeout(() => setLastTurn(null), 80000);
+
+    return () => clearTimeout(timeout);
   }, [game && game.turnsHistory.length]);
 
   /**

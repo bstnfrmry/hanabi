@@ -95,7 +95,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   // the function should be pure
   const s = cloneDeep(state) as IGameState;
 
-  s.history.push({ ...state, history: [] });
+  s.history.push({ ...state, turnsHistory: [], history: [] });
 
   assert(action.from === state.currentPlayer);
   const player = s.players[action.from];
@@ -174,7 +174,8 @@ export function getLastState(state: IGameState) {
 
   return {
     ...lastState,
-    history: state.history.slice(0, -1)
+    history: state.history.slice(0, -1),
+    turnsHistory: state.turnsHistory.slice(0, -1)
   };
 }
 

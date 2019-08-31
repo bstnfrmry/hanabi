@@ -26,6 +26,7 @@ export default function InstructionsArea(props: Props) {
       <Tutorial placement="below" step={ITutorialStep.WELCOME}>
         {game.status === IGameStatus.OVER && (
           <Txt
+            className="db"
             size={TxtSize.MEDIUM}
             value={`The game is over! Your score is ${game.playedCards.length} 🎉`}
           />
