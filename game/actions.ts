@@ -256,7 +256,10 @@ export function getMaximumPossibleScore(state: IGameState): number {
 
 export function joinGame(state: IGameState, player: IPlayer): IGameState {
   const game = cloneDeep(state) as IGameState;
-  const hand = game.drawPile.splice(0, startingHandSize[game.playersCount]);
+  const hand = game.drawPile.splice(
+    0,
+    startingHandSize[game.options.playersCount]
+  );
 
   game.players = game.players || [];
   game.players.push({ ...player, hand, index: game.players.length });
@@ -303,7 +306,6 @@ export function newGame(options: IGameOptions): IGameState {
   return {
     id: options.id,
     status: IGameStatus.LOBBY,
-    playersCount: options.playersCount,
     playedCards: [],
     drawPile: deck,
     discardPile: [],

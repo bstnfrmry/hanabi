@@ -7,7 +7,6 @@ import { defaults } from "lodash";
 export default interface IGameState {
   id: string;
   status: IGameStatus;
-  playersCount: number;
   playedCards: ICard[];
   drawPile: ICard[];
   discardPile: ICard[];

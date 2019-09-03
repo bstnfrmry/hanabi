@@ -52,7 +52,7 @@ export default class FirebaseNetwork implements Network {
         // At least one player in the room
         .filter(game => game.players.length)
         // There are slots remaining
-        .filter(game => +game.players.length < +game.playersCount)
+        .filter(game => +game.players.length < +game.options.playersCount)
         // The game is recent
         .filter(game => game.createdAt > Date.now() - 10 * 60 * 1000);
 
