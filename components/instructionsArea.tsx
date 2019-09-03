@@ -77,10 +77,16 @@ export default function InstructionsArea(props: Props) {
             .slice(-20)
             .reverse()
             .map((turn, i) => {
+              const syncing = i === 0 && !game.synced;
+              const style = {
+                ...(syncing && { animation: "OpacityPulse 2000ms infinite" })
+              };
+
               return (
                 <div
                   key={i}
                   className="mt1 mt3-l pointer"
+                  style={style}
                   onClick={() => onTurnPeak(i + 1)}
                 >
                   <Turn
@@ -88,6 +94,9 @@ export default function InstructionsArea(props: Props) {
                     showDrawn={game.players[turn.action.from] !== selfPlayer}
                     turn={turn}
                   />
+                  {syncing && (
+                    <Txt className="ml2" size={TxtSize.SMALL} value="⏳" />
+                  )}
                 </div>
               );
             })}
