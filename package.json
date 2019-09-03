@@ -8,7 +8,8 @@
     "start": "next start",
     "server": "firebase-server -p 3001",
     "lint": "eslint '**/*.{ts,tsx}'",
-    "test": "cypress run"
+    "test": "cypress run",
+    "deploy-database": "firebase deploy --only database"
   },
   "dependencies": {
     "@types/classnames": "^2.2.9",
