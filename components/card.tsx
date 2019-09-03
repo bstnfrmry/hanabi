@@ -1,6 +1,5 @@
 import classnames from "classnames";
 import React, {
-  Attributes,
   CSSProperties,
   HTMLAttributes,
   MouseEventHandler,
@@ -174,7 +173,8 @@ export default function Card(props: Props) {
         <div
           className={classnames(
             "absolute top-0 mt2 mt4-l br-100 w-50 h-50 flex justify-center items-center outline-main-dark",
-            { [`bg-${card.color}`]: card.hint.color[card.color] === 2 }
+            { [`bg-${card.color}`]: card.hint.color[card.color] === 2 },
+            { [`ba b--${card.color}`]: card.hint.color[card.color] === 2 }
           )}
         >
           {card.hint.number[card.number] === 2 && <Txt value={card.number} />}

@@ -3,7 +3,6 @@ import React from "react";
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
-import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { IGameStatus } from "~/game/state";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";

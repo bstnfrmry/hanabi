@@ -1,7 +1,6 @@
 import React from "react";
 
 import DiscardArea from "~/components/discardArea";
-import GameOverArea from "~/components/gameOverArea";
 import InstructionsArea from "~/components/instructionsArea";
 import OtherPlayerArea from "~/components/otherPlayerArea";
 import SelfPlayerArea from "~/components/selfPlayerArea";

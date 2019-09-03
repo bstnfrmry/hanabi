@@ -4,7 +4,7 @@ import Card, { CardSize, ICardContext } from "~/components/card";
 import Hint from "~/components/hint";
 import PlayerName from "~/components/playerName";
 import Txt from "~/components/ui/txt";
-import { ITurn } from "~/game/state";
+import { IHintLevel, ITurn } from "~/game/state";
 import { useGame } from "~/hooks/game";
 
 interface Props {
@@ -32,7 +32,11 @@ export default function Turn(props: Props) {
           {"hinted "}
           <PlayerName player={game.players[turn.action.to]} />
           {" about "}
-          <Hint hint={2} type={turn.action.type} value={turn.action.value} />
+          <Hint
+            hint={IHintLevel.POSSIBLE}
+            type={turn.action.type}
+            value={turn.action.value}
+          />
           {turn.action.type === "color" && " cards"}
           {turn.action.type === "number" && "s"}
         </Txt>

@@ -66,7 +66,11 @@ export enum IColor {
 
 export type INumber = 1 | 2 | 3 | 4 | 5;
 
-export type IHintLevel = 0 | 1 | 2;
+export enum IHintLevel {
+  IMPOSSIBLE = 0,
+  POSSIBLE = 1,
+  SURE = 2
+}
 
 // an array of 2 (direct hint), 1 (still possible), or 0 (impossible)
 // e.g. a color hint onto an card turns all but one values to 0, and one value to 2.
