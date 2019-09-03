@@ -125,7 +125,7 @@ export default function Card(props: Props) {
 
   const game = useGame();
   const colors = getColors(game);
-  const color = hidden ? "light-silver" : card.color;
+  const color = hidden ? "gray-light" : card.color;
 
   const number = hidden ? null : card.number;
 

@@ -1,20 +1,6 @@
-:root {
-  --color-main: #1824a2;
-  --color-main-dark: #00153f;
-
-  --color-white: #f4f6f7;
-  --color-red: #ec7063;
-  --color-blue: #5dade2;
-  --color-yellow: #f4d03f;
-  --color-green: #52be80;
-
-  --color-hints: rgb(0, 61, 181);
-  --color-strikes: rgb(192, 21, 21);
-
-  --color-gray-light: #ddd;
-}
-
+@import "./variables.css";
 @import "./tachyons.css";
+@import "./tachyons-overrides.css";
 @import "./fonts.css";
 @import "./patterns.css";
 @import "./animations.css";
@@ -28,56 +14,6 @@ body {
   height: 100%;
   color: #f0f0f0;
   background: color-mod(var(--color-blue) shade(90%));
-}
-
-/**
- * Custom sizes
- */
-
-.h1\.25 {
-  height: 1.25rem;
-}
-
-.w1\.25 {
-  width: 1.25rem;
-}
-
-.h1\.5 {
-  height: 1.5rem;
-}
-
-.w1\.5 {
-  width: 1.5rem;
-}
-
-.h2\.5 {
-  height: 3rem;
-}
-
-.w2\.5 {
-  width: 3rem;
-}
-
-.bw0\.5 {
-  border-width: 0.075rem;
-}
-
-@media screen and (min-width: 60em) {
-  .h2\.5-l {
-    height: 3rem;
-  }
-
-  .w2\.5-l {
-    width: 3rem;
-  }
-
-  .h4\.5-l {
-    height: 12rem;
-  }
-
-  .w4\.5-l {
-    width: 12rem;
-  }
 }
 
 /**
@@ -172,9 +108,9 @@ body {
 .bg-gray-light {
   background: linear-gradient(
     to bottom right,
-    color-mod(var(--color-gray-light) lightness(70%)),
+    color-mod(var(--color-gray-light) lightness(75%)),
     var(--color-gray-light),
-    color-mod(var(--color-gray-light) shade(20%))
+    color-mod(var(--color-gray-light) shade(25%))
   );
 }
 
