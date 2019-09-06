@@ -41,7 +41,7 @@ export default function PlayerName(props: Props) {
         uppercase
         className="truncate"
         size={PlayerNameTextSizes[size]}
-        value={`${player.emoji}${you ? "You" : player.name}`}
+        value={you ? "You" : player.name}
       />
       {reaction && (
         <div>

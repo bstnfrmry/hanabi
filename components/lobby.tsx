@@ -1,17 +1,12 @@
-import { keyBy } from "lodash";
 import { useRouter } from "next/router";
 import generateName from "project-name-generator";
 import React, { useState } from "react";
 
 import PlayerName from "~/components/playerName";
 import Button, { ButtonSize } from "~/components/ui/button";
-import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
+import { Checkbox, Field, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
-
-export const Emojis = ["🐶", "🦊", "🐸", "🦋", "🐯", "🐱"];
-
-export const BotEmojis = ["🤖", "👽", "👾", "🤡", "🐲"];
 
 interface Props {
   onJoinGame: Function;
@@ -27,13 +22,9 @@ export default function Lobby(props: Props) {
 
   const gameFull = game.players.length === game.options.playersCount;
   const canJoin = !selfPlayer && !gameFull;
-  const availableEmojis = Emojis.filter(
-    e => !game.players.find(p => p.emoji === e)
-  );
 
   const router = useRouter();
   const [name, setName] = useState(generateName().dashed);
-  const [emoji, setEmoji] = useState(availableEmojis[0]);
   const [bot, setBot] = useState(false);
 
   const shareLink = `${window.location.origin}/play?gameId=${router.query.gameId}`;
@@ -92,16 +83,9 @@ export default function Lobby(props: Props) {
             className="flex items-start mt5 w-100 flex-grow-1"
             onSubmit={e => {
               e.preventDefault();
-              onJoinGame({ name, emoji, bot });
+              onJoinGame({ name, bot });
             }}
           >
-            <Select
-              className="w3 h2.5 indent mr2 pl1"
-              id="player-emoji"
-              options={keyBy(availableEmojis)}
-              value={emoji}
-              onChange={e => setEmoji(e.target.value)}
-            />
             <div className="flex flex-column justify-center items-end mr2">
               <TextInput
                 className="flex-grow-1 h2.5 ttu"

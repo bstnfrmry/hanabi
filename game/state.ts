@@ -127,7 +127,6 @@ export interface ITurn {
 export interface IPlayer {
   id: string;
   name: string;
-  emoji: string;
   hand?: IHand;
   reaction?: string;
   lastAction?: IAction;

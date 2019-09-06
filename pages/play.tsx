@@ -10,7 +10,7 @@ import ActionArea, {
 } from "~/components/actionArea";
 import GameBoard from "~/components/gameBoard";
 import LoadingScreen from "~/components/loadingScreen";
-import Lobby, { BotEmojis } from "~/components/lobby";
+import Lobby from "~/components/lobby";
 import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
 import Turn from "~/components/turn";
@@ -143,7 +143,6 @@ export default function Play() {
     const botsCount = game.players.filter(p => p.bot).length;
 
     const bot = {
-      emoji: BotEmojis[botsCount],
       name: `AI #${botsCount + 1}`
     };
 
