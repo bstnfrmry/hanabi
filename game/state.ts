@@ -7,7 +7,6 @@ import { defaults } from "lodash";
 export default interface IGameState {
   id: string;
   status: IGameStatus;
-  playersCount: number;
   playedCards: ICard[];
   drawPile: ICard[];
   discardPile: ICard[];
@@ -21,6 +20,7 @@ export default interface IGameState {
   turnsHistory: ITurn[];
   history: IGameState[];
   createdAt: number;
+  synced: boolean;
 }
 
 /**

@@ -66,7 +66,7 @@ export default function Play() {
         return router.push("/404");
       }
 
-      setGame(game);
+      setGame({ ...game, synced: true });
     });
   }, [gameId, view]);
 
@@ -105,6 +105,7 @@ export default function Play() {
    */
   useEffect(() => {
     if (!game) return;
+    if (!game.synced) return;
     if (game.status !== IGameStatus.ONGOING) return;
     if (!selfPlayer || selfPlayer.index) return;
     if (!currentPlayer.bot) return;
@@ -121,7 +122,7 @@ export default function Play() {
     }, game.options.botsWait);
 
     return () => clearTimeout(timeout);
-  }, [game && game.currentPlayer, game && game.status]);
+  }, [game && game.currentPlayer, game && game.status, game && game.synced]);
 
   function onJoinGame(player) {
     const playerId = shortid();
@@ -163,6 +164,7 @@ export default function Play() {
       }
     }
 
+    setGame({ ...newState, synced: false });
     network.updateGame(newState);
   }
 

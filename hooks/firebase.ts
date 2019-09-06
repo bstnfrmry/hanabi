@@ -37,7 +37,7 @@ function gameIsPublic(game: IGameState) {
     !game.options.private &&
     game.status === IGameStatus.LOBBY &&
     game.players.length &&
-    game.players.length < game.playersCount
+    game.players.length < game.options.playersCount
   );
 }
 
@@ -58,6 +58,7 @@ export default class FirebaseNetwork implements Network {
     ref.on("value", event => {
       const games = Object.values(event.val() || {})
         .map(fillEmptyValues)
+        // Game is public
         .filter(gameIsPublic);
 
       callback(games);
