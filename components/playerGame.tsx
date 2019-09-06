@@ -45,12 +45,46 @@ export default function PlayerGame(props: Props) {
       {...attributes}
     >
       <div className="ml1 flex items-center">
-        <PlayerName
-          className="w-100"
-          explicit={true}
-          player={player}
-          reaction={player.reaction}
-        />
+        <PlayerName className="mr2" explicit={true} player={player} />
+
+        {!self && player.reaction && (
+          <Txt
+            style={{
+              animation: "FontPulse 600ms 5"
+            }}
+            value={player.reaction}
+          />
+        )}
+        {self && (
+          <Popover
+            body={
+              <ReactionsPopover
+                onClose={() => setReactionsOpen(false)}
+                onReaction={onReaction}
+              />
+            }
+            className="z-999"
+            isOpen={reactionsOpen}
+            onOuterAction={() => setReactionsOpen(false)}
+          >
+            <a
+              className="pointer grow☺"
+              onClick={() => setReactionsOpen(!reactionsOpen)}
+            >
+              {player.reaction && (
+                <Txt
+                  style={{
+                    animation: "FontPulse 600ms 5"
+                  }}
+                  value={player.reaction}
+                />
+              )}
+              {!player.reaction && (
+                <Txt style={{ filter: "grayscale(100%)" }} value="︎︎︎︎😊" />
+              )}
+            </a>
+          </Popover>
+        )}
         {active && !self && !player.notified && !player.bot && (
           <a
             className="absolute right-0 mr1 mr4-l"
@@ -58,28 +92,6 @@ export default function PlayerGame(props: Props) {
           >
             <Txt value="🔔" />
           </a>
-        )}
-        {self && (
-          <>
-            <Popover
-              body={
-                <ReactionsPopover
-                  onClose={() => setReactionsOpen(false)}
-                  onReaction={onReaction}
-                />
-              }
-              className="z-999"
-              isOpen={reactionsOpen}
-              onOuterAction={() => setReactionsOpen(false)}
-            >
-              <a
-                className="absolute right-0 mr1 mr4-l"
-                onClick={() => setReactionsOpen(!reactionsOpen)}
-              >
-                <Txt value="👍" />
-              </a>
-            </Popover>
-          </>
         )}
       </div>
 

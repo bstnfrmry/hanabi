@@ -28,8 +28,7 @@ export default function PlayerName(props: Props) {
     player,
     size = PlayerNameSize.SMALL,
     explicit = false,
-    className,
-    reaction
+    className
   } = props;
 
   const selfPlayer = useSelfPlayer();
@@ -43,18 +42,6 @@ export default function PlayerName(props: Props) {
         size={PlayerNameTextSizes[size]}
         value={you ? "You" : player.name}
       />
-      {reaction && (
-        <div>
-          <Txt
-            className="ml2 absolute top-0"
-            size={PlayerNameTextSizes[size]}
-            style={{
-              animation: "FontPulse 600ms 5"
-            }}
-            value={reaction}
-          />
-        </div>
-      )}
     </div>
   );
 }
