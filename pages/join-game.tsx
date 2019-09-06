@@ -54,7 +54,9 @@ export default function JoinGame() {
                     className="flex-grow-1"
                     value={`${game.players.map(p => p.name).join(", ")}`}
                   />
-                  <Txt value={`${game.players.length}/${game.playersCount}`} />
+                  <Txt
+                    value={`${game.players.length}/${game.options.playersCount}`}
+                  />
                 </Button>
               </div>
             ))}

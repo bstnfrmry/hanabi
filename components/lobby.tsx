@@ -25,7 +25,7 @@ export default function Lobby(props: Props) {
   const game = useGame();
   const selfPlayer = useSelfPlayer();
 
-  const gameFull = game.players.length === game.playersCount;
+  const gameFull = game.players.length === game.options.playersCount;
   const canJoin = !selfPlayer && !gameFull;
   const availableEmojis = Emojis.filter(
     e => !game.players.find(p => p.emoji === e)
@@ -45,7 +45,7 @@ export default function Lobby(props: Props) {
 
   return (
     <div className="flex items-center justify-center h-100 w-100">
-      <div className="flex flex-column pa2 w-100 h-100 h-50-l w-50-l">
+      <div className="flex flex-column pa2 w-100 h-100">
         {game.players.length > 0 && (
           <div className="flex justify-between items-start flex-grow-1 align-start w-100 mb2">
             <div>

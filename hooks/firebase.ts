@@ -32,6 +32,15 @@ export function setupFirebase() {
   return firebase.database();
 }
 
+function gameIsPublic(game: IGameState) {
+  return (
+    !game.options.private &&
+    game.status === IGameStatus.LOBBY &&
+    game.players.length &&
+    game.players.length < game.options.playersCount
+  );
+}
+
 export default class FirebaseNetwork implements Network {
   db: firebase.database.Database;
 
@@ -40,21 +49,17 @@ export default class FirebaseNetwork implements Network {
   }
 
   subscribeToPublicGames(callback: GamesHandler) {
-    const ref = this.db.ref("/games");
+    const ref = this.db
+      .ref("/games")
+      // Only games created less than 10 minutes ago
+      .orderByChild("createdAt")
+      .startAt(Date.now() - 10 * 60 * 1000);
 
     ref.on("value", event => {
       const games = Object.values(event.val() || {})
         .map(fillEmptyValues)
         // Game is public
-        .filter(game => !game.options.private)
-        // Game is in lobby state
-        .filter(game => game.status === IGameStatus.LOBBY)
-        // At least one player in the room
-        .filter(game => game.players.length)
-        // There are slots remaining
-        .filter(game => +game.players.length < +game.playersCount)
-        // The game is recent
-        .filter(game => game.createdAt > Date.now() - 10 * 60 * 1000);
+        .filter(gameIsPublic);
 
       callback(games);
     });
