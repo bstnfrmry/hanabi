@@ -36,7 +36,7 @@ export default function InstructionsArea(props: Props) {
           <Txt uppercase className="db mb3" size={TxtSize.MEDIUM}>
             {"It's "}
             <PlayerName player={currentPlayer} size={PlayerNameSize.MEDIUM} />
-            {"s turn"}
+            {"'s turn"}
           </Txt>
         )}
         {game.status !== IGameStatus.OVER && isCurrentPlayer && (
