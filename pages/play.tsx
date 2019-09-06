@@ -29,6 +29,7 @@ import IGameState, {
   IPlayer,
   ITurn
 } from "~/game/state";
+import useConnectivity from "~/hooks/connectivity";
 import {
   CurrentPlayerContext,
   GameContext,
@@ -41,6 +42,7 @@ import useNetwork from "~/hooks/network";
 export default function Play() {
   const network = useNetwork();
   const router = useRouter();
+  const online = useConnectivity();
   const [lastTurn, setLastTurn] = useState<ITurn>(null);
   const [game, setGame] = useState<IGameState>(null);
   const [view, setView] = useState<GameView>(GameView.LIVE);
@@ -57,6 +59,7 @@ export default function Play() {
    * Load game from database
    */
   useEffect(() => {
+    if (!online) return;
     if (!gameId) return;
 
     return network.subscribeToGame(gameId as string, game => {
@@ -68,7 +71,7 @@ export default function Play() {
 
       setGame({ ...game, synced: true });
     });
-  }, [gameId, view]);
+  }, [gameId, view, online]);
 
   /**
    * Display turn on turn played.
