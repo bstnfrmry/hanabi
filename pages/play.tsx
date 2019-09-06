@@ -20,7 +20,7 @@ import {
   joinGame
 } from "~/game/actions";
 import play from "~/game/ai";
-import IGameState, { IGameStatus, IPlayer } from "~/game/state";
+import IGameState, { IGameStatus } from "~/game/state";
 import {
   CurrentPlayerContext,
   GameContext,
@@ -155,22 +155,6 @@ export default function Play() {
     });
   }
 
-  function onImpersonate(player: IPlayer) {
-    if (
-      !window.confirm(
-        `This will reveal your hand.\nContinue to ${player.name}'s side?`
-      )
-    ) {
-      return;
-    }
-
-    router.push({
-      pathname: "/play",
-      query: { gameId, playerId: player.id }
-    });
-    onCloseArea();
-  }
-
   async function onRollback() {
     network.updateGame(goBackToState(game));
   }
@@ -276,7 +260,6 @@ export default function Play() {
                           selectedArea={selectedArea}
                           onCloseArea={onCloseArea}
                           onCommitAction={onCommitAction}
-                          onImpersonate={onImpersonate}
                           onSelectDiscard={onSelectDiscard}
                         />
                       )}

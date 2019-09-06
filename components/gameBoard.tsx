@@ -12,7 +12,7 @@ import {
   getMaximumScore,
   getScore
 } from "~/game/actions";
-import { GameView, useGame, useGameView } from "~/hooks/game";
+import { useGame } from "~/hooks/game";
 
 interface Props {
   onSelectDiscard: Function;
@@ -26,7 +26,6 @@ export default function GameBoard(props: Props) {
   const { onSelectDiscard, onMenuClick, onRollback } = props;
 
   const game = useGame();
-  const view = useGameView();
   const score = getScore(game);
   const maxScore = getMaximumScore(game);
   const maxPossibleScore = getMaximumPossibleScore(game);
@@ -133,7 +132,7 @@ export default function GameBoard(props: Props) {
 
           <div className="flex flex-column absolute-l top-1 right-1">
             <HomeButton className="mb1" onClick={onMenuClick} />
-            {game.options.allowRollback && view === GameView.LIVE && (
+            {game.options.allowRollback && (
               <Button
                 disabled={!game.history.length}
                 size={ButtonSize.TINY}

@@ -55,17 +55,10 @@ interface Props {
   onCommitAction: Function;
   onSelectDiscard: Function;
   onCloseArea: Function;
-  onImpersonate: Function;
 }
 
 export default function ActionArea(props: Props) {
-  const {
-    selectedArea,
-    onCommitAction,
-    onSelectDiscard,
-    onCloseArea,
-    onImpersonate
-  } = props;
+  const { selectedArea, onCommitAction, onSelectDiscard, onCloseArea } = props;
 
   if (selectedArea.type === ActionAreaType.INSTRUCTIONS) {
     return <InstructionsArea onSelectDiscard={onSelectDiscard} />;
@@ -81,7 +74,6 @@ export default function ActionArea(props: Props) {
         player={selectedArea.player}
         onCloseArea={onCloseArea}
         onCommitAction={onCommitAction}
-        onImpersonate={onImpersonate}
       />
     );
   }
