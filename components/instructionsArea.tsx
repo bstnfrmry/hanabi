@@ -9,11 +9,10 @@ import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
   onSelectDiscard: Function;
-  onTurnPeak: (turn: number) => void;
 }
 
 export default function InstructionsArea(props: Props) {
-  const { onSelectDiscard, onTurnPeak } = props;
+  const { onSelectDiscard } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -82,12 +81,7 @@ export default function InstructionsArea(props: Props) {
               };
 
               return (
-                <div
-                  key={i}
-                  className="mt1 mt3-l pointer"
-                  style={style}
-                  onClick={() => onTurnPeak(i + 1)}
-                >
+                <div key={i} className="mt1 mt3-l pointer" style={style}>
                   <Turn
                     includePlayer={true}
                     showDrawn={game.players[turn.action.from] !== selfPlayer}

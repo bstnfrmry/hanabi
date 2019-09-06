@@ -56,7 +56,6 @@ interface Props {
   onSelectDiscard: Function;
   onCloseArea: Function;
   onImpersonate: Function;
-  onTurnPeak: (turn: number) => void;
 }
 
 export default function ActionArea(props: Props) {
@@ -65,17 +64,11 @@ export default function ActionArea(props: Props) {
     onCommitAction,
     onSelectDiscard,
     onCloseArea,
-    onImpersonate,
-    onTurnPeak
+    onImpersonate
   } = props;
 
   if (selectedArea.type === ActionAreaType.INSTRUCTIONS) {
-    return (
-      <InstructionsArea
-        onSelectDiscard={onSelectDiscard}
-        onTurnPeak={onTurnPeak}
-      />
-    );
+    return <InstructionsArea onSelectDiscard={onSelectDiscard} />;
   }
 
   if (selectedArea.type === ActionAreaType.DISCARD) {
