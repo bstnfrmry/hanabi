@@ -27,6 +27,7 @@ export const colors: IColor[] = [
 export const numbers: INumber[] = [1, 2, 3, 4, 5];
 
 const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
+const maxHints = 8;
 
 export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
   const isPreviousHere =
@@ -111,7 +112,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
         s.playedCards.push(card);
         if (card.number === 5) {
           // play a 5, win a hint
-          s.tokens.hints += 1;
+          if (s.tokens.hints < maxHints) s.tokens.hints += 1;
         }
       } else {
         // strike !
@@ -121,7 +122,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
     } else {
       /** DISCARD */
       s.discardPile.push(card);
-      if (s.tokens.hints < 8) s.tokens.hints += 1;
+      if (s.tokens.hints < maxHints) s.tokens.hints += 1;
     }
 
     // in both cases (play, discard) we need to remove a card from the hand and get a new one
@@ -310,7 +311,7 @@ export function newGame(options: IGameOptions): IGameState {
     discardPile: [],
     players: [],
     tokens: {
-      hints: 8,
+      hints: maxHints,
       strikes: 0
     },
     currentPlayer,
