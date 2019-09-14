@@ -1,7 +1,7 @@
 import React from "react";
 
 import Vignette from "~/components/vignette";
-import { getColors, numbers } from "~/game/actions";
+import { getColors, Numbers } from "~/game/actions";
 import { IHintAction } from "~/game/state";
 import { useGame } from "~/hooks/game";
 
@@ -33,9 +33,9 @@ export default function Vignettes(props: Props) {
       </div>
       <div
         className="flex flex-row justify-around"
-        style={{ width: `${(numbers.length / colors.length) * 100}%` }}
+        style={{ width: `${(Numbers.length / colors.length) * 100}%` }}
       >
-        {numbers.map(number => (
+        {Numbers.map(number => (
           <Vignette
             key={number}
             selected={

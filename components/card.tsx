@@ -8,7 +8,7 @@ import React, {
 
 import Hint from "~/components/hint";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { getColors, numbers } from "~/game/actions";
+import { getColors, Numbers } from "~/game/actions";
 import { ICard, IGameHintsLevel } from "~/game/state";
 import { useGame } from "~/hooks/game";
 
@@ -196,9 +196,9 @@ export default function Card(props: Props) {
           </div>
           <div
             className="flex justify-around white mt1 mt2-l"
-            style={{ width: `${(numbers.length / colors.length) * 100}%` }}
+            style={{ width: `${(Numbers.length / colors.length) * 100}%` }}
           >
-            {numbers.map(number => (
+            {Numbers.map(number => (
               <Hint
                 key={number}
                 hint={card.hint.number[number]}

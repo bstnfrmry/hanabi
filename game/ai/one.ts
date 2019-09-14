@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash";
 
-import { colors, commitAction, isPlayable, numbers } from "~/game/actions";
+import { Colors, commitAction, isPlayable, Numbers } from "~/game/actions";
 import IGameState, {
   IAction,
   ICard,
@@ -50,8 +50,8 @@ export function getHintDeductions(
   possibleCards: ICard[]
 ): IDeduction[] {
   const deductions: IDeduction[] = [];
-  colors.forEach(color => {
-    numbers.forEach(number => {
+  Colors.forEach(color => {
+    Numbers.forEach(number => {
       if (
         hint.color[color] > 0 &&
         hint.number[number] > 0 &&
@@ -195,7 +195,7 @@ export function chooseAction(state: IGameView): IAction {
   return {
     action: "discard",
     from: state.currentPlayer,
-    cardIndex: 0
+    cardIndex: state.players[state.currentPlayer].hand.length - 1
   };
 }
 

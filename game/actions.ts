@@ -15,7 +15,7 @@ import IGameState, {
   IPlayer
 } from "~/game/state";
 
-export const colors: IColor[] = [
+export const Colors: IColor[] = [
   IColor.WHITE,
   IColor.BLUE,
   IColor.RED,
@@ -24,10 +24,11 @@ export const colors: IColor[] = [
   IColor.MULTICOLOR
 ];
 
-export const numbers: INumber[] = [1, 2, 3, 4, 5];
+export const Numbers: INumber[] = [1, 2, 3, 4, 5];
 
-const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
-const maxHints = 8;
+const StartingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
+
+export const MaxHints = 8;
 
 export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
   const isPreviousHere =
@@ -112,7 +113,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
         s.playedCards.push(card);
         if (card.number === 5) {
           // play a 5, win a hint
-          if (s.tokens.hints < maxHints) s.tokens.hints += 1;
+          if (s.tokens.hints < MaxHints) s.tokens.hints += 1;
         }
       } else {
         // strike !
@@ -122,7 +123,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
     } else {
       /** DISCARD */
       s.discardPile.push(card);
-      if (s.tokens.hints < maxHints) s.tokens.hints += 1;
+      if (s.tokens.hints < MaxHints) s.tokens.hints += 1;
     }
 
     // in both cases (play, discard) we need to remove a card from the hand and get a new one
@@ -196,7 +197,7 @@ export function emptyPlayer(id: string, name: string): IPlayer {
 }
 
 export function getColors(state: IGameState) {
-  return state.options.multicolor ? colors : colors.slice(0, -1);
+  return state.options.multicolor ? Colors : Colors.slice(0, -1);
 }
 
 export function getScore(state: IGameState) {
@@ -258,7 +259,7 @@ export function joinGame(state: IGameState, player: IPlayer): IGameState {
   const game = cloneDeep(state) as IGameState;
   const hand = game.drawPile.splice(
     0,
-    startingHandSize[game.options.playersCount]
+    StartingHandSize[game.options.playersCount]
   );
 
   game.players = game.players || [];
@@ -273,7 +274,7 @@ export function newGame(options: IGameOptions): IGameState {
   assert(options.playersCount > 1 && options.playersCount < 6);
 
   // all cards but multicolors
-  let cards = flatMap(colors.slice(0, -1), color => [
+  let cards = flatMap(Colors.slice(0, -1), color => [
     { number: 1, color },
     { number: 1, color },
     { number: 1, color },
@@ -307,11 +308,12 @@ export function newGame(options: IGameOptions): IGameState {
     id: options.id,
     status: IGameStatus.LOBBY,
     playedCards: [],
+    initialCards: [...deck],
     drawPile: deck,
     discardPile: [],
     players: [],
     tokens: {
-      hints: maxHints,
+      hints: MaxHints,
       strikes: 0
     },
     currentPlayer,
