@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import { last } from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import shortid from "shortid";
@@ -27,6 +28,7 @@ import {
   SelfPlayerContext
 } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
+import usePrevious from "~/hooks/previous";
 
 export default function Play() {
   const network = useNetwork();
@@ -80,6 +82,51 @@ export default function Play() {
 
     return () => clearTimeout(timeout);
   }, [selfPlayer && selfPlayer.notified]);
+
+  /**
+   * Play sound when gaining a hint token
+   */
+  const hintsCount = game ? game.tokens.hints : 0;
+  const previousHintsCount = usePrevious(hintsCount);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      new Audio(`/static/sounds/coin.mp3`).play();
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [hintsCount === previousHintsCount + 1]);
+
+  const turnsCount = game ? game.turnsHistory.length : 0;
+  const previousTurnsCount = usePrevious(turnsCount);
+  useEffect(() => {
+    new Audio(`/static/sounds/rewind.mp3`).play();
+  }, [turnsCount === previousTurnsCount - 1]);
+
+  /**
+   * Play sound when discarding a card
+   */
+  useEffect(() => {
+    if (!game) return;
+
+    new Audio(`/static/sounds/card-scrape.mp3`).play();
+  }, [game && game.discardPile.length]);
+
+  /**
+   * Play sound when successfully playing a card
+   */
+  useEffect(() => {
+    if (!game) return;
+
+    const latestCard = last(game.playedCards);
+    if (!latestCard) return;
+
+    const path =
+      latestCard.number === 5
+        ? `/static/sounds/play-5.mp3`
+        : `/static/sounds/play.mp3`;
+
+    new Audio(path).play();
+  }, [game && game.playedCards.length]);
 
   /**
    * Play for bots.
