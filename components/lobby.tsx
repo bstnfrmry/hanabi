@@ -6,6 +6,7 @@ import PlayerName from "~/components/playerName";
 import Button, { ButtonSize } from "~/components/ui/button";
 import { Checkbox, Field, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
+import { GameMode } from "~/game/state";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
@@ -21,7 +22,10 @@ export default function Lobby(props: Props) {
   const selfPlayer = useSelfPlayer();
 
   const gameFull = game.players.length === game.options.playersCount;
-  const canJoin = !selfPlayer && !gameFull;
+  const canJoin =
+    (game.options.gameMode === GameMode.PASS_AND_PLAY || !selfPlayer) &&
+    !gameFull;
+  const canStart = gameFull;
 
   const router = useRouter();
   const [name, setName] = useState(generateName().dashed);
@@ -64,7 +68,7 @@ export default function Lobby(props: Props) {
                 )}
               </div>
             </div>
-            {selfPlayer && (
+            {canStart && (
               <Button
                 disabled={!gameFull}
                 id="start-game"

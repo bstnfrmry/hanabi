@@ -14,6 +14,8 @@ import Lobby from "~/components/lobby";
 import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
 import { TutorialProvider } from "~/components/tutorial";
+import Button, { ButtonSize } from "~/components/ui/button";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import {
   commitAction,
   getMaximumPossibleScore,
@@ -21,7 +23,7 @@ import {
   joinGame
 } from "~/game/actions";
 import play from "~/game/ai";
-import IGameState, { IGameStatus } from "~/game/state";
+import IGameState, { GameMode, IGameStatus, IPlayer } from "~/game/state";
 import {
   CurrentPlayerContext,
   GameContext,
@@ -34,14 +36,21 @@ export default function Play() {
   const network = useNetwork();
   const router = useRouter();
   const [game, setGame] = useState<IGameState>(null);
+  const [interturn, setInterturn] = useState(false);
   const [selectedArea, selectArea] = useState<ISelectedArea>({
     id: "instructions",
     type: ActionAreaType.INSTRUCTIONS
   });
   const { gameId, playerId } = router.query;
 
-  const selfPlayer = game && game.players.find(p => p.id === playerId);
   const currentPlayer = game && game.players[game.currentPlayer];
+
+  let selfPlayer: IPlayer;
+  if (game && game.options.gameMode === GameMode.NETWORK) {
+    selfPlayer = game && game.players.find(p => p.id === playerId);
+  } else {
+    selfPlayer = currentPlayer;
+  }
 
   /**
    * Load game from database
@@ -65,6 +74,17 @@ export default function Play() {
     if (!game) return;
 
     selectArea({ id: "instructions", type: ActionAreaType.INSTRUCTIONS });
+  }, [game && game.turnsHistory.length]);
+
+  /**
+   * Toggle interturn state on new turn for pass & play
+   */
+  useEffect(() => {
+    debugger;
+    if (!game) return;
+    if (game.options.gameMode !== GameMode.PASS_AND_PLAY) return;
+
+    setInterturn(true);
   }, [game && game.turnsHistory.length]);
 
   /**
@@ -157,13 +177,15 @@ export default function Play() {
 
     network.updateGame(joinGame(game, { id: playerId, ...player }));
 
-    router.replace({
-      pathname: "/play",
-      query: { gameId, playerId }
-    });
-
     localStorage.setItem("gameId", gameId.toString());
-    localStorage.setItem("playerId", playerId.toString());
+
+    if (game.options.gameMode === GameMode.NETWORK) {
+      router.replace({
+        pathname: "/play",
+        query: { gameId, playerId }
+      });
+      localStorage.setItem("playerId", playerId.toString());
+    }
   }
 
   function onAddBot() {
@@ -265,18 +287,38 @@ export default function Play() {
           <CurrentPlayerContext.Provider value={currentPlayer}>
             <div className="bg-main-dark relative flex flex-row w-100 h-100">
               {/* Left area */}
-              <div
-                className={classnames(
-                  "flex flex-column h-100 overflow-y-scroll pa1"
-                )}
-                style={{ minWidth: "35%" }}
-              >
-                <PlayersBoard
-                  onNotifyPlayer={onNotifyPlayer}
-                  onReaction={onReaction}
-                  onSelectPlayer={onSelectPlayer}
-                />
-              </div>
+              {currentPlayer && interturn && (
+                <div
+                  className="flex flex-column items-center justify-center"
+                  style={{ minWidth: "35%" }}
+                >
+                  <Txt
+                    size={TxtSize.MEDIUM}
+                    value={`It's ${currentPlayer.name}'s turn!`}
+                  />
+                  <Button
+                    className="mt4"
+                    size={ButtonSize.MEDIUM}
+                    text={`Go !`}
+                    onClick={() => setInterturn(false)}
+                  />
+                </div>
+              )}
+
+              {!interturn && (
+                <div
+                  className={classnames(
+                    "flex flex-column h-100 overflow-y-scroll pa1"
+                  )}
+                  style={{ minWidth: "35%" }}
+                >
+                  <PlayersBoard
+                    onNotifyPlayer={onNotifyPlayer}
+                    onReaction={onReaction}
+                    onSelectPlayer={onSelectPlayer}
+                  />
+                </div>
+              )}
 
               {/* Right area */}
               <div
@@ -304,6 +346,7 @@ export default function Play() {
                       )}
                       {game.status !== IGameStatus.LOBBY && (
                         <ActionArea
+                          interturn={interturn}
                           selectedArea={selectedArea}
                           onCloseArea={onCloseArea}
                           onCommitAction={onCommitAction}

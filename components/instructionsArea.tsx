@@ -8,11 +8,12 @@ import { IGameStatus } from "~/game/state";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
+  interturn: boolean;
   onSelectDiscard: Function;
 }
 
 export default function InstructionsArea(props: Props) {
-  const { onSelectDiscard } = props;
+  const { onSelectDiscard, interturn } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -84,7 +85,10 @@ export default function InstructionsArea(props: Props) {
                 <div key={i} className="mt1 mt3-l pointer" style={style}>
                   <Turn
                     includePlayer={true}
-                    showDrawn={game.players[turn.action.from] !== selfPlayer}
+                    showDrawn={
+                      !interturn &&
+                      game.players[turn.action.from] !== selfPlayer
+                    }
                     turn={turn}
                   />
                   {syncing && (

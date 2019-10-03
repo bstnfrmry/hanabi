@@ -51,6 +51,7 @@ export type ISelectedArea =
   | IMenuArea;
 
 interface Props {
+  interturn: boolean;
   selectedArea: ISelectedArea;
   onCommitAction: Function;
   onSelectDiscard: Function;
@@ -58,10 +59,21 @@ interface Props {
 }
 
 export default function ActionArea(props: Props) {
-  const { selectedArea, onCommitAction, onSelectDiscard, onCloseArea } = props;
+  const {
+    selectedArea,
+    onCommitAction,
+    onSelectDiscard,
+    onCloseArea,
+    interturn
+  } = props;
 
   if (selectedArea.type === ActionAreaType.INSTRUCTIONS) {
-    return <InstructionsArea onSelectDiscard={onSelectDiscard} />;
+    return (
+      <InstructionsArea
+        interturn={interturn}
+        onSelectDiscard={onSelectDiscard}
+      />
+    );
   }
 
   if (selectedArea.type === ActionAreaType.DISCARD) {

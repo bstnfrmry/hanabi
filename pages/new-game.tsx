@@ -8,7 +8,7 @@ import Button, { ButtonSize } from "~/components/ui/button";
 import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
 import Txt from "~/components/ui/txt";
 import { newGame } from "~/game/actions";
-import { IGameHintsLevel } from "~/game/state";
+import { GameMode, IGameHintsLevel } from "~/game/state";
 import useNetwork from "~/hooks/network";
 
 const PlayerCounts = [2, 3, 4, 5];
@@ -22,6 +22,11 @@ const BotsSpeeds = {
   0: "Faster",
   1000: "Fast",
   3000: "Slow"
+};
+
+const GameModes = {
+  [GameMode.NETWORK]: "Multiplayer",
+  [GameMode.PASS_AND_PLAY]: "Pass & play"
 };
 
 const DefaultSeed = `${Math.round(Math.random() * 10000)}`;
@@ -39,6 +44,7 @@ export default function NewGame() {
   const [hintsLevel, setHintsLevel] = useState(IGameHintsLevel.DIRECT);
   const [turnsHistory, setTurnsHistory] = useState(true);
   const [botsWait, setBotsWait] = useState(1000);
+  const [gameMode, setGameMode] = useState(GameMode.NETWORK);
 
   async function onCreateGame() {
     const gameId = shortid();
@@ -54,7 +60,8 @@ export default function NewGame() {
         private: private_,
         hintsLevel,
         turnsHistory,
-        botsWait
+        botsWait,
+        gameMode
       })
     );
 
@@ -81,6 +88,16 @@ export default function NewGame() {
             checked={multicolor}
             id="multicolor"
             onChange={e => setMulticolor(e.target.checked)}
+          />
+        </Field>
+
+        <Field className="pb2 mb2 bb b--yellow-light" label="Game mode">
+          <Select
+            className="w4 indent"
+            id="game-mode"
+            options={GameModes}
+            value={gameMode}
+            onChange={e => setGameMode(e.target.value as GameMode)}
           />
         </Field>
 
