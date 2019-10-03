@@ -80,7 +80,6 @@ export default function Play() {
    * Toggle interturn state on new turn for pass & play
    */
   useEffect(() => {
-    debugger;
     if (!game) return;
     if (game.options.gameMode !== GameMode.PASS_AND_PLAY) return;
 
@@ -224,6 +223,13 @@ export default function Play() {
     });
   }
 
+  function onShowRollback() {
+    return selectArea({
+      id: "rollback",
+      type: ActionAreaType.ROLLBACK
+    });
+  }
+
   async function onRollback() {
     network.updateGame(goBackToState(game));
   }
@@ -297,6 +303,7 @@ export default function Play() {
                     value={`It's ${currentPlayer.name}'s turn!`}
                   />
                   <Button
+                    primary
                     className="mt4"
                     size={ButtonSize.MEDIUM}
                     text={`Go !`}
@@ -328,8 +335,8 @@ export default function Play() {
               >
                 <GameBoard
                   onMenuClick={onMenuClick}
-                  onRollback={onRollback}
                   onSelectDiscard={onSelectDiscard}
+                  onShowRollback={onShowRollback}
                 />
                 <div className="flex-grow-1 pa2 pv4-l ph3-l shadow-5 br3 ba b--yellow-light">
                   {selectedArea.type === ActionAreaType.MENU && (
@@ -350,6 +357,7 @@ export default function Play() {
                           selectedArea={selectedArea}
                           onCloseArea={onCloseArea}
                           onCommitAction={onCommitAction}
+                          onRollback={onRollback}
                           onSelectDiscard={onSelectDiscard}
                         />
                       )}

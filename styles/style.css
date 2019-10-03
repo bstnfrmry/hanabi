@@ -1,6 +1,7 @@
 :root {
   --color-main: #1824a2;
   --color-main-dark: #00153f;
+  --color-cta: #fff776;
 
   --color-white: #f4f6f7;
   --color-red: #ec7063;
@@ -17,7 +18,6 @@
 @import "./tachyons.css";
 @import "./tachyons-overrides.css";
 @import "./fonts.css";
-@import "./patterns.css";
 @import "./animations.css";
 @import "./popover.css";
 
@@ -45,6 +45,14 @@ body {
 
 .bg-main {
   background-color: var(--color-main);
+}
+
+.bg-main-dark {
+  background: #010d25;
+}
+
+.bg-cta {
+  background-color: var(--color-cta);
 }
 
 .bg-white {

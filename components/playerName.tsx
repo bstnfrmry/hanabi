@@ -37,7 +37,6 @@ export default function PlayerName(props: Props) {
   return (
     <div className={classnames("relative inline-flex items-center", className)}>
       <Txt
-        uppercase
         className="truncate"
         size={PlayerNameTextSizes[size]}
         value={you ? "You" : player.name}

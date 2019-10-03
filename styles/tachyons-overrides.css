@@ -49,3 +49,11 @@
     width: 12rem;
   }
 }
+
+/**
+ * Typography
+ */
+
+.lh-normal {
+  line-height: 1;
+}

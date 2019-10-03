@@ -35,19 +35,19 @@ export default function MenuArea(props: Props) {
           {game.status === IGameStatus.ONGOING && (
             <Button
               className="mb4"
-              size={ButtonSize.SMALL}
+              size={ButtonSize.MEDIUM}
               text="Watch tutorial again"
               onClick={onTutorialClick}
             />
           )}
           <Button
             className="mb4"
-            size={ButtonSize.TINY}
+            size={ButtonSize.MEDIUM}
             text="Show rules"
             onClick={() => setShowRules(true)}
           />
           <Button
-            size={ButtonSize.TINY}
+            size={ButtonSize.MEDIUM}
             text="Back to menu"
             onClick={onMenuClick}
           />
@@ -58,7 +58,7 @@ export default function MenuArea(props: Props) {
         <div className="w-100 h-100 w-75-l ph4 relative tj lh-copy">
           <Button
             className="absolute left-2 top-1"
-            size={ButtonSize.TINY}
+            size={ButtonSize.MEDIUM}
             text="<"
             onClick={() => setShowRules(false)}
           />

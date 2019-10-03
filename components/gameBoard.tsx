@@ -17,13 +17,13 @@ import { useGame } from "~/hooks/game";
 interface Props {
   onSelectDiscard: Function;
   onMenuClick: Function;
-  onRollback: Function;
+  onShowRollback: Function;
 }
 
 export { CardWrapper } from "~/components/card";
 
 export default function GameBoard(props: Props) {
-  const { onSelectDiscard, onMenuClick, onRollback } = props;
+  const { onSelectDiscard, onMenuClick, onShowRollback } = props;
 
   const game = useGame();
   const score = getScore(game);
@@ -31,7 +31,7 @@ export default function GameBoard(props: Props) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="pa2 pv4-l ph3-l shadow-5 br3 mb1 ba b--yellow-light">
+    <div className="pa2 pv4-l ph3-l shadow-5 br3 mb1 bg-near-black ba b--yellow-light">
       <div className="flex justify-between flex-column-l items-end items-start-l">
         <div className="flex flex-column mb5-l">
           <div className="flex items-center h2 nt2">
@@ -137,7 +137,7 @@ export default function GameBoard(props: Props) {
                 disabled={!game.history.length}
                 size={ButtonSize.TINY}
                 text="⟲"
-                onClick={() => onRollback()}
+                onClick={() => onShowRollback()}
               />
             )}
           </div>

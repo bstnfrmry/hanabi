@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import generateName from "project-name-generator";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import PlayerName from "~/components/playerName";
 import Button, { ButtonSize } from "~/components/ui/button";
@@ -70,6 +70,7 @@ export default function Lobby(props: Props) {
             </div>
             {canStart && (
               <Button
+                primary
                 disabled={!gameFull}
                 id="start-game"
                 text="Start game"
@@ -90,18 +91,22 @@ export default function Lobby(props: Props) {
               onJoinGame({ name, bot });
             }}
           >
-            <div className="flex flex-column justify-center items-end mr2">
-              <TextInput
-                className="flex-grow-1 h2.5 ttu"
-                id="player-name"
-                style={{ width: "12rem" }}
-                value={name}
-                onChange={e => setName(e.target.value)}
-              />
-              <Field
+            <div className="flex flex-column justify-left">
+              <div className="flex justify-center items-center mr2">
+                <TextInput
+                  className="flex-grow-1 mr2"
+                  id="player-name"
+                  style={{ width: "12rem" }}
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                />
+                <Button primary id="join-game" text="Join" />
+              </div>
+              {/* <Field
                 label={
                   <Txt className="gray" size={TxtSize.SMALL} value="Autoplay" />
                 }
+                style={{width: '80px'}}
               >
                 <Checkbox
                   checked={bot}
@@ -109,9 +114,8 @@ export default function Lobby(props: Props) {
                   id="autoplay"
                   onChange={e => setBot(e.target.checked)}
                 />
-              </Field>
+              </Field> */}
             </div>
-            <Button id="join-game" text="Join" />
           </form>
         )}
 
