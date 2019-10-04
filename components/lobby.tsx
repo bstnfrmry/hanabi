@@ -96,8 +96,10 @@ export default function Lobby(props: Props) {
             }}
           >
             <div className="flex flex-column justify-left">
+              <Txt>Chose your player name</Txt>
               <div className="flex justify-center items-center mr2">
                 <TextInput
+                  autoFocus={true}
                   className="flex-grow-1 mr2"
                   id="player-name"
                   style={{ width: "12rem" }}
@@ -123,7 +125,7 @@ export default function Lobby(props: Props) {
           </form>
         )}
 
-        <div className="flex items-center justify-between mt4">
+        <div className="flex mt4">
           <div className="flex flex-column mr2">
             <Txt className="mb1" value="Share this game" />
             <a
