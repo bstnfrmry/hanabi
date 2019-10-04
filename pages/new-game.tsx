@@ -91,20 +91,13 @@ export default function NewGame() {
           />
         </Field>
 
-        <Field className="pb2 mb2 bb b--yellow-light" label="Game mode">
+        <Field label="Game mode">
           <Select
             className="w4 indent"
             id="game-mode"
             options={GameModes}
             value={gameMode}
             onChange={e => setGameMode(e.target.value as GameMode)}
-          />
-        </Field>
-
-        <Field label="Private">
-          <Checkbox
-            checked={private_}
-            onChange={e => setPrivate(e.target.checked)}
           />
         </Field>
 
@@ -118,6 +111,13 @@ export default function NewGame() {
 
         {showAdvanced && (
           <>
+            <Field className="pb2 mb2 bb b--yellow-light" label="Private">
+              <Checkbox
+                checked={private_}
+                onChange={e => setPrivate(e.target.checked)}
+              />
+            </Field>
+
             <Field className="pb2 mb2 bb b--yellow-light" label="Seed">
               <TextInput
                 className="w3 tr"
@@ -160,7 +160,7 @@ export default function NewGame() {
               />
             </Field>
 
-            <Field className="pb2 mb2 bb b--yellow-light" label="Bots speed">
+            <Field label="Bots speed">
               <Select
                 className="pl3"
                 id="bots-speed"
