@@ -24,16 +24,12 @@ const BotsSpeeds = {
   3000: "Slow"
 };
 
-const GameModes = {
-  [GameMode.NETWORK]: "Multiplayer",
-  [GameMode.PASS_AND_PLAY]: "Pass & play"
-};
-
 const DefaultSeed = `${Math.round(Math.random() * 10000)}`;
 
 export default function NewGame() {
   const router = useRouter();
   const network = useNetwork();
+  const { offline } = router.query;
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [seed, setSeed] = useState<string>(DefaultSeed);
   const [playersCount, setPlayersCount] = useState(3);
@@ -44,7 +40,6 @@ export default function NewGame() {
   const [hintsLevel, setHintsLevel] = useState(IGameHintsLevel.DIRECT);
   const [turnsHistory, setTurnsHistory] = useState(true);
   const [botsWait, setBotsWait] = useState(1000);
-  const [gameMode, setGameMode] = useState(GameMode.NETWORK);
 
   async function onCreateGame() {
     const gameId = shortid();
@@ -61,7 +56,7 @@ export default function NewGame() {
         hintsLevel,
         turnsHistory,
         botsWait,
-        gameMode
+        gameMode: offline ? GameMode.PASS_AND_PLAY : GameMode.NETWORK
       })
     );
 
@@ -83,21 +78,11 @@ export default function NewGame() {
           />
         </Field>
 
-        <Field className="pb2 mb2 bb b--yellow-light" label="Multicolor">
+        <Field label="Multicolor">
           <Checkbox
             checked={multicolor}
             id="multicolor"
             onChange={e => setMulticolor(e.target.checked)}
-          />
-        </Field>
-
-        <Field label="Game mode">
-          <Select
-            className="w4 indent"
-            id="game-mode"
-            options={GameModes}
-            value={gameMode}
-            onChange={e => setGameMode(e.target.value as GameMode)}
           />
         </Field>
 

@@ -35,6 +35,13 @@ export default function Home() {
       <div className="flex flex-column ml5">
         <Button
           className="mb4"
+          id="play-offline"
+          size={ButtonSize.LARGE}
+          text="Play offline"
+          onClick={() => router.push("/new-game?offline=1")}
+        />
+        <Button
+          className="mb4"
           id="create-room"
           size={ButtonSize.LARGE}
           text="Create a room"
