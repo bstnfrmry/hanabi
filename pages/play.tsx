@@ -82,9 +82,15 @@ export default function Play() {
   useEffect(() => {
     if (!game) return;
     if (game.options.gameMode !== GameMode.PASS_AND_PLAY) return;
+    if (game.players.length < game.options.playersCount) return;
+    if (game.status !== IGameStatus.ONGOING) return;
 
     setInterturn(true);
-  }, [game && game.turnsHistory.length]);
+  }, [
+    game && game.turnsHistory.length,
+    game && game.players.length,
+    game && game.status
+  ]);
 
   /**
    * Handle notification sounds.
@@ -293,7 +299,7 @@ export default function Play() {
           <CurrentPlayerContext.Provider value={currentPlayer}>
             <div className="bg-main-dark relative flex flex-row w-100 h-100">
               {/* Left area */}
-              {currentPlayer && interturn && (
+              {interturn && (
                 <div
                   className="flex flex-column items-center justify-center"
                   style={{ minWidth: "35%" }}

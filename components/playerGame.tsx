@@ -32,7 +32,9 @@ export default function PlayerGame(props: Props) {
   const game = useGame();
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const selfPlayer = useSelfPlayer();
-  const hideCards = game.status !== IGameStatus.OVER && (self || !selfPlayer);
+  const hideCards =
+    game.status === IGameStatus.LOBBY ||
+    (game.status !== IGameStatus.OVER && (self || !selfPlayer));
 
   return (
     <div
