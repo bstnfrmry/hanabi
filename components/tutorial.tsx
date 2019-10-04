@@ -38,32 +38,27 @@ const steps = {
   [ITutorialStep.PLAYED_CARDS]: {
     title: "Played cards",
     body:
-      "This is all the cards that have been played.\nReach 5 on each color to win the game."
+      "This will nest the cards that have been played.\nReach 5 on each color to win the game."
   },
   [ITutorialStep.DISCARD_PILE]: {
     title: "Discard",
     body:
-      "This pile contains all the cards you discarded.\nWatch out and avoid discarding cards you need to finish the game."
-  },
-  [ITutorialStep.DISCARD_PILE]: {
-    title: "Discard",
-    body:
-      "This pile contains all the cards you discarded.\nWatch out and avoid discarding cards you need to finish the game."
+      "This pile contains all the cards you discarded.\nWatch out and avoid discarding the cards you need to finish the game."
   },
   [ITutorialStep.SELF_PLAYER]: {
     title: "Your game",
     body:
-      "These are your cards.\nYou can't see them, but other players can and will give you hints about them.\nTry to remember them."
+      "These are your cards.\nYou can't see them, but other players can and will give you hints about them."
   },
   [ITutorialStep.OTHER_PLAYERS]: {
     title: "Teammates",
     body:
-      "These are your team mates.\nLike you, they can't see their cards.\nGive them hints to help them play or discard them"
+      "These are your teammates.\nLike you, they can't see their cards.\nGive them hints to help them play or discard cards"
   },
   [ITutorialStep.HINT_TOKENS]: {
     title: "Hint tokens",
     body:
-      "- Giving a hint costs 1 hint token.\n- Discarding a card grants 1 hint token.\n- Playing a 5 cards grants 1 hint token."
+      "- Giving a hint costs 1 hint token.\n- Discarding a card grants 1 hint token.\n- Playing a 5 gives 1 hint token as a bonus"
   },
   [ITutorialStep.STRIKE_TOKENS]: {
     title: "Strike tokens",
