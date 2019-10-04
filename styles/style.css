@@ -55,6 +55,10 @@ body {
   background-color: var(--color-cta);
 }
 
+.txt-yellow {
+  color: var(--color-yellow);
+}
+
 .bg-white {
   background: linear-gradient(
     to bottom right,
