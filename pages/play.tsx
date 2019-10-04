@@ -87,6 +87,7 @@ export default function Play() {
 
     setInterturn(true);
   }, [
+    selfPlayer,
     game && game.turnsHistory.length,
     game && game.players.length,
     game && game.status
@@ -216,6 +217,10 @@ export default function Play() {
       if (!window.confirm("You fucked up · Keep going?")) {
         return;
       }
+    }
+
+    if (game.options.gameMode === GameMode.PASS_AND_PLAY) {
+      setInterturn(true);
     }
 
     setGame({ ...newState, synced: false });
