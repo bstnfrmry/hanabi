@@ -87,7 +87,6 @@ export default function Play() {
 
     setInterturn(true);
   }, [
-    selfPlayer,
     game && game.turnsHistory.length,
     game && game.players.length,
     game && game.status
