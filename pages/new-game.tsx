@@ -64,10 +64,18 @@ export default function NewGame() {
   }
 
   return (
-    <div className="w-100 h-100 overflow-y-scroll pv4 flex justify-center items-start pv6-l relative bg-main-dark ph2 ph3-l shadow-5 br3">
+    <div className="w-100 h-100 overflow-y-scroll pv4 flex items-center pv6-l relative bg-main-dark ph2 ph3-l shadow-5 br3">
       <HomeButton className="absolute top-1 right-1" />
-
-      <div className="flex flex-column justify-center w-50">
+      <div
+        className="flex flex-column w-50-m w-50-l w-80"
+        style={{ margin: "auto" }}
+      >
+        {offline && (
+          <div className="f4 pb4">
+            In this pass-and-play mode, you can play offline with multiple
+            players by passing the device to each player on their turn.
+          </div>
+        )}
         <Field className="pb2 mb2 bb b--yellow-light" label="Players">
           <Select
             className="w3 indent"
