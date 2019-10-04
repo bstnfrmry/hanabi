@@ -159,7 +159,7 @@ export default function MenuArea(props: Props) {
               <br />
               One of two things happens:
               <br />● If the card begins or adds to a firework, it will be added
-              to that firework pile ● If the card does not add to a firework, it
+              to that firework pile <br/>● If the card does not add to a firework, it
               will be discarded the card and add a red strike token
               <br />
               Then you will draw a replacement card from the deck.
