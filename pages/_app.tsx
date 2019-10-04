@@ -39,6 +39,12 @@ export default class Hanabi extends App {
           />
           <link href="/static/manifest.json" rel="manifest" />
           <title>Hanabi</title>
+          <meta content="#00153f" name="theme-color" />
+          <meta
+            content="Play the hanabi card game online."
+            name="Description"
+          ></meta>
+          <link href="/static/hanabi-192.png" rel="apple-touch-icon" />
         </Head>
         <Container>
           <NetworkContext.Provider value={this.network}>

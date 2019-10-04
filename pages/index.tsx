@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
@@ -20,14 +19,6 @@ export default function Home() {
 
   return (
     <div className="w-100 h-100 flex flex-row justify-center items-center bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
-      <Head>
-        <link href="/static/hanabi-192.png" rel="apple-touch-icon" />
-        <meta content="#00153f" name="theme-color" />
-        <meta
-          content="Play the hanabi card game online."
-          name="Description"
-        ></meta>
-      </Head>
       <div className="flex flex-column items-center">
         <img alt="logo" className="mw4 mb4" src="/static/hanabi.png" />
         <Txt size={TxtSize.LARGE} value="Hanabi" />
