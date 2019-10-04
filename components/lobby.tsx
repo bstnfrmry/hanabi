@@ -62,13 +62,16 @@ export default function Lobby(props: Props) {
                   </div>
                 ))}
                 {selfPlayer && !gameFull && (
-                  <a
-                    className="underline gray pointer ml3"
-                    id="add-ai"
-                    onClick={() => onAddBot()}
-                  >
-                    <Txt value="+ add AI" />
-                  </a>
+                  <div>
+                    <Txt className="gray">Wait for others to join, or </Txt>
+                    <a
+                      className="underline gray pointer ml1"
+                      id="add-ai"
+                      onClick={() => onAddBot()}
+                    >
+                      <Txt value="+ add AI" />
+                    </a>
+                  </div>
                 )}
               </div>
             </div>
@@ -96,8 +99,10 @@ export default function Lobby(props: Props) {
             }}
           >
             <div className="flex flex-column justify-left">
+              <Txt>Chose your player name</Txt>
               <div className="flex justify-center items-center mr2">
                 <TextInput
+                  autoFocus={true}
                   className="flex-grow-1 mr2"
                   id="player-name"
                   style={{ width: "12rem" }}
@@ -123,7 +128,7 @@ export default function Lobby(props: Props) {
           </form>
         )}
 
-        <div className="flex items-center justify-between mt4">
+        <div className="flex mt4">
           <div className="flex flex-column mr2">
             <Txt className="mb1" value="Share this game" />
             <a
