@@ -32,7 +32,9 @@ export default function JoinGame() {
       <div className="w-50 h-100">
         {!games.length && (
           <>
-            <Txt size={TxtSize.LARGE} value="No available room" />
+            <div>
+              <Txt size={TxtSize.LARGE} value="No available room" />
+            </div>
             <Button
               className="ma2"
               size={ButtonSize.LARGE}
