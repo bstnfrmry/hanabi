@@ -62,13 +62,16 @@ export default function Lobby(props: Props) {
                   </div>
                 ))}
                 {selfPlayer && !gameFull && (
-                  <a
-                    className="underline gray pointer ml3"
-                    id="add-ai"
-                    onClick={() => onAddBot()}
-                  >
-                    <Txt value="+ add AI" />
-                  </a>
+                  <div>
+                    <Txt className="gray">Wait for others to join, or </Txt>
+                    <a
+                      className="underline gray pointer ml1"
+                      id="add-ai"
+                      onClick={() => onAddBot()}
+                    >
+                      <Txt value="+ add AI" />
+                    </a>
+                  </div>
                 )}
               </div>
             </div>
