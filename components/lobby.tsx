@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import generateName from "project-name-generator";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import PlayerName from "~/components/playerName";
 import Button, { ButtonSize } from "~/components/ui/button";
-import { Checkbox, Field, TextInput } from "~/components/ui/forms";
+import { TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { GameMode } from "~/game/state";
 import { useGame, useSelfPlayer } from "~/hooks/game";
@@ -37,6 +37,10 @@ export default function Lobby(props: Props) {
     inputRef.current.select();
     document.execCommand("copy");
   }
+
+  useEffect(() => {
+    setName(generateName().dashed);
+  }, [game.players.length]);
 
   return (
     <div className="flex items-center justify-center h-100 w-100">
