@@ -51,7 +51,7 @@ export default function PlayersBoard(props: Props) {
       <div className="flex-grow-1">
         <Tutorial step={ITutorialStep.OTHER_PLAYERS}>
           {otherPlayers.map((otherPlayer, i) => (
-            <div key={i} className="mb1 mb2-l bb b--yellow">
+            <div key={i} className="bb b--yellow">
               {selectedPlayer == otherPlayer && (
                 <OtherPlayerArea
                   player={otherPlayer}

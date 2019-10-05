@@ -21,8 +21,8 @@ export enum CardSize {
 
 const CardClasses = {
   [CardSize.SMALL]: "h1.25 w1.25 h2-l w2-l",
-  [CardSize.MEDIUM]: "h2 w2 h4-l w4-l",
-  [CardSize.LARGE]: "h3 w3 h4.5-l w4.5-l",
+  [CardSize.MEDIUM]: "h2 w2 h3-l w3-l",
+  [CardSize.LARGE]: "h3 w3 h4-l w4-l",
   [CardSize.FLEX]: "flex-square"
 };
 

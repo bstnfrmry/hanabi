@@ -31,20 +31,21 @@ export default function GameBoard(props: Props) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="pa2 pv4-l ph3-l shadow-5 mb1 bg-near-black">
-      <div className="relative flex justify-between flex-column-l items-end items-start-l">
-        <div className="flex flex-column mb5-l">
+    <div className="pa2 pa3-l shadow-5 mb1 bg-near-black">
+      <div>
+        <Txt
+          uppercase
+          id="score"
+          value={`Score: ${score} / ${maxPossibleScore}`}
+        />
+
+        {maxScore !== maxPossibleScore && (
+          <Txt uppercase className="strike ml1 gray" value={maxScore} />
+        )}
+      </div>
+      <div className="relative flex flex-wrap items-end">
+        <div className="flex flex-column">
           <div className="flex items-center h2 nt2">
-            <Txt
-              uppercase
-              id="score"
-              value={`Score: ${score} / ${maxPossibleScore}`}
-            />
-
-            {maxScore !== maxPossibleScore && (
-              <Txt uppercase className="strike ml1 gray" value={maxScore} />
-            )}
-
             {game.drawPile.length > 0 && game.drawPile.length < 5 && (
               <div className="ml2 flex items-center">
                 ·
@@ -72,11 +73,9 @@ export default function GameBoard(props: Props) {
                 </div>
               )}
           </div>
-          <div className="flex flex-column mt1">
-            <PlayedCards cards={game.playedCards} />
-          </div>
+          <PlayedCards cards={game.playedCards} />
         </div>
-        <div className="flex flex-row ph1 justify-left items-end">
+        <div className="flex flex-row ph1 mt3 justify-left items-end">
           <div className="mr2 relative">
             <CardWrapper color={game.drawPile.length > 5 ? "main" : "strikes"}>
               {game.drawPile.map((card, i) => (

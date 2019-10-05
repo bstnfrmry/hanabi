@@ -72,7 +72,7 @@ export default function OtherPlayerArea(props: Props) {
             hidden={false}
             position={i}
             selected={isCardHintable(pendingHint, card)}
-            size={CardSize.FLEX}
+            size={CardSize.LARGE}
           />
         ))}
       </div>

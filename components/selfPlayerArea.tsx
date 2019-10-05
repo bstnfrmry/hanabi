@@ -37,7 +37,7 @@ export default function SelfPlayerArea(props: Props) {
             hidden={true}
             position={i}
             selected={selectedCard === i}
-            size={CardSize.FLEX}
+            size={CardSize.LARGE}
             onClick={() => selectCard(i)}
           />
         ))}

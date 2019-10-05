@@ -8,6 +8,8 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 import { IGameStatus } from "~/game/state";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
+import Information from "./ui/information";
+
 interface Props {
   interturn: boolean;
   onSelectDiscard: Function;
@@ -44,27 +46,33 @@ export default function InstructionsArea(props: Props) {
           </Txt>
         )}
         {game.status !== IGameStatus.OVER && isCurrentPlayer && (
-          <div className="flex flex-column">
-            <Txt
-              uppercase
-              className="mb3"
-              id="your-turn"
-              size={TxtSize.MEDIUM}
-              value="Your turn!"
-            />
-            <Txt
-              className="mb2"
-              value="Give a hint by tapping on your playmates' hand"
-            />
-            <Txt
-              className="mb2"
-              value="Play or discard by tapping on your own game"
-            />
-
-            <a className="underline" onClick={() => onSelectDiscard()}>
-              <Txt value="Check discarded cards" />
-            </a>
-          </div>
+          <>
+            <div className="flex">
+              <Txt
+                uppercase
+                className="mb3"
+                id="your-turn"
+                size={TxtSize.MEDIUM}
+                value="Your turn!"
+              />
+              <Information>
+                <Txt
+                  className="mb2"
+                  value="Give a hint by tapping on your playmates' hand"
+                />
+                <br />
+                <Txt
+                  className="mb2"
+                  value="Play or discard by tapping on your own game"
+                />
+              </Information>
+            </div>
+            <div>
+              <a className="underline" onClick={() => onSelectDiscard()}>
+                <Txt value="Check discarded cards" />
+              </a>
+            </div>
+          </>
         )}
       </Tutorial>
 
@@ -80,8 +88,9 @@ export default function InstructionsArea(props: Props) {
               };
 
               return (
-                <div key={i} className="mt1 mt3-l pointer" style={style}>
+                <div key={i} style={style}>
                   <Turn
+                    key={i}
                     includePlayer={true}
                     showDrawn={
                       !interturn &&

@@ -57,7 +57,7 @@ export default function TokenSpace(props: Props) {
   const { hints, strikes } = props;
 
   return (
-    <div className="flex flex-column-l">
+    <div className="flex">
       <Tutorial placement="below" step={ITutorialStep.HINT_TOKENS}>
         <Token amount={hints} color="hints" />
       </Tutorial>

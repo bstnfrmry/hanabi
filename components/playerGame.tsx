@@ -39,8 +39,9 @@ export default function PlayerGame(props: Props) {
   return (
     <div
       className={classnames(
-        "flex justify-between bg-main-dark pa2 pv3 br3 relative"
+        "cards flex justify-between bg-main-dark pa2 pv3 relative"
       )}
+      onClick={() => onSelectPlayer(player, 0)}
       {...attributes}
     >
       <div className="flex items-center">
@@ -99,7 +100,7 @@ export default function PlayerGame(props: Props) {
         )}
       </div>
 
-      <div className="cards flex justify-end flex-grow-1 dib">
+      <div className="flex justify-end flex-grow-1 dib">
         {player.hand.map((card, i) => (
           <Card
             key={i}
@@ -113,14 +114,16 @@ export default function PlayerGame(props: Props) {
             hidden={hideCards}
             position={i}
             size={CardSize.MEDIUM}
-            onClick={() => onSelectPlayer(player, i)}
+            onClick={e => {
+              e.stopPropagation();
+              onSelectPlayer(player, i);
+            }}
           />
         ))}
       </div>
       <style jsx>{`
         .cards:hover {
           background-color: var(--color-yellow);
-          box-shadow: 0px 0px 5px 5px var(--color-yellow);
         }
       `}</style>
     </div>
