@@ -103,7 +103,7 @@ export default function GameBoard(props: Props) {
             className="pointer relative mr3"
             onClick={() => onSelectDiscard()}
           >
-            <Tutorial placement="left" step={ITutorialStep.DISCARD_PILE}>
+            <Tutorial placement="below" step={ITutorialStep.DISCARD_PILE}>
               <CardWrapper color="light-silver relative">
                 {game.discardPile.map((card, i) => (
                   <div
