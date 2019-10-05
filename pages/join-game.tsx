@@ -29,12 +29,16 @@ export default function JoinGame() {
   return (
     <div className="w-100 h-100 flex justify-center items-center overflow-y-scroll relative bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
       <HomeButton className="absolute top-1 right-1" />
-      <div className="w-50 h-100">
+      <div className="w-75 h-100 pv4 flex flex-column items-center justify-between">
         {!games.length && (
           <>
-            <Txt size={TxtSize.LARGE} value="No available room" />
+            <Txt
+              className="mt5"
+              size={TxtSize.MEDIUM}
+              value="No available room"
+            />
             <Button
-              className="ma2"
+              className="ma2 flex-1"
               size={ButtonSize.LARGE}
               text="Create a room"
               onClick={() => router.push("/new-game")}

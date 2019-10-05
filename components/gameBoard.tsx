@@ -31,8 +31,8 @@ export default function GameBoard(props: Props) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="pa2 pv4-l ph3-l shadow-5 br3 mb1 bg-near-black ba b--yellow-light">
-      <div className="flex justify-between flex-column-l items-end items-start-l">
+    <div className="pa2 pv4-l ph3-l shadow-5 mb1 bg-near-black">
+      <div className="relative flex justify-between flex-column-l items-end items-start-l">
         <div className="flex flex-column mb5-l">
           <div className="flex items-center h2 nt2">
             <Txt
@@ -130,8 +130,7 @@ export default function GameBoard(props: Props) {
             />
           </div>
 
-          <div className="flex flex-column absolute-l top-1 right-1">
-            <HomeButton className="mb1" onClick={onMenuClick} />
+          <div className="flex flex absolute top-0 right-0">
             {game.options.allowRollback && (
               <Button
                 disabled={!game.history.length}
@@ -140,6 +139,7 @@ export default function GameBoard(props: Props) {
                 onClick={() => onShowRollback()}
               />
             )}
+            <HomeButton className="ml1" onClick={onMenuClick} />
           </div>
         </div>
       </div>
