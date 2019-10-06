@@ -121,8 +121,14 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
       }
     } else {
       /** DISCARD */
-      s.discardPile.push(card);
-      if (s.tokens.hints < maxHints) s.tokens.hints += 1;
+      if (s.tokens.hints < maxHints) {
+        s.discardPile.push(card);
+        s.tokens.hints += 1;
+      } else {
+        throw new Error(
+          "Invalid action, cannot discard when the hints are maxed out!"
+        );
+      }
     }
 
     // in both cases (play, discard) we need to remove a card from the hand and get a new one

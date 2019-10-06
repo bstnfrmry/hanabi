@@ -4,7 +4,7 @@ import { useState } from "react";
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { useCurrentPlayer, useSelfPlayer } from "~/hooks/game";
+import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
   cardIndex?: number;
@@ -15,6 +15,7 @@ interface Props {
 export default function SelfPlayerArea(props: Props) {
   const { onCommitAction, cardIndex, onCloseArea } = props;
 
+  const game = useGame();
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
   const [selectedCard, selectCard] = useState<number>(cardIndex);
@@ -57,6 +58,7 @@ export default function SelfPlayerArea(props: Props) {
                 <Button
                   key={action}
                   className="mr2"
+                  disabled={action === "discard" && game.tokens.hints === 8}
                   id={action}
                   text={action}
                   onClick={() =>

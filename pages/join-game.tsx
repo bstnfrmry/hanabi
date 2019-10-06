@@ -32,11 +32,9 @@ export default function JoinGame() {
       <div className="w-75 h-100 pv4 flex flex-column items-center justify-between">
         {!games.length && (
           <>
-            <Txt
-              className="mt5"
-              size={TxtSize.MEDIUM}
-              value="No available room"
-            />
+            <div>
+              <Txt size={TxtSize.LARGE} value="No available room" />
+            </div>
             <Button
               className="ma2 flex-1"
               size={ButtonSize.LARGE}

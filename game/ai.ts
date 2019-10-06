@@ -192,11 +192,19 @@ export function chooseAction(state: IGameView): IAction {
   }
 
   // discard otherwise
-  return {
-    action: "discard",
-    from: state.currentPlayer,
-    cardIndex: 0
-  };
+  if (state.tokens.hints < 8) {
+    return {
+      action: "discard",
+      from: state.currentPlayer,
+      cardIndex: 0
+    };
+  } else {
+    return {
+      action: "play",
+      from: state.currentPlayer,
+      cardIndex: 0
+    };
+  }
 }
 
 /**
