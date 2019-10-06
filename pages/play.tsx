@@ -12,7 +12,9 @@ import GameBoard from "~/components/gameBoard";
 import LoadingScreen from "~/components/loadingScreen";
 import Lobby from "~/components/lobby";
 import MenuArea from "~/components/menuArea";
+import OtherPlayerArea from "~/components/otherPlayerArea";
 import PlayersBoard from "~/components/playersBoard";
+import SelfPlayerArea from "~/components/selfPlayerArea";
 import { TutorialProvider } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -308,32 +310,6 @@ export default function Play() {
                 onShowRollback={onShowRollback}
               />
 
-              <div className="pa2 pv4-l ph3-l shadow-5 bb bt b--yellow bg-black-50">
-                {selectedArea.type === ActionAreaType.MENU && (
-                  <MenuArea onCloseArea={onCloseArea} />
-                )}
-                {selectedArea.type !== ActionAreaType.MENU && (
-                  <>
-                    {game.status === IGameStatus.LOBBY && (
-                      <Lobby
-                        onAddBot={onAddBot}
-                        onJoinGame={onJoinGame}
-                        onStartGame={onStartGame}
-                      />
-                    )}
-                    {game.status !== IGameStatus.LOBBY && (
-                      <ActionArea
-                        interturn={interturn}
-                        selectedArea={selectedArea}
-                        onCloseArea={onCloseArea}
-                        onRollback={onRollback}
-                        onSelectDiscard={onSelectDiscard}
-                      />
-                    )}
-                  </>
-                )}
-              </div>
-
               {/* Top area */}
               {interturn && (
                 <div className="flex-grow-1 flex flex-column items-center justify-center">
@@ -367,6 +343,36 @@ export default function Play() {
                   />
                 </div>
               )}
+
+              <div
+                className="ph2 pv3 pv4-l ph3-l shadow-5 bb bt b--yellow bg-black-50"
+                style={{ minHeight: "35%" }}
+              >
+                {selectedArea.type === ActionAreaType.MENU && (
+                  <MenuArea onCloseArea={onCloseArea} />
+                )}
+                {selectedArea.type !== ActionAreaType.MENU && (
+                  <>
+                    {game.status === IGameStatus.LOBBY && (
+                      <Lobby
+                        onAddBot={onAddBot}
+                        onJoinGame={onJoinGame}
+                        onStartGame={onStartGame}
+                      />
+                    )}
+                    {game.status !== IGameStatus.LOBBY && (
+                      <ActionArea
+                        interturn={interturn}
+                        selectedArea={selectedArea}
+                        onCloseArea={onCloseArea}
+                        onCommitAction={onCommitAction}
+                        onRollback={onRollback}
+                        onSelectDiscard={onSelectDiscard}
+                      />
+                    )}
+                  </>
+                )}
+              </div>
             </div>
           </CurrentPlayerContext.Provider>
         </SelfPlayerContext.Provider>

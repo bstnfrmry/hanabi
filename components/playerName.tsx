@@ -39,7 +39,7 @@ export default function PlayerName(props: Props) {
       <Txt
         className="truncate"
         size={PlayerNameTextSizes[size]}
-        value={you ? "You" : player.name}
+        value={you ? "you" : player.name}
       />
     </div>
   );

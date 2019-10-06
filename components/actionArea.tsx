@@ -2,6 +2,8 @@ import React from "react";
 
 import DiscardArea from "~/components/discardArea";
 import InstructionsArea from "~/components/instructionsArea";
+import OtherPlayerArea from "~/components/otherPlayerArea";
+import SelfPlayerArea from "~/components/selfPlayerArea";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { IPlayer } from "~/game/state";
@@ -62,6 +64,7 @@ interface Props {
   selectedArea: ISelectedArea;
   onSelectDiscard: Function;
   onCloseArea: Function;
+  onCommitAction: Function;
   onRollback: Function;
 }
 
@@ -71,6 +74,7 @@ export default function ActionArea(props: Props) {
     onSelectDiscard,
     onCloseArea,
     onRollback,
+    onCommitAction,
     interturn
   } = props;
 
@@ -99,7 +103,32 @@ export default function ActionArea(props: Props) {
     return <DiscardArea onCloseArea={onCloseArea} />;
   }
 
-  return (
-    <InstructionsArea interturn={interturn} onSelectDiscard={onSelectDiscard} />
-  );
+  if (selectedArea.type === ActionAreaType.INSTRUCTIONS) {
+    return (
+      <InstructionsArea
+        interturn={interturn}
+        onSelectDiscard={onSelectDiscard}
+      />
+    );
+  }
+
+  if (selectedArea.type === ActionAreaType.OTHER_PLAYER) {
+    return (
+      <OtherPlayerArea
+        player={selectedArea.player}
+        onCloseArea={onCloseArea}
+        onCommitAction={onCommitAction}
+      />
+    );
+  }
+
+  if (selectedArea.type === ActionAreaType.SELF_PLAYER) {
+    return (
+      <SelfPlayerArea
+        cardIndex={selectedArea.cardIndex}
+        onCloseArea={onCloseArea}
+        onCommitAction={onCommitAction}
+      />
+    );
+  }
 }

@@ -73,46 +73,31 @@ export default function GameBoard(props: Props) {
                 </div>
               )}
           </div>
-          <PlayedCards cards={game.playedCards} />
         </div>
-        <div className="flex flex-row ph1 mt3 justify-left items-end">
-          <div className="mr2 relative">
-            <CardWrapper color={game.drawPile.length > 5 ? "main" : "strikes"}>
-              {game.drawPile.map((card, i) => (
-                <div
-                  key={i}
-                  className="absolute"
-                  style={{ top: `-${i / 2}px` }}
-                >
-                  <CardWrapper
-                    key={card.id}
-                    color={game.drawPile.length > 5 ? "main" : "strikes"}
-                  >
-                    <Txt
-                      className="outline-main-dark"
-                      size={TxtSize.MEDIUM}
-                      value={i + 1}
-                    />
-                  </CardWrapper>
-                </div>
-              ))}
-            </CardWrapper>
+        <div className="flex flex-row mt3 justify-between items-end w-100">
+          <div className="mr2 mr3-l">
+            <TokenSpace
+              hints={game.tokens.hints}
+              strikes={game.tokens.strikes}
+            />
           </div>
-          <div
-            className="pointer relative mr3"
-            onClick={() => onSelectDiscard()}
-          >
-            <Tutorial placement="below" step={ITutorialStep.DISCARD_PILE}>
-              <CardWrapper color="light-silver relative">
-                {game.discardPile.map((card, i) => (
+          <div className="flex">
+            <div className="mr2 relative">
+              <CardWrapper
+                color={game.drawPile.length > 5 ? "main" : "strikes"}
+              >
+                {game.drawPile.map((card, i) => (
                   <div
                     key={i}
                     className="absolute"
                     style={{ top: `-${i / 2}px` }}
                   >
-                    <CardWrapper key={card.id} color="light-silver">
+                    <CardWrapper
+                      key={card.id}
+                      color={game.drawPile.length > 5 ? "main" : "strikes"}
+                    >
                       <Txt
-                        className="absolute pointer"
+                        className="outline-main-dark"
                         size={TxtSize.MEDIUM}
                         value={i + 1}
                       />
@@ -120,27 +105,45 @@ export default function GameBoard(props: Props) {
                   </div>
                 ))}
               </CardWrapper>
-            </Tutorial>
+            </div>
+            <div
+              className="pointer relative mr3"
+              onClick={() => onSelectDiscard()}
+            >
+              <Tutorial placement="below" step={ITutorialStep.DISCARD_PILE}>
+                <CardWrapper color="light-silver relative">
+                  {game.discardPile.map((card, i) => (
+                    <div
+                      key={i}
+                      className="absolute"
+                      style={{ top: `-${i / 2}px` }}
+                    >
+                      <CardWrapper key={card.id} color="light-silver">
+                        <Txt
+                          className="absolute pointer"
+                          size={TxtSize.MEDIUM}
+                          value={i + 1}
+                        />
+                      </CardWrapper>
+                    </div>
+                  ))}
+                </CardWrapper>
+              </Tutorial>
+            </div>
           </div>
-          <div className="mr2 mr3-l">
-            <TokenSpace
-              hints={game.tokens.hints}
-              strikes={game.tokens.strikes}
-            />
-          </div>
-
-          <div className="flex flex absolute top-0 right-0">
-            {game.options.allowRollback && (
-              <Button
-                disabled={!game.history.length}
-                size={ButtonSize.TINY}
-                text="⟲"
-                onClick={() => onShowRollback()}
-              />
-            )}
-            <HomeButton className="ml1" onClick={onMenuClick} />
-          </div>
+          <PlayedCards cards={game.playedCards} />
         </div>
+      </div>
+      <div className="flex flex absolute top-0 right-0 mr2 mt2">
+        {game.options.allowRollback && (
+          <Button
+            disabled={!game.history.length}
+            size={ButtonSize.TINY}
+            text="⟲"
+            onClick={() => onShowRollback()}
+          />
+        )}
+        <HomeButton className="ml1" onClick={onMenuClick} />
       </div>
     </div>
   );

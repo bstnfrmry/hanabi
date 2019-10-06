@@ -78,17 +78,17 @@ export default function OtherPlayerArea(props: Props) {
       </div>
       {selfPlayer === currentPlayer && (
         <>
-          <div className="flex flex-column items-end pb2 mr2">
+          <div className="flex items-center justify-between pb2 ml2">
             <Vignettes
               pendingHint={pendingHint}
               onSelect={action => setPendingHint(action)}
             />
 
-            <div className="mt2 flex items-center">
+            <div className="ml2 flex flex-column items-end justify-center">
               {pendingHint.value && (
                 <Txt
                   italic
-                  className="mr3"
+                  className="mb3"
                   value={textualHint(pendingHint, player.hand)}
                 />
               )}

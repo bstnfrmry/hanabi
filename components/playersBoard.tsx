@@ -36,22 +36,22 @@ export default function PlayersBoard(props: Props) {
     ...game.players.slice(0, position)
   ];
 
-  let selectedPlayer = null;
-  let cardIndex = null;
-  if (selectedArea.type === ActionAreaType.SELF_PLAYER) {
-    selectedPlayer = selectedArea.player;
-    cardIndex = selectedArea.cardIndex;
-  }
-  if (selectedArea.type === ActionAreaType.OTHER_PLAYER) {
-    selectedPlayer = selectedArea.player;
-  }
+  const selectedPlayer = null;
+  const cardIndex = null;
+  // if (selectedArea.type === ActionAreaType.SELF_PLAYER) {
+  //   selectedPlayer = selectedArea.player;
+  //   cardIndex = selectedArea.cardIndex;
+  // }
+  // if (selectedArea.type === ActionAreaType.OTHER_PLAYER) {
+  //   selectedPlayer = selectedArea.player;
+  // }
 
   return (
     <>
-      <div className="flex-grow-1">
+      <div className="flex flex-column justify-end flex-grow-1">
         <Tutorial step={ITutorialStep.OTHER_PLAYERS}>
           {otherPlayers.map((otherPlayer, i) => (
-            <div key={i} className="bb b--yellow">
+            <div key={i} className="bt b--yellow">
               {selectedPlayer == otherPlayer && (
                 <OtherPlayerArea
                   player={otherPlayer}
@@ -74,7 +74,7 @@ export default function PlayersBoard(props: Props) {
       </div>
       {selfPlayer && (
         <Tutorial step={ITutorialStep.SELF_PLAYER}>
-          <div className="bt b--yellow">
+          <div className="bt bb b--yellow">
             {selectedPlayer == selfPlayer && (
               <SelfPlayerArea
                 cardIndex={cardIndex}

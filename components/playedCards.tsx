@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import { groupBy, last } from "lodash";
 import React from "react";
 
@@ -37,7 +38,9 @@ export default function PlayedCards(props: Props) {
           return (
             <CardWrapper
               key={i}
-              className="mr1 relative"
+              className={classnames("relative", {
+                "mr1 mr2-l": i < colors.length - 1
+              })}
               color={color}
               size={CardSize.MEDIUM}
             >
