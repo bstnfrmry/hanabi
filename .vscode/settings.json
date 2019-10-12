@@ -1,16 +1,16 @@
 {
-  "editor.formatOnSave":  true,
-  "[javascript]":  {
-    "editor.formatOnSave":  false,
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.formatOnSave": true
   },
-  "[javascriptreact]":  {
-    "editor.formatOnSave":  false,
+  "[javascriptreact]": {
+    "editor.formatOnSave": true
   },
-  "[typescript]":  {
-    "editor.formatOnSave":  false,
+  "[typescript]": {
+    "editor.formatOnSave": true
   },
-  "[typescriptreact]":  {
-    "editor.formatOnSave":  false,
+  "[typescriptreact]": {
+    "editor.formatOnSave": true
   },
   "eslint.autoFixOnSave": true,
   "eslint.validate": [
