@@ -88,7 +88,7 @@ export function isGameOver(state: IGameState) {
   return (
     state.actionsLeft <= 0 ||
     state.tokens.strikes >= 3 ||
-    (state.playedCards || []).length === (state.options.multicolor ? 30 : 25)
+    getMaximumPossibleScore(state) === (state.playedCards || []).length
   );
 }
 
