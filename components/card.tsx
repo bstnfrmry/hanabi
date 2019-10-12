@@ -15,15 +15,13 @@ import { useGame } from "~/hooks/game";
 export enum CardSize {
   SMALL = "small",
   MEDIUM = "medium",
-  LARGE = "large",
-  FLEX = "flex"
+  LARGE = "large"
 }
 
 const CardClasses = {
   [CardSize.SMALL]: "h1.25 w1.25 h2-l w2-l",
   [CardSize.MEDIUM]: "h2 w2 h3-l w3-l",
-  [CardSize.LARGE]: "h3 w3 h4-l w4-l",
-  [CardSize.FLEX]: "flex-square"
+  [CardSize.LARGE]: "flex-square"
 };
 
 const CardTextSizes = {

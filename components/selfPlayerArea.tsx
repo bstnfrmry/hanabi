@@ -1,5 +1,5 @@
-import React from "react";
-import { useState } from "react";
+import classnames from "classnames";
+import React, { useState } from "react";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Button from "~/components/ui/button";
@@ -23,7 +23,7 @@ export default function SelfPlayerArea(props: Props) {
 
   return (
     <div className="flex flex-column flex-grow-1">
-      <a className="pb1 pb2-l ml2 mb2 mt3" onClick={() => onCloseArea()}>
+      <a className="mb2" onClick={() => onCloseArea()}>
         <Txt uppercase size={TxtSize.MEDIUM} value="Your game" />
         <Txt className="ml2" value="×" />
       </a>
@@ -32,7 +32,9 @@ export default function SelfPlayerArea(props: Props) {
           <Card
             key={i}
             card={card}
-            className="ma1"
+            className={classnames("flex-grow-1", {
+              mr1: i < selfPlayer.hand.length - 1
+            })}
             context={ICardContext.TARGETED_PLAYER}
             hidden={true}
             position={i}

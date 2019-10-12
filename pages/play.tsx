@@ -9,12 +9,12 @@ import ActionArea, {
   ISelectedArea
 } from "~/components/actionArea";
 import GameBoard from "~/components/gameBoard";
+import GameHistory from "~/components/gameHistory";
+import HomeButton from "~/components/homeButton";
 import LoadingScreen from "~/components/loadingScreen";
 import Lobby from "~/components/lobby";
 import MenuArea from "~/components/menuArea";
-import OtherPlayerArea from "~/components/otherPlayerArea";
 import PlayersBoard from "~/components/playersBoard";
-import SelfPlayerArea from "~/components/selfPlayerArea";
 import { TutorialProvider } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -299,8 +299,8 @@ export default function Play() {
   }
 
   return (
-    <TutorialProvider>
-      <GameContext.Provider value={game}>
+    <GameContext.Provider value={game}>
+      <TutorialProvider>
         <SelfPlayerContext.Provider value={selfPlayer}>
           <CurrentPlayerContext.Provider value={currentPlayer}>
             <div className="bg-main-dark relative flex flex-column w-100 h-100">
@@ -310,43 +310,19 @@ export default function Play() {
                 onShowRollback={onShowRollback}
               />
 
-              {/* Top area */}
-              {interturn && (
-                <div className="flex-grow-1 flex flex-column items-center justify-center">
-                  <Txt
-                    size={TxtSize.MEDIUM}
-                    value={`It's ${currentPlayer.name}'s turn!`}
-                  />
-                  <Button
-                    primary
-                    className="mt4"
-                    size={ButtonSize.MEDIUM}
-                    text={`Go !`}
-                    onClick={() => setInterturn(false)}
-                  />
-                </div>
-              )}
-
-              {!interturn && (
-                <div
-                  className={classnames(
-                    "flex flex-column h-100 overflow-y-scroll"
-                  )}
-                >
-                  <PlayersBoard
-                    selectedArea={selectedArea}
-                    onCloseArea={onCloseArea}
-                    onCommitAction={onCommitAction}
-                    onNotifyPlayer={onNotifyPlayer}
-                    onReaction={onReaction}
-                    onSelectPlayer={onSelectPlayer}
-                  />
-                </div>
-              )}
+              <div className={classnames("flex flex-column")}>
+                <PlayersBoard
+                  interturn={interturn}
+                  onNotifyPlayer={onNotifyPlayer}
+                  onReaction={onReaction}
+                  onSelectPlayer={onSelectPlayer}
+                />
+              </div>
 
               <div
-                className="ph2 pv3 pv4-l ph3-l shadow-5 bb bt b--yellow bg-black-50"
-                style={{ minHeight: "35%" }}
+                className={classnames(
+                  "flex-grow-1  ph2 pv3 pv4-l ph3-l shadow-5 bb bt b--yellow bg-black-50"
+                )}
               >
                 {selectedArea.type === ActionAreaType.MENU && (
                   <MenuArea onCloseArea={onCloseArea} />
@@ -365,18 +341,24 @@ export default function Play() {
                         interturn={interturn}
                         selectedArea={selectedArea}
                         onCloseArea={onCloseArea}
+                        onCloseInterturn={() => setInterturn(false)}
                         onCommitAction={onCommitAction}
                         onRollback={onRollback}
-                        onSelectDiscard={onSelectDiscard}
                       />
                     )}
                   </>
                 )}
               </div>
+
+              {game.options.turnsHistory && game.turnsHistory.length > 0 && (
+                <div className="pv1 ph2 pv4-l ph3-l min-h-2 max-h-4 overflow-y-scroll bt b--yellow relative">
+                  <GameHistory interturn={interturn} />
+                </div>
+              )}
             </div>
           </CurrentPlayerContext.Provider>
         </SelfPlayerContext.Provider>
-      </GameContext.Provider>
-    </TutorialProvider>
+      </TutorialProvider>
+    </GameContext.Provider>
   );
 }

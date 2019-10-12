@@ -1,9 +1,12 @@
+import { pickBy } from "lodash";
 import React, { ReactNode, useContext, useEffect, useState } from "react";
 import Popover, { PopoverPlace } from "react-popover";
 import posed from "react-pose";
 
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
+import IGameState from "~/game/state";
+import { useGame } from "~/hooks/game";
 
 export const TutorialContext = React.createContext(null);
 
@@ -27,13 +30,20 @@ export enum ITutorialStep {
   SELF_PLAYER = 3,
   OTHER_PLAYERS = 4,
   HINT_TOKENS = 5,
-  STRIKE_TOKENS = 6
+  STRIKE_TOKENS = 6,
+  HISTORY = 7
 }
 
-const steps = {
+interface Step {
+  title: string;
+  body: string;
+  trigger?: (game: IGameState) => boolean;
+}
+
+const steps: { [key: string]: Step } = {
   [ITutorialStep.WELCOME]: {
     title: "Welcome!",
-    body: "Let's learn how to play"
+    body: "Let's learn how to play."
   },
   [ITutorialStep.PLAYED_CARDS]: {
     title: "Played cards",
@@ -58,7 +68,7 @@ const steps = {
   [ITutorialStep.OTHER_PLAYERS]: {
     title: "Teammates",
     body:
-      "These are your team mates.\nLike you, they can't see their cards.\nGive them hints to help them play or discard them"
+      "These are your team mates.\nLike you, they can't see their cards.\nGive them hints to help them play or discard them."
   },
   [ITutorialStep.HINT_TOKENS]: {
     title: "Hint tokens",
@@ -69,6 +79,12 @@ const steps = {
     title: "Strike tokens",
     body:
       "Playing a wrong card will discard it and cost you 1 strike token.\nReaching 3 strike tokens will instantly lose the game."
+  },
+  [ITutorialStep.HISTORY]: {
+    title: "Game history",
+    body:
+      "Each action played since the beginning of the game.\nStudy them to optimise your next turn.",
+    trigger: (game: IGameState) => game.turnsHistory.length > 0
   }
 };
 
@@ -79,6 +95,7 @@ interface TutorialProviderProps {
 export function TutorialProvider(props: TutorialProviderProps) {
   const { children } = props;
 
+  const game = useGame();
   const [currentStep, setCurrentStep] = useState(
     +localStorage.getItem(LocalStorageKey) || ITutorialStep.WELCOME
   );
@@ -88,11 +105,17 @@ export function TutorialProvider(props: TutorialProviderProps) {
     localStorage.setItem(LocalStorageKey, step.toString());
   }
 
-  const count = Object.keys(steps).length;
+  const activeSteps = pickBy(steps, step => {
+    if (!step.trigger) return true;
+
+    return step.trigger(game);
+  });
+  const count = Object.keys(activeSteps).length;
 
   return (
     <TutorialContext.Provider
       value={{
+        steps: activeSteps,
         currentStep,
         totalSteps: count,
         lastStep: currentStep === count - 1,
@@ -118,6 +141,7 @@ export default function Tutorial(props: Props) {
 
   const [pose, setPose] = useState(null);
   const {
+    steps,
     currentStep,
     previousStep,
     nextStep,
@@ -134,24 +158,24 @@ export default function Tutorial(props: Props) {
     return () => clearInterval(interval);
   }, [currentStep]);
 
-  if (step !== currentStep) {
+  const activeStep = steps[step];
+
+  if (step !== currentStep || !activeStep) {
     return children ? <>{children}</> : null;
   }
-
-  const { title, body } = steps[step];
 
   return (
     <Popover
       body={
         <div className="flex flex-column b--yellow ba bw1 bg-white pa2 pa3-l br2 main-dark">
           <span className="flex items-center justify-between">
-            <Txt size={TxtSize.MEDIUM} value={title} />
+            <Txt size={TxtSize.MEDIUM} value={activeStep.title} />
             {step > 0 && (
               <Txt className="gray mr2" value={`${step} / ${totalSteps - 1}`} />
             )}
           </span>
           <div className="flex items-center mt2 mt4-l">
-            <Txt multiline className="mr4" value={body} />
+            <Txt multiline className="mr4" value={activeStep.body} />
 
             {step === ITutorialStep.WELCOME && (
               <>

@@ -73,6 +73,11 @@
 /**
  * Sizes
  */
-.mh-30vh {
-  max-height: 30vh;
+
+.min-h-2 {
+  min-height: 2rem;
+}
+
+.max-h-4 {
+  max-height: 8rem;
 }

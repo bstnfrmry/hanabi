@@ -11,6 +11,7 @@ import { useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props extends HTMLAttributes<HTMLElement> {
   player: IPlayer;
+  interturn: boolean;
   active?: boolean;
   self?: boolean;
   onSelectPlayer: Function;
@@ -21,6 +22,7 @@ interface Props extends HTMLAttributes<HTMLElement> {
 export default function PlayerGame(props: Props) {
   const {
     player,
+    interturn,
     self = false,
     onSelectPlayer,
     onNotifyPlayer,
@@ -33,6 +35,7 @@ export default function PlayerGame(props: Props) {
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const selfPlayer = useSelfPlayer();
   const hideCards =
+    interturn ||
     game.status === IGameStatus.LOBBY ||
     (game.status !== IGameStatus.OVER && (self || !selfPlayer));
 

@@ -19,7 +19,7 @@ export default function Turn(props: Props) {
   const game = useGame();
 
   return (
-    <div className="di mb2 pre">
+    <div className="di pre">
       {includePlayer && (
         <>
           <PlayerName player={game.players[turn.action.from]} />

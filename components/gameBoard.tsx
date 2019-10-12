@@ -106,11 +106,11 @@ export default function GameBoard(props: Props) {
                 ))}
               </CardWrapper>
             </div>
-            <div
-              className="pointer relative mr3"
-              onClick={() => onSelectDiscard()}
-            >
-              <Tutorial placement="below" step={ITutorialStep.DISCARD_PILE}>
+            <Tutorial placement="below" step={ITutorialStep.DISCARD_PILE}>
+              <div
+                className="pointer relative mr3"
+                onClick={() => onSelectDiscard()}
+              >
                 <CardWrapper color="light-silver relative">
                   {game.discardPile.map((card, i) => (
                     <div
@@ -128,8 +128,8 @@ export default function GameBoard(props: Props) {
                     </div>
                   ))}
                 </CardWrapper>
-              </Tutorial>
-            </div>
+              </div>
+            </Tutorial>
           </div>
           <PlayedCards cards={game.playedCards} />
         </div>

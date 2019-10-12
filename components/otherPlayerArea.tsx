@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import React, { useState } from "react";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
@@ -56,7 +57,7 @@ export default function OtherPlayerArea(props: Props) {
 
   return (
     <div className="flex flex-column flex-grow-1">
-      <div className="flex flex-row pa1 pa2-l ttu ml1 mb2 mt2">
+      <div className="flex flex-row ttu ml1 mb2 mt2">
         <a className="flex-grow-1" onClick={() => onCloseArea()}>
           <PlayerName player={player} size={PlayerNameSize.MEDIUM} />
           <Txt className="ml2" value="×" />
@@ -67,7 +68,9 @@ export default function OtherPlayerArea(props: Props) {
           <Card
             key={i}
             card={card}
-            className="ma1 flex-grow-1"
+            className={classnames("flex-grow-1", {
+              mr1: i < player.hand.length - 1
+            })}
             context={ICardContext.TARGETED_PLAYER}
             hidden={false}
             position={i}
@@ -84,7 +87,7 @@ export default function OtherPlayerArea(props: Props) {
               onSelect={action => setPendingHint(action)}
             />
 
-            <div className="ml2 flex flex-column items-end justify-center">
+            <div className="mr2 flex flex-column items-end justify-center">
               {pendingHint.value && (
                 <Txt
                   italic

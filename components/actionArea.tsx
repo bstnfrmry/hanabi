@@ -62,20 +62,20 @@ export type ISelectedArea =
 interface Props {
   interturn: boolean;
   selectedArea: ISelectedArea;
-  onSelectDiscard: Function;
   onCloseArea: Function;
   onCommitAction: Function;
   onRollback: Function;
+  onCloseInterturn: Function;
 }
 
 export default function ActionArea(props: Props) {
   const {
+    interturn,
     selectedArea,
-    onSelectDiscard,
     onCloseArea,
     onRollback,
     onCommitAction,
-    interturn
+    onCloseInterturn
   } = props;
 
   if (selectedArea.type === ActionAreaType.ROLLBACK) {
@@ -107,7 +107,7 @@ export default function ActionArea(props: Props) {
     return (
       <InstructionsArea
         interturn={interturn}
-        onSelectDiscard={onSelectDiscard}
+        onCloseInterturn={onCloseInterturn}
       />
     );
   }
