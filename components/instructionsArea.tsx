@@ -8,8 +8,6 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 import { IGameStatus } from "~/game/state";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
-import Information from "./ui/information";
-
 interface Props {
   interturn: boolean;
   onSelectDiscard: Function;
@@ -40,28 +38,6 @@ export default function InstructionsArea(props: Props) {
             <PlayerName player={currentPlayer} size={PlayerNameSize.MEDIUM} />
             {"'s turn"}
           </Txt>
-        )}
-        {game.status !== IGameStatus.OVER && isCurrentPlayer && (
-          <div className="flex">
-            <Txt
-              uppercase
-              className="mb3"
-              id="your-turn"
-              size={TxtSize.MEDIUM}
-              value="Your turn!"
-            />
-            <Information>
-              <Txt
-                className="mb2"
-                value="Give a hint by tapping on your playmates' hand"
-              />
-              <br />
-              <Txt
-                className="mb2"
-                value="Play or discard by tapping on your own game"
-              />
-            </Information>
-          </div>
         )}
       </Tutorial>
 

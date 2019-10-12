@@ -4,6 +4,7 @@ import { useState } from "react";
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
+import { MaxHints } from "~/game/actions";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
@@ -44,33 +45,41 @@ export default function SelfPlayerArea(props: Props) {
         ))}
       </div>
       {selfPlayer === currentPlayer && (
-        <div className="flex justify-end items-center">
-          {hasSelectedCard && (
-            <Txt
-              className="pb1 pb2-l ml1 mb2 mr3"
-              value={`Card ${PositionMap[selectedCard]} selected`}
-            />
-          )}
+        <div className="flex flex-column items-end">
+          <div className="flex justify-end items-center">
+            {hasSelectedCard && (
+              <Txt
+                className="pb1 pb2-l ml1 mb2 mr3"
+                value={`Card ${PositionMap[selectedCard]} selected`}
+              />
+            )}
 
-          {hasSelectedCard && (
-            <div className="flex flex pb2">
-              {["play", "discard"].map(action => (
-                <Button
-                  key={action}
-                  className="mr2"
-                  disabled={action === "discard" && game.tokens.hints === 8}
-                  id={action}
-                  text={action}
-                  onClick={() =>
-                    onCommitAction({
-                      action,
-                      from: selfPlayer.index,
-                      cardIndex: selectedCard
-                    })
-                  }
-                />
-              ))}
-            </div>
+            {hasSelectedCard && (
+              <div className="flex flex pb2">
+                {["play", "discard"].map(action => (
+                  <Button
+                    key={action}
+                    className="mr2"
+                    disabled={action === "discard" && game.tokens.hints === 8}
+                    id={action}
+                    text={action}
+                    onClick={() =>
+                      onCommitAction({
+                        action,
+                        from: selfPlayer.index,
+                        cardIndex: selectedCard
+                      })
+                    }
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+          {game.tokens.hints === MaxHints && (
+            <Txt className="orange mr2 flex flex-column items-end">
+              <span>8 tokens</span>
+              <span>You cannot discard</span>
+            </Txt>
           )}
         </div>
       )}

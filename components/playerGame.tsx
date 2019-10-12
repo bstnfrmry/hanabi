@@ -5,9 +5,9 @@ import Popover from "react-popover";
 import Card, { CardSize, ICardContext } from "~/components/card";
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import ReactionsPopover from "~/components/reactionsPopover";
-import Txt from "~/components/ui/txt";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import { IGameStatus, IPlayer } from "~/game/state";
-import { useGame, useSelfPlayer } from "~/hooks/game";
+import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props extends HTMLAttributes<HTMLElement> {
   player: IPlayer;
@@ -32,6 +32,7 @@ export default function PlayerGame(props: Props) {
   const game = useGame();
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const selfPlayer = useSelfPlayer();
+  const currentPlayer = useCurrentPlayer();
   const hideCards =
     game.status === IGameStatus.LOBBY ||
     (game.status !== IGameStatus.OVER && (self || !selfPlayer));
@@ -45,12 +46,22 @@ export default function PlayerGame(props: Props) {
       {...attributes}
     >
       <div className="flex items-center">
-        <PlayerName
-          className="mr2"
-          explicit={true}
-          player={player}
-          size={PlayerNameSize.MEDIUM}
-        />
+        <div className="flex flex-column">
+          {player === selfPlayer && player === currentPlayer && (
+            <Txt className="yellow" size={TxtSize.SMALL} value="Your turn" />
+          )}
+          <div className="flex items-center">
+            {player === currentPlayer && (
+              <Txt className="yellow mr1" size={TxtSize.SMALL} value="➤" />
+            )}
+            <PlayerName
+              className="mr2"
+              explicit={true}
+              player={player}
+              size={PlayerNameSize.MEDIUM}
+            />
+          </div>
+        </div>
 
         {!self && player.reaction && (
           <Txt

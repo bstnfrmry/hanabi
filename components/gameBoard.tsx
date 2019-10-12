@@ -6,6 +6,7 @@ import PlayedCards from "~/components/playedCards";
 import TokenSpace from "~/components/tokenSpace";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
+import { Eye } from "~/components/ui/icons";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import {
   getMaximumPossibleScore,
@@ -44,7 +45,7 @@ export default function GameBoard(props: Props) {
         )}
       </div>
       <div className="relative flex flex-wrap items-end">
-        <div className="flex flex-column">
+        <div className="flex flex-column mb3">
           <div className="flex items-center h2 nt2">
             {game.actionsLeft > 0 &&
               game.actionsLeft <= game.options.playersCount && (
@@ -136,7 +137,7 @@ export default function GameBoard(props: Props) {
               hints={game.tokens.hints}
               strikes={game.tokens.strikes}
             />
-            <Txt className="gray" value="tokens" />
+            <Txt className="gray mt1" value="tokens" />
           </div>
 
           <div className="flex flex absolute top-0 right-0">
@@ -155,13 +156,3 @@ export default function GameBoard(props: Props) {
     </div>
   );
 }
-
-const Eye = () => (
-  <svg
-    enableBackground="new -0.709 -32.081 141.732 141.732"
-    version="1.1"
-    viewBox="-0.709 -32.081 141.732 141.732"
-  >
-    <path d="M89.668,38.786c0-10.773-8.731-19.512-19.51-19.512S50.646,28.01,50.646,38.786c0,10.774,8.732,19.511,19.512,19.511   C80.934,58.297,89.668,49.561,89.668,38.786 M128.352,38.727c-13.315,17.599-34.426,28.972-58.193,28.972   c-23.77,0-44.879-11.373-58.194-28.972C25.279,21.129,46.389,9.756,70.158,9.756C93.927,9.756,115.036,21.129,128.352,38.727    M140.314,38.76C125.666,15.478,99.725,0,70.158,0S14.648,15.478,0,38.76c14.648,23.312,40.591,38.81,70.158,38.81   S125.666,62.072,140.314,38.76" />
-  </svg>
-);

@@ -92,6 +92,9 @@ export default function OtherPlayerArea(props: Props) {
                   value={textualHint(pendingHint, player.hand)}
                 />
               )}
+              {game.tokens.hints === 0 && (
+                <Txt className="mr3 orange" value="No tokens left to hint" />
+              )}
 
               <Button
                 disabled={!pendingHint.type || game.tokens.hints === 0}
