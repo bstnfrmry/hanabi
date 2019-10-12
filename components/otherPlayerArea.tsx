@@ -56,18 +56,18 @@ export default function OtherPlayerArea(props: Props) {
 
   return (
     <div className="flex flex-column flex-grow-1">
-      <div className="flex flex-row pb1 pb2-l ttu ml1 mb2">
+      <div className="flex flex-row pa1 pa2-l ttu ml1 mb2 mt2">
         <a className="flex-grow-1" onClick={() => onCloseArea()}>
           <PlayerName player={player} size={PlayerNameSize.MEDIUM} />
           <Txt className="ml2" value="×" />
         </a>
       </div>
-      <div className="flex flex-row pb2">
+      <div className="flex justify-center flex-row pb2 ph2">
         {player.hand.map((card, i) => (
           <Card
             key={i}
             card={card}
-            className="ma1"
+            className="ma1 flex-grow-1"
             context={ICardContext.TARGETED_PLAYER}
             hidden={false}
             position={i}
@@ -78,23 +78,25 @@ export default function OtherPlayerArea(props: Props) {
       </div>
       {selfPlayer === currentPlayer && (
         <>
-          <Txt className="mb2 mt5" value="Select a hint below" />
-          <div className="flex flex-row pb2">
+          <div className="flex flex-column items-end pb2 mr2">
             <Vignettes
               pendingHint={pendingHint}
               onSelect={action => setPendingHint(action)}
             />
 
-            <div className="ml2 flex flex-column">
+            <div className="mt2 flex items-center">
               {pendingHint.value && (
-                <Txt italic value={textualHint(pendingHint, player.hand)} />
+                <Txt
+                  italic
+                  className="mr3"
+                  value={textualHint(pendingHint, player.hand)}
+                />
               )}
 
               <Button
                 disabled={!pendingHint.type || game.tokens.hints === 0}
                 id="give-hint"
-                style={{ marginTop: "auto" }}
-                text="Give hint"
+                text="Hint"
                 onClick={() =>
                   onCommitAction({
                     action: "hint",

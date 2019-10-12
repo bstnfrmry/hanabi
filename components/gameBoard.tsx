@@ -31,20 +31,21 @@ export default function GameBoard(props: Props) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="pa2 pv4-l ph3-l shadow-5 br3 mb1 bg-near-black ba b--yellow-light">
-      <div className="flex justify-between flex-column-l items-end items-start-l">
-        <div className="flex flex-column mb5-l">
+    <div className="pa2 pa3-l shadow-5 mb1 bg-near-black">
+      <div>
+        <Txt
+          uppercase
+          id="score"
+          value={`Score: ${score} / ${maxPossibleScore}`}
+        />
+
+        {maxScore !== maxPossibleScore && (
+          <Txt uppercase className="strike ml1 gray" value={maxScore} />
+        )}
+      </div>
+      <div className="relative flex flex-wrap items-end">
+        <div className="flex flex-column">
           <div className="flex items-center h2 nt2">
-            <Txt
-              uppercase
-              id="score"
-              value={`Score: ${score} / ${maxPossibleScore}`}
-            />
-
-            {maxScore !== maxPossibleScore && (
-              <Txt uppercase className="strike ml1 gray" value={maxScore} />
-            )}
-
             {game.drawPile.length > 0 && game.drawPile.length < 5 && (
               <div className="ml2 flex items-center">
                 ·
@@ -72,11 +73,9 @@ export default function GameBoard(props: Props) {
                 </div>
               )}
           </div>
-          <div className="flex flex-column mt1">
-            <PlayedCards cards={game.playedCards} />
-          </div>
+          <PlayedCards cards={game.playedCards} />
         </div>
-        <div className="flex flex-row ph1 justify-left items-end">
+        <div className="flex flex-row ph1 mt3 justify-left items-end">
           <div className="mr2 relative">
             <CardWrapper color={game.drawPile.length > 5 ? "main" : "strikes"}>
               {game.drawPile.map((card, i) => (
@@ -103,7 +102,7 @@ export default function GameBoard(props: Props) {
             className="pointer relative mr3"
             onClick={() => onSelectDiscard()}
           >
-            <Tutorial placement="left" step={ITutorialStep.DISCARD_PILE}>
+            <Tutorial placement="below" step={ITutorialStep.DISCARD_PILE}>
               <CardWrapper color="light-silver relative">
                 {game.discardPile.map((card, i) => (
                   <div
@@ -130,8 +129,7 @@ export default function GameBoard(props: Props) {
             />
           </div>
 
-          <div className="flex flex-column absolute-l top-1 right-1">
-            <HomeButton className="mb1" onClick={onMenuClick} />
+          <div className="flex flex absolute top-0 right-0">
             {game.options.allowRollback && (
               <Button
                 disabled={!game.history.length}
@@ -140,6 +138,7 @@ export default function GameBoard(props: Props) {
                 onClick={() => onShowRollback()}
               />
             )}
+            <HomeButton className="ml1" onClick={onMenuClick} />
           </div>
         </div>
       </div>

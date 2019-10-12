@@ -301,13 +301,42 @@ export default function Play() {
       <GameContext.Provider value={game}>
         <SelfPlayerContext.Provider value={selfPlayer}>
           <CurrentPlayerContext.Provider value={currentPlayer}>
-            <div className="bg-main-dark relative flex flex-row w-100 h-100">
-              {/* Left area */}
+            <div className="bg-main-dark relative flex flex-column w-100 h-100">
+              <GameBoard
+                onMenuClick={onMenuClick}
+                onSelectDiscard={onSelectDiscard}
+                onShowRollback={onShowRollback}
+              />
+
+              <div className="pa2 pv4-l ph3-l shadow-5 bb bt b--yellow bg-black-50">
+                {selectedArea.type === ActionAreaType.MENU && (
+                  <MenuArea onCloseArea={onCloseArea} />
+                )}
+                {selectedArea.type !== ActionAreaType.MENU && (
+                  <>
+                    {game.status === IGameStatus.LOBBY && (
+                      <Lobby
+                        onAddBot={onAddBot}
+                        onJoinGame={onJoinGame}
+                        onStartGame={onStartGame}
+                      />
+                    )}
+                    {game.status !== IGameStatus.LOBBY && (
+                      <ActionArea
+                        interturn={interturn}
+                        selectedArea={selectedArea}
+                        onCloseArea={onCloseArea}
+                        onRollback={onRollback}
+                        onSelectDiscard={onSelectDiscard}
+                      />
+                    )}
+                  </>
+                )}
+              </div>
+
+              {/* Top area */}
               {interturn && (
-                <div
-                  className="flex flex-column items-center justify-center"
-                  style={{ minWidth: "35%" }}
-                >
+                <div className="flex-grow-1 flex flex-column items-center justify-center">
                   <Txt
                     size={TxtSize.MEDIUM}
                     value={`It's ${currentPlayer.name}'s turn!`}
@@ -325,56 +354,19 @@ export default function Play() {
               {!interturn && (
                 <div
                   className={classnames(
-                    "flex flex-column h-100 overflow-y-scroll pa1"
+                    "flex flex-column h-100 overflow-y-scroll"
                   )}
-                  style={{ minWidth: "35%" }}
                 >
                   <PlayersBoard
+                    selectedArea={selectedArea}
+                    onCloseArea={onCloseArea}
+                    onCommitAction={onCommitAction}
                     onNotifyPlayer={onNotifyPlayer}
                     onReaction={onReaction}
                     onSelectPlayer={onSelectPlayer}
                   />
                 </div>
               )}
-
-              {/* Right area */}
-              <div
-                className={classnames(
-                  "flex flex-column h-100 flex-grow-1 overflow-y-scroll pa1 pl0"
-                )}
-              >
-                <GameBoard
-                  onMenuClick={onMenuClick}
-                  onSelectDiscard={onSelectDiscard}
-                  onShowRollback={onShowRollback}
-                />
-                <div className="flex-grow-1 pa2 pv4-l ph3-l shadow-5 br3 ba b--yellow-light">
-                  {selectedArea.type === ActionAreaType.MENU && (
-                    <MenuArea onCloseArea={onCloseArea} />
-                  )}
-                  {selectedArea.type !== ActionAreaType.MENU && (
-                    <>
-                      {game.status === IGameStatus.LOBBY && (
-                        <Lobby
-                          onAddBot={onAddBot}
-                          onJoinGame={onJoinGame}
-                          onStartGame={onStartGame}
-                        />
-                      )}
-                      {game.status !== IGameStatus.LOBBY && (
-                        <ActionArea
-                          interturn={interturn}
-                          selectedArea={selectedArea}
-                          onCloseArea={onCloseArea}
-                          onCommitAction={onCommitAction}
-                          onRollback={onRollback}
-                          onSelectDiscard={onSelectDiscard}
-                        />
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
             </div>
           </CurrentPlayerContext.Provider>
         </SelfPlayerContext.Provider>

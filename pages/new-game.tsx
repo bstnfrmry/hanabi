@@ -164,14 +164,15 @@ export default function NewGame() {
             </Field>
           </>
         )}
-
-        <Button
-          className="self-end mt3"
-          id="new-game"
-          size={ButtonSize.LARGE}
-          text="New game"
-          onClick={onCreateGame}
-        />
+        <div className="flex flex-1 justify-end w-75">
+          <Button
+            className="flex-1 justify-end mt5"
+            id="new-game"
+            size={ButtonSize.LARGE}
+            text="New game"
+            onClick={onCreateGame}
+          />
+        </div>
       </div>
     </div>
   );

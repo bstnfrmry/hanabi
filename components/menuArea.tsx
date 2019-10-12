@@ -31,26 +31,22 @@ export default function MenuArea(props: Props) {
   return (
     <div className="flex justify-center items-center w-100 h-100">
       {!showRules && (
-        <div className="flex flex-column w-50 h-50">
+        <div className="flex justify-center">
           {game.status === IGameStatus.ONGOING && (
             <Button
-              className="mb4"
+              className="mr2"
               size={ButtonSize.MEDIUM}
-              text="Watch tutorial again"
+              text="Tutorial"
               onClick={onTutorialClick}
             />
           )}
           <Button
-            className="mb4"
+            className="mr2"
             size={ButtonSize.MEDIUM}
-            text="Show rules"
+            text="Rules"
             onClick={() => setShowRules(true)}
           />
-          <Button
-            size={ButtonSize.MEDIUM}
-            text="Back to menu"
-            onClick={onMenuClick}
-          />
+          <Button size={ButtonSize.MEDIUM} text="Menu" onClick={onMenuClick} />
         </div>
       )}
 
@@ -159,8 +155,8 @@ export default function MenuArea(props: Props) {
               <br />
               One of two things happens:
               <br />● If the card begins or adds to a firework, it will be added
-              to that firework pile <br/>● If the card does not add to a firework, it
-              will be discarded the card and add a red strike token
+              to that firework pile <br />● If the card does not add to a
+              firework, it will be discarded the card and add a red strike token
               <br />
               Then you will draw a replacement card from the deck.
             </Txt>

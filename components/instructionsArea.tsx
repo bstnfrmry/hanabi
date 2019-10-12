@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
+import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { IGameStatus } from "~/game/state";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
+
+import Information from "./ui/information";
 
 interface Props {
   interturn: boolean;
@@ -19,11 +22,14 @@ export default function InstructionsArea(props: Props) {
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
   const isCurrentPlayer = currentPlayer === selfPlayer;
+  const [expanded, setExpanded] = useState(false);
+
+  const canExpand = game.turnsHistory.length > game.options.playersCount - 1;
 
   const showHistory = game.options.turnsHistory && game.turnsHistory.length > 0;
 
   return (
-    <div className="flex-grow-1">
+    <div>
       <Tutorial placement="below" step={ITutorialStep.WELCOME}>
         {game.status === IGameStatus.OVER && (
           <Txt
@@ -40,40 +46,40 @@ export default function InstructionsArea(props: Props) {
           </Txt>
         )}
         {game.status !== IGameStatus.OVER && isCurrentPlayer && (
-          <div className="flex flex-column">
-            <Txt
-              uppercase
-              className="mb3"
-              id="your-turn"
-              size={TxtSize.MEDIUM}
-              value="Your turn!"
-            />
-            <Txt
-              className="mb2"
-              value="Give a hint by tapping on your playmates' hand"
-            />
-            <Txt
-              className="mb2"
-              value="Play or discard by tapping on your own game"
-            />
-
-            <a className="underline" onClick={() => onSelectDiscard()}>
-              <Txt value="Check discarded cards" />
-            </a>
-          </div>
+          <>
+            <div className="flex">
+              <Txt
+                uppercase
+                className="mb3"
+                id="your-turn"
+                size={TxtSize.MEDIUM}
+                value="Your turn!"
+              />
+              <Information>
+                <Txt
+                  className="mb2"
+                  value="Give a hint by tapping on your playmates' hand"
+                />
+                <br />
+                <Txt
+                  className="mb2"
+                  value="Play or discard by tapping on your own game"
+                />
+              </Information>
+            </div>
+            <div>
+              <a className="underline" onClick={() => onSelectDiscard()}>
+                <Txt value="Check discarded cards" />
+              </a>
+            </div>
+          </>
         )}
       </Tutorial>
 
       {showHistory && (
-        <>
-          <Txt
-            uppercase
-            className="dib mt4"
-            size={TxtSize.MEDIUM}
-            value="Last actions"
-          />
+        <div className="relative mh-30vh overflow-y-scroll">
           {game.turnsHistory
-            .slice(-20)
+            .slice(expanded ? -100 : -(game.options.playersCount - 1))
             .reverse()
             .map((turn, i) => {
               const syncing = i === 0 && !game.synced;
@@ -82,8 +88,9 @@ export default function InstructionsArea(props: Props) {
               };
 
               return (
-                <div key={i} className="mt1 mt3-l pointer" style={style}>
+                <div key={i} style={style}>
                   <Turn
+                    key={i}
                     includePlayer={true}
                     showDrawn={
                       !interturn &&
@@ -97,7 +104,15 @@ export default function InstructionsArea(props: Props) {
                 </div>
               );
             })}
-        </>
+          {canExpand && (
+            <Button
+              className="absolute top-0 right-0"
+              size={ButtonSize.TINY}
+              text={expanded ? "▲" : "▼"}
+              onClick={() => setExpanded(!expanded)}
+            />
+          )}
+        </div>
       )}
     </div>
   );

@@ -57,3 +57,22 @@
 .lh-normal {
   line-height: 1;
 }
+
+/**
+ * Flexbox
+ */
+.flex-square {
+  flex: 1 0 auto;
+}
+
+.flex-square:before {
+  content: "";
+  padding-top: 100%;
+}
+
+/**
+ * Sizes
+ */
+.mh-30vh {
+  max-height: 30vh;
+}

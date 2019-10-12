@@ -24,11 +24,11 @@ export default function SelfPlayerArea(props: Props) {
 
   return (
     <div className="flex flex-column flex-grow-1">
-      <a className="pb1 pb2-l ml1 mb2" onClick={() => onCloseArea()}>
+      <a className="pb1 pb2-l ml2 mb2 mt3" onClick={() => onCloseArea()}>
         <Txt uppercase size={TxtSize.MEDIUM} value="Your game" />
         <Txt className="ml2" value="×" />
       </a>
-      <div className="flex flex-row pb2">
+      <div className="flex flex-row pb2 ph2">
         {selfPlayer.hand.map((card, i) => (
           <Card
             key={i}
@@ -44,17 +44,16 @@ export default function SelfPlayerArea(props: Props) {
         ))}
       </div>
       {selfPlayer === currentPlayer && (
-        <>
-          <Txt
-            className="pb1 pb2-l ml1 mb2 mt5"
-            value={
-              hasSelectedCard
-                ? `Card ${PositionMap[selectedCard]} selected`
-                : "Select a card"
-            }
-          />
+        <div className="flex justify-end items-center">
           {hasSelectedCard && (
-            <div className="flex flex-row pb2 ml1">
+            <Txt
+              className="pb1 pb2-l ml1 mb2 mr3"
+              value={`Card ${PositionMap[selectedCard]} selected`}
+            />
+          )}
+
+          {hasSelectedCard && (
+            <div className="flex flex pb2">
               {["play", "discard"].map(action => (
                 <Button
                   key={action}
@@ -73,7 +72,7 @@ export default function SelfPlayerArea(props: Props) {
               ))}
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );
