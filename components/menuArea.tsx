@@ -29,7 +29,7 @@ export default function MenuArea(props: Props) {
   }
 
   return (
-    <div className="flex justify-center items-center w-100 h-100">
+    <div className="flex justify-center items-center w-100 h-100 pa2">
       {!showRules && (
         <div className="flex justify-center">
           {game.status === IGameStatus.ONGOING && (

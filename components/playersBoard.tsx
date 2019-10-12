@@ -58,7 +58,7 @@ export default function PlayersBoard(props: Props) {
         {otherPlayers.map((otherPlayer, i) => (
           <Item
             key={i}
-            className="bb b--yellow"
+            className="bb b--yellow bg-main-dark"
             pose={selectedPlayer == otherPlayer ? "selected" : "notSelected"}
           >
             {selectedPlayer == otherPlayer ? (

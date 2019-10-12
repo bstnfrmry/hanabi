@@ -31,7 +31,7 @@ export default function GameBoard(props: Props) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="pa2 pa3-l shadow-5 mb1 bg-near-black">
+    <div className="pa2 pa3-l shadow-5 bg-black-50">
       <div>
         <Txt
           uppercase
@@ -115,11 +115,12 @@ export default function GameBoard(props: Props) {
                       <Txt
                         className="absolute pointer"
                         size={TxtSize.MEDIUM}
+                        style={{ marginTop: `-2px` }}
                         value={i + 1}
                       />
                       <div
                         className="w-40 h-40 self-end"
-                        style={{ fill: "gray", marginBottom: "-5px" }}
+                        style={{ fill: "lightgray", marginBottom: "-5px" }}
                       >
                         <Eye />
                       </div>

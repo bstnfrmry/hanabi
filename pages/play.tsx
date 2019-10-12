@@ -308,7 +308,10 @@ export default function Play() {
                 onShowRollback={onShowRollback}
               />
 
-              <div className="flex-grow-1 flex flex-column h3 pa2 pv4-l ph3-l shadow-5 bb bt b--yellow bg-black-50">
+              <div
+                className="flex-grow-1 flex flex-column pv4-l ph3-l shadow-5 bb b--yellow bg-black-50"
+                style={{ maxHeight: "12rem" }}
+              >
                 {selectedArea.type === ActionAreaType.MENU ? (
                   <MenuArea onCloseArea={onCloseArea} />
                 ) : game.status === IGameStatus.LOBBY ? (
@@ -346,17 +349,17 @@ export default function Play() {
               )}
 
               {!interturn && (
-                <div
-                  className={classnames("flex flex-column overflow-y-scroll")}
-                >
-                  <PlayersBoard
-                    selectedArea={selectedArea}
-                    onCloseArea={onCloseArea}
-                    onCommitAction={onCommitAction}
-                    onNotifyPlayer={onNotifyPlayer}
-                    onReaction={onReaction}
-                    onSelectPlayer={onSelectPlayer}
-                  />
+                <div className="flex flex-column">
+                  <div className="h-100 overflow-y-scroll">
+                    <PlayersBoard
+                      selectedArea={selectedArea}
+                      onCloseArea={onCloseArea}
+                      onCommitAction={onCommitAction}
+                      onNotifyPlayer={onNotifyPlayer}
+                      onReaction={onReaction}
+                      onSelectPlayer={onSelectPlayer}
+                    />
+                  </div>
                 </div>
               )}
             </div>

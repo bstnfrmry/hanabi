@@ -25,7 +25,7 @@ export default function InstructionsArea(props: Props) {
   const showHistory = game.options.turnsHistory && game.turnsHistory.length > 0;
 
   return (
-    <>
+    <div className="pa3">
       <Tutorial placement="below" step={ITutorialStep.WELCOME}>
         {game.status === IGameStatus.OVER && (
           <Txt
@@ -95,7 +95,7 @@ export default function InstructionsArea(props: Props) {
           </PoseGroup>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

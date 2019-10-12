@@ -76,7 +76,7 @@ export default function ActionArea(props: Props) {
 
   if (selectedArea.type === ActionAreaType.ROLLBACK) {
     return (
-      <div className="h-100 flex flex-column items-center justify-center">
+      <div className="h-100 flex flex-column items-center justify-center pa2">
         <Txt
           className="w-75"
           size={TxtSize.MEDIUM}
