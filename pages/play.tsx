@@ -309,7 +309,7 @@ export default function Play() {
               />
 
               <div
-                className="flex-grow-1 flex flex-column pv4-l ph3-l shadow-5 bb b--yellow bg-black-50"
+                className="flex-grow-1 flex flex-column pv4-l ph3-l shadow-5 bb b--yellow bg-black-50 overflow-y-scroll"
                 style={{ maxHeight: "12rem" }}
               >
                 {selectedArea.type === ActionAreaType.MENU ? (
