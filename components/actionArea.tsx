@@ -80,14 +80,14 @@ export default function ActionArea(props: Props) {
         <Txt
           className="w-75"
           size={TxtSize.MEDIUM}
-          value="You're about to cancel the last action!"
+          value="You're about to roll back the last action!"
         />
         <div className="mt4">
-          <Button text="Cancel" onClick={() => onCloseArea()} />
+          <Button text="Abort" onClick={() => onCloseArea()} />
           <Button
             primary
             className="ml4"
-            text="Confirm"
+            text="Roll back"
             onClick={() => onRollback()}
           />
         </div>

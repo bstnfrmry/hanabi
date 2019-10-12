@@ -1,4 +1,5 @@
 import React from "react";
+import posed from "react-pose";
 
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import OtherPlayerArea from "~/components/otherPlayerArea";
@@ -15,6 +16,11 @@ interface Props {
   onCloseArea: Function;
   onCommitAction: Function;
 }
+
+const Item = posed.div({
+  selected: { height: "auto" },
+  notSelected: { height: "auto" }
+});
 
 export default function PlayersBoard(props: Props) {
   const {
@@ -48,33 +54,34 @@ export default function PlayersBoard(props: Props) {
 
   return (
     <>
-      <div className="flex-grow-1">
-        <Tutorial step={ITutorialStep.OTHER_PLAYERS}>
-          {otherPlayers.map((otherPlayer, i) => (
-            <div key={i} className="bb b--yellow">
-              {selectedPlayer == otherPlayer && (
-                <OtherPlayerArea
-                  player={otherPlayer}
-                  onCloseArea={onCloseArea}
-                  onCommitAction={onCommitAction}
-                />
-              )}
-              {selectedPlayer != otherPlayer && (
-                <PlayerGame
-                  active={currentPlayer === otherPlayer}
-                  id={`player-game-${i + 1}`}
-                  player={otherPlayer}
-                  onNotifyPlayer={onNotifyPlayer}
-                  onSelectPlayer={onSelectPlayer}
-                />
-              )}
-            </div>
-          ))}
-        </Tutorial>
-      </div>
+      <Tutorial step={ITutorialStep.OTHER_PLAYERS}>
+        {otherPlayers.map((otherPlayer, i) => (
+          <Item
+            key={i}
+            className="bb b--yellow"
+            pose={selectedPlayer == otherPlayer ? "selected" : "notSelected"}
+          >
+            {selectedPlayer == otherPlayer ? (
+              <OtherPlayerArea
+                player={otherPlayer}
+                onCloseArea={onCloseArea}
+                onCommitAction={onCommitAction}
+              />
+            ) : (
+              <PlayerGame
+                active={currentPlayer === otherPlayer}
+                id={`player-game-${i + 1}`}
+                player={otherPlayer}
+                onNotifyPlayer={onNotifyPlayer}
+                onSelectPlayer={onSelectPlayer}
+              />
+            )}
+          </Item>
+        ))}
+      </Tutorial>
       {selfPlayer && (
         <Tutorial step={ITutorialStep.SELF_PLAYER}>
-          <div className="bt b--yellow">
+          <div className="bt b--yellow mb4">
             {selectedPlayer == selfPlayer && (
               <SelfPlayerArea
                 cardIndex={cardIndex}

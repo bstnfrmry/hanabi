@@ -74,7 +74,10 @@ export default function PlayerGame(props: Props) {
           >
             <a
               className="pointer grow☺"
-              onClick={() => setReactionsOpen(!reactionsOpen)}
+              onClick={e => {
+                e.stopPropagation();
+                setReactionsOpen(!reactionsOpen);
+              }}
             >
               {player.reaction && (
                 <Txt
@@ -92,8 +95,11 @@ export default function PlayerGame(props: Props) {
         )}
         {active && !self && !player.notified && !player.bot && (
           <a
-            className="absolute right-0 mr1 mr4-l"
-            onClick={() => onNotifyPlayer(player)}
+            className="ml1 ml4-l"
+            onClick={e => {
+              e.stopPropagation();
+              onNotifyPlayer(player);
+            }}
           >
             <Txt value="🔔" />
           </a>

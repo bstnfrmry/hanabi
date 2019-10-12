@@ -308,29 +308,23 @@ export default function Play() {
                 onShowRollback={onShowRollback}
               />
 
-              <div className="pa2 pv4-l ph3-l shadow-5 bb bt b--yellow bg-black-50">
-                {selectedArea.type === ActionAreaType.MENU && (
+              <div className="flex-grow-1 flex flex-column h3 pa2 pv4-l ph3-l shadow-5 bb bt b--yellow bg-black-50">
+                {selectedArea.type === ActionAreaType.MENU ? (
                   <MenuArea onCloseArea={onCloseArea} />
-                )}
-                {selectedArea.type !== ActionAreaType.MENU && (
-                  <>
-                    {game.status === IGameStatus.LOBBY && (
-                      <Lobby
-                        onAddBot={onAddBot}
-                        onJoinGame={onJoinGame}
-                        onStartGame={onStartGame}
-                      />
-                    )}
-                    {game.status !== IGameStatus.LOBBY && (
-                      <ActionArea
-                        interturn={interturn}
-                        selectedArea={selectedArea}
-                        onCloseArea={onCloseArea}
-                        onRollback={onRollback}
-                        onSelectDiscard={onSelectDiscard}
-                      />
-                    )}
-                  </>
+                ) : game.status === IGameStatus.LOBBY ? (
+                  <Lobby
+                    onAddBot={onAddBot}
+                    onJoinGame={onJoinGame}
+                    onStartGame={onStartGame}
+                  />
+                ) : (
+                  <ActionArea
+                    interturn={interturn}
+                    selectedArea={selectedArea}
+                    onCloseArea={onCloseArea}
+                    onRollback={onRollback}
+                    onSelectDiscard={onSelectDiscard}
+                  />
                 )}
               </div>
 
@@ -353,9 +347,7 @@ export default function Play() {
 
               {!interturn && (
                 <div
-                  className={classnames(
-                    "flex flex-column h-100 overflow-y-scroll"
-                  )}
+                  className={classnames("flex flex-column overflow-y-scroll")}
                 >
                   <PlayersBoard
                     selectedArea={selectedArea}
