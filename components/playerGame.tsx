@@ -110,6 +110,7 @@ export default function PlayerGame(props: Props) {
             onClick={e => {
               e.stopPropagation();
               onNotifyPlayer(player);
+              new Audio(`/static/sounds/bell.mp3`).play();
             }}
           >
             <Txt value="🔔" />

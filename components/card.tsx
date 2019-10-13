@@ -174,7 +174,7 @@ export default function Card(props: Props) {
       {displayHints && hidden && (
         <div
           className={classnames(
-            "absolute top-0 mt2 mt4-l br-100 w-50 h-50 flex justify-center items-center outline-main-dark",
+            "top-0 br-100 w-50 h-50 flex justify-center items-center outline-main-dark",
             { [`bg-${card.color}`]: card.hint.color[card.color] === 2 },
             { [`ba b--${card.color}`]: card.hint.color[card.color] === 2 }
           )}

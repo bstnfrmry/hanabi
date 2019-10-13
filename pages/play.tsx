@@ -1,4 +1,3 @@
-import classnames from "classnames";
 import { last } from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -120,6 +119,14 @@ export default function Play() {
 
     return () => clearTimeout(timeout);
   }, [hintsCount === previousHintsCount + 1]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      new Audio(`/static/sounds/swoosh.wav`).play();
+    }, 200);
+
+    return () => clearTimeout(timeout);
+  }, [hintsCount === previousHintsCount - 1]);
 
   const turnsCount = game ? game.turnsHistory.length : 0;
   const previousTurnsCount = usePrevious(turnsCount);
@@ -308,10 +315,7 @@ export default function Play() {
                 onShowRollback={onShowRollback}
               />
 
-              <div
-                className="flex-grow-1 flex flex-column pv4-l ph3-l shadow-5 bb b--yellow bg-black-50 overflow-y-scroll"
-                style={{ maxHeight: "12rem" }}
-              >
+              <div className="flex-grow-1 flex flex-column pa2 mh-30vh ph3-lshadow-5 overflow-y-scroll bg-black-50 bb b--yellow">
                 {selectedArea.type === ActionAreaType.MENU ? (
                   <MenuArea onCloseArea={onCloseArea} />
                 ) : game.status === IGameStatus.LOBBY ? (

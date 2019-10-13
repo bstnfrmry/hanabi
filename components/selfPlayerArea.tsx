@@ -29,7 +29,7 @@ export default function SelfPlayerArea(props: Props) {
         <Txt uppercase size={TxtSize.MEDIUM} value="Your game" />
         <Txt className="ml2" value="×" />
       </a>
-      <div className="flex flex-row pb2 ph2">
+      <div className="flex flex-row justify-end pb2 ph2">
         {selfPlayer.hand.map((card, i) => (
           <Card
             key={i}

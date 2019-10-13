@@ -62,12 +62,12 @@ export default function OtherPlayerArea(props: Props) {
           <Txt className="ml2" value="×" />
         </a>
       </div>
-      <div className="flex justify-center flex-row pb2 ph2">
+      <div className="flex justify-end flex-row pb2 ph2">
         {player.hand.map((card, i) => (
           <Card
             key={i}
             card={card}
-            className="ma1 flex-grow-1"
+            className="ma1"
             context={ICardContext.TARGETED_PLAYER}
             hidden={false}
             position={i}
