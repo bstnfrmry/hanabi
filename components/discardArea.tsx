@@ -52,7 +52,7 @@ export default function DiscardArea(props: Props) {
   );
 
   return (
-    <div className="flex flex-column flex-grow-1">
+    <div className="flex flex-column flex-grow-1 pa3">
       <div className="flex flex-row pb1 pb2-l ttu mb2">
         <a onClick={() => onCloseArea()}>
           <Txt uppercase size={TxtSize.MEDIUM} value="Discarded cards" />
