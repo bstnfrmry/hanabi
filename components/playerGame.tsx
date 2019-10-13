@@ -48,7 +48,11 @@ export default function PlayerGame(props: Props) {
       <div className="flex items-center">
         <div className="flex flex-column">
           {player === selfPlayer && player === currentPlayer && (
-            <Txt className="yellow" size={TxtSize.SMALL} value="Your turn" />
+            <Txt
+              className="yellow absolute top-0 mt1"
+              size={TxtSize.SMALL}
+              value="Your turn"
+            />
           )}
           <div className="flex items-center">
             {player === currentPlayer && (
