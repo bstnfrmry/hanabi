@@ -81,7 +81,7 @@ export default function PlayersBoard(props: Props) {
       </Tutorial>
       {selfPlayer && (
         <Tutorial step={ITutorialStep.SELF_PLAYER}>
-          <div className="bt b--yellow mb4">
+          <div className="mb4">
             {selectedPlayer == selfPlayer && (
               <SelfPlayerArea
                 cardIndex={cardIndex}

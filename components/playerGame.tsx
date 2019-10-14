@@ -143,11 +143,6 @@ export default function PlayerGame(props: Props) {
           />
         ))}
       </div>
-      <style jsx>{`
-        .cards:hover {
-          background-color: var(--color-yellow);
-        }
-      `}</style>
     </div>
   );
 }

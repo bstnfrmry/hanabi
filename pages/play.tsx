@@ -309,13 +309,15 @@ export default function Play() {
         <SelfPlayerContext.Provider value={selfPlayer}>
           <CurrentPlayerContext.Provider value={currentPlayer}>
             <div className="bg-main-dark relative flex flex-column w-100 h-100">
-              <GameBoard
-                onMenuClick={onMenuClick}
-                onSelectDiscard={onSelectDiscard}
-                onShowRollback={onShowRollback}
-              />
+              <div className="bb b--yellow">
+                <GameBoard
+                  onMenuClick={onMenuClick}
+                  onSelectDiscard={onSelectDiscard}
+                  onShowRollback={onShowRollback}
+                />
+              </div>
 
-              <div className="flex-grow-1 flex flex-column pa2 mh-30vh ph3-lshadow-5 overflow-y-scroll bg-black-50 bb b--yellow">
+              <div className="flex flex-column pa2 ph3-l shadow-5 overflow-y-scroll h4 bg-black-50 bb b--yellow">
                 {selectedArea.type === ActionAreaType.MENU ? (
                   <MenuArea onCloseArea={onCloseArea} />
                 ) : game.status === IGameStatus.LOBBY ? (

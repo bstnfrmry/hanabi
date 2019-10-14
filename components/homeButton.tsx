@@ -4,12 +4,13 @@ import React from "react";
 import Button, { ButtonSize } from "~/components/ui/button";
 
 interface Props {
+  void?: boolean;
   className?: string;
   onClick?: Function;
 }
 
 export default function HomeButton(props: Props) {
-  const { className, onClick } = props;
+  const { void: void_, className, onClick } = props;
 
   const router = useRouter();
 
@@ -26,6 +27,7 @@ export default function HomeButton(props: Props) {
       className={className}
       size={ButtonSize.TINY}
       text="☰"
+      void={void_}
       onClick={onMenuClick}
     />
   );

@@ -29,6 +29,7 @@ module.exports = {
       "callbacksLast": true,
       "shorthandFirst": true,
       "reservedFirst": true,
-    }]
+    }],
+    "react/no-unescaped-entities": [0]    
   }
 };

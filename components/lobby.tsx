@@ -55,7 +55,7 @@ export default function Lobby(props: Props) {
                 <Txt
                   value={
                     gameFull
-                      ? "everybody's here!"
+                      ? "Everybody's here!"
                       : `${game.players.length} / ${game.options.playersCount} joined already`
                   }
                 />

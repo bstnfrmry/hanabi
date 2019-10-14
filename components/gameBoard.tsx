@@ -44,7 +44,7 @@ export default function GameBoard(props: Props) {
           <Txt uppercase className="strike ml1 gray" value={maxScore} />
         )}
       </div>
-      <div className="relative flex flex-wrap items-end">
+      <div className="flex flex-wrap items-end">
         <div className="flex flex-column mb3">
           <div className="flex items-center h2 nt2">
             {game.actionsLeft > 0 &&
@@ -140,16 +140,17 @@ export default function GameBoard(props: Props) {
             <Txt className="gray mt1" value="tokens" />
           </div>
 
-          <div className="flex flex absolute top-0 right-0">
+          <div className="flex flex absolute top-0 right-0 mt2 mr2">
             {game.options.allowRollback && (
               <Button
+                void
                 disabled={!game.history.length}
                 size={ButtonSize.TINY}
                 text="⟲"
                 onClick={() => onShowRollback()}
               />
             )}
-            <HomeButton className="ml1" onClick={onMenuClick} />
+            <HomeButton void className="ml1" onClick={onMenuClick} />
           </div>
         </div>
       </div>

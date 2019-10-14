@@ -32,7 +32,7 @@ export default function InstructionsArea(props: Props) {
       </Tutorial>
 
       {showHistory && (
-        <div className="relative mh-30vh overflow-y-scroll">
+        <div className="relative">
           <PoseGroup>
             {[...game.turnsHistory].reverse().map((turn, i) => {
               const key = game.turnsHistory.length - i;
