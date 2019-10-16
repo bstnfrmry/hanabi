@@ -24,6 +24,7 @@ import {
 } from "~/game/actions";
 import play from "~/game/ai";
 import IGameState, { GameMode, IGameStatus, IPlayer } from "~/game/state";
+import useConnectivity from "~/hooks/connectivity";
 import {
   CurrentPlayerContext,
   GameContext,
@@ -35,6 +36,7 @@ import usePrevious from "~/hooks/previous";
 export default function Play() {
   const network = useNetwork();
   const router = useRouter();
+  const online = useConnectivity();
   const [game, setGame] = useState<IGameState>(null);
   const [interturn, setInterturn] = useState(false);
   const [selectedArea, selectArea] = useState<ISelectedArea>({
@@ -56,6 +58,7 @@ export default function Play() {
    * Load game from database
    */
   useEffect(() => {
+    if (!online) return;
     if (!gameId) return;
 
     return network.subscribeToGame(gameId as string, game => {
@@ -65,7 +68,7 @@ export default function Play() {
 
       setGame({ ...game, synced: true });
     });
-  }, [gameId]);
+  }, [gameId, online]);
 
   /**
    * Resets the selected area when a player plays.
