@@ -155,7 +155,11 @@ export function fillEmptyValues(state: IGameState): IGameState {
     playedCards: [],
     drawPile: [],
     discardPile: [],
-    players: [],
+    players: (state.players || []).map(player =>
+      defaults(player, {
+        hand: []
+      })
+    ),
     turnsHistory: [],
     history: [],
     reactions: []
