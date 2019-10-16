@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export -o public",
+    "build": "next build && next export",
     "start": "next start",
     "server": "firebase-server -p 3001",
     "lint": "eslint '**/*.{ts,tsx}'",

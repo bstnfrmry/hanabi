@@ -21,5 +21,6 @@
       "FIREBASE_MESSAGING_SENDER_ID": "@firebase_messaging_sender_id",
       "FIREBASE_APP_ID": "@firebase_app_id"
     }
-  }
+  },
+  "builds": { "src": "out", "use": "@now/static" }
 }
