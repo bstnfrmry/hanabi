@@ -43,24 +43,20 @@ export default function GameBoard(props: Props) {
         {maxScore !== maxPossibleScore && (
           <Txt uppercase className="strike ml1 gray" value={maxScore} />
         )}
+
+        {game.actionsLeft > 0 &&
+          game.actionsLeft <= game.options.playersCount && (
+            <Txt
+              uppercase
+              className="red ml2"
+              value={`· ${game.actionsLeft} turn${
+                game.actionsLeft > 1 ? "s" : ""
+              } left`}
+            />
+          )}
       </div>
       <div className="flex flex-wrap items-end">
         <div className="flex flex-column mb3">
-          <div className="flex items-center h2 nt2">
-            {game.actionsLeft > 0 &&
-              game.actionsLeft <= game.options.playersCount && (
-                <div className="ml2 flex items-center">
-                  ·
-                  <Txt
-                    uppercase
-                    className="red ml2"
-                    value={`${game.actionsLeft} turn${
-                      game.actionsLeft > 1 ? "s" : ""
-                    } left`}
-                  />
-                </div>
-              )}
-          </div>
           <PlayedCards cards={game.playedCards} />
         </div>
         <div className="flex flex-row ph1 mt3 justify-left items-end">
