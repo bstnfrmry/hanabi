@@ -317,9 +317,11 @@ export default function Play() {
                 />
               </div>
 
-              <div className="flex flex-column pa2 ph3-l shadow-5 overflow-y-scroll h4 bg-black-50 bb b--yellow">
+              <div className="flex flex-column pa2 ph3-l shadow-5 bg-black-50 bb b--yellow">
                 {selectedArea.type === ActionAreaType.MENU ? (
-                  <MenuArea onCloseArea={onCloseArea} />
+                  <div className="h4">
+                    <MenuArea onCloseArea={onCloseArea} />
+                  </div>
                 ) : game.status === IGameStatus.LOBBY ? (
                   <Lobby
                     onAddBot={onAddBot}
@@ -327,13 +329,15 @@ export default function Play() {
                     onStartGame={onStartGame}
                   />
                 ) : (
-                  <ActionArea
-                    interturn={interturn}
-                    selectedArea={selectedArea}
-                    onCloseArea={onCloseArea}
-                    onRollback={onRollback}
-                    onSelectDiscard={onSelectDiscard}
-                  />
+                  <div className="h4 overflow-y-scroll">
+                    <ActionArea
+                      interturn={interturn}
+                      selectedArea={selectedArea}
+                      onCloseArea={onCloseArea}
+                      onRollback={onRollback}
+                      onSelectDiscard={onSelectDiscard}
+                    />
+                  </div>
                 )}
               </div>
 

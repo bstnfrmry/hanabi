@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import generateName from "project-name-generator";
 import React, { useEffect, useState } from "react";
 
-import PlayerName from "~/components/playerName";
 import Button, { ButtonSize } from "~/components/ui/button";
 import { TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -43,7 +42,7 @@ export default function Lobby(props: Props) {
   }, [game.players.length]);
 
   return (
-    <div className="flex items-center justify-center h-100 w-100 bg-main-dark bt bw1 b--yellow pa2">
+    <div className="flex items-center justify-center h-100 w-100 bg-main-dark pa2">
       <div className="flex flex-column pa2 w-100 h-100">
         <div className="mb3 ttu flex items-center">
           <Txt size={TxtSize.MEDIUM} value="Lobby" />
