@@ -48,4 +48,4 @@ const config = {
   }
 };
 
-module.exports = withOffline(withCSS(config));
+module.exports = withCSS(config);
