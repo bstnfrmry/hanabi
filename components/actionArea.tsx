@@ -2,8 +2,6 @@ import React from "react";
 
 import DiscardArea from "~/components/discardArea";
 import InstructionsArea from "~/components/instructionsArea";
-import OtherPlayerArea from "~/components/otherPlayerArea";
-import SelfPlayerArea from "~/components/selfPlayerArea";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { IPlayer } from "~/game/state";
@@ -62,7 +60,6 @@ export type ISelectedArea =
 interface Props {
   interturn: boolean;
   selectedArea: ISelectedArea;
-  onCommitAction: Function;
   onSelectDiscard: Function;
   onCloseArea: Function;
   onRollback: Function;
@@ -71,36 +68,26 @@ interface Props {
 export default function ActionArea(props: Props) {
   const {
     selectedArea,
-    onCommitAction,
     onSelectDiscard,
     onCloseArea,
     onRollback,
     interturn
   } = props;
 
-  if (selectedArea.type === ActionAreaType.INSTRUCTIONS) {
-    return (
-      <InstructionsArea
-        interturn={interturn}
-        onSelectDiscard={onSelectDiscard}
-      />
-    );
-  }
-
   if (selectedArea.type === ActionAreaType.ROLLBACK) {
     return (
-      <div className="h-100 flex flex-column items-center justify-center">
+      <div className="h-100 flex flex-column items-center justify-center pa2">
         <Txt
           className="w-75"
           size={TxtSize.MEDIUM}
-          value="You're about to cancel the last action!"
+          value="You're about to roll back the last action!"
         />
         <div className="mt4">
-          <Button text="Cancel" onClick={() => onCloseArea()} />
+          <Button text="Abort" onClick={() => onCloseArea()} />
           <Button
             primary
             className="ml4"
-            text="Confirm"
+            text="Roll back"
             onClick={() => onRollback()}
           />
         </div>
@@ -112,23 +99,7 @@ export default function ActionArea(props: Props) {
     return <DiscardArea onCloseArea={onCloseArea} />;
   }
 
-  if (selectedArea.type === ActionAreaType.OTHER_PLAYER) {
-    return (
-      <OtherPlayerArea
-        player={selectedArea.player}
-        onCloseArea={onCloseArea}
-        onCommitAction={onCommitAction}
-      />
-    );
-  }
-
-  if (selectedArea.type === ActionAreaType.SELF_PLAYER) {
-    return (
-      <SelfPlayerArea
-        cardIndex={selectedArea.cardIndex}
-        onCloseArea={onCloseArea}
-        onCommitAction={onCommitAction}
-      />
-    );
-  }
+  return (
+    <InstructionsArea interturn={interturn} onSelectDiscard={onSelectDiscard} />
+  );
 }

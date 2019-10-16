@@ -3,11 +3,11 @@ import React, { HTMLAttributes, useState } from "react";
 import Popover from "react-popover";
 
 import Card, { CardSize, ICardContext } from "~/components/card";
-import PlayerName from "~/components/playerName";
+import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import ReactionsPopover from "~/components/reactionsPopover";
-import Txt from "~/components/ui/txt";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import { IGameStatus, IPlayer } from "~/game/state";
-import { useGame, useSelfPlayer } from "~/hooks/game";
+import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props extends HTMLAttributes<HTMLElement> {
   player: IPlayer;
@@ -21,17 +21,18 @@ interface Props extends HTMLAttributes<HTMLElement> {
 export default function PlayerGame(props: Props) {
   const {
     player,
-    active,
     self = false,
     onSelectPlayer,
     onNotifyPlayer,
     onReaction,
+    active,
     ...attributes
   } = props;
 
   const game = useGame();
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const selfPlayer = useSelfPlayer();
+  const currentPlayer = useCurrentPlayer();
   const hideCards =
     game.status === IGameStatus.LOBBY ||
     (game.status !== IGameStatus.OVER && (self || !selfPlayer));
@@ -39,15 +40,32 @@ export default function PlayerGame(props: Props) {
   return (
     <div
       className={classnames(
-        "flex w-100 flex-column justify-center bg-main-dark pa2 pv4-l ph3-l br3 relative",
-        {
-          "b--yellow border-box ba bw2": active
-        }
+        "cards flex justify-between bg-main-dark pa2 pv3 relative"
       )}
+      onClick={() => onSelectPlayer(player, 0)}
       {...attributes}
     >
-      <div className="ml1 flex items-center">
-        <PlayerName className="mr2" explicit={true} player={player} />
+      <div className="flex items-center">
+        <div className="flex flex-column">
+          {player === selfPlayer && player === currentPlayer && (
+            <Txt
+              className="yellow absolute top-0 mt1"
+              size={TxtSize.SMALL}
+              value="Your turn"
+            />
+          )}
+          <div className="flex items-center">
+            {player === currentPlayer && (
+              <Txt className="yellow mr1" size={TxtSize.SMALL} value="➤" />
+            )}
+            <PlayerName
+              className="mr2"
+              explicit={true}
+              player={player}
+              size={PlayerNameSize.MEDIUM}
+            />
+          </div>
+        </div>
 
         {!self && player.reaction && (
           <Txt
@@ -71,7 +89,10 @@ export default function PlayerGame(props: Props) {
           >
             <a
               className="pointer grow☺"
-              onClick={() => setReactionsOpen(!reactionsOpen)}
+              onClick={e => {
+                e.stopPropagation();
+                setReactionsOpen(!reactionsOpen);
+              }}
             >
               {player.reaction && (
                 <Txt
@@ -89,40 +110,39 @@ export default function PlayerGame(props: Props) {
         )}
         {active && !self && !player.notified && !player.bot && (
           <a
-            className="absolute right-0 mr1 mr4-l"
-            onClick={() => onNotifyPlayer(player)}
+            className="ml1 ml4-l"
+            onClick={e => {
+              e.stopPropagation();
+              onNotifyPlayer(player);
+              new Audio(`/static/sounds/bell.mp3`).play();
+            }}
           >
             <Txt value="🔔" />
           </a>
         )}
       </div>
 
-      <div className="cards dib mt2">
-        <div className="flex flex-row justify-center grow pointer ph2">
-          {player.hand.map((card, i) => (
-            <Card
-              key={i}
-              card={card}
-              className={classnames({
-                "mr1 mr2-l": i < player.hand.length - 1
-              })}
-              context={
-                self ? ICardContext.SELF_PLAYER : ICardContext.OTHER_PLAYER
-              }
-              hidden={hideCards}
-              position={i}
-              size={CardSize.MEDIUM}
-              onClick={() => onSelectPlayer(player, i)}
-            />
-          ))}
-        </div>
+      <div className="flex justify-end flex-grow-1 dib">
+        {player.hand.map((card, i) => (
+          <Card
+            key={i}
+            card={card}
+            className={classnames({
+              "mr1 mr2-l": i < player.hand.length - 1
+            })}
+            context={
+              self ? ICardContext.SELF_PLAYER : ICardContext.OTHER_PLAYER
+            }
+            hidden={hideCards}
+            position={i}
+            size={CardSize.MEDIUM}
+            onClick={e => {
+              e.stopPropagation();
+              onSelectPlayer(player, i);
+            }}
+          />
+        ))}
       </div>
-      <style jsx>{`
-        .cards:hover {
-          background-color: var(--color-yellow);
-          box-shadow: 0px 0px 5px 5px var(--color-yellow);
-        }
-      `}</style>
     </div>
   );
 }

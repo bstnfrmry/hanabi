@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import generateName from "project-name-generator";
 import React, { useEffect, useState } from "react";
 
-import PlayerName from "~/components/playerName";
 import Button, { ButtonSize } from "~/components/ui/button";
 import { TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -43,27 +42,25 @@ export default function Lobby(props: Props) {
   }, [game.players.length]);
 
   return (
-    <div className="flex items-center justify-center h-100 w-100">
+    <div className="flex items-center justify-center h-100 w-100 bg-main-dark pa2">
       <div className="flex flex-column pa2 w-100 h-100">
+        <div className="mb3 ttu flex items-center">
+          <Txt size={TxtSize.MEDIUM} value="Lobby" />
+        </div>
         {game.players.length > 0 && (
           <div className="flex justify-between items-start flex-grow-1 align-start w-100 mb2">
             <div>
-              <div className="mb3 ttu flex items-center">
-                <Txt size={TxtSize.MEDIUM} value="Players" />
-                <Txt
-                  className="ml2 gray"
-                  value={`· ${game.players.length} / ${game.options.playersCount}`}
-                />
-              </div>
               <div className="flex flex-column justify-center mb2">
-                {game.players.map((player, i) => (
-                  <div key={i} className="mb2">
-                    <PlayerName explicit={true} player={player} />
-                  </div>
-                ))}
+                <Txt
+                  value={
+                    gameFull
+                      ? "Everybody's here!"
+                      : `${game.players.length} / ${game.options.playersCount} joined already`
+                  }
+                />
                 {selfPlayer && !gameFull && (
                   <div>
-                    <Txt className="gray">Wait for others to join, or </Txt>
+                    <Txt className="gray">Wait for others, or </Txt>
                     <a
                       className="underline gray pointer ml1"
                       id="add-ai"
@@ -85,9 +82,6 @@ export default function Lobby(props: Props) {
               />
             )}
           </div>
-        )}
-        {game.players.length === 0 && (
-          <Txt size={TxtSize.MEDIUM} value="Game is empty" />
         )}
 
         {canJoin && (
@@ -127,28 +121,29 @@ export default function Lobby(props: Props) {
             </div>
           </form>
         )}
-
-        <div className="flex mt4">
-          <div className="flex flex-column mr2">
-            <Txt className="mb1" value="Share this game" />
-            <a
-              className="gray flex-1"
-              href={shareLink}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <Txt value={shareLink} />
-            </a>
+        {!gameFull && (
+          <div className="flex mt4">
+            <div className="flex flex-column mr2">
+              <Txt className="mb1" value="Share this game" />
+              <a
+                className="gray flex-1"
+                href={shareLink}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <Txt value={shareLink} />
+              </a>
+            </div>
+            <input
+              ref={inputRef}
+              readOnly
+              className="fixed top--2 left--2"
+              type="text"
+              value={shareLink}
+            />
+            <Button size={ButtonSize.SMALL} text="Copy" onClick={copy} />
           </div>
-          <input
-            ref={inputRef}
-            readOnly
-            className="fixed top--2 left--2"
-            type="text"
-            value={shareLink}
-          />
-          <Button size={ButtonSize.SMALL} text="Copy" onClick={copy} />
-        </div>
+        )}
       </div>
     </div>
   );

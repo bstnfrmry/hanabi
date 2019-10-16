@@ -3,7 +3,7 @@ import React from "react";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useSelfPlayer } from "~/hooks/game";
 
-const ClearReaction = "🚫";
+const ClearReaction = "⊘";
 const Reactions = ["👍", "👎", "👏", "😅", "🤩", "🤭", "🤔", "😬", "♻️"];
 
 interface Props {
@@ -17,11 +17,11 @@ export default function ReactionsPopover(props: Props) {
   const selfPlayer = useSelfPlayer();
 
   return (
-    <div className="flex items-center justify-center b--yellow ba bw1 bg-white pa2 pt3 pr3 br2">
+    <div className="flex items-center justify-center b--yellow ba bw1 bg-white pa2 pt3 pr3 br2 gray">
       {Reactions.map((reaction, i) => (
         <a
           key={i}
-          className="mh1"
+          className="mh1 pointer"
           onClick={() => {
             onClose();
             onReaction(null);
@@ -30,12 +30,13 @@ export default function ReactionsPopover(props: Props) {
             });
           }}
         >
-          <Txt size={TxtSize.LARGE} value={reaction} />
+          <Txt size={TxtSize.MEDIUM} value={reaction} />
         </a>
       ))}
       {selfPlayer.reaction && (
         <a
-          className="ml4"
+          className="ml4 pointer"
+          style={{ marginTop: -6 }}
           onClick={() => {
             onClose();
             onReaction(null);

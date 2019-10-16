@@ -6,6 +6,7 @@ import PlayedCards from "~/components/playedCards";
 import TokenSpace from "~/components/tokenSpace";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
+import { Eye } from "~/components/ui/icons";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import {
   getMaximumPossibleScore,
@@ -31,33 +32,21 @@ export default function GameBoard(props: Props) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="pa2 pv4-l ph3-l shadow-5 br3 mb1 bg-near-black ba b--yellow-light">
-      <div className="flex justify-between flex-column-l items-end items-start-l">
-        <div className="flex flex-column mb5-l">
+    <div className="pa2 pa3-l shadow-5 bg-black-50">
+      <div>
+        <Txt
+          uppercase
+          id="score"
+          value={`Score: ${score} / ${maxPossibleScore}`}
+        />
+
+        {maxScore !== maxPossibleScore && (
+          <Txt uppercase className="strike ml1 gray" value={maxScore} />
+        )}
+      </div>
+      <div className="flex flex-wrap items-end">
+        <div className="flex flex-column mb3">
           <div className="flex items-center h2 nt2">
-            <Txt
-              uppercase
-              id="score"
-              value={`Score: ${score} / ${maxPossibleScore}`}
-            />
-
-            {maxScore !== maxPossibleScore && (
-              <Txt uppercase className="strike ml1 gray" value={maxScore} />
-            )}
-
-            {game.drawPile.length > 0 && game.drawPile.length < 5 && (
-              <div className="ml2 flex items-center">
-                ·
-                <Txt
-                  uppercase
-                  className="yellow ml2"
-                  value={`${game.drawPile.length} card${
-                    game.drawPile.length > 1 ? "s" : ""
-                  } left`}
-                />
-              </div>
-            )}
-
             {game.actionsLeft > 0 &&
               game.actionsLeft <= game.options.playersCount && (
                 <div className="ml2 flex items-center">
@@ -72,12 +61,10 @@ export default function GameBoard(props: Props) {
                 </div>
               )}
           </div>
-          <div className="flex flex-column mt1">
-            <PlayedCards cards={game.playedCards} />
-          </div>
+          <PlayedCards cards={game.playedCards} />
         </div>
-        <div className="flex flex-row ph1 justify-left items-end">
-          <div className="mr2 relative">
+        <div className="flex flex-row ph1 mt3 justify-left items-end">
+          <div className="mr2 relative flex flex-column items-center">
             <CardWrapper color={game.drawPile.length > 5 ? "main" : "strikes"}>
               {game.drawPile.map((card, i) => (
                 <div
@@ -98,13 +85,27 @@ export default function GameBoard(props: Props) {
                 </div>
               ))}
             </CardWrapper>
+            {game.drawPile.length <= 5 ? (
+              <Txt
+                className="red ml2 mt1"
+                value={
+                  game.drawPile.length === 0
+                    ? "no card left"
+                    : `${game.drawPile.length} card${
+                        game.drawPile.length > 1 ? "s" : ""
+                      } left`
+                }
+              />
+            ) : (
+              <Txt className="gray mt1" value="deck" />
+            )}
           </div>
           <div
-            className="pointer relative mr3"
+            className="pointer relative mr3 tc flex flex-column items-center"
             onClick={() => onSelectDiscard()}
           >
-            <Tutorial placement="left" step={ITutorialStep.DISCARD_PILE}>
-              <CardWrapper color="light-silver relative">
+            <Tutorial placement="below" step={ITutorialStep.DISCARD_PILE}>
+              <CardWrapper color="light-silver relative flex flex-column">
                 {game.discardPile.map((card, i) => (
                   <div
                     key={i}
@@ -115,31 +116,41 @@ export default function GameBoard(props: Props) {
                       <Txt
                         className="absolute pointer"
                         size={TxtSize.MEDIUM}
+                        style={{ marginTop: `-2px` }}
                         value={i + 1}
                       />
+                      <div
+                        className="w-40 h-40 self-end"
+                        style={{ fill: "lightgray", marginBottom: "-5px" }}
+                      >
+                        <Eye />
+                      </div>
                     </CardWrapper>
                   </div>
                 ))}
               </CardWrapper>
+              <Txt className="gray mt1" value="discard" />
             </Tutorial>
           </div>
-          <div className="mr2 mr3-l">
+          <div className="mr2 mr3-l tc">
             <TokenSpace
               hints={game.tokens.hints}
               strikes={game.tokens.strikes}
             />
+            <Txt className="gray mt1" value="tokens" />
           </div>
 
-          <div className="flex flex-column absolute-l top-1 right-1">
-            <HomeButton className="mb1" onClick={onMenuClick} />
+          <div className="flex flex absolute top-0 right-0 mt2 mr2">
             {game.options.allowRollback && (
               <Button
+                void
                 disabled={!game.history.length}
                 size={ButtonSize.TINY}
                 text="⟲"
                 onClick={() => onShowRollback()}
               />
             )}
+            <HomeButton void className="ml1" onClick={onMenuClick} />
           </div>
         </div>
       </div>

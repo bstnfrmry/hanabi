@@ -15,13 +15,15 @@ import { useGame } from "~/hooks/game";
 export enum CardSize {
   SMALL = "small",
   MEDIUM = "medium",
-  LARGE = "large"
+  LARGE = "large",
+  FLEX = "flex"
 }
 
 const CardClasses = {
   [CardSize.SMALL]: "h1.25 w1.25 h2-l w2-l",
-  [CardSize.MEDIUM]: "h2 w2 h4-l w4-l",
-  [CardSize.LARGE]: "h3 w3 h4.5-l w4.5-l"
+  [CardSize.MEDIUM]: "h2 w2 h3-l w3-l",
+  [CardSize.LARGE]: "h3 w3 h4-l w4-l",
+  [CardSize.FLEX]: "flex-square"
 };
 
 const CardTextSizes = {
@@ -172,7 +174,7 @@ export default function Card(props: Props) {
       {displayHints && hidden && (
         <div
           className={classnames(
-            "absolute top-0 mt2 mt4-l br-100 w-50 h-50 flex justify-center items-center outline-main-dark",
+            "top-0 br-100 w-50 h-50 flex justify-center items-center outline-main-dark",
             { [`bg-${card.color}`]: card.hint.color[card.color] === 2 },
             { [`ba b--${card.color}`]: card.hint.color[card.color] === 2 }
           )}

@@ -27,7 +27,7 @@ export const colors: IColor[] = [
 export const numbers: INumber[] = [1, 2, 3, 4, 5];
 
 const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
-const maxHints = 8;
+export const MaxHints = 8;
 
 export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
   const isPreviousHere =
@@ -88,7 +88,7 @@ export function isGameOver(state: IGameState) {
   return (
     state.actionsLeft <= 0 ||
     state.tokens.strikes >= 3 ||
-    (state.playedCards || []).length === (state.options.multicolor ? 30 : 25)
+    getMaximumPossibleScore(state) === (state.playedCards || []).length
   );
 }
 
@@ -112,7 +112,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
         s.playedCards.push(card);
         if (card.number === 5) {
           // play a 5, win a hint
-          if (s.tokens.hints < maxHints) s.tokens.hints += 1;
+          if (s.tokens.hints < MaxHints) s.tokens.hints += 1;
         }
       } else {
         // strike !
@@ -121,7 +121,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
       }
     } else {
       /** DISCARD */
-      if (s.tokens.hints < maxHints) {
+      if (s.tokens.hints < MaxHints) {
         s.discardPile.push(card);
         s.tokens.hints += 1;
       } else {
@@ -317,7 +317,7 @@ export function newGame(options: IGameOptions): IGameState {
     discardPile: [],
     players: [],
     tokens: {
-      hints: maxHints,
+      hints: MaxHints,
       strikes: 0
     },
     currentPlayer,

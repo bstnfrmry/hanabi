@@ -1,4 +1,3 @@
-import classnames from "classnames";
 import { last } from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -123,6 +122,14 @@ export default function Play() {
 
     return () => clearTimeout(timeout);
   }, [hintsCount === previousHintsCount + 1]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      new Audio(`/static/sounds/swoosh.wav`).play();
+    }, 200);
+
+    return () => clearTimeout(timeout);
+  }, [hintsCount === previousHintsCount - 1]);
 
   const turnsCount = game ? game.turnsHistory.length : 0;
   const previousTurnsCount = usePrevious(turnsCount);
@@ -304,13 +311,42 @@ export default function Play() {
       <GameContext.Provider value={game}>
         <SelfPlayerContext.Provider value={selfPlayer}>
           <CurrentPlayerContext.Provider value={currentPlayer}>
-            <div className="bg-main-dark relative flex flex-row w-100 h-100">
-              {/* Left area */}
+            <div className="bg-main-dark relative flex flex-column w-100 h-100">
+              <div className="bb b--yellow">
+                <GameBoard
+                  onMenuClick={onMenuClick}
+                  onSelectDiscard={onSelectDiscard}
+                  onShowRollback={onShowRollback}
+                />
+              </div>
+
+              <div className="flex flex-column pa2 ph3-l shadow-5 bg-black-50 bb b--yellow">
+                {selectedArea.type === ActionAreaType.MENU ? (
+                  <div className="h4">
+                    <MenuArea onCloseArea={onCloseArea} />
+                  </div>
+                ) : game.status === IGameStatus.LOBBY ? (
+                  <Lobby
+                    onAddBot={onAddBot}
+                    onJoinGame={onJoinGame}
+                    onStartGame={onStartGame}
+                  />
+                ) : (
+                  <div className="h4 overflow-y-scroll">
+                    <ActionArea
+                      interturn={interturn}
+                      selectedArea={selectedArea}
+                      onCloseArea={onCloseArea}
+                      onRollback={onRollback}
+                      onSelectDiscard={onSelectDiscard}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Top area */}
               {interturn && (
-                <div
-                  className="flex flex-column items-center justify-center"
-                  style={{ minWidth: "35%" }}
-                >
+                <div className="flex-grow-1 flex flex-column items-center justify-center">
                   <Txt
                     size={TxtSize.MEDIUM}
                     value={`It's ${currentPlayer.name}'s turn!`}
@@ -326,58 +362,19 @@ export default function Play() {
               )}
 
               {!interturn && (
-                <div
-                  className={classnames(
-                    "flex flex-column h-100 overflow-y-scroll pa1"
-                  )}
-                  style={{ minWidth: "35%" }}
-                >
-                  <PlayersBoard
-                    onNotifyPlayer={onNotifyPlayer}
-                    onReaction={onReaction}
-                    onSelectPlayer={onSelectPlayer}
-                  />
+                <div className="flex flex-column">
+                  <div className="h-100 overflow-y-scroll">
+                    <PlayersBoard
+                      selectedArea={selectedArea}
+                      onCloseArea={onCloseArea}
+                      onCommitAction={onCommitAction}
+                      onNotifyPlayer={onNotifyPlayer}
+                      onReaction={onReaction}
+                      onSelectPlayer={onSelectPlayer}
+                    />
+                  </div>
                 </div>
               )}
-
-              {/* Right area */}
-              <div
-                className={classnames(
-                  "flex flex-column h-100 flex-grow-1 overflow-y-scroll pa1 pl0"
-                )}
-              >
-                <GameBoard
-                  onMenuClick={onMenuClick}
-                  onSelectDiscard={onSelectDiscard}
-                  onShowRollback={onShowRollback}
-                />
-                <div className="flex-grow-1 pa2 pv4-l ph3-l shadow-5 br3 ba b--yellow-light">
-                  {selectedArea.type === ActionAreaType.MENU && (
-                    <MenuArea onCloseArea={onCloseArea} />
-                  )}
-                  {selectedArea.type !== ActionAreaType.MENU && (
-                    <>
-                      {game.status === IGameStatus.LOBBY && (
-                        <Lobby
-                          onAddBot={onAddBot}
-                          onJoinGame={onJoinGame}
-                          onStartGame={onStartGame}
-                        />
-                      )}
-                      {game.status !== IGameStatus.LOBBY && (
-                        <ActionArea
-                          interturn={interturn}
-                          selectedArea={selectedArea}
-                          onCloseArea={onCloseArea}
-                          onCommitAction={onCommitAction}
-                          onRollback={onRollback}
-                          onSelectDiscard={onSelectDiscard}
-                        />
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
             </div>
           </CurrentPlayerContext.Provider>
         </SelfPlayerContext.Provider>

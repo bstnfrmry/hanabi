@@ -24,10 +24,12 @@ module.exports = {
     "simple-import-sort/sort": "error",
     "@typescript-eslint/interface-name-prefix": [0],
     "@typescript-eslint/explicit-function-return-type": [0],
+    "@typescript-eslint/no-use-before-define": [0],
     "react/jsx-sort-props": ["error", {
       "callbacksLast": true,
       "shorthandFirst": true,
       "reservedFirst": true,
-    }]
+    }],
+    "react/no-unescaped-entities": [0]    
   }
 };
