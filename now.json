@@ -22,5 +22,5 @@
       "FIREBASE_APP_ID": "@firebase_app_id"
     }
   },
-  "builds": [{ "src": "out", "use": "@now/static-build" }]
+  "builds": [{ "src": "package.json", "use": "@now/static-build" }]
 }
