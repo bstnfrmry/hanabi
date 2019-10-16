@@ -1,17 +1,13 @@
-import { keyBy } from "lodash";
 import { useRouter } from "next/router";
 import generateName from "project-name-generator";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import PlayerName from "~/components/playerName";
 import Button, { ButtonSize } from "~/components/ui/button";
-import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
+import { TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
+import { GameMode } from "~/game/state";
 import { useGame, useSelfPlayer } from "~/hooks/game";
-
-export const Emojis = ["🐶", "🦊", "🐸", "🦋", "🐯", "🐱"];
-
-export const BotEmojis = ["🤖", "👽", "👾", "🤡", "🐲"];
 
 interface Props {
   onJoinGame: Function;
@@ -26,14 +22,13 @@ export default function Lobby(props: Props) {
   const selfPlayer = useSelfPlayer();
 
   const gameFull = game.players.length === game.options.playersCount;
-  const canJoin = !selfPlayer && !gameFull;
-  const availableEmojis = Emojis.filter(
-    e => !game.players.find(p => p.emoji === e)
-  );
+  const canJoin =
+    (game.options.gameMode === GameMode.PASS_AND_PLAY || !selfPlayer) &&
+    !gameFull;
+  const canStart = gameFull;
 
   const router = useRouter();
   const [name, setName] = useState(generateName().dashed);
-  const [emoji, setEmoji] = useState(availableEmojis[0]);
   const [bot, setBot] = useState(false);
 
   const shareLink = `${window.location.origin}/play?gameId=${router.query.gameId}`;
@@ -42,6 +37,10 @@ export default function Lobby(props: Props) {
     inputRef.current.select();
     document.execCommand("copy");
   }
+
+  useEffect(() => {
+    setName(generateName().dashed);
+  }, [game.players.length]);
 
   return (
     <div className="flex items-center justify-center h-100 w-100">
@@ -73,8 +72,9 @@ export default function Lobby(props: Props) {
                 )}
               </div>
             </div>
-            {selfPlayer && (
+            {canStart && (
               <Button
+                primary
                 disabled={!gameFull}
                 id="start-game"
                 text="Start game"
@@ -92,28 +92,25 @@ export default function Lobby(props: Props) {
             className="flex items-start mt5 w-100 flex-grow-1"
             onSubmit={e => {
               e.preventDefault();
-              onJoinGame({ name, emoji, bot });
+              onJoinGame({ name, bot });
             }}
           >
-            <Select
-              className="w3 h2.5 indent mr2 pl1"
-              id="player-emoji"
-              options={keyBy(availableEmojis)}
-              value={emoji}
-              onChange={e => setEmoji(e.target.value)}
-            />
-            <div className="flex flex-column justify-center items-end mr2">
-              <TextInput
-                className="flex-grow-1 h2.5 ttu"
-                id="player-name"
-                style={{ width: "12rem" }}
-                value={name}
-                onChange={e => setName(e.target.value)}
-              />
-              <Field
+            <div className="flex flex-column justify-left">
+              <div className="flex justify-center items-center mr2">
+                <TextInput
+                  className="flex-grow-1 mr2"
+                  id="player-name"
+                  style={{ width: "12rem" }}
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                />
+                <Button primary id="join-game" text="Join" />
+              </div>
+              {/* <Field
                 label={
                   <Txt className="gray" size={TxtSize.SMALL} value="Autoplay" />
                 }
+                style={{width: '80px'}}
               >
                 <Checkbox
                   checked={bot}
@@ -121,9 +118,8 @@ export default function Lobby(props: Props) {
                   id="autoplay"
                   onChange={e => setBot(e.target.checked)}
                 />
-              </Field>
+              </Field> */}
             </div>
-            <Button id="join-game" text="Join" />
           </form>
         )}
 

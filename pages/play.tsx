@@ -10,11 +10,11 @@ import ActionArea, {
 } from "~/components/actionArea";
 import GameBoard from "~/components/gameBoard";
 import LoadingScreen from "~/components/loadingScreen";
-import Lobby, { BotEmojis } from "~/components/lobby";
+import Lobby from "~/components/lobby";
 import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
-import Turn from "~/components/turn";
 import { TutorialProvider } from "~/components/tutorial";
+import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import {
   commitAction,
@@ -23,37 +23,36 @@ import {
   joinGame
 } from "~/game/actions";
 import play from "~/game/ai";
-import IGameState, {
-  fillEmptyValues,
-  IGameStatus,
-  IPlayer,
-  ITurn
-} from "~/game/state";
+import IGameState, { GameMode, IGameStatus, IPlayer } from "~/game/state";
 import useConnectivity from "~/hooks/connectivity";
 import {
   CurrentPlayerContext,
   GameContext,
-  GameView,
-  GameViewContext,
   SelfPlayerContext
 } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
+import usePrevious from "~/hooks/previous";
 
 export default function Play() {
   const network = useNetwork();
   const router = useRouter();
   const online = useConnectivity();
-  const [lastTurn, setLastTurn] = useState<ITurn>(null);
   const [game, setGame] = useState<IGameState>(null);
-  const [view, setView] = useState<GameView>(GameView.LIVE);
+  const [interturn, setInterturn] = useState(false);
   const [selectedArea, selectArea] = useState<ISelectedArea>({
     id: "instructions",
     type: ActionAreaType.INSTRUCTIONS
   });
   const { gameId, playerId } = router.query;
 
-  const selfPlayer = game && game.players.find(p => p.id === playerId);
   const currentPlayer = game && game.players[game.currentPlayer];
+
+  let selfPlayer: IPlayer;
+  if (game && game.options.gameMode === GameMode.NETWORK) {
+    selfPlayer = game && game.players.find(p => p.id === playerId);
+  } else {
+    selfPlayer = currentPlayer;
+  }
 
   /**
    * Load game from database
@@ -63,29 +62,38 @@ export default function Play() {
     if (!gameId) return;
 
     return network.subscribeToGame(gameId as string, game => {
-      if (view === GameView.PEAK) return;
-
       if (!game) {
         return router.push("/404");
       }
 
       setGame({ ...game, synced: true });
     });
-  }, [gameId, view, online]);
+  }, [gameId, online]);
 
   /**
-   * Display turn on turn played.
-   * Also resets the selected area.
+   * Resets the selected area when a player plays.
    */
   useEffect(() => {
     if (!game) return;
 
-    setLastTurn(last(game.turnsHistory));
     selectArea({ id: "instructions", type: ActionAreaType.INSTRUCTIONS });
-    const timeout = setTimeout(() => setLastTurn(null), 10000);
-
-    return () => clearTimeout(timeout);
   }, [game && game.turnsHistory.length]);
+
+  /**
+   * Toggle interturn state on new turn for pass & play
+   */
+  useEffect(() => {
+    if (!game) return;
+    if (game.options.gameMode !== GameMode.PASS_AND_PLAY) return;
+    if (game.players.length < game.options.playersCount) return;
+    if (game.status !== IGameStatus.ONGOING) return;
+
+    setInterturn(true);
+  }, [
+    game && game.turnsHistory.length,
+    game && game.players.length,
+    game && game.status
+  ]);
 
   /**
    * Handle notification sounds.
@@ -102,6 +110,51 @@ export default function Play() {
 
     return () => clearTimeout(timeout);
   }, [selfPlayer && selfPlayer.notified]);
+
+  /**
+   * Play sound when gaining a hint token
+   */
+  const hintsCount = game ? game.tokens.hints : 0;
+  const previousHintsCount = usePrevious(hintsCount);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      new Audio(`/static/sounds/coin.mp3`).play();
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [hintsCount === previousHintsCount + 1]);
+
+  const turnsCount = game ? game.turnsHistory.length : 0;
+  const previousTurnsCount = usePrevious(turnsCount);
+  useEffect(() => {
+    new Audio(`/static/sounds/rewind.mp3`).play();
+  }, [turnsCount === previousTurnsCount - 1]);
+
+  /**
+   * Play sound when discarding a card
+   */
+  useEffect(() => {
+    if (!game) return;
+
+    new Audio(`/static/sounds/card-scrape.mp3`).play();
+  }, [game && game.discardPile.length]);
+
+  /**
+   * Play sound when successfully playing a card
+   */
+  useEffect(() => {
+    if (!game) return;
+
+    const latestCard = last(game.playedCards);
+    if (!latestCard) return;
+
+    const path =
+      latestCard.number === 5
+        ? `/static/sounds/play-5.mp3`
+        : `/static/sounds/play.mp3`;
+
+    new Audio(path).play();
+  }, [game && game.playedCards.length]);
 
   /**
    * Play for bots.
@@ -132,13 +185,15 @@ export default function Play() {
 
     network.updateGame(joinGame(game, { id: playerId, ...player }));
 
-    router.replace({
-      pathname: "/play",
-      query: { gameId, playerId }
-    });
-
     localStorage.setItem("gameId", gameId.toString());
-    localStorage.setItem("playerId", playerId.toString());
+
+    if (game.options.gameMode === GameMode.NETWORK) {
+      router.replace({
+        pathname: "/play",
+        query: { gameId, playerId }
+      });
+      localStorage.setItem("playerId", playerId.toString());
+    }
   }
 
   function onAddBot() {
@@ -146,7 +201,6 @@ export default function Play() {
     const botsCount = game.players.filter(p => p.bot).length;
 
     const bot = {
-      emoji: BotEmojis[botsCount],
       name: `AI #${botsCount + 1}`
     };
 
@@ -167,6 +221,10 @@ export default function Play() {
       }
     }
 
+    if (game.options.gameMode === GameMode.PASS_AND_PLAY) {
+      setInterturn(true);
+    }
+
     setGame({ ...newState, synced: false });
     network.updateGame(newState);
   }
@@ -178,20 +236,11 @@ export default function Play() {
     });
   }
 
-  function onImpersonate(player: IPlayer) {
-    if (
-      !window.confirm(
-        `This will reveal your hand.\nContinue to ${player.name}'s side?`
-      )
-    ) {
-      return;
-    }
-
-    router.push({
-      pathname: "/play",
-      query: { gameId, playerId: player.id }
+  function onShowRollback() {
+    return selectArea({
+      id: "rollback",
+      type: ActionAreaType.ROLLBACK
     });
-    onCloseArea();
   }
 
   async function onRollback() {
@@ -246,71 +295,40 @@ export default function Play() {
     });
   }
 
-  function onTurnPeak(turn: number) {
-    setGame(fillEmptyValues(goBackToState(game, turn)));
-    setView(GameView.PEAK);
-  }
-
-  function onExitPeakMode() {
-    setView(GameView.LIVE);
-  }
-
   if (!game) {
     return <LoadingScreen />;
   }
 
   return (
     <TutorialProvider>
-      <GameViewContext.Provider value={view}>
-        <GameContext.Provider value={game}>
-          <SelfPlayerContext.Provider value={selfPlayer}>
-            <CurrentPlayerContext.Provider value={currentPlayer}>
-              <div className="bg-main-dark relative flex flex-row w-100 h-100">
-                {/* Toast */}
+      <GameContext.Provider value={game}>
+        <SelfPlayerContext.Provider value={selfPlayer}>
+          <CurrentPlayerContext.Provider value={currentPlayer}>
+            <div className="bg-main-dark relative flex flex-row w-100 h-100">
+              {/* Left area */}
+              {interturn && (
                 <div
-                  className="absolute z-999 bottom-1 left-0 right-0 flex justify-center items-center pointer"
-                  style={{ pointerEvents: "none" }}
+                  className="flex flex-column items-center justify-center"
+                  style={{ minWidth: "35%" }}
                 >
-                  {view === GameView.LIVE && lastTurn && (
-                    <div
-                      className="flex justify-center items-center bg-white main-dark br4 shadow-4 b--yellow ba bw2 pa2"
-                      style={{ pointerEvents: "auto" }}
-                      onClick={() => setLastTurn(null)}
-                    >
-                      <Turn
-                        includePlayer={true}
-                        showDrawn={
-                          game.players[lastTurn.action.from] !== selfPlayer
-                        }
-                        turn={lastTurn}
-                      />
-                      <span className="ml4">&times;</span>
-                    </div>
-                  )}
+                  <Txt
+                    size={TxtSize.MEDIUM}
+                    value={`It's ${currentPlayer.name}'s turn!`}
+                  />
+                  <Button
+                    primary
+                    className="mt4"
+                    size={ButtonSize.MEDIUM}
+                    text={`Go !`}
+                    onClick={() => setInterturn(false)}
+                  />
                 </div>
+              )}
 
-                {/* Peak mode */}
-                {view === GameView.PEAK && (
-                  <div
-                    className="absolute z-999 bottom-1 right-1 bg-white main-dark br4 shadow-4 b--yellow ba bw2 pa2 pointer flex flex-column items-center"
-                    onClick={onExitPeakMode}
-                  >
-                    <div className="flex w-100 mb1 justify-between items-center">
-                      <Txt size={TxtSize.MEDIUM} value="Peak mode" />
-                      <Txt className="mr2" value="×" />
-                    </div>
-                    <Txt
-                      multiline
-                      value="You are watching a snapshot of the game"
-                    />
-                  </div>
-                )}
-
-                {/* Left area */}
+              {!interturn && (
                 <div
                   className={classnames(
-                    "flex flex-column h-100 overflow-y-scroll pa1",
-                    { "o-70": view === GameView.PEAK }
+                    "flex flex-column h-100 overflow-y-scroll pa1"
                   )}
                   style={{ minWidth: "35%" }}
                 >
@@ -320,51 +338,50 @@ export default function Play() {
                     onSelectPlayer={onSelectPlayer}
                   />
                 </div>
+              )}
 
-                {/* Right area */}
-                <div
-                  className={classnames(
-                    "flex flex-column h-100 flex-grow-1 overflow-y-scroll pa1 pl0",
-                    { "o-70": view === GameView.PEAK }
+              {/* Right area */}
+              <div
+                className={classnames(
+                  "flex flex-column h-100 flex-grow-1 overflow-y-scroll pa1 pl0"
+                )}
+              >
+                <GameBoard
+                  onMenuClick={onMenuClick}
+                  onSelectDiscard={onSelectDiscard}
+                  onShowRollback={onShowRollback}
+                />
+                <div className="flex-grow-1 pa2 pv4-l ph3-l shadow-5 br3 ba b--yellow-light">
+                  {selectedArea.type === ActionAreaType.MENU && (
+                    <MenuArea onCloseArea={onCloseArea} />
                   )}
-                >
-                  <GameBoard
-                    onMenuClick={onMenuClick}
-                    onRollback={onRollback}
-                    onSelectDiscard={onSelectDiscard}
-                  />
-                  <div className="flex-grow-1 pa2 pv4-l ph3-l shadow-5 br3 ba b--yellow-light">
-                    {selectedArea.type === ActionAreaType.MENU && (
-                      <MenuArea onCloseArea={onCloseArea} />
-                    )}
-                    {selectedArea.type !== ActionAreaType.MENU && (
-                      <>
-                        {game.status === IGameStatus.LOBBY && (
-                          <Lobby
-                            onAddBot={onAddBot}
-                            onJoinGame={onJoinGame}
-                            onStartGame={onStartGame}
-                          />
-                        )}
-                        {game.status !== IGameStatus.LOBBY && (
-                          <ActionArea
-                            selectedArea={selectedArea}
-                            onCloseArea={onCloseArea}
-                            onCommitAction={onCommitAction}
-                            onImpersonate={onImpersonate}
-                            onSelectDiscard={onSelectDiscard}
-                            onTurnPeak={onTurnPeak}
-                          />
-                        )}
-                      </>
-                    )}
-                  </div>
+                  {selectedArea.type !== ActionAreaType.MENU && (
+                    <>
+                      {game.status === IGameStatus.LOBBY && (
+                        <Lobby
+                          onAddBot={onAddBot}
+                          onJoinGame={onJoinGame}
+                          onStartGame={onStartGame}
+                        />
+                      )}
+                      {game.status !== IGameStatus.LOBBY && (
+                        <ActionArea
+                          interturn={interturn}
+                          selectedArea={selectedArea}
+                          onCloseArea={onCloseArea}
+                          onCommitAction={onCommitAction}
+                          onRollback={onRollback}
+                          onSelectDiscard={onSelectDiscard}
+                        />
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
-            </CurrentPlayerContext.Provider>
-          </SelfPlayerContext.Provider>
-        </GameContext.Provider>
-      </GameViewContext.Provider>
+            </div>
+          </CurrentPlayerContext.Provider>
+        </SelfPlayerContext.Provider>
+      </GameContext.Provider>
     </TutorialProvider>
   );
 }

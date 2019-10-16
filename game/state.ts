@@ -38,6 +38,12 @@ export interface IGameOptions {
   hintsLevel: IGameHintsLevel;
   turnsHistory: boolean;
   botsWait: number;
+  gameMode: GameMode;
+}
+
+export enum GameMode {
+  NETWORK = "network",
+  PASS_AND_PLAY = "pass_and_play"
 }
 
 export enum IGameHintsLevel {
@@ -127,7 +133,6 @@ export interface ITurn {
 export interface IPlayer {
   id: string;
   name: string;
-  emoji: string;
   hand?: IHand;
   reaction?: string;
   lastAction?: IAction;

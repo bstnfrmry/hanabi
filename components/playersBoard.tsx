@@ -19,8 +19,8 @@ export default function PlayersBoard(props: Props) {
 
   const position = selfPlayer ? selfPlayer.index : game.players.length;
   const otherPlayers = [
-    ...game.players.slice(0, position),
-    ...game.players.slice(position + 1)
+    ...game.players.slice(position + 1),
+    ...game.players.slice(0, position)
   ];
 
   return (

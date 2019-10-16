@@ -4,6 +4,8 @@ import DiscardArea from "~/components/discardArea";
 import InstructionsArea from "~/components/instructionsArea";
 import OtherPlayerArea from "~/components/otherPlayerArea";
 import SelfPlayerArea from "~/components/selfPlayerArea";
+import Button from "~/components/ui/button";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import { IPlayer } from "~/game/state";
 
 interface IOtherPlayerSelectedArea {
@@ -35,12 +37,18 @@ interface IMenuArea {
   type: ActionAreaType.MENU;
 }
 
+interface IRollbackArea {
+  id: "rollback";
+  type: ActionAreaType.ROLLBACK;
+}
+
 export enum ActionAreaType {
   INSTRUCTIONS,
   OTHER_PLAYER,
   SELF_PLAYER,
   DISCARD,
-  MENU
+  MENU,
+  ROLLBACK
 }
 
 export type ISelectedArea =
@@ -48,15 +56,16 @@ export type ISelectedArea =
   | IOtherPlayerSelectedArea
   | ISelfPlayerSelectedArea
   | IDiscardSelectedArea
-  | IMenuArea;
+  | IMenuArea
+  | IRollbackArea;
 
 interface Props {
+  interturn: boolean;
   selectedArea: ISelectedArea;
   onCommitAction: Function;
   onSelectDiscard: Function;
   onCloseArea: Function;
-  onImpersonate: Function;
-  onTurnPeak: (turn: number) => void;
+  onRollback: Function;
 }
 
 export default function ActionArea(props: Props) {
@@ -65,16 +74,37 @@ export default function ActionArea(props: Props) {
     onCommitAction,
     onSelectDiscard,
     onCloseArea,
-    onImpersonate,
-    onTurnPeak
+    onRollback,
+    interturn
   } = props;
 
   if (selectedArea.type === ActionAreaType.INSTRUCTIONS) {
     return (
       <InstructionsArea
+        interturn={interturn}
         onSelectDiscard={onSelectDiscard}
-        onTurnPeak={onTurnPeak}
       />
+    );
+  }
+
+  if (selectedArea.type === ActionAreaType.ROLLBACK) {
+    return (
+      <div className="h-100 flex flex-column items-center justify-center">
+        <Txt
+          className="w-75"
+          size={TxtSize.MEDIUM}
+          value="You're about to cancel the last action!"
+        />
+        <div className="mt4">
+          <Button text="Cancel" onClick={() => onCloseArea()} />
+          <Button
+            primary
+            className="ml4"
+            text="Confirm"
+            onClick={() => onRollback()}
+          />
+        </div>
+      </div>
     );
   }
 
@@ -88,7 +118,6 @@ export default function ActionArea(props: Props) {
         player={selectedArea.player}
         onCloseArea={onCloseArea}
         onCommitAction={onCommitAction}
-        onImpersonate={onImpersonate}
       />
     );
   }

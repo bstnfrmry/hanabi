@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import Head from 'next/head';
 
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -20,16 +19,18 @@ export default function Home() {
 
   return (
     <div className="w-100 h-100 flex flex-row justify-center items-center bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
-      <Head>
-        <link rel="apple-touch-icon" href="/static/hanabi-192.png" />
-        <meta name="theme-color" content="#00153f" />
-        <meta name="Description" content="Play the hanabi card game online."></meta>
-      </Head>
       <div className="flex flex-column items-center">
-        <img className="mw4 mb4" src="/static/hanabi.png" alt='logo' />
+        <img alt="logo" className="mw4 mb4" src="/static/hanabi.png" />
         <Txt size={TxtSize.LARGE} value="Hanabi" />
       </div>
       <div className="flex flex-column ml5">
+        <Button
+          className="mb4"
+          id="play-offline"
+          size={ButtonSize.LARGE}
+          text="Play offline"
+          onClick={() => router.push("/new-game?offline=1")}
+        />
         <Button
           className="mb4"
           id="create-room"

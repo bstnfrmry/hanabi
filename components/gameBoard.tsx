@@ -12,27 +12,26 @@ import {
   getMaximumScore,
   getScore
 } from "~/game/actions";
-import { GameView, useGame, useGameView } from "~/hooks/game";
+import { useGame } from "~/hooks/game";
 
 interface Props {
   onSelectDiscard: Function;
   onMenuClick: Function;
-  onRollback: Function;
+  onShowRollback: Function;
 }
 
 export { CardWrapper } from "~/components/card";
 
 export default function GameBoard(props: Props) {
-  const { onSelectDiscard, onMenuClick, onRollback } = props;
+  const { onSelectDiscard, onMenuClick, onShowRollback } = props;
 
   const game = useGame();
-  const view = useGameView();
   const score = getScore(game);
   const maxScore = getMaximumScore(game);
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="pa2 pv4-l ph3-l shadow-5 br3 mb1 ba b--yellow-light">
+    <div className="pa2 pv4-l ph3-l shadow-5 br3 mb1 bg-near-black ba b--yellow-light">
       <div className="flex justify-between flex-column-l items-end items-start-l">
         <div className="flex flex-column mb5-l">
           <div className="flex items-center h2 nt2">
@@ -133,12 +132,12 @@ export default function GameBoard(props: Props) {
 
           <div className="flex flex-column absolute-l top-1 right-1">
             <HomeButton className="mb1" onClick={onMenuClick} />
-            {game.options.allowRollback && view === GameView.LIVE && (
+            {game.options.allowRollback && (
               <Button
                 disabled={!game.history.length}
                 size={ButtonSize.TINY}
                 text="⟲"
-                onClick={() => onRollback()}
+                onClick={() => onShowRollback()}
               />
             )}
           </div>

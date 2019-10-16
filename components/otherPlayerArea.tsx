@@ -6,13 +6,7 @@ import Button from "~/components/ui/button";
 import Txt from "~/components/ui/txt";
 import Vignettes from "~/components/vignettes";
 import { ICard, IHintAction, IPlayer } from "~/game/state";
-import {
-  GameView,
-  useCurrentPlayer,
-  useGame,
-  useGameView,
-  useSelfPlayer
-} from "~/hooks/game";
+import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 function isCardHintable(hint: IHintAction, card: ICard) {
   return hint.type === "color"
@@ -47,14 +41,12 @@ interface Props {
   player: IPlayer;
   onCommitAction: Function;
   onCloseArea: Function;
-  onImpersonate: Function;
 }
 
 export default function OtherPlayerArea(props: Props) {
-  const { player, onCommitAction, onCloseArea, onImpersonate } = props;
+  const { player, onCommitAction, onCloseArea } = props;
 
   const game = useGame();
-  const view = useGameView();
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
   const [pendingHint, setPendingHint] = useState<IHintAction>({
@@ -69,11 +61,6 @@ export default function OtherPlayerArea(props: Props) {
           <PlayerName player={player} size={PlayerNameSize.MEDIUM} />
           <Txt className="ml2" value="×" />
         </a>
-        {view === GameView.LIVE && (
-          <a onClick={() => onImpersonate(player)}>
-            <Txt value="🕵🏻‍♀️" />
-          </a>
-        )}
       </div>
       <div className="flex flex-row pb2">
         {player.hand.map((card, i) => (
@@ -89,7 +76,7 @@ export default function OtherPlayerArea(props: Props) {
           />
         ))}
       </div>
-      {view === GameView.LIVE && selfPlayer === currentPlayer && (
+      {selfPlayer === currentPlayer && (
         <>
           <Txt className="mb2 mt5" value="Select a hint below" />
           <div className="flex flex-row pb2">

@@ -15,10 +15,10 @@ export enum ButtonSize {
 }
 
 const ButtonSizes = {
-  [ButtonSize.TINY]: "pa1 bw1 pa2-l fw1",
-  [ButtonSize.SMALL]: "pv1 ph2 bw1 fw2",
-  [ButtonSize.MEDIUM]: "pv2 ph3 bw2 fw2",
-  [ButtonSize.LARGE]: "pv3 ph4 bw2 fw2"
+  [ButtonSize.TINY]: "ph2 br1 pv1 pa2-l fw1 tracked-none",
+  [ButtonSize.SMALL]: "pv1 br2 ph2 fw2",
+  [ButtonSize.MEDIUM]: "pv2 br2 ph3 fw2",
+  [ButtonSize.LARGE]: "pv3 br4 ph4 fw2"
 };
 
 const ButtonTxtSizes = {
@@ -29,6 +29,7 @@ const ButtonTxtSizes = {
 };
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
+  primary?: boolean;
   size?: ButtonSize;
   onClick?: MouseEventHandler;
   className?: string;
@@ -39,6 +40,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export default function Button(props: Props) {
   const {
+    primary = false,
     size = ButtonSize.MEDIUM,
     onClick,
     className,
@@ -53,11 +55,10 @@ export default function Button(props: Props) {
       className={classnames(
         className,
         ButtonSizes[size],
-        "ba br2 shadow-2 ttu tracked outline-0",
-        {
-          "bg-white hover-bg-white pointer main-dark b--yellow grow": !disabled
-        },
-        { "bg-light-gray o-80": disabled }
+        "bn shadow-2 ttu tracked outline-0 lh-normal",
+        { "pointer main-dark grow": !disabled },
+        { "o-80": disabled },
+        { "bg-cta": primary }
       )}
       disabled={disabled}
       onClick={onClick}

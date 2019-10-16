@@ -8,7 +8,7 @@ import Button, { ButtonSize } from "~/components/ui/button";
 import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
 import Txt from "~/components/ui/txt";
 import { newGame } from "~/game/actions";
-import { IGameHintsLevel } from "~/game/state";
+import { GameMode, IGameHintsLevel } from "~/game/state";
 import useNetwork from "~/hooks/network";
 
 const PlayerCounts = [2, 3, 4, 5];
@@ -29,6 +29,7 @@ const DefaultSeed = `${Math.round(Math.random() * 10000)}`;
 export default function NewGame() {
   const router = useRouter();
   const network = useNetwork();
+  const { offline } = router.query;
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [seed, setSeed] = useState<string>(DefaultSeed);
   const [playersCount, setPlayersCount] = useState(3);
@@ -54,7 +55,8 @@ export default function NewGame() {
         private: private_,
         hintsLevel,
         turnsHistory,
-        botsWait
+        botsWait,
+        gameMode: offline ? GameMode.PASS_AND_PLAY : GameMode.NETWORK
       })
     );
 
@@ -76,18 +78,11 @@ export default function NewGame() {
           />
         </Field>
 
-        <Field className="pb2 mb2 bb b--yellow-light" label="Multicolor">
+        <Field label="Multicolor">
           <Checkbox
             checked={multicolor}
             id="multicolor"
             onChange={e => setMulticolor(e.target.checked)}
-          />
-        </Field>
-
-        <Field label="Private">
-          <Checkbox
-            checked={private_}
-            onChange={e => setPrivate(e.target.checked)}
           />
         </Field>
 
@@ -101,6 +96,13 @@ export default function NewGame() {
 
         {showAdvanced && (
           <>
+            <Field className="pb2 mb2 bb b--yellow-light" label="Private">
+              <Checkbox
+                checked={private_}
+                onChange={e => setPrivate(e.target.checked)}
+              />
+            </Field>
+
             <Field className="pb2 mb2 bb b--yellow-light" label="Seed">
               <TextInput
                 className="w3 tr"
@@ -143,7 +145,7 @@ export default function NewGame() {
               />
             </Field>
 
-            <Field className="pb2 mb2 bb b--yellow-light" label="Bots speed">
+            <Field label="Bots speed">
               <Select
                 className="pl3"
                 id="bots-speed"

@@ -36,7 +36,7 @@ export function TextInput(props: InputProps) {
 
   return (
     <input
-      className={classnames("h2 pa2 bg-white ba br2 b--yellow", className)}
+      className={classnames("h2 pa2 ba br2 b--yellow", className)}
       type="text"
       {...attributes}
     />
@@ -64,7 +64,7 @@ export function Select(props: SelectProps) {
 
   return (
     <select
-      className={classnames("h2 bg-white br2 ba b--yellow", className)}
+      className={classnames("h2 br2 ba b--yellow", className)}
       {...attributes}
     >
       {Object.keys(options).map(value => (

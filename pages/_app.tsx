@@ -29,8 +29,14 @@ function Hanabi(props: any) {
           rel="shortcut icon"
           type="image/x-icon"
         />
+        <link href="/static/hanabi-192.png" rel="apple-touch-icon" />
+
         <link href="/static/manifest.json" rel="manifest" />
+        <link href="/static/hanabi-192.png" rel="apple-touch-icon" />
+
         <title>Hanabi</title>
+        <meta content="#00153f" name="theme-color" />
+        <meta content="Play the hanabi card game online." name="Description" />
       </Head>
       <Container>
         <NetworkContext.Provider value={network}>

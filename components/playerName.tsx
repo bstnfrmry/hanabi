@@ -28,8 +28,7 @@ export default function PlayerName(props: Props) {
     player,
     size = PlayerNameSize.SMALL,
     explicit = false,
-    className,
-    reaction
+    className
   } = props;
 
   const selfPlayer = useSelfPlayer();
@@ -38,23 +37,10 @@ export default function PlayerName(props: Props) {
   return (
     <div className={classnames("relative inline-flex items-center", className)}>
       <Txt
-        uppercase
         className="truncate"
         size={PlayerNameTextSizes[size]}
-        value={`${player.emoji}${you ? "You" : player.name}`}
+        value={you ? "You" : player.name}
       />
-      {reaction && (
-        <div>
-          <Txt
-            className="ml2 absolute top-0"
-            size={PlayerNameTextSizes[size]}
-            style={{
-              animation: "FontPulse 600ms 5"
-            }}
-            value={reaction}
-          />
-        </div>
-      )}
     </div>
   );
 }

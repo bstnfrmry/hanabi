@@ -4,12 +4,7 @@ import { useState } from "react";
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import {
-  GameView,
-  useCurrentPlayer,
-  useGameView,
-  useSelfPlayer
-} from "~/hooks/game";
+import { useCurrentPlayer, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
   cardIndex?: number;
@@ -20,7 +15,6 @@ interface Props {
 export default function SelfPlayerArea(props: Props) {
   const { onCommitAction, cardIndex, onCloseArea } = props;
 
-  const view = useGameView();
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
   const [selectedCard, selectCard] = useState<number>(cardIndex);
@@ -48,7 +42,7 @@ export default function SelfPlayerArea(props: Props) {
           />
         ))}
       </div>
-      {view === GameView.LIVE && selfPlayer === currentPlayer && (
+      {selfPlayer === currentPlayer && (
         <>
           <Txt
             className="pb1 pb2-l ml1 mb2 mt5"

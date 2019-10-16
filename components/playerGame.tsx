@@ -7,7 +7,7 @@ import PlayerName from "~/components/playerName";
 import ReactionsPopover from "~/components/reactionsPopover";
 import Txt from "~/components/ui/txt";
 import { IGameStatus, IPlayer } from "~/game/state";
-import { GameView, useGame, useGameView, useSelfPlayer } from "~/hooks/game";
+import { useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props extends HTMLAttributes<HTMLElement> {
   player: IPlayer;
@@ -30,10 +30,11 @@ export default function PlayerGame(props: Props) {
   } = props;
 
   const game = useGame();
-  const view = useGameView();
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const selfPlayer = useSelfPlayer();
-  const hideCards = game.status !== IGameStatus.OVER && (self || !selfPlayer);
+  const hideCards =
+    game.status === IGameStatus.LOBBY ||
+    (game.status !== IGameStatus.OVER && (self || !selfPlayer));
 
   return (
     <div
@@ -46,45 +47,53 @@ export default function PlayerGame(props: Props) {
       {...attributes}
     >
       <div className="ml1 flex items-center">
-        <PlayerName
-          className="w-100"
-          explicit={true}
-          player={player}
-          reaction={player.reaction}
-        />
-        {view === GameView.LIVE &&
-          active &&
-          !self &&
-          !player.notified &&
-          !player.bot && (
+        <PlayerName className="mr2" explicit={true} player={player} />
+
+        {!self && player.reaction && (
+          <Txt
+            style={{
+              animation: "FontPulse 600ms 5"
+            }}
+            value={player.reaction}
+          />
+        )}
+        {self && (
+          <Popover
+            body={
+              <ReactionsPopover
+                onClose={() => setReactionsOpen(false)}
+                onReaction={onReaction}
+              />
+            }
+            className="z-999"
+            isOpen={reactionsOpen}
+            onOuterAction={() => setReactionsOpen(false)}
+          >
             <a
-              className="absolute right-0 mr1 mr4-l"
-              onClick={() => onNotifyPlayer(player)}
+              className="pointer grow☺"
+              onClick={() => setReactionsOpen(!reactionsOpen)}
             >
-              <Txt value="🔔" />
-            </a>
-          )}
-        {view === GameView.LIVE && self && (
-          <>
-            <Popover
-              body={
-                <ReactionsPopover
-                  onClose={() => setReactionsOpen(false)}
-                  onReaction={onReaction}
+              {player.reaction && (
+                <Txt
+                  style={{
+                    animation: "FontPulse 600ms 5"
+                  }}
+                  value={player.reaction}
                 />
-              }
-              className="z-999"
-              isOpen={reactionsOpen}
-              onOuterAction={() => setReactionsOpen(false)}
-            >
-              <a
-                className="absolute right-0 mr1 mr4-l"
-                onClick={() => setReactionsOpen(!reactionsOpen)}
-              >
-                <Txt value="👍" />
-              </a>
-            </Popover>
-          </>
+              )}
+              {!player.reaction && (
+                <Txt style={{ filter: "grayscale(100%)" }} value="︎︎︎︎😊" />
+              )}
+            </a>
+          </Popover>
+        )}
+        {active && !self && !player.notified && !player.bot && (
+          <a
+            className="absolute right-0 mr1 mr4-l"
+            onClick={() => onNotifyPlayer(player)}
+          >
+            <Txt value="🔔" />
+          </a>
         )}
       </div>
 
