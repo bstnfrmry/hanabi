@@ -6,7 +6,7 @@ const withCSS = require("@zeit/next-css");
 const withOffline = require("next-offline");
 
 const config = {
-  target: "serverless",
+  target: "server",
   webpack: config => {
     config.plugins = config.plugins || [];
 
