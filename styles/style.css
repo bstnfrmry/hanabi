@@ -1,6 +1,6 @@
 :root {
   --color-main: #1824a2;
-  --color-main-dark: #00153f;
+  --color-main-dark: #001030;
 
   --color-white: #f4f6f7;
   --color-red: #ec7063;
@@ -27,7 +27,7 @@ body {
   width: 100%;
   height: 100%;
   color: #f0f0f0;
-  background: color-mod(var(--color-blue) shade(90%));
+  background: var(--color-main-dark);
 }
 
 /**
@@ -47,7 +47,7 @@ body {
 }
 
 .bg-main-dark {
-  background: #010d25;
+  background: var(--color-main-dark);
 }
 
 .bg-cta {

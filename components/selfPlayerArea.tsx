@@ -24,8 +24,11 @@ export default function SelfPlayerArea(props: Props) {
   const hasSelectedCard = selectedCard !== null;
 
   return (
-    <div className="flex flex-column flex-grow-1">
-      <a className="pb1 pb2-l ml2 mb2 mt3" onClick={() => onCloseArea()}>
+    <div className="flex flex-column flex-grow-1 flex-row-l justify-end-l w-100 pv3-l">
+      <a
+        className="pb1 pb2-l ml2 mb2 mt3 pa2-l flex-grow-1 "
+        onClick={() => onCloseArea()}
+      >
         <Txt uppercase size={TxtSize.MEDIUM} value="Your game" />
         <Txt className="ml2" value="×" />
       </a>
@@ -46,17 +49,17 @@ export default function SelfPlayerArea(props: Props) {
       </div>
       {selfPlayer === currentPlayer && (
         <div className="flex flex-column items-end">
-          <div className="flex justify-end items-center">
+          <div className="flex justify-end items-center h-100-l">
             {hasSelectedCard && (
               <Txt
-                className="pb1 pb2-l ml1 mb2 mr3"
+                className="pb1 pb2-l ml1 mb2 mr3 ml2-l"
                 value={`Card ${PositionMap[selectedCard]} selected`}
               />
             )}
 
             {hasSelectedCard && (
               <div className="flex flex pb2">
-                {["play", "discard"].map(action => (
+                {["discard", "play"].map(action => (
                   <Button
                     key={action}
                     className="mr2"

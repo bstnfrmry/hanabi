@@ -17,7 +17,7 @@ export default function Vignettes(props: Props) {
   const colors = getColors(game);
 
   return (
-    <div className="flex flex-column items-center">
+    <div className="flex flex-column items-center ml6-l">
       <div className="flex flex-row mb1 mb3-l">
         {colors.map((color, i) => (
           <Vignette

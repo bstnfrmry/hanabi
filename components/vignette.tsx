@@ -23,7 +23,7 @@ export default function Vignette(props: Props) {
     <a
       className={classnames(
         className,
-        "outline-main-dark ba pointer flex items-center justify-center mr1 mr3-l br-100 h2 w2 h3-l w3-l grow border-box",
+        "outline-main-dark ba pointer flex items-center justify-center mr1 mr2-l br-100 h2 w2 h2.5-l w2.5-l grow border-box",
         { [`bg-${value} b--${value}`]: type === "color" },
         { "bg-main-dark b-gray-light": type === "number" },
         { bw1: selected }
