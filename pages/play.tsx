@@ -312,17 +312,15 @@ export default function Play() {
         <SelfPlayerContext.Provider value={selfPlayer}>
           <CurrentPlayerContext.Provider value={currentPlayer}>
             <div className="bg-main-dark relative flex flex-column w-100 h-100">
-              <div className="bb b--yellow">
-                <GameBoard
-                  onMenuClick={onMenuClick}
-                  onSelectDiscard={onSelectDiscard}
-                  onShowRollback={onShowRollback}
-                />
-              </div>
+              <GameBoard
+                onMenuClick={onMenuClick}
+                onSelectDiscard={onSelectDiscard}
+                onShowRollback={onShowRollback}
+              />
 
-              <div className="flex flex-column pa2 ph3-l shadow-5 bg-black-50 bb b--yellow">
+              <div className="flex flex-column  shadow-5 bg-black-50 bb b--yellow">
                 {selectedArea.type === ActionAreaType.MENU ? (
-                  <div className="h4">
+                  <div className="h4 pa2 ph3-l">
                     <MenuArea onCloseArea={onCloseArea} />
                   </div>
                 ) : game.status === IGameStatus.LOBBY ? (
@@ -332,7 +330,7 @@ export default function Play() {
                     onStartGame={onStartGame}
                   />
                 ) : (
-                  <div className="h4 overflow-y-scroll">
+                  <div className="h4 overflow-y-scroll pa2 ph3-l">
                     <ActionArea
                       interturn={interturn}
                       selectedArea={selectedArea}

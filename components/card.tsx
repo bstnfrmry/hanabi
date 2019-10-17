@@ -22,7 +22,7 @@ export enum CardSize {
 const CardClasses = {
   [CardSize.SMALL]: "h1.25 w1.25 h2-l w2-l",
   [CardSize.MEDIUM]: "h2 w2 h3-l w3-l",
-  [CardSize.LARGE]: "h3 w3 h4-l w4-l",
+  [CardSize.LARGE]: "h3 w3 h3.5-l w3.5-l",
   [CardSize.FLEX]: "flex-square"
 };
 
@@ -185,7 +185,7 @@ export default function Card(props: Props) {
 
       {/* show other hints, including negative hints */}
       {displayHints && size === CardSize.LARGE && (
-        <div className="flex absolute w-100 right-0 bottom-0 pv1 pv2-l flex-l items-center flex-column bg-black-50">
+        <div className="flex absolute w-100 right-0 bottom-0 pv1 flex-l items-center flex-column bg-black-50">
           <div className="flex justify-around w-100">
             {colors.map(color => (
               <Hint

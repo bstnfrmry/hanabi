@@ -8,7 +8,7 @@ interface TxtProps {
 }
 
 const Title = (props: TxtProps) => (
-  <Txt className="txt-yellow" size={TxtSize.MEDIUM}>
+  <Txt className="txt-yellow mt3" size={TxtSize.MEDIUM}>
     {props.children}
   </Txt>
 );
@@ -33,7 +33,7 @@ export default function Rules(props: Props) {
   const { setShowRules } = props;
 
   return (
-    <div className="absolute bg-black z-9999 aspect-ratio--object overflow-y-scroll flex justify-center pa4 relative tj lh-copy">
+    <div className="absolute bg-main-dark z-9999 aspect-ratio--object overflow-y-scroll flex justify-center pa4 relative tj lh-copy">
       <div className="w-75-l">
         <Button
           className="absolute left-2 top-1"
@@ -45,7 +45,7 @@ export default function Rules(props: Props) {
           className="absolute top-0 right-0 mw4 ma4 o-50"
           src="/static/hanabi.png"
         />
-        <div className="flex flex-column">
+        <div className="flex flex-column mb5">
           <Txt
             className="w-100 tc mt2 dib"
             size={TxtSize.LARGE}
@@ -55,12 +55,13 @@ export default function Rules(props: Props) {
           <Title>Objective</Title>
 
           <Paragraph>
-            Hanabi is a cooperative game, which means a game in which players
-            are not against each other but assemble to reach a common goal. They
-            incarn here distracted pyrotechnists who - by inattention - mixed
-            their powder, wicks and rockets for a large fireworks display. The
-            show will begin soon and the situation is a bit chaotic. They will
-            need to help each other to prevent the show turning to disaster.
+            Hanabi is a card game created by Antoine Bauza. It's cooperative,
+            which means that players are not against each other but assemble to
+            reach a common goal. They incarn here distracted pyrotechnists who -
+            by inattention - mixed their powder, wicks and rockets for a large
+            fireworks display. The show will begin soon and the situation is a
+            bit chaotic. They will need to help each other to prevent the show
+            turning to disaster.
           </Paragraph>
 
           <Paragraph>

@@ -55,8 +55,8 @@ export default function OtherPlayerArea(props: Props) {
   } as IHintAction);
 
   return (
-    <div className="flex flex-column flex-grow-1">
-      <div className="flex flex-row pa1 pa2-l ttu ml1 mb2 mt2">
+    <div className="flex flex-column flex-row-l justify-end-l flex-grow-1 w-100 pv3-l">
+      <div className="flex flex-row flex-grow-1 pa1 pa2-l ttu ml1 mb2 mt2">
         <a className="flex-grow-1" onClick={() => onCloseArea()}>
           <PlayerName player={player} size={PlayerNameSize.MEDIUM} />
           <Txt className="ml2" value="×" />
@@ -85,7 +85,7 @@ export default function OtherPlayerArea(props: Props) {
             />
 
             <div className="mt2 flex items-center">
-              {pendingHint.value && (
+              {pendingHint.value && game.tokens.hints !== 0 && (
                 <Txt
                   italic
                   className="mr3"

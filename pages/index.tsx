@@ -1,12 +1,14 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
+import Rules from "~/components/rules";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 
 export default function Home() {
   const router = useRouter();
   const [lastGame, setLastGame] = useState(null);
+  const [showRules, setShowRules] = useState(false);
 
   useEffect(() => {
     if (localStorage.gameId && localStorage.playerId) {
@@ -47,6 +49,7 @@ export default function Home() {
         />
         {lastGame && (
           <Button
+            className="mb4"
             id="rejoin-game"
             size={ButtonSize.LARGE}
             text="Rejoin game"
@@ -58,6 +61,10 @@ export default function Home() {
             }
           />
         )}
+        <span className="tc pointer" onClick={() => setShowRules(true)}>
+          What's Hanabi?
+        </span>
+        {showRules && <Rules setShowRules={setShowRules} />}
       </div>
     </div>
   );
