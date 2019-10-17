@@ -44,6 +44,22 @@ function isCardPossible(card: ICard, possibleCards: ICard[]): boolean {
     ) > -1
   );
 }
+/**
+ * Check whether the current card can be discarded
+ */
+
+function isDiscardable(card: IHiddenCard): boolean {
+  // don't discard multicolor or 5
+  if (
+    card.hint &&
+    (card.hint.color["multicolor"] === 2 || card.hint.number[5] === 2)
+  ) {
+    return false;
+  }
+
+  // TODO sthg better
+  return true;
+}
 
 export function getHintDeductions(
   hint: ICardHint,
@@ -151,7 +167,7 @@ export function chooseAction(state: IGameView): IAction {
   // if current player has a playable card, play
   const currentGameView = state.gameViews[state.currentPlayer];
   // go from the most recent
-  for (let i = currentGameView.hand.length - 1; i >= 0; i--) {
+  for (let i = 0; i < currentGameView.hand.length - 1; i++) {
     const card = currentGameView.hand[i];
     if (
       // @ todo here check for optimist card to play, in which case even if there's more
@@ -193,11 +209,19 @@ export function chooseAction(state: IGameView): IAction {
 
   // discard otherwise
   if (state.tokens.hints < 8) {
-    return {
-      action: "discard",
-      from: state.currentPlayer,
-      cardIndex: 0
-    };
+    for (let i = currentGameView.hand.length - 1; i >= 0; i--) {
+      const card = currentGameView.hand[i];
+      if (
+        // @ todo here check for better card to discard
+        isDiscardable(card)
+      ) {
+        return {
+          action: "discard",
+          from: state.currentPlayer,
+          cardIndex: i
+        };
+      }
+    }
   } else {
     return {
       action: "play",
