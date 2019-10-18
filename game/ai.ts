@@ -167,7 +167,7 @@ export function chooseAction(state: IGameView): IAction {
   // if current player has a playable card, play
   const currentGameView = state.gameViews[state.currentPlayer];
   // go from the most recent
-  for (let i = 0; i < currentGameView.hand.length - 1; i++) {
+  for (let i = 0; i < currentGameView.hand.length; i++) {
     const card = currentGameView.hand[i];
     if (
       // @ todo here check for optimist card to play, in which case even if there's more
