@@ -22,7 +22,8 @@ export default function ReactionsPopover(props: Props) {
         <a
           key={i}
           className="mh1 pointer"
-          onClick={() => {
+          onClick={e => {
+            e.stopPropagation();
             onClose();
             onReaction(null);
             setImmediate(() => {
@@ -37,7 +38,8 @@ export default function ReactionsPopover(props: Props) {
         <a
           className="ml4 pointer"
           style={{ marginTop: -6 }}
-          onClick={() => {
+          onClick={e => {
+            e.stopPropagation();
             onClose();
             onReaction(null);
           }}

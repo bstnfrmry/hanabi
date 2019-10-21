@@ -2,9 +2,7 @@ import React from "react";
 import posed from "react-pose";
 
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
-import OtherPlayerArea from "~/components/otherPlayerArea";
 import PlayerGame from "~/components/playerGame";
-import SelfPlayerArea from "~/components/selfPlayerArea";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
@@ -61,44 +59,34 @@ export default function PlayersBoard(props: Props) {
             className="bb b--yellow bg-main-dark"
             pose={selectedPlayer == otherPlayer ? "selected" : "notSelected"}
           >
-            {selectedPlayer == otherPlayer ? (
-              <OtherPlayerArea
-                player={otherPlayer}
-                onCloseArea={onCloseArea}
-                onCommitAction={onCommitAction}
-              />
-            ) : (
-              <PlayerGame
-                active={currentPlayer === otherPlayer}
-                id={`player-game-${i + 1}`}
-                player={otherPlayer}
-                onNotifyPlayer={onNotifyPlayer}
-                onSelectPlayer={onSelectPlayer}
-              />
-            )}
+            <PlayerGame
+              active={currentPlayer === otherPlayer}
+              id={`player-game-${i + 1}`}
+              player={otherPlayer}
+              selected={selectedPlayer && selectedPlayer.id === otherPlayer.id}
+              onCloseArea={onCloseArea}
+              onCommitAction={onCommitAction}
+              onNotifyPlayer={onNotifyPlayer}
+              onSelectPlayer={onSelectPlayer}
+            />
           </Item>
         ))}
       </Tutorial>
       {selfPlayer && (
         <Tutorial step={ITutorialStep.SELF_PLAYER}>
           <div className="mb4">
-            {selectedPlayer == selfPlayer && (
-              <SelfPlayerArea
-                cardIndex={cardIndex}
-                onCloseArea={onCloseArea}
-                onCommitAction={onCommitAction}
-              />
-            )}
-            {selectedPlayer != selfPlayer && (
-              <PlayerGame
-                active={currentPlayer === selfPlayer}
-                id="player-game-self"
-                player={selfPlayer}
-                self={true}
-                onReaction={onReaction}
-                onSelectPlayer={onSelectPlayer}
-              />
-            )}
+            <PlayerGame
+              active={currentPlayer === selfPlayer}
+              cardIndex={cardIndex}
+              id="player-game-self"
+              player={selfPlayer}
+              selected={selectedPlayer && selectedPlayer.id === selfPlayer.id}
+              self={true}
+              onCloseArea={onCloseArea}
+              onCommitAction={onCommitAction}
+              onReaction={onReaction}
+              onSelectPlayer={onSelectPlayer}
+            />
           </div>
         </Tutorial>
       )}
