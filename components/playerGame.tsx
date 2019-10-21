@@ -230,9 +230,9 @@ export default function PlayerGame(props: Props) {
       {/* Self player actions */}
       <div
         style={{
-          transform: "translateX(0)",
+          transform: "translateY(0)",
           transition: "transform 150ms ease-in-out",
-          ...(!selected && { opacity: 0, transform: "translateX(-500px)" })
+          ...(!selected && { opacity: 0, transform: "translateY(-100px)" })
         }}
       >
         {selected && player === selfPlayer && (
@@ -280,9 +280,9 @@ export default function PlayerGame(props: Props) {
       <div
         style={{
           opacity: 1,
-          transform: "translateX(0)",
+          transform: "translateY(0)",
           transition: "all 150ms ease-in-out",
-          ...(!selected && { opacity: 0, transform: "translateX(-500px)" })
+          ...(!selected && { opacity: 0, transform: "translateY(-100px)" })
         }}
       >
         {selected && player !== selfPlayer && (
