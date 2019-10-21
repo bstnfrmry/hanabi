@@ -270,7 +270,7 @@ export default function PlayerGame(props: Props) {
                 </div>
               )}
             </div>
-            {game.tokens.hints === MaxHints && (
+            {hasSelectedCard && game.tokens.hints === MaxHints && (
               <Txt className="orange mr2 flex flex-column items-end">
                 <span>8 tokens</span>
                 <span>You cannot discard</span>
