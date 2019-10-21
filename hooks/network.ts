@@ -15,8 +15,6 @@ export interface Network {
 
   subscribeToGame(gameId: string, callback: GameHandler): UnsubscribeHandler;
 
-  startGame(game: IGameState): Promise<void>;
-
   updateGame(game: IGameState): Promise<void>;
 
   setReaction(

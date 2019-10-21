@@ -189,8 +189,10 @@ export default function Play() {
 
   function onJoinGame(player) {
     const playerId = shortid();
+    const newState = joinGame(game, { id: playerId, ...player });
 
-    network.updateGame(joinGame(game, { id: playerId, ...player }));
+    setGame({ ...newState, synced: false });
+    network.updateGame(newState);
 
     localStorage.setItem("gameId", gameId.toString());
 
@@ -210,12 +212,20 @@ export default function Play() {
     const bot = {
       name: `AI #${botsCount + 1}`
     };
+    const newState = joinGame(game, { id: playerId, ...bot, bot: true });
 
-    network.updateGame(joinGame(game, { id: playerId, ...bot, bot: true }));
+    setGame({ ...newState, synced: false });
+    network.updateGame(newState);
   }
 
   async function onStartGame() {
-    network.startGame(game);
+    const newState = {
+      ...game,
+      status: IGameStatus.ONGOING
+    };
+
+    setGame({ ...newState, synced: false });
+    network.updateGame(newState);
   }
 
   async function onCommitAction(action) {

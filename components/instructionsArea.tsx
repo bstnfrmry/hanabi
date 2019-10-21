@@ -4,7 +4,7 @@ import posed, { PoseGroup } from "react-pose";
 import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { IGameStatus } from "~/game/state";
+import { GameMode, IGameStatus } from "~/game/state";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
@@ -18,6 +18,7 @@ export default function InstructionsArea(props: Props) {
   const game = useGame();
   const selfPlayer = useSelfPlayer();
   const showHistory = game.options.turnsHistory && game.turnsHistory.length > 0;
+  const showSync = game.options.gameMode === GameMode.NETWORK;
 
   return (
     <div>
@@ -38,7 +39,8 @@ export default function InstructionsArea(props: Props) {
               const key = game.turnsHistory.length - i;
               const syncing = i === 0 && !game.synced;
               const style = {
-                ...(syncing && { animation: "OpacityPulse 2000ms infinite" })
+                ...(showSync &&
+                  syncing && { animation: "OpacityPulse 2000ms infinite" })
               };
 
               return (
@@ -52,7 +54,7 @@ export default function InstructionsArea(props: Props) {
                     }
                     turn={turn}
                   />
-                  {syncing && (
+                  {showSync && syncing && (
                     <Txt className="ml2" size={TxtSize.SMALL} value="⏳" />
                   )}
                 </Item>
