@@ -8,7 +8,7 @@ export enum TxtSize {
 }
 
 const TxtSizes = {
-  [TxtSize.SMALL]: "f7 f4-l",
+  [TxtSize.SMALL]: "f6 f4-l",
   [TxtSize.MEDIUM]: "f4 f3-l",
   [TxtSize.LARGE]: "ttu f2 f1-l tracked"
 };

@@ -25,6 +25,9 @@ export default function Home() {
         <img alt="logo" className="mw4 mb4" src="/static/hanabi.png" />
         <Txt size={TxtSize.LARGE} value="Hanabi" />
       </div>
+      <span className="tc lavender">
+        Play the Hanabi game online with friends!
+      </span>
       <div className="flex flex-column mt5">
         <Button
           className="mb4"
