@@ -29,7 +29,7 @@ export default function SelfPlayerArea(props: Props) {
         className="pb1 pb2-l ml2 mb2 mt3 pa2-l flex-grow-1 "
         onClick={() => onCloseArea()}
       >
-        <Txt uppercase size={TxtSize.MEDIUM} value="Your game" />
+        <Txt size={TxtSize.MEDIUM} value="Your game" />
         <Txt className="ml2" value="×" />
       </a>
       <div className="flex flex-row justify-end pb2 ph2">

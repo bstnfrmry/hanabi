@@ -126,7 +126,7 @@ export default function Lobby(props: Props) {
             <div className="flex flex-column mr2">
               <Txt className="mb1" value="Share this game" />
               <a
-                className="gray flex-1"
+                className="lavender flex-1"
                 href={shareLink}
                 rel="noopener noreferrer"
                 target="_blank"
