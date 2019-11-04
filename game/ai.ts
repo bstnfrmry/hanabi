@@ -1,6 +1,12 @@
-import { cloneDeep } from "lodash";
+import { cloneDeep, filter } from "lodash";
 
-import { colors, commitAction, isPlayable, numbers } from "~/game/actions";
+import {
+  colors,
+  commitAction,
+  getPlayedCardsPile,
+  isPlayable,
+  numbers
+} from "~/game/actions";
 import IGameState, {
   IAction,
   ICard,
@@ -44,12 +50,42 @@ function isCardPossible(card: ICard, possibleCards: ICard[]): boolean {
     ) > -1
   );
 }
+
+function isCardEverPlayable(card: ICard, state: IGameState): boolean {
+  const playedCardsPile = getPlayedCardsPile(state);
+  // if the card has already been played once
+  if (playedCardsPile[card.color] >= card.number) {
+    return false;
+  } else if (playedCardsPile[card.color] < card.number - 1) {
+    // let's check whether the cards in between have been discarded
+    // e.g. the game pile is a 3 Red, the 2 4s in the discard, and I have a 5 Red
+    for (let i = playedCardsPile[card.color] + 1; i < card.number; i++) {
+      const discarded = filter(
+        state.discardPile,
+        e => e.color === card.color && e.number === i
+      );
+      const cardCount = card.color === "multicolor" ? 1 : 2;
+      if (discarded.length === cardCount) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 /**
  * Check whether the current card can be discarded
  */
+function isCardDiscardable(card: IHiddenCard, state: IGameState): boolean {
+  if (
+    card.deductions.length === 1 &&
+    !isCardEverPlayable(card.deductions[0], state)
+  ) {
+    return true;
+  }
 
-function isDiscardable(card: IHiddenCard): boolean {
-  // don't discard multicolor or 5
+  // don't discard still playable multicolor or 5
   if (
     card.hint &&
     (card.hint.color["multicolor"] === 2 || card.hint.number[5] === 2)
@@ -57,7 +93,6 @@ function isDiscardable(card: IHiddenCard): boolean {
     return false;
   }
 
-  // TODO sthg better
   return true;
 }
 
@@ -211,10 +246,7 @@ export function chooseAction(state: IGameView): IAction {
   if (state.tokens.hints < 8) {
     for (let i = currentGameView.hand.length - 1; i >= 0; i--) {
       const card = currentGameView.hand[i];
-      if (
-        // @ todo here check for better card to discard
-        isDiscardable(card)
-      ) {
+      if (isCardDiscardable(card, state)) {
         return {
           action: "discard",
           from: state.currentPlayer,
