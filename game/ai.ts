@@ -1,6 +1,12 @@
-import { cloneDeep } from "lodash";
+import { cloneDeep, filter } from "lodash";
 
-import { colors, commitAction, isPlayable, numbers } from "~/game/actions";
+import {
+  colors,
+  commitAction,
+  getPlayedCardsPile,
+  isPlayable,
+  numbers
+} from "~/game/actions";
 import IGameState, {
   IAction,
   ICard,
@@ -44,20 +50,64 @@ function isCardPossible(card: ICard, possibleCards: ICard[]): boolean {
     ) > -1
   );
 }
+
+function isCardDangerous(card: ICard, state: IGameState): boolean {
+  if (!isCardEverPlayable(card, state)) {
+    return false;
+  }
+  if (card.color === "multicolor" || card.number === 5) {
+    return true;
+  }
+  if (
+    state.discardPile.find(
+      c => c.color === card.color && c.number === card.number
+    )
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function isCardEverPlayable(card: ICard, state: IGameState): boolean {
+  const playedCardsPile = getPlayedCardsPile(state);
+  // if the card has already been played once
+  if (playedCardsPile[card.color] >= card.number) {
+    return false;
+  } else if (playedCardsPile[card.color] < card.number - 1) {
+    // let's check whether the cards in between have been discarded
+    // e.g. the game pile is a 3 Red, the 2 4s in the discard, and I have a 5 Red
+    for (let i = playedCardsPile[card.color] + 1; i < card.number; i++) {
+      const discarded = filter(
+        state.discardPile,
+        e => e.color === card.color && e.number === i
+      );
+      const cardCount = card.color === "multicolor" ? 1 : 2;
+      if (discarded.length === cardCount) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 /**
  * Check whether the current card can be discarded
  */
-
-function isDiscardable(card: IHiddenCard): boolean {
-  // don't discard multicolor or 5
+function isCardDiscardable(card: IHiddenCard, state: IGameState): boolean {
+  // AI can discard a card that can never be played (already played or because of discards)
   if (
-    card.hint &&
-    (card.hint.color["multicolor"] === 2 || card.hint.number[5] === 2)
+    card.deductions.every(deduction => isCardEverPlayable(deduction, state))
   ) {
+    return true;
+  }
+
+  // don't discard necessarily dangerous cards
+  if (card.deductions.every(deduction => isCardDangerous(deduction, state))) {
     return false;
   }
 
-  // TODO sthg better
   return true;
 }
 
@@ -149,6 +199,47 @@ export function commitViewAction(state: IGameView, action: IAction): IGameView {
   return newState;
 }
 
+function findGivableHint(
+  hand: ICard[],
+  pIndex: number,
+  state: IGameState
+): IAction | undefined {
+  for (const card of hand) {
+    if (
+      isPlayable(card, state.playedCards) &&
+      (card.hint.color[card.color] < 2 || card.hint.number[card.number] < 2)
+    ) {
+      const type = card.hint.color[card.color] < 2 ? "color" : "number";
+      return {
+        action: "hint",
+        from: state.currentPlayer,
+        to: pIndex,
+        type,
+        value: card[type]
+      };
+    }
+  }
+
+  const lastCard = hand[hand.length - 1];
+  if (
+    isCardDangerous(lastCard, state) &&
+    (lastCard.hint.color[lastCard.color] < 2 ||
+      lastCard.hint.number[lastCard.number] < 2)
+  ) {
+    const type = lastCard.hint.number[lastCard.number] < 2 ? "number" : "color";
+    return {
+      action: "hint",
+      from: state.currentPlayer,
+      to: pIndex,
+      type,
+      value: lastCard[type]
+    };
+  }
+
+  // @todo smarter handling of dangerous cards : give the last card that's dangerous
+  // that's not known to be dangerous
+}
+
 export function chooseAction(state: IGameView): IAction {
   // this function finds the most suitable action given the current player's playerView (what they know about the game)
   // first only implement the case where we play the best card with level 1 deductions
@@ -172,8 +263,9 @@ export function chooseAction(state: IGameView): IAction {
     if (
       // @ todo here check for optimist card to play, in which case even if there's more
       // than 1 deduction if there's a valid one we play it
-      card.deductions.length === 1 &&
-      isPlayable(card.deductions[0], state.playedCards)
+      card.deductions.every(deduction =>
+        isPlayable(deduction, state.playedCards)
+      )
     ) {
       return {
         action: "play",
@@ -189,20 +281,9 @@ export function chooseAction(state: IGameView): IAction {
       const pIndex = (state.currentPlayer + i) % state.options.playersCount;
       const player = Object.values(state.players)[pIndex];
 
-      for (const card of player.hand) {
-        if (
-          isPlayable(card, state.playedCards) &&
-          (card.hint.color[card.color] < 2 || card.hint.number[card.number] < 2)
-        ) {
-          const type = card.hint.color[card.color] < 2 ? "color" : "number";
-          return {
-            action: "hint",
-            from: state.currentPlayer,
-            to: pIndex,
-            type: card.hint.color[card.color] < 2 ? "color" : "number",
-            value: card[type]
-          };
-        }
+      const action = findGivableHint(player.hand, pIndex, state);
+      if (action) {
+        return action;
       }
     }
   }
@@ -211,10 +292,7 @@ export function chooseAction(state: IGameView): IAction {
   if (state.tokens.hints < 8) {
     for (let i = currentGameView.hand.length - 1; i >= 0; i--) {
       const card = currentGameView.hand[i];
-      if (
-        // @ todo here check for better card to discard
-        isDiscardable(card)
-      ) {
+      if (isCardDiscardable(card, state)) {
         return {
           action: "discard",
           from: state.currentPlayer,

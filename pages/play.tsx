@@ -251,7 +251,20 @@ export default function Play() {
   }
 
   async function onRollback() {
-    network.updateGame(goBackToState(game));
+    let lastNonAI = 1;
+    // check whether the previous player is a bot
+    // adding players length to avoid a negative mod
+    let checkedPlayer =
+      (game.players.length + game.currentPlayer - 1) % game.players.length;
+    while (game.players[checkedPlayer].bot && lastNonAI < game.players.length) {
+      lastNonAI += 1;
+      // check the player even before
+      checkedPlayer =
+        (game.currentPlayer + game.players.length - lastNonAI) %
+        game.players.length;
+    }
+
+    network.updateGame(goBackToState(game, lastNonAI));
   }
 
   async function onNotifyPlayer(player) {
