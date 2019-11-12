@@ -22,7 +22,11 @@ export default function Home() {
   return (
     <div className="w-100 h-100 flex flex-column justify-center items-center bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
       <div className="flex flex-column items-center">
-        <img alt="logo" className="mw4 mb4" src="/static/hanabi.png" />
+        <img
+          alt="Hanabi cards game online logo"
+          className="mw4 mb4"
+          src="/static/hanabi.png"
+        />
         <Txt size={TxtSize.LARGE} value="Hanabi" />
       </div>
       <span className="tc lavender">

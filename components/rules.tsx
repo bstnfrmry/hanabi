@@ -42,6 +42,7 @@ export default function Rules(props: Props) {
           onClick={() => setShowRules(false)}
         />
         <img
+          alt="Hanabi cards game online"
           className="absolute top-0 right-0 mw4 ma4 o-50"
           src="/static/hanabi.png"
         />
