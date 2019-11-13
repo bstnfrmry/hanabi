@@ -13,7 +13,7 @@ import IGameState, {
   IHintAction,
   INumber,
   IPlayer
-} from "~/game/state";
+} from "./state";
 
 export const colors: IColor[] = [
   IColor.WHITE,
