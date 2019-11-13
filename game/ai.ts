@@ -350,13 +350,13 @@ export function chooseAction(state: IGameView): IAction {
         };
       }
     }
-  } else {
-    return {
-      action: "play",
-      from: state.currentPlayer,
-      cardIndex: 0
-    };
   }
+
+  return {
+    action: "play",
+    from: state.currentPlayer,
+    cardIndex: 0
+  };
 }
 
 /**
