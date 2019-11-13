@@ -309,9 +309,14 @@ export function chooseAction(state: IGameView): IAction {
   }
 
   if (state.tokens.strikes < 2) {
-    // find the most recent optimist card and play it
+    // find the most recent optimist card that may be playable and play it
     const optimistCardIndex = currentGameView.hand.findIndex(c => c.optimist);
-    if (optimistCardIndex > -1) {
+    if (
+      optimistCardIndex > -1 &&
+      currentGameView.hand[optimistCardIndex].deductions.some(c =>
+        isPlayable(c, state.playedCards)
+      )
+    ) {
       return {
         action: "play",
         from: state.currentPlayer,
