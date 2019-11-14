@@ -2,16 +2,22 @@ import { isGameOver, joinGame, newGame } from "./actions";
 import play from "./ai";
 import { GameMode, IGameHintsLevel, IGameOptions, IPlayer } from "./state";
 
-const scoresDistribution = {};
+const scoresDistribution = { 2: {}, 3: {}, 4: {}, 5: {} };
+
+let seed = 1;
+function random() {
+  const x = Math.sin(seed++) * 10000;
+  return x - Math.floor(x);
+}
 
 const options: IGameOptions = {
   id: "benchmark",
-  playersCount: 3,
-  multicolor: false,
+  playersCount: 4,
+  multicolor: true,
   allowRollback: false,
   private: false,
   preventLoss: false,
-  seed: Math.random().toString(),
+  seed: random().toString(),
   hintsLevel: IGameHintsLevel.ALL,
   botsWait: 0,
   gameMode: GameMode.NETWORK,
@@ -19,24 +25,28 @@ const options: IGameOptions = {
 };
 
 const defaultPlayer: IPlayer = {
-  id: Math.random.toString(),
+  id: random().toString(),
   name: "name",
   bot: true
 };
 
 for (let i = 0; i < 1000; i++) {
-  let game = newGame({ ...options, seed: Math.random().toString() });
-  for (let i = 0; i < options.playersCount; i++) {
-    game = joinGame(game, { ...defaultPlayer });
-  }
-  while (!isGameOver(game)) {
-    game = play(game);
-  }
-  if (!scoresDistribution[game.playedCards.length]) {
-    scoresDistribution[game.playedCards.length] = 0;
-  }
+  const seed = Math.random().toString();
+  for (let p = 2; p <= 5; p++) {
+    let game = newGame({ ...options, playersCount: p, seed });
+    for (let i = 0; i < p; i++) {
+      game = joinGame(game, { ...defaultPlayer });
+    }
+    while (!isGameOver(game)) {
+      game = play(game);
+    }
 
-  scoresDistribution[game.playedCards.length] += 1;
+    if (!scoresDistribution[p][game.playedCards.length]) {
+      scoresDistribution[p][game.playedCards.length] = 0;
+    }
+
+    scoresDistribution[p][game.playedCards.length] += 1;
+  }
 }
 
 console.log(scoresDistribution);
