@@ -110,11 +110,7 @@ export default function PlayerGame(props: Props) {
                 value="Your turn"
               />
             )}
-            <div
-              className={classnames("flex items-center", {
-                ttu: selected
-              })}
-            >
+            <div className={classnames("flex items-center")}>
               {player === currentPlayer && (
                 <Txt className="yellow mr1" size={TxtSize.SMALL} value="➤" />
               )}

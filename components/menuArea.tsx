@@ -32,6 +32,12 @@ export default function MenuArea(props: Props) {
     <div className="flex justify-center items-center w-100 h-100 pa2">
       {!showRules && (
         <div className="flex justify-center">
+          <Button
+            className="mr2"
+            size={ButtonSize.MEDIUM}
+            text="Menu"
+            onClick={onMenuClick}
+          />
           {game.status === IGameStatus.ONGOING && (
             <Button
               className="mr2"
@@ -41,12 +47,10 @@ export default function MenuArea(props: Props) {
             />
           )}
           <Button
-            className="mr2"
             size={ButtonSize.MEDIUM}
             text="Rules"
             onClick={() => setShowRules(true)}
           />
-          <Button size={ButtonSize.MEDIUM} text="Menu" onClick={onMenuClick} />
         </div>
       )}
 

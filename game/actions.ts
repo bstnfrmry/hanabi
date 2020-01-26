@@ -13,7 +13,7 @@ import IGameState, {
   IHintAction,
   INumber,
   IPlayer
-} from "~/game/state";
+} from "./state";
 
 export const colors: IColor[] = [
   IColor.WHITE,
@@ -213,7 +213,9 @@ export function getMaximumScore(state: IGameState) {
   return state.options.multicolor ? 30 : 25;
 }
 
-export function getPlayedCardsPile(state: IGameState) {
+export function getPlayedCardsPile(
+  state: IGameState
+): { [key in IColor]: INumber } {
   const colors = getColors(state);
 
   return zipObject(
@@ -225,7 +227,7 @@ export function getPlayedCardsPile(state: IGameState) {
 
       return topCard ? topCard.number : 0;
     })
-  );
+  ) as { [key in IColor]: INumber };
 }
 
 /**

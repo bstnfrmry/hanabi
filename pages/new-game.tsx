@@ -70,12 +70,13 @@ export default function NewGame() {
         className="flex flex-column w-50-m w-50-l w-80"
         style={{ margin: "auto" }}
       >
-        {offline && (
-          <div className="f4 pb4">
-            In this pass-and-play mode, you can play offline with multiple
-            players by passing the device to each player on their turn.
-          </div>
-        )}
+        <div className="f4 pb4 lavender">
+          {offline
+            ? `In this pass-and-play mode, you can play offline with multiple
+              players by passing the device to each player on their turn`
+            : `You will be able to play online by sharing the game link to your
+            friends.`}
+        </div>
         <Field className="pb2 mb2 bb b--yellow-light" label="Players">
           <Select
             className="w3 indent"
