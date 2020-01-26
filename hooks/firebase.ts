@@ -74,14 +74,14 @@ export default class FirebaseNetwork implements Network {
       callback(fillEmptyValues(event.val() as IGameState));
     });
 
+    callback(JSON.parse(localStorage.getItem(`game.${gameId}`)));
+
     return () => ref.off();
   }
 
-  async startGame(game: IGameState) {
-    await this.db.ref(`/games/${game.id}/status`).set("ongoing");
-  }
-
   async updateGame(game: IGameState) {
+    localStorage.setItem(`game.${game.id}`, JSON.stringify(game));
+
     await this.db.ref(`/games/${game.id}`).set(game);
   }
 

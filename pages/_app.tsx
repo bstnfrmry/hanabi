@@ -2,7 +2,7 @@ import "../styles/style.css";
 
 import NextApp, { Container } from "next/app";
 import Head from "next/head";
-import React from "react";
+import React, { useState } from "react";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
 import useConnectivity from "~/hooks/connectivity";
@@ -18,6 +18,7 @@ export default class App extends NextApp {
 function Hanabi(props: any) {
   const { Component } = props;
 
+  const [showOffline, setShowOffline] = useState(true);
   const online = useConnectivity();
   const network = new FirebaseNetwork(setupFirebase());
 
@@ -42,13 +43,16 @@ function Hanabi(props: any) {
         <NetworkContext.Provider value={network}>
           <div className="aspect-ratio--object">
             {/* Offline indicator */}
-            {!online && (
-              <Txt
-                uppercase
-                className="z-999 flex justify-center items-center bg-red shadow-4 b--red ba pa2"
-                size={TxtSize.MEDIUM}
-                value="You are offline"
-              />
+            {!online && showOffline && (
+              <div className="relative flex items-center justify-center bg-red shadow-4 b--red ba pa2 z-99">
+                <Txt uppercase size={TxtSize.MEDIUM} value="You are offline" />
+                <a
+                  className="absolute right-1"
+                  onClick={() => setShowOffline(false)}
+                >
+                  <Txt value="×" />
+                </a>
+              </div>
             )}
 
             <Component />

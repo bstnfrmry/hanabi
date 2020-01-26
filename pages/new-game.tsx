@@ -44,7 +44,7 @@ export default function NewGame() {
   async function onCreateGame() {
     const gameId = shortid();
 
-    await network.updateGame(
+    network.updateGame(
       newGame({
         id: gameId,
         multicolor,
