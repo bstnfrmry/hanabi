@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production node server.js",
     "server": "firebase-server -p 3001",
     "lint": "eslint '**/*.{ts,tsx}'",
     "test": "cypress run",

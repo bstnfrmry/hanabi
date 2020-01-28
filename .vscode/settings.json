@@ -12,12 +12,14 @@
   "[typescriptreact]": {
     "editor.formatOnSave": true
   },
-  "eslint.autoFixOnSave": true,
   "eslint.validate": [
     "javascript",
     "javascriptreact",
-    { "language": "typescript", "autoFix": true },
-    { "language": "typescriptreact", "autoFix": true }
+    "typescript",
+    "typescriptreact"
   ],
-  "typescript.preferences.importModuleSpecifier": "non-relative"
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }
