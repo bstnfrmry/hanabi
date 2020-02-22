@@ -60,10 +60,10 @@ export default function PlayersBoard(props: Props) {
             pose={selectedPlayer == otherPlayer ? "selected" : "notSelected"}
           >
             <PlayerGame
-              active={currentPlayer.id === otherPlayer.id}
+              active={currentPlayer === otherPlayer}
               id={`player-game-${i + 1}`}
               player={otherPlayer}
-              selected={selectedPlayer && selectedPlayer.id === otherPlayer.id}
+              selected={selectedPlayer && selectedPlayer === otherPlayer}
               onCloseArea={onCloseArea}
               onCommitAction={onCommitAction}
               onNotifyPlayer={onNotifyPlayer}
@@ -76,11 +76,11 @@ export default function PlayersBoard(props: Props) {
         <Tutorial step={ITutorialStep.SELF_PLAYER}>
           <div className="mb4">
             <PlayerGame
-              active={currentPlayer.id === selfPlayer.id}
+              active={currentPlayer === selfPlayer}
               cardIndex={cardIndex}
               id="player-game-self"
               player={selfPlayer}
-              selected={selectedPlayer && selectedPlayer.id === selfPlayer.id}
+              selected={selectedPlayer && selectedPlayer === selfPlayer}
               self={true}
               onCloseArea={onCloseArea}
               onCommitAction={onCommitAction}

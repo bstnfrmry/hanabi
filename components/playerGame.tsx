@@ -105,17 +105,15 @@ export default function PlayerGame(props: Props) {
       >
         <div className="flex items-center">
           <div className="flex flex-column">
-            {!selected &&
-              player.id === selfPlayer.id &&
-              player.id === currentPlayer.id && (
-                <Txt
-                  className="yellow absolute top-0 mt1"
-                  size={TxtSize.SMALL}
-                  value="Your turn"
-                />
-              )}
+            {!selected && player === selfPlayer && player === currentPlayer && (
+              <Txt
+                className="yellow absolute top-0 mt1"
+                size={TxtSize.SMALL}
+                value="Your turn"
+              />
+            )}
             <div className={classnames("flex items-center")}>
-              {player.id === currentPlayer.id && (
+              {player === currentPlayer && (
                 <Txt className="yellow mr1" size={TxtSize.SMALL} value="➤" />
               )}
               <PlayerName
