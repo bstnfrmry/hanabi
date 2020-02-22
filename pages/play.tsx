@@ -22,6 +22,7 @@ import {
   joinGame
 } from "~/game/actions";
 import play from "~/game/ai";
+import { playSound } from "~/game/sound";
 import IGameState, { GameMode, IGameStatus, IPlayer } from "~/game/state";
 import useConnectivity from "~/hooks/connectivity";
 import {
@@ -156,7 +157,7 @@ export default function Play() {
     if (!selfPlayer) return;
     if (!selfPlayer.notified) return;
 
-    new Audio(`/static/sounds/bell.mp3`).play();
+    playSound(`/static/sounds.bell.mp3`);
     const timeout = setTimeout(
       () => network.setNotification(game, selfPlayer, false),
       10000
@@ -172,7 +173,7 @@ export default function Play() {
   const previousHintsCount = usePrevious(hintsCount);
   useEffect(() => {
     const timeout = setTimeout(() => {
-      new Audio(`/static/sounds/coin.mp3`).play();
+      playSound(`/static/sounds/coin.mp3`);
     }, 500);
 
     return () => clearTimeout(timeout);
@@ -180,7 +181,7 @@ export default function Play() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      new Audio(`/static/sounds/swoosh.wav`).play();
+      playSound(`/static/sounds/swoosh.wav`);
     }, 200);
 
     return () => clearTimeout(timeout);
@@ -189,7 +190,7 @@ export default function Play() {
   const turnsCount = game ? game.turnsHistory.length : 0;
   const previousTurnsCount = usePrevious(turnsCount);
   useEffect(() => {
-    new Audio(`/static/sounds/rewind.mp3`).play();
+    playSound(`/static/sounds/rewind.mp3`);
   }, [turnsCount === previousTurnsCount - 1]);
 
   /**
@@ -198,7 +199,7 @@ export default function Play() {
   useEffect(() => {
     if (!game) return;
 
-    new Audio(`/static/sounds/card-scrape.mp3`).play();
+    playSound(`/static/sounds/card-scrape.mp3`);
   }, [game && game.discardPile.length]);
 
   /**
@@ -215,7 +216,7 @@ export default function Play() {
         ? `/static/sounds/play-5.mp3`
         : `/static/sounds/play.mp3`;
 
-    new Audio(path).play();
+    playSound(path);
   }, [game && game.playedCards.length]);
 
   /**
