@@ -63,6 +63,10 @@ interface Props {
   onSelectDiscard: Function;
   onCloseArea: Function;
   onRollback: Function;
+  onReplay: Function;
+  onReplayPrevious: Function;
+  onReplayNext: Function;
+  onStopReplay: Function;
 }
 
 export default function ActionArea(props: Props) {
@@ -71,6 +75,10 @@ export default function ActionArea(props: Props) {
     onSelectDiscard,
     onCloseArea,
     onRollback,
+    onReplay,
+    onReplayPrevious,
+    onReplayNext,
+    onStopReplay,
     interturn
   } = props;
 
@@ -100,6 +108,13 @@ export default function ActionArea(props: Props) {
   }
 
   return (
-    <InstructionsArea interturn={interturn} onSelectDiscard={onSelectDiscard} />
+    <InstructionsArea
+      interturn={interturn}
+      onReplay={onReplay}
+      onReplayNext={onReplayNext}
+      onReplayPrevious={onReplayPrevious}
+      onSelectDiscard={onSelectDiscard}
+      onStopReplay={onStopReplay}
+    />
   );
 }

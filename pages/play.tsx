@@ -1,4 +1,4 @@
-import { last } from "lodash";
+import { last, omit } from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import shortid from "shortid";
@@ -25,11 +25,7 @@ import play from "~/game/ai";
 import { playSound } from "~/game/sound";
 import IGameState, { GameMode, IGameStatus, IPlayer } from "~/game/state";
 import useConnectivity from "~/hooks/connectivity";
-import {
-  CurrentPlayerContext,
-  GameContext,
-  SelfPlayerContext
-} from "~/hooks/game";
+import { GameContext, SelfPlayerContext } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
 import usePrevious from "~/hooks/previous";
 
@@ -381,6 +377,37 @@ export default function Play() {
     });
   }
 
+  function onReplay() {
+    network.updateGame({
+      ...game,
+      replayCursor: game.turnsHistory.length - 1,
+      synced: false
+    });
+  }
+
+  function onReplayPrevious() {
+    network.updateGame({
+      ...game,
+      replayCursor: game.replayCursor - 1,
+      synced: false
+    });
+  }
+
+  function onReplayNext() {
+    network.updateGame({
+      ...game,
+      replayCursor: game.replayCursor + 1,
+      synced: false
+    });
+  }
+
+  function onStopReplay() {
+    network.updateGame({
+      ...omit(game, ["replayCursor"]),
+      synced: false
+    });
+  }
+
   if (!game) {
     return <LoadingScreen />;
   }
@@ -389,71 +416,73 @@ export default function Play() {
     <TutorialProvider>
       <GameContext.Provider value={game}>
         <SelfPlayerContext.Provider value={selfPlayer}>
-          <CurrentPlayerContext.Provider value={currentPlayer}>
-            <div className="bg-main-dark relative flex flex-column w-100 h-100">
-              <GameBoard
-                onMenuClick={onMenuClick}
-                onSelectDiscard={onSelectDiscard}
-                onShowRollback={onShowRollback}
-              />
+          <div className="bg-main-dark relative flex flex-column w-100 h-100">
+            <GameBoard
+              onMenuClick={onMenuClick}
+              onSelectDiscard={onSelectDiscard}
+              onShowRollback={onShowRollback}
+            />
 
-              <div className="flex flex-column  shadow-5 bg-black-50 bb b--yellow">
-                {selectedArea.type === ActionAreaType.MENU ? (
-                  <div className="h4 pa2 ph3-l">
-                    <MenuArea onCloseArea={onCloseArea} />
-                  </div>
-                ) : game.status === IGameStatus.LOBBY ? (
-                  <Lobby
-                    onAddBot={onAddBot}
-                    onJoinGame={onJoinGame}
-                    onStartGame={onStartGame}
-                  />
-                ) : (
-                  <div className="h4 overflow-y-scroll pa2 ph3-l">
-                    <ActionArea
-                      interturn={interturn}
-                      selectedArea={selectedArea}
-                      onCloseArea={onCloseArea}
-                      onRollback={onRollback}
-                      onSelectDiscard={onSelectDiscard}
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* Top area */}
-              {interturn && (
-                <div className="flex-grow-1 flex flex-column items-center justify-center">
-                  <Txt
-                    size={TxtSize.MEDIUM}
-                    value={`It's ${currentPlayer.name}'s turn!`}
-                  />
-                  <Button
-                    primary
-                    className="mt4"
-                    size={ButtonSize.MEDIUM}
-                    text={`Go !`}
-                    onClick={() => setInterturn(false)}
-                  />
+            <div className="flex flex-column  shadow-5 bg-black-50 bb b--yellow">
+              {selectedArea.type === ActionAreaType.MENU ? (
+                <div className="h4 pa2 ph3-l">
+                  <MenuArea onCloseArea={onCloseArea} />
                 </div>
-              )}
-
-              {!interturn && (
-                <div className="flex flex-column">
-                  <div className="h-100 overflow-y-scroll">
-                    <PlayersBoard
-                      selectedArea={selectedArea}
-                      onCloseArea={onCloseArea}
-                      onCommitAction={onCommitAction}
-                      onNotifyPlayer={onNotifyPlayer}
-                      onReaction={onReaction}
-                      onSelectPlayer={onSelectPlayer}
-                    />
-                  </div>
+              ) : game.status === IGameStatus.LOBBY ? (
+                <Lobby
+                  onAddBot={onAddBot}
+                  onJoinGame={onJoinGame}
+                  onStartGame={onStartGame}
+                />
+              ) : (
+                <div className="h4 overflow-y-scroll pa2 ph3-l">
+                  <ActionArea
+                    interturn={interturn}
+                    selectedArea={selectedArea}
+                    onCloseArea={onCloseArea}
+                    onReplay={onReplay}
+                    onReplayNext={onReplayNext}
+                    onReplayPrevious={onReplayPrevious}
+                    onRollback={onRollback}
+                    onSelectDiscard={onSelectDiscard}
+                    onStopReplay={onStopReplay}
+                  />
                 </div>
               )}
             </div>
-          </CurrentPlayerContext.Provider>
+
+            {/* Top area */}
+            {interturn && (
+              <div className="flex-grow-1 flex flex-column items-center justify-center">
+                <Txt
+                  size={TxtSize.MEDIUM}
+                  value={`It's ${currentPlayer.name}'s turn!`}
+                />
+                <Button
+                  primary
+                  className="mt4"
+                  size={ButtonSize.MEDIUM}
+                  text={`Go !`}
+                  onClick={() => setInterturn(false)}
+                />
+              </div>
+            )}
+
+            {!interturn && (
+              <div className="flex flex-column">
+                <div className="h-100 overflow-y-scroll">
+                  <PlayersBoard
+                    selectedArea={selectedArea}
+                    onCloseArea={onCloseArea}
+                    onCommitAction={onCommitAction}
+                    onNotifyPlayer={onNotifyPlayer}
+                    onReaction={onReaction}
+                    onSelectPlayer={onSelectPlayer}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         </SelfPlayerContext.Provider>
       </GameContext.Provider>
     </TutorialProvider>

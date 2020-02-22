@@ -1,13 +1,28 @@
 import React, { useContext } from "react";
 
-import IGameState, { IPlayer } from "~/game/state";
+import { isReplayMode } from "~/game/actions";
+import IGameState, {
+  fillEmptyValues,
+  IGameStatus,
+  IPlayer
+} from "~/game/state";
 
 export const GameContext = React.createContext(null);
 export const SelfPlayerContext = React.createContext(null);
-export const CurrentPlayerContext = React.createContext(null);
 
 export function useGame() {
-  return useContext<IGameState>(GameContext);
+  const game = useContext<IGameState>(GameContext);
+
+  if (isReplayMode(game)) {
+    return {
+      ...fillEmptyValues(game.history[game.replayCursor]),
+      originalGame: game,
+      status: IGameStatus.OVER,
+      replayCursor: game.replayCursor
+    };
+  }
+
+  return game;
 }
 
 export function useSelfPlayer() {
@@ -15,5 +30,7 @@ export function useSelfPlayer() {
 }
 
 export function useCurrentPlayer() {
-  return useContext<IPlayer>(CurrentPlayerContext);
+  const game = useGame();
+
+  return game && game.players[game.currentPlayer];
 }

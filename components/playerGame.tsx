@@ -8,7 +8,7 @@ import ReactionsPopover from "~/components/reactionsPopover";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import Vignettes from "~/components/vignettes";
-import { MaxHints } from "~/game/actions";
+import { isReplayMode, MaxHints } from "~/game/actions";
 import { playSound } from "~/game/sound";
 import { ICard, IGameStatus, IHintAction, IPlayer } from "~/game/state";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
@@ -81,8 +81,9 @@ export default function PlayerGame(props: Props) {
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
   const hideCards =
-    game.status === IGameStatus.LOBBY ||
-    (game.status !== IGameStatus.OVER && (self || !selfPlayer));
+    (self || !selfPlayer) &&
+    (isReplayMode(game) || game.status !== IGameStatus.OVER);
+
   const hasSelectedCard = selectedCard !== null;
   const cardContext = selected
     ? ICardContext.TARGETED_PLAYER
@@ -104,15 +105,17 @@ export default function PlayerGame(props: Props) {
       >
         <div className="flex items-center">
           <div className="flex flex-column">
-            {!selected && player === selfPlayer && player === currentPlayer && (
-              <Txt
-                className="yellow absolute top-0 mt1"
-                size={TxtSize.SMALL}
-                value="Your turn"
-              />
-            )}
+            {!selected &&
+              player.id === selfPlayer.id &&
+              player.id === currentPlayer.id && (
+                <Txt
+                  className="yellow absolute top-0 mt1"
+                  size={TxtSize.SMALL}
+                  value="Your turn"
+                />
+              )}
             <div className={classnames("flex items-center")}>
-              {player === currentPlayer && (
+              {player.id === currentPlayer.id && (
                 <Txt className="yellow mr1" size={TxtSize.SMALL} value="➤" />
               )}
               <PlayerName
