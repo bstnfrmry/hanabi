@@ -84,13 +84,7 @@ export default function GameBoard(props: Props) {
             {game.drawPile.length <= 5 ? (
               <Txt
                 className="red ml2 mt1"
-                value={
-                  game.drawPile.length === 0
-                    ? "no card left"
-                    : `${game.drawPile.length} card${
-                        game.drawPile.length > 1 ? "s" : ""
-                      } left`
-                }
+                value={`${game.drawPile.length} left`}
               />
             ) : (
               <Txt className="gray mt1" value="deck" />

@@ -1,6 +1,6 @@
 import { keyBy } from "lodash";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import shortid from "shortid";
 
 import HomeButton from "~/components/homeButton";
@@ -24,14 +24,12 @@ const BotsSpeeds = {
   3000: "Slow"
 };
 
-const DefaultSeed = `${Math.round(Math.random() * 10000)}`;
-
 export default function NewGame() {
   const router = useRouter();
   const network = useNetwork();
   const { offline } = router.query;
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [seed, setSeed] = useState<string>(DefaultSeed);
+  const [seed, setSeed] = useState<string>();
   const [playersCount, setPlayersCount] = useState(3);
   const [multicolor, setMulticolor] = useState(false);
   const [allowRollback, setAllowRollback] = useState(true);
@@ -40,6 +38,13 @@ export default function NewGame() {
   const [hintsLevel, setHintsLevel] = useState(IGameHintsLevel.DIRECT);
   const [turnsHistory, setTurnsHistory] = useState(true);
   const [botsWait, setBotsWait] = useState(1000);
+
+  /**
+   * Initialise seed on first render
+   */
+  useEffect(() => {
+    setSeed(`${Math.round(Math.random() * 10000)}`);
+  }, []);
 
   async function onCreateGame() {
     const gameId = shortid();

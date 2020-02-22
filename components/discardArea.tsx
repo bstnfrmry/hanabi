@@ -53,16 +53,13 @@ export default function DiscardArea(props: Props) {
 
   return (
     <div className="flex flex-column flex-grow-1">
-      <div className="flex flex-row pb1 pb2-l ttu mb1">
-        <a onClick={() => onCloseArea()}>
-          <Txt uppercase size={TxtSize.MEDIUM} value="Discarded cards" />
-          <Txt className="ml2" value="×" />
-        </a>
-      </div>
-      <div className="flex w-100">
+      <div className="flex items-center w-100">
         {getColors(game).map((color, i) => (
           <CardPile key={i} cards={byColor[color] || []} color={color} />
         ))}
+        <a className="ml2" onClick={() => onCloseArea()}>
+          <Txt className="ml2" value="×" />
+        </a>
       </div>
     </div>
   );
