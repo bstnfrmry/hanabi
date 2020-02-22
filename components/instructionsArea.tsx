@@ -31,7 +31,7 @@ export default function InstructionsArea(props: Props) {
   const selfPlayer = useSelfPlayer();
 
   const history = isReplayMode(game)
-    ? game.originalGame.turnsHistory.slice(0, game.replayCursor + 1)
+    ? game.originalGame.turnsHistory.slice(0, game.replayCursor)
     : game.turnsHistory;
 
   const showHistory = isReplayMode(game) ? true : history;
@@ -61,9 +61,7 @@ export default function InstructionsArea(props: Props) {
                 <Txt
                   className="db"
                   size={TxtSize.MEDIUM}
-                  value={`Replay mode - Turn ${game.replayCursor + 1} / ${
-                    game.originalGame.history.length
-                  }`}
+                  value={`Replay mode - Turn ${game.replayCursor} / ${game.originalGame.history.length}`}
                 />
                 <Button
                   className="ml3"
