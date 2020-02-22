@@ -74,7 +74,10 @@ export default class FirebaseNetwork implements Network {
       callback(fillEmptyValues(event.val() as IGameState));
     });
 
-    callback(JSON.parse(localStorage.getItem(`game.${gameId}`)));
+    const localGame = JSON.parse(localStorage.getItem(`game.${gameId}`));
+    if (localGame) {
+      callback(localGame);
+    }
 
     return () => ref.off();
   }
