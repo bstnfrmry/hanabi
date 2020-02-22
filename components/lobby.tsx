@@ -28,7 +28,7 @@ export default function Lobby(props: Props) {
 
   const router = useRouter();
   const [name, setName] = useState(generateName().dashed);
-  const [bot, setBot] = useState(false);
+  const [bot] = useState(false);
 
   const shareLink = `${window.location.origin}/play?gameId=${router.query.gameId}`;
   const inputRef = React.createRef<HTMLInputElement>();

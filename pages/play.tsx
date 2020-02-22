@@ -54,6 +54,18 @@ export default function Play() {
   }
 
   /**
+   * Request notification permissions when game starts
+   */
+  useEffect(() => {
+    if (!game) return;
+    if (game.status !== IGameStatus.ONGOING) return;
+
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+  }, [game && game.status === IGameStatus.ONGOING]);
+
+  /**
    * Load game from database
    */
   useEffect(() => {
@@ -93,6 +105,49 @@ export default function Play() {
     game && game.players.length,
     game && game.status
   ]);
+
+  /**
+   * Notify player it's time to play when document isn't focused.
+   */
+  useEffect(() => {
+    if (!currentPlayer) return;
+    if (currentPlayer !== selfPlayer) return;
+    if (document.hasFocus()) return;
+
+    const title = "Your turn!";
+    const options = {
+      icon: "/static/hanabi-192.png"
+    };
+
+    try {
+      // Attempt sending the notification through the Web API.
+      const notification = new Notification(title, options);
+
+      const onNotificationClick = () => {
+        window.focus();
+        notification.close();
+      };
+
+      let closeTimeout;
+      notification.onshow = () => {
+        closeTimeout = setTimeout(() => {
+          notification.close.bind(notification);
+        }, 20000);
+      };
+
+      notification.addEventListener("click", onNotificationClick);
+
+      return () => {
+        notification.removeEventListener("click", onNotificationClick);
+
+        if (closeTimeout) {
+          clearTimeout(closeTimeout);
+        }
+      };
+    } catch (e) {
+      // Not handled for many mobile browsers.
+    }
+  }, [currentPlayer === selfPlayer]);
 
   /**
    * Handle notification sounds.
