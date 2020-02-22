@@ -4,6 +4,7 @@ const path = require("path");
 const Dotenv = require("dotenv-webpack");
 const withCSS = require("@zeit/next-css");
 const withOffline = require("next-offline");
+const withSourceMaps = require("@zeit/next-source-maps");
 
 const config = {
   target: "serverless",
@@ -48,4 +49,4 @@ const config = {
   }
 };
 
-module.exports = withOffline(withCSS(config));
+module.exports = withSourceMaps(withOffline(withCSS(config)));

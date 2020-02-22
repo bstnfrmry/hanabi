@@ -1315,6 +1315,52 @@
   dependencies:
     any-observable "^0.3.0"
 
+"@sentry/browser@^5.12.4":
+  version "5.12.4"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.12.4.tgz#6eb41ea1440161787f2312e4d2544167858c4cd7"
+  dependencies:
+    "@sentry/core" "5.12.4"
+    "@sentry/types" "5.12.4"
+    "@sentry/utils" "5.12.4"
+    tslib "^1.9.3"
+
+"@sentry/core@5.12.4":
+  version "5.12.4"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-5.12.4.tgz#d50cebe6af425be425ed5830b3b579de2b9c8251"
+  dependencies:
+    "@sentry/hub" "5.12.4"
+    "@sentry/minimal" "5.12.4"
+    "@sentry/types" "5.12.4"
+    "@sentry/utils" "5.12.4"
+    tslib "^1.9.3"
+
+"@sentry/hub@5.12.4":
+  version "5.12.4"
+  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-5.12.4.tgz#eba014c38670528fb9f48a3d71299a498795395e"
+  dependencies:
+    "@sentry/types" "5.12.4"
+    "@sentry/utils" "5.12.4"
+    tslib "^1.9.3"
+
+"@sentry/minimal@5.12.4":
+  version "5.12.4"
+  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-5.12.4.tgz#fde8ca4f6f52b49c676a66e42fc0d1ac6fad1d50"
+  dependencies:
+    "@sentry/hub" "5.12.4"
+    "@sentry/types" "5.12.4"
+    tslib "^1.9.3"
+
+"@sentry/types@5.12.4":
+  version "5.12.4"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-5.12.4.tgz#6e52639bc3b4e136e9a0da5385890f8f78bb7697"
+
+"@sentry/utils@5.12.4":
+  version "5.12.4"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-5.12.4.tgz#f62491a90843cdd01f2ee197c11ca0a7c382c10a"
+  dependencies:
+    "@sentry/types" "5.12.4"
+    tslib "^1.9.3"
+
 "@types/bytebuffer@^5.0.40":
   version "5.0.40"
   resolved "https://registry.yarnpkg.com/@types/bytebuffer/-/bytebuffer-5.0.40.tgz#d6faac40dcfb09cd856cdc4c01d3690ba536d3ee"
@@ -1577,6 +1623,10 @@
     ignore-loader "0.1.2"
     mini-css-extract-plugin "0.4.3"
     postcss-loader "3.0.0"
+
+"@zeit/next-source-maps@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@zeit/next-source-maps/-/next-source-maps-0.0.3.tgz#d62e93b4f5ccdd542c8530d21f60dd2757d98e3c"
 
 abbrev@1:
   version "1.1.1"
@@ -7756,6 +7806,10 @@ ts-pnp@^1.1.2:
 tslib@1.10.0, tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.1:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
+
+tslib@^1.9.3:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.11.0.tgz#f1f3528301621a53220d58373ae510ff747a66bc"
 
 tsutils@^3.17.1:
   version "3.17.1"
