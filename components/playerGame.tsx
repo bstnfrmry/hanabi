@@ -9,6 +9,7 @@ import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import Vignettes from "~/components/vignettes";
 import { MaxHints } from "~/game/actions";
+import { playSound } from "~/game/sound";
 import { ICard, IGameStatus, IHintAction, IPlayer } from "~/game/state";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
@@ -172,7 +173,7 @@ export default function PlayerGame(props: Props) {
               onClick={e => {
                 e.stopPropagation();
                 onNotifyPlayer(player);
-                new Audio(`/static/sounds/bell.mp3`).play();
+                playSound(`/static/sounds/bell.mp3`);
               }}
             >
               <Txt value="🔔" />
