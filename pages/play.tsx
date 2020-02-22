@@ -145,16 +145,7 @@ export default function Play() {
         }
       };
     } catch (e) {
-      // If it fails for mobile devices, send it through a service worker.
-      navigator.serviceWorker.getRegistrations().then(function(registrations) {
-        if (!registrations.length) return;
-
-        registrations[0].showNotification(title, {
-          ...options,
-          requireInteraction: true,
-          vibrate: [200, 100, 200, 100, 200, 100, 200]
-        });
-      });
+      // Not handled for many mobile browsers.
     }
   }, [currentPlayer === selfPlayer]);
 
