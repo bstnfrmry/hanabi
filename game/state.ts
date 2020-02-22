@@ -21,6 +21,9 @@ export default interface IGameState {
   history: IGameState[];
   createdAt: number;
   synced: boolean;
+  // Replay mode
+  replayCursor?: number;
+  originalGame?: IGameState;
 }
 
 /**

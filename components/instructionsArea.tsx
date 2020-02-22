@@ -3,40 +3,101 @@ import posed, { PoseGroup } from "react-pose";
 
 import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
+import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
+import { isReplayMode } from "~/game/actions";
 import { GameMode, IGameStatus } from "~/game/state";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
   interturn: boolean;
   onSelectDiscard: Function;
+  onReplay: Function;
+  onReplayPrevious: Function;
+  onReplayNext: Function;
+  onStopReplay: Function;
 }
 
 export default function InstructionsArea(props: Props) {
-  const { interturn } = props;
+  const {
+    interturn,
+    onReplay,
+    onReplayPrevious,
+    onReplayNext,
+    onStopReplay
+  } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
-  const showHistory = game.options.turnsHistory && game.turnsHistory.length > 0;
-  const showSync = game.options.gameMode === GameMode.NETWORK;
 
+  const history = isReplayMode(game)
+    ? game.originalGame.turnsHistory.slice(0, game.replayCursor + 1)
+    : game.turnsHistory;
+
+  const showHistory = isReplayMode(game) ? true : history;
+  const showSync = game.options.gameMode === GameMode.NETWORK;
   return (
     <div>
       <Tutorial placement="below" step={ITutorialStep.WELCOME}>
         {game.status === IGameStatus.OVER && (
-          <Txt
-            className="db"
-            size={TxtSize.MEDIUM}
-            value={`The game is over! Your score is ${game.playedCards.length} 🎉`}
-          />
+          <div className="flex items-center mb2">
+            {!isReplayMode(game) && (
+              <>
+                <Txt
+                  className="db"
+                  size={TxtSize.MEDIUM}
+                  value={`The game is over! Your score is ${game.playedCards.length} 🎉`}
+                />
+                <Button
+                  className="ml3"
+                  size={ButtonSize.TINY}
+                  text="Watch replay"
+                  onClick={() => onReplay()}
+                />
+              </>
+            )}
+            {isReplayMode(game) && (
+              <>
+                <Txt
+                  className="db"
+                  size={TxtSize.MEDIUM}
+                  value={`Replay mode - Turn ${game.replayCursor + 1} / ${
+                    game.originalGame.history.length
+                  }`}
+                />
+                <Button
+                  className="ml3"
+                  disabled={game.replayCursor === 0}
+                  size={ButtonSize.TINY}
+                  text="<"
+                  onClick={() => onReplayPrevious()}
+                />
+                <Button
+                  className="ml3"
+                  disabled={
+                    game.replayCursor === game.originalGame.history.length - 1
+                  }
+                  size={ButtonSize.TINY}
+                  text=">"
+                  onClick={() => onReplayNext()}
+                />
+                <Button
+                  className="ml3"
+                  size={ButtonSize.TINY}
+                  text="Exit"
+                  onClick={() => onStopReplay()}
+                />
+              </>
+            )}
+          </div>
         )}
       </Tutorial>
 
       {showHistory && (
         <div className="relative">
           <PoseGroup>
-            {[...game.turnsHistory].reverse().map((turn, i) => {
-              const key = game.turnsHistory.length - i;
+            {[...history].reverse().map((turn, i) => {
+              const key = history.length - i;
               const syncing = i === 0 && !game.synced;
               const style = {
                 ...(showSync &&
@@ -50,7 +111,7 @@ export default function InstructionsArea(props: Props) {
                     includePlayer={true}
                     showDrawn={
                       !interturn &&
-                      game.players[turn.action.from] !== selfPlayer
+                      game.players[turn.action.from].id !== selfPlayer.id
                     }
                     turn={turn}
                   />

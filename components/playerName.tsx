@@ -32,7 +32,7 @@ export default function PlayerName(props: Props) {
   } = props;
 
   const selfPlayer = useSelfPlayer();
-  const you = !explicit && player === selfPlayer;
+  const you = !explicit && player.id === selfPlayer.id;
 
   return (
     <div className={classnames("relative inline-flex items-center", className)}>

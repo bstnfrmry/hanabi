@@ -84,6 +84,10 @@ export function emptyHint(options: IGameOptions): ICardHint {
   };
 }
 
+export function isReplayMode(state: IGameState) {
+  return state.replayCursor !== undefined;
+}
+
 export function isGameOver(state: IGameState) {
   return (
     state.actionsLeft <= 0 ||

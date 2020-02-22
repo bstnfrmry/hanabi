@@ -141,7 +141,7 @@ export default function Lobby(props: Props) {
               type="text"
               value={shareLink}
             />
-            <Button size={ButtonSize.SMALL} text="Copy" onClick={copy} />
+            <Button text="Copy" onClick={copy} />
           </div>
         )}
       </div>
