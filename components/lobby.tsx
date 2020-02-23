@@ -2,8 +2,8 @@ import { useRouter } from "next/router";
 import generateName from "project-name-generator";
 import React, { useEffect, useState } from "react";
 
-import Button, { ButtonSize } from "~/components/ui/button";
-import { TextInput } from "~/components/ui/forms";
+import Button from "~/components/ui/button";
+import { Checkbox, Field, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { GameMode } from "~/game/state";
 import { useGame, useSelfPlayer } from "~/hooks/game";
@@ -28,7 +28,7 @@ export default function Lobby(props: Props) {
 
   const router = useRouter();
   const [name, setName] = useState(generateName().dashed);
-  const [bot] = useState(false);
+  const [bot, setBot] = useState(false);
 
   const shareLink = `${window.location.origin}/play?gameId=${router.query.gameId}`;
   const inputRef = React.createRef<HTMLInputElement>();
@@ -105,19 +105,25 @@ export default function Lobby(props: Props) {
                 />
                 <Button primary id="join-game" text="Join" />
               </div>
-              {/* <Field
-                label={
-                  <Txt className="gray" size={TxtSize.SMALL} value="Autoplay" />
-                }
-                style={{width: '80px'}}
-              >
-                <Checkbox
-                  checked={bot}
-                  className="ml2"
-                  id="autoplay"
-                  onChange={e => setBot(e.target.checked)}
-                />
-              </Field> */}
+              {process.env.NODE_ENV !== "production" && (
+                <Field
+                  label={
+                    <Txt
+                      className="gray"
+                      size={TxtSize.SMALL}
+                      value="Autoplay"
+                    />
+                  }
+                  style={{ width: "80px" }}
+                >
+                  <Checkbox
+                    checked={bot}
+                    className="ml2"
+                    id="autoplay"
+                    onChange={e => setBot(e.target.checked)}
+                  />
+                </Field>
+              )}
             </div>
           </form>
         )}

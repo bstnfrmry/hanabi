@@ -108,6 +108,7 @@ export default function PlayerGame(props: Props) {
             {!selected && player === selfPlayer && player === currentPlayer && (
               <Txt
                 className="yellow absolute top-0 mt1"
+                id="your-turn"
                 size={TxtSize.SMALL}
                 value="Your turn"
               />

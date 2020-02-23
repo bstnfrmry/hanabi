@@ -6,7 +6,7 @@ declare namespace Cypress {
 
     createGame(options: object): void;
 
-    joinGame(options: object): void;
+    joinGame(options: object = {}): void;
 
     addAI(): void;
 

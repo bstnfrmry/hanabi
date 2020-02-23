@@ -23,9 +23,9 @@ import {
 } from "~/game/actions";
 import play from "~/game/ai";
 import { playSound } from "~/game/sound";
-import IGameState, { GameMode, IGameStatus, IPlayer } from "~/game/state";
+import IGameState, { GameMode, IGameStatus } from "~/game/state";
 import useConnectivity from "~/hooks/connectivity";
-import { GameContext, SelfPlayerContext } from "~/hooks/game";
+import { GameContext, useCurrentPlayer, useSelfPlayer } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
 import usePrevious from "~/hooks/previous";
 
@@ -39,16 +39,10 @@ export default function Play() {
     id: "instructions",
     type: ActionAreaType.INSTRUCTIONS
   });
-  const { gameId, playerId } = router.query;
+  const { gameId } = router.query;
 
-  const currentPlayer = game && game.players[game.currentPlayer];
-
-  let selfPlayer: IPlayer;
-  if (game && game.options.gameMode === GameMode.NETWORK) {
-    selfPlayer = game && game.players.find(p => p.id === playerId);
-  } else {
-    selfPlayer = currentPlayer;
-  }
+  const currentPlayer = useCurrentPlayer(game);
+  const selfPlayer = useSelfPlayer(game);
 
   /**
    * Request notification permissions when game starts
@@ -415,75 +409,73 @@ export default function Play() {
   return (
     <TutorialProvider>
       <GameContext.Provider value={game}>
-        <SelfPlayerContext.Provider value={selfPlayer}>
-          <div className="bg-main-dark relative flex flex-column w-100 h-100">
-            <GameBoard
-              onMenuClick={onMenuClick}
-              onSelectDiscard={onSelectDiscard}
-              onShowRollback={onShowRollback}
-            />
+        <div className="bg-main-dark relative flex flex-column w-100 h-100">
+          <GameBoard
+            onMenuClick={onMenuClick}
+            onSelectDiscard={onSelectDiscard}
+            onShowRollback={onShowRollback}
+          />
 
-            <div className="flex flex-column  shadow-5 bg-black-50 bb b--yellow">
-              {selectedArea.type === ActionAreaType.MENU ? (
-                <div className="h4 pa2 ph3-l">
-                  <MenuArea onCloseArea={onCloseArea} />
-                </div>
-              ) : game.status === IGameStatus.LOBBY ? (
-                <Lobby
-                  onAddBot={onAddBot}
-                  onJoinGame={onJoinGame}
-                  onStartGame={onStartGame}
-                />
-              ) : (
-                <div className="h4 overflow-y-scroll pa2 ph3-l">
-                  <ActionArea
-                    interturn={interturn}
-                    selectedArea={selectedArea}
-                    onCloseArea={onCloseArea}
-                    onReplay={onReplay}
-                    onReplayNext={onReplayNext}
-                    onReplayPrevious={onReplayPrevious}
-                    onRollback={onRollback}
-                    onSelectDiscard={onSelectDiscard}
-                    onStopReplay={onStopReplay}
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* Top area */}
-            {interturn && (
-              <div className="flex-grow-1 flex flex-column items-center justify-center">
-                <Txt
-                  size={TxtSize.MEDIUM}
-                  value={`It's ${currentPlayer.name}'s turn!`}
-                />
-                <Button
-                  primary
-                  className="mt4"
-                  size={ButtonSize.MEDIUM}
-                  text={`Go !`}
-                  onClick={() => setInterturn(false)}
-                />
+          <div className="flex flex-column  shadow-5 bg-black-50 bb b--yellow">
+            {selectedArea.type === ActionAreaType.MENU ? (
+              <div className="h4 pa2 ph3-l">
+                <MenuArea onCloseArea={onCloseArea} />
               </div>
-            )}
-
-            {!interturn && (
-              <div className="flex flex-column">
-                <div className="h-100 overflow-y-scroll">
-                  <PlayersBoard
-                    selectedArea={selectedArea}
-                    onCloseArea={onCloseArea}
-                    onCommitAction={onCommitAction}
-                    onNotifyPlayer={onNotifyPlayer}
-                    onReaction={onReaction}
-                    onSelectPlayer={onSelectPlayer}
-                  />
-                </div>
+            ) : game.status === IGameStatus.LOBBY ? (
+              <Lobby
+                onAddBot={onAddBot}
+                onJoinGame={onJoinGame}
+                onStartGame={onStartGame}
+              />
+            ) : (
+              <div className="h4 overflow-y-scroll pa2 ph3-l">
+                <ActionArea
+                  interturn={interturn}
+                  selectedArea={selectedArea}
+                  onCloseArea={onCloseArea}
+                  onReplay={onReplay}
+                  onReplayNext={onReplayNext}
+                  onReplayPrevious={onReplayPrevious}
+                  onRollback={onRollback}
+                  onSelectDiscard={onSelectDiscard}
+                  onStopReplay={onStopReplay}
+                />
               </div>
             )}
           </div>
-        </SelfPlayerContext.Provider>
+
+          {/* Top area */}
+          {interturn && (
+            <div className="flex-grow-1 flex flex-column items-center justify-center">
+              <Txt
+                size={TxtSize.MEDIUM}
+                value={`It's ${currentPlayer.name}'s turn!`}
+              />
+              <Button
+                primary
+                className="mt4"
+                size={ButtonSize.MEDIUM}
+                text={`Go !`}
+                onClick={() => setInterturn(false)}
+              />
+            </div>
+          )}
+
+          {!interturn && (
+            <div className="flex flex-column">
+              <div className="h-100 overflow-y-scroll">
+                <PlayersBoard
+                  selectedArea={selectedArea}
+                  onCloseArea={onCloseArea}
+                  onCommitAction={onCommitAction}
+                  onNotifyPlayer={onNotifyPlayer}
+                  onReaction={onReaction}
+                  onSelectPlayer={onSelectPlayer}
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </GameContext.Provider>
     </TutorialProvider>
   );

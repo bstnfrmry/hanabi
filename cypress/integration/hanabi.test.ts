@@ -5,9 +5,7 @@ specify("Hanabi", () => {
     seed: "E2E"
   });
 
-  cy.joinGame({
-    name: "Ibanah"
-  });
+  cy.joinGame();
 
   cy.addAI();
   cy.addAI();
@@ -21,21 +19,21 @@ specify("Hanabi", () => {
   cy.waitForTurn().giveHint(3, "number", 1);
   cy.waitForTurn().giveHint(3, "number", 2);
   cy.waitForTurn().discard("D");
-  cy.waitForTurn().giveHint(2, "number", 1);
   cy.waitForTurn().play("B");
-  cy.waitForTurn().discard("D");
-  cy.waitForTurn().discard("D");
-  cy.waitForTurn().giveHint(3, "color", "green");
-  cy.waitForTurn().discard("D");
   cy.waitForTurn().discard("D");
   cy.waitForTurn().play("A");
-  cy.waitForTurn().play("B");
-  cy.waitForTurn().play("C");
-  cy.waitForTurn().play("C");
-  cy.waitForTurn().giveHint(1, "number", 2);
-  cy.waitForTurn().discard("D");
-  cy.waitForTurn().discard("D");
+  cy.waitForTurn().play("A");
+  cy.waitForTurn().play("A");
+  cy.waitForTurn().play("A");
+  cy.waitForTurn().giveHint(3, "color", "green");
+  cy.waitForTurn().discard("C");
+  cy.waitForTurn().giveHint(1, "color", "green");
+  cy.waitForTurn().discard("C");
+  cy.waitForTurn().giveHint(2, "number", 3);
+  cy.waitForTurn().discard("C");
+  cy.waitForTurn().discard("C");
+  cy.waitForTurn().giveHint(1, "color", "red");
 
   cy.expectGameOver();
-  cy.expectScore(20);
+  cy.expectScore(17);
 });

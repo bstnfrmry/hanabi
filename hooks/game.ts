@@ -1,14 +1,14 @@
+import { useRouter } from "next/router";
 import React, { useContext } from "react";
 
 import { isReplayMode } from "~/game/actions";
 import IGameState, {
   fillEmptyValues,
-  IGameStatus,
-  IPlayer
+  GameMode,
+  IGameStatus
 } from "~/game/state";
 
 export const GameContext = React.createContext(null);
-export const SelfPlayerContext = React.createContext(null);
 
 export function useGame() {
   const game = useContext<IGameState>(GameContext);
@@ -25,12 +25,29 @@ export function useGame() {
   return game;
 }
 
-export function useSelfPlayer() {
-  return useContext<IPlayer>(SelfPlayerContext);
+export function useCurrentPlayer(game: IGameState = useGame()) {
+  if (!game) {
+    return null;
+  }
+
+  return game.players[game.currentPlayer];
 }
 
-export function useCurrentPlayer() {
-  const game = useGame();
+export function useSelfPlayer(game: IGameState = useGame()) {
+  const router = useRouter();
+  const currentPlayer = useCurrentPlayer(game);
 
-  return game && game.players[game.currentPlayer];
+  const { playerId } = router.query;
+
+  if (!game) {
+    return null;
+  }
+
+  if (game.options.gameMode === GameMode.NETWORK) {
+    return game.players.find(p => p.id === playerId);
+  }
+
+  if (game.options.gameMode === GameMode.PASS_AND_PLAY) {
+    return currentPlayer;
+  }
 }
