@@ -184,7 +184,8 @@ export default function PlayerGame(props: Props) {
 
           {selected && (
             <a
-              className={classnames({ ml2: player.reaction || self })}
+              className="absolute top-0 right-0 mt3 mr3"
+              // className={classnames({ ml2: player.reaction || self })}
               onClick={() => onCloseArea()}
             >
               <Txt value="×" />

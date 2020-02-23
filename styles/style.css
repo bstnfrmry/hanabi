@@ -33,7 +33,7 @@ body {
   background: var(--color-main-dark);
 }
 
-html::-webkit-scrollbar {
+body ::-webkit-scrollbar {
   display: none;
 }
 
