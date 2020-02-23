@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import { groupBy, sortBy } from "lodash";
+import { chunk, groupBy, sortBy } from "lodash";
 import React from "react";
 
 import Card, { CardSize, CardWrapper, ICardContext } from "~/components/card";
@@ -23,12 +23,12 @@ function CardPile(props: CardPileProps) {
   const sortedCards = sortBy(cards, card => card.number);
 
   return (
-    <div className="flex flex-column">
+    <div className="flex w-50 mw6">
       {sortedCards.map((card, i) => (
         <Card
           key={i}
           card={card}
-          className={classnames("mr1", { "nt2 nt4-l": i > 0 })}
+          className={classnames("mr1", { "nl2 nl3-l": i > 0 })}
           context={ICardContext.DISCARDED}
           size={CardSize.MEDIUM}
         />
@@ -51,13 +51,30 @@ export default function DiscardArea(props: Props) {
     card => card.color
   );
 
+  const rows = chunk(getColors(game), 2);
+
   return (
-    <div className="flex flex-column flex-grow-1">
-      <div className="flex w-100">
-        {getColors(game).map((color, i) => (
-          <CardPile key={i} cards={byColor[color] || []} color={color} />
-        ))}
-        <a className="ml2 mt2" onClick={() => onCloseArea()}>
+    <div className="relative flex flex-column flex-grow-1">
+      <div className="flex flex-column w-100">
+        {rows.map((colors, i) => {
+          return (
+            <div key={i} className={classnames("w-100 flex", { mt2: i > 0 })}>
+              {colors.map(color => {
+                return (
+                  <CardPile
+                    key={color}
+                    cards={byColor[color] || []}
+                    color={color}
+                  />
+                );
+              })}
+            </div>
+          );
+        })}
+        <a
+          className="absolute right-0 top-0 mr2 mt2"
+          onClick={() => onCloseArea()}
+        >
           <Txt className="ml2" value="×" />
         </a>
       </div>
