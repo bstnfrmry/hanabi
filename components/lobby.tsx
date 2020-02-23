@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
-import generateName from "project-name-generator";
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 
 import Button from "~/components/ui/button";
 import { Checkbox, Field, TextInput } from "~/components/ui/forms";
@@ -14,21 +13,22 @@ interface Props {
   onStartGame: Function;
 }
 
+const NAME_KEY = "name";
+
 export default function Lobby(props: Props) {
   const { onJoinGame, onAddBot, onStartGame } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
+  const router = useRouter();
+  const [name, setName] = useState(localStorage.getItem(NAME_KEY) || "");
+  const [bot, setBot] = useState(false);
 
   const gameFull = game.players.length === game.options.playersCount;
   const canJoin =
     (game.options.gameMode === GameMode.PASS_AND_PLAY || !selfPlayer) &&
     !gameFull;
   const canStart = gameFull;
-
-  const router = useRouter();
-  const [name, setName] = useState(generateName().dashed);
-  const [bot, setBot] = useState(false);
 
   const shareLink = `${window.location.origin}/play?gameId=${router.query.gameId}`;
   const inputRef = React.createRef<HTMLInputElement>();
@@ -38,8 +38,19 @@ export default function Lobby(props: Props) {
   }
 
   useEffect(() => {
-    setName(generateName().dashed);
+    if (!game.players.length) return;
+
+    setName("");
   }, [game.players.length]);
+
+  function onJoinGameSubmit(e: FormEvent) {
+    e.preventDefault();
+    onJoinGame({ name, bot });
+
+    if (game.players.length === 0) {
+      localStorage.setItem(NAME_KEY, name);
+    }
+  }
 
   return (
     <div className="flex items-center justify-center h-100 w-100 bg-main-dark pa2">
@@ -87,10 +98,7 @@ export default function Lobby(props: Props) {
         {canJoin && (
           <form
             className="flex items-start mt5 w-100 flex-grow-1"
-            onSubmit={e => {
-              e.preventDefault();
-              onJoinGame({ name, bot });
-            }}
+            onSubmit={onJoinGameSubmit}
           >
             <div className="flex flex-column justify-left">
               <Txt>Chose your player name</Txt>
@@ -103,7 +111,12 @@ export default function Lobby(props: Props) {
                   value={name}
                   onChange={e => setName(e.target.value)}
                 />
-                <Button primary id="join-game" text="Join" />
+                <Button
+                  primary
+                  disabled={name.length === 0}
+                  id="join-game"
+                  text="Join"
+                />
               </div>
               {process.env.NODE_ENV !== "production" && (
                 <Field

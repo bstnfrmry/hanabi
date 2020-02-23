@@ -26,11 +26,14 @@ Cypress.Commands.add("createGame", options => {
   cy.get("#new-game").click();
 });
 
-Cypress.Commands.add("joinGame", (options = {}) => {
+Cypress.Commands.add("joinGame", options => {
   options = defaults(options, {
+    name: "Hanabot",
     emoji: "🐯",
     bot: false
   });
+
+  cy.get("#player-name").type(`{selectall}{backspace}${options.name}`);
 
   if (options.bot) {
     cy.get("#autoplay").check();

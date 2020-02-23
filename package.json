@@ -24,7 +24,6 @@
     "lodash": "^4.17.15",
     "next": "^9.2",
     "next-offline": "^4.0.5",
-    "project-name-generator": "^2.1.7",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-modal": "^3.9.1",
