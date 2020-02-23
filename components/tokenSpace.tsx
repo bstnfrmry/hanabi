@@ -17,7 +17,7 @@ function Token(props: TokenProps) {
     return (
       <Txt
         className={classnames(
-          "ba flex items-center justify-center br-100 h2 w2 h3-l w3-l o-70 gray ba mr2",
+          "ba flex items-center justify-center br-100 h2 w2 h3-l w3-l o-70 gray ba ml2",
           `bg-${color}`,
           `b--${color}`
         )}
@@ -28,7 +28,7 @@ function Token(props: TokenProps) {
   }
 
   return (
-    <div className="relative h2 w2 h3-l w3-l mr2">
+    <div className="relative h2 w2 h3-l w3-l ml2">
       {range(amount).map(i => (
         <Txt
           key={i}
@@ -57,7 +57,7 @@ export default function TokenSpace(props: Props) {
   const { hints, strikes } = props;
 
   return (
-    <div className="flex">
+    <div className="flex nl2">
       <Tutorial placement="below" step={ITutorialStep.HINT_TOKENS}>
         <Token amount={hints} color="hints" />
       </Tutorial>

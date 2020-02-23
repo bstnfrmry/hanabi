@@ -82,16 +82,13 @@ export default function GameBoard(props: Props) {
               ))}
             </CardWrapper>
             {game.drawPile.length <= 5 ? (
-              <Txt
-                className="red ml2 mt1"
-                value={`${game.drawPile.length} left`}
-              />
+              <Txt className="red mt1" value={`${game.drawPile.length} left`} />
             ) : (
               <Txt className="gray mt1" value="deck" />
             )}
           </div>
           <div
-            className="pointer relative mr3 tc flex flex-column items-center"
+            className="pointer relative mr2 tc flex flex-column items-center"
             onClick={() => onSelectDiscard()}
           >
             <Tutorial placement="below" step={ITutorialStep.DISCARD_PILE}>
@@ -122,7 +119,7 @@ export default function GameBoard(props: Props) {
               <Txt className="gray mt1" value="discard" />
             </Tutorial>
           </div>
-          <div className="mr2 mr3-l tc">
+          <div className="tc">
             <TokenSpace
               hints={game.tokens.hints}
               strikes={game.tokens.strikes}
