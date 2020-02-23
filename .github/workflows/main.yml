@@ -1,0 +1,12 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Cypress
+      uses: cypress-io/github-action@v1.16.1
