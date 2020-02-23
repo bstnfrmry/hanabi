@@ -83,6 +83,7 @@ export default function PlayerGame(props: Props) {
   const hideCards =
     (self || !selfPlayer) &&
     (isReplayMode(game) || game.status !== IGameStatus.OVER);
+  const canPlay = [IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status);
 
   const hasSelectedCard = selectedCard !== null;
   const cardContext = selected
@@ -239,7 +240,7 @@ export default function PlayerGame(props: Props) {
           ...(!selected && { opacity: 0, transform: "translateY(-100px)" })
         }}
       >
-        {selected && player === selfPlayer && (
+        {canPlay && selected && player === selfPlayer && (
           <div className="flex flex-column items-end mb2">
             <div className="flex justify-end items-center h-100-l">
               {hasSelectedCard && (
@@ -289,7 +290,7 @@ export default function PlayerGame(props: Props) {
           ...(!selected && { opacity: 0, transform: "translateY(-100px)" })
         }}
       >
-        {selected && player !== selfPlayer && (
+        {canPlay && selected && player !== selfPlayer && (
           <div className="flex flex-column items-end pb2 mr2 mb2">
             <Vignettes
               pendingHint={pendingHint}
