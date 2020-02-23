@@ -33,7 +33,11 @@ export default function JoinGame() {
         {!games.length && (
           <>
             <div>
-              <Txt size={TxtSize.LARGE} value="No available room" />
+              <Txt
+                className="nowrap"
+                size={TxtSize.MEDIUM}
+                value="No available room"
+              />
             </div>
             <Button
               className="ma2 flex-1"
@@ -44,9 +48,9 @@ export default function JoinGame() {
           </>
         )}
         {games.length > 0 && (
-          <div className="flex-grow-1 mt2">
+          <div>
             <Txt
-              className="nowrap"
+              className="nowrap mb6"
               size={TxtSize.LARGE}
               value="Available rooms"
             />
@@ -56,7 +60,7 @@ export default function JoinGame() {
                 className="flex justify-between items-center mb3 w-100 mt3"
               >
                 <Txt
-                  className="mr2 silver"
+                  className="mr4 silver"
                   value={`${game.players.length} / ${game.options.playersCount}`}
                 />
                 <Txt

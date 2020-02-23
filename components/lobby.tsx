@@ -21,7 +21,7 @@ export default function Lobby(props: Props) {
   const game = useGame();
   const selfPlayer = useSelfPlayer();
   const router = useRouter();
-  const [name, setName] = useState(localStorage.getItem(NAME_KEY) || "");
+  const [name, setName] = useState("");
   const [bot, setBot] = useState(false);
 
   const gameFull = game.players.length === game.options.playersCount;
@@ -38,9 +38,14 @@ export default function Lobby(props: Props) {
   }
 
   useEffect(() => {
-    if (!game.players.length) return;
-
-    setName("");
+    if (
+      game.options.gameMode === GameMode.PASS_AND_PLAY &&
+      game.players.length > 0
+    ) {
+      setName("");
+    } else {
+      setName(localStorage.getItem(NAME_KEY) || "");
+    }
   }, [game.players.length]);
 
   function onJoinGameSubmit(e: FormEvent) {
