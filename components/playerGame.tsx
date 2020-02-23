@@ -135,7 +135,7 @@ export default function PlayerGame(props: Props) {
             />
           )}
 
-          {self && (
+          {self && !isReplayMode(game) && (
             <Popover
               body={
                 <ReactionsPopover
