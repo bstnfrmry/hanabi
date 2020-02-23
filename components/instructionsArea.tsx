@@ -13,19 +13,10 @@ interface Props {
   interturn: boolean;
   onSelectDiscard: Function;
   onReplay: Function;
-  onReplayPrevious: Function;
-  onReplayNext: Function;
-  onStopReplay: Function;
 }
 
 export default function InstructionsArea(props: Props) {
-  const {
-    interturn,
-    onReplay,
-    onReplayPrevious,
-    onReplayNext,
-    onStopReplay
-  } = props;
+  const { interturn, onReplay } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -40,50 +31,26 @@ export default function InstructionsArea(props: Props) {
     <div>
       <Tutorial placement="below" step={ITutorialStep.WELCOME}>
         {game.status === IGameStatus.OVER && (
-          <div className="flex items-center mb2">
+          <div className="flex justify-between items-center mb2">
             {!isReplayMode(game) && (
               <>
-                <Txt
-                  className="db"
-                  size={TxtSize.MEDIUM}
-                  value={`The game is over! Your score is ${game.playedCards.length} 🎉`}
-                />
+                <div className="flex flex-column">
+                  <Txt
+                    className="db"
+                    size={TxtSize.MEDIUM}
+                    value={`The game is over!`}
+                  />
+                  <Txt
+                    className="db"
+                    size={TxtSize.MEDIUM}
+                    value={`Your score is ${game.playedCards.length} 🎉`}
+                  />
+                </div>
                 <Button
-                  className="ml3"
+                  className="ml3 nowrap"
                   size={ButtonSize.TINY}
                   text="Watch replay"
                   onClick={() => onReplay()}
-                />
-              </>
-            )}
-            {isReplayMode(game) && (
-              <>
-                <Txt
-                  className="db"
-                  size={TxtSize.MEDIUM}
-                  value={`Replay mode - Turn ${game.replayCursor} / ${game.originalGame.history.length}`}
-                />
-                <Button
-                  className="ml3"
-                  disabled={game.replayCursor === 0}
-                  size={ButtonSize.TINY}
-                  text="<"
-                  onClick={() => onReplayPrevious()}
-                />
-                <Button
-                  className="ml3"
-                  disabled={
-                    game.replayCursor === game.originalGame.history.length - 1
-                  }
-                  size={ButtonSize.TINY}
-                  text=">"
-                  onClick={() => onReplayNext()}
-                />
-                <Button
-                  className="ml3"
-                  size={ButtonSize.TINY}
-                  text="Exit"
-                  onClick={() => onStopReplay()}
                 />
               </>
             )}
@@ -101,9 +68,10 @@ export default function InstructionsArea(props: Props) {
                 ...(showSync &&
                   syncing && { animation: "OpacityPulse 2000ms infinite" })
               };
+              const PoseItem = isReplayMode(game) ? posed.div() : Item;
 
               return (
-                <Item key={key} style={style}>
+                <PoseItem key={key} style={style}>
                   <Turn
                     key={key}
                     includePlayer={true}
@@ -116,7 +84,7 @@ export default function InstructionsArea(props: Props) {
                   {showSync && syncing && (
                     <Txt className="ml2" size={TxtSize.SMALL} value="⏳" />
                   )}
-                </Item>
+                </PoseItem>
               );
             })}
           </PoseGroup>

@@ -11,6 +11,7 @@ import LoadingScreen from "~/components/loadingScreen";
 import Lobby from "~/components/lobby";
 import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
+import ReplayViewver from "~/components/replayViewer";
 import { TutorialProvider } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -18,6 +19,7 @@ import {
   commitAction,
   getMaximumPossibleScore,
   goBackToState,
+  isReplayMode,
   joinGame
 } from "~/game/actions";
 import play from "~/game/ai";
@@ -378,18 +380,10 @@ export default function Play() {
     });
   }
 
-  function onReplayPrevious() {
+  function onReplayCursorChange(replayCursor: number) {
     network.updateGame({
       ...game,
-      replayCursor: game.replayCursor - 1,
-      synced: false
-    });
-  }
-
-  function onReplayNext() {
-    network.updateGame({
-      ...game,
-      replayCursor: game.replayCursor + 1,
+      replayCursor,
       synced: false
     });
   }
@@ -414,6 +408,13 @@ export default function Play() {
             onSelectDiscard={onSelectDiscard}
             onShowRollback={onShowRollback}
           />
+
+          {isReplayMode(game) && (
+            <ReplayViewver
+              onReplayCursorChange={onReplayCursorChange}
+              onStopReplay={onStopReplay}
+            />
+          )}
 
           <div className="flex flex-column  shadow-5 bg-black-50 bb b--yellow">
             {selectedArea.type === ActionAreaType.MENU ? (
@@ -457,17 +458,13 @@ export default function Play() {
                   <InstructionsArea
                     interturn={interturn}
                     onReplay={onReplay}
-                    onReplayNext={onReplayNext}
-                    onReplayPrevious={onReplayPrevious}
                     onSelectDiscard={onSelectDiscard}
-                    onStopReplay={onStopReplay}
                   />
                 )}
               </div>
             )}
           </div>
 
-          {/* Top area */}
           {interturn && (
             <div className="flex-grow-1 flex flex-column items-center justify-center">
               <Txt

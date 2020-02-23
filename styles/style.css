@@ -21,6 +21,8 @@
 @import "./animations.css";
 @import "./popover.css";
 
+@import "../node_modules/rc-slider/assets/index.css";
+
 html,
 body {
   font-family: "Kalam", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
