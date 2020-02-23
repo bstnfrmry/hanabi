@@ -1,12 +1,17 @@
-name: Tests
+name: CI
 
 on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Cypress
-      uses: cypress-io/github-action@v1.16.1
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install
+        run: yarn install
+      - name: Lint
+        run: yarn lint
+      - name: Test
+        run: yarn test
