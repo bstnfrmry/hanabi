@@ -3,11 +3,10 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import shortid from "shortid";
 
-import ActionArea, {
-  ActionAreaType,
-  ISelectedArea
-} from "~/components/actionArea";
+import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
+import DiscardArea from "~/components/discardArea";
 import GameBoard from "~/components/gameBoard";
+import InstructionsArea from "~/components/instructionsArea";
 import LoadingScreen from "~/components/loadingScreen";
 import Lobby from "~/components/lobby";
 import MenuArea from "~/components/menuArea";
@@ -429,17 +428,41 @@ export default function Play() {
               />
             ) : (
               <div className="h4 overflow-y-scroll pa2 ph3-l">
-                <ActionArea
-                  interturn={interturn}
-                  selectedArea={selectedArea}
-                  onCloseArea={onCloseArea}
-                  onReplay={onReplay}
-                  onReplayNext={onReplayNext}
-                  onReplayPrevious={onReplayPrevious}
-                  onRollback={onRollback}
-                  onSelectDiscard={onSelectDiscard}
-                  onStopReplay={onStopReplay}
-                />
+                {selectedArea.type === ActionAreaType.ROLLBACK && (
+                  <div className="h-100 flex flex-column items-center justify-center pa2">
+                    <Txt
+                      className="w-75"
+                      size={TxtSize.MEDIUM}
+                      value="You're about to roll back the last action!"
+                    />
+                    <div className="mt4">
+                      <Button text="Abort" onClick={() => onCloseArea()} />
+                      <Button
+                        primary
+                        className="ml4"
+                        text="Roll back"
+                        onClick={() => onRollback()}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {selectedArea.type === ActionAreaType.DISCARD && (
+                  <DiscardArea onCloseArea={onCloseArea} />
+                )}
+
+                {![ActionAreaType.ROLLBACK, ActionAreaType.DISCARD].includes(
+                  selectedArea.type
+                ) && (
+                  <InstructionsArea
+                    interturn={interturn}
+                    onReplay={onReplay}
+                    onReplayNext={onReplayNext}
+                    onReplayPrevious={onReplayPrevious}
+                    onSelectDiscard={onSelectDiscard}
+                    onStopReplay={onStopReplay}
+                  />
+                )}
               </div>
             )}
           </div>
