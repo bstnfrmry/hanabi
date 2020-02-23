@@ -39,7 +39,7 @@ export default function Txt(props: Props) {
         TxtSizes[size],
         { ttu: uppercase },
         { i: italic },
-        { pre: multiline },
+        { "pre-line": multiline },
         className
       )}
       {...attributes}

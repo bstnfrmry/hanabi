@@ -66,6 +66,10 @@
   line-height: 1;
 }
 
+.pre-line {
+  white-space: pre-line;
+}
+
 /**
  * Flexbox
  */
