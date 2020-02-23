@@ -1,11 +1,11 @@
 {
-  "name": "hanabi-client",
+  "name": "hanabi",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node server.js",
+    "dev": "next dev",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "next start",
     "server": "firebase-server -p 3001",
     "lint": "eslint '**/*.{ts,tsx}'",
     "test": "cypress run",
@@ -23,7 +23,6 @@
     "firebase": "^6.3.4",
     "lodash": "^4.17.15",
     "next": "^9.2",
-    "next-offline": "^4.0.5",
     "rc-slider": "^9.2.1",
     "react": "16.8.6",
     "react-dom": "16.8.6",
