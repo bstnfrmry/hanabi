@@ -106,7 +106,7 @@ export default function Lobby(props: Props) {
             onSubmit={onJoinGameSubmit}
           >
             <div className="flex flex-column justify-left">
-              <Txt>Chose your player name</Txt>
+              <Txt>Choose your player name</Txt>
               <div className="flex justify-center items-center mr2">
                 <TextInput
                   autoFocus={true}
