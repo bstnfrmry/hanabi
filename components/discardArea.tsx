@@ -17,7 +17,11 @@ function CardPile(props: CardPileProps) {
   const { cards, color } = props;
 
   if (!cards.length) {
-    return <CardWrapper className="mr1" color={color} size={CardSize.MEDIUM} />;
+    return (
+      <div className="w-50 mw6">
+        <CardWrapper className="mr1" color={color} size={CardSize.MEDIUM} />
+      </div>
+    );
   }
 
   const sortedCards = sortBy(cards, card => card.number);
