@@ -1,7 +1,6 @@
 module.exports = {
   parser: "@typescript-eslint/parser",
   extends: [
-    "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "plugin:prettier/recommended"
   ],
@@ -12,24 +11,21 @@ module.exports = {
       jsx: true
     }
   },
+  plugins: [
+    "simple-import-sort"
+  ],
   settings: {
     react: {
       version: "detect"
     }
   },
-  plugins: [
-    "simple-import-sort"
-  ],
   rules: {
-    "simple-import-sort/sort": "error",
-    "@typescript-eslint/interface-name-prefix": [0],
-    "@typescript-eslint/explicit-function-return-type": [0],
-    "@typescript-eslint/no-use-before-define": [0],
-    "react/jsx-sort-props": ["error", {
+    "simple-import-sort/sort": "warn",
+    "react/jsx-sort-props": ["warn", {
       "callbacksLast": true,
       "shorthandFirst": true,
       "reservedFirst": true,
     }],
-    "react/no-unescaped-entities": [0]    
+    "react/prop-types": ["off"],
   }
 };
