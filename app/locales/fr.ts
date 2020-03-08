@@ -1,4 +1,6 @@
-export const fr = {
+import { locales } from "./en";
+
+export const fr: locales = {
   app: {
     name: "Hanabi"
   },
@@ -9,8 +11,17 @@ export const fr = {
       buttons: {
         createGame: "Créer une partie",
         passAndPlay: "Passe et joue",
-        joinGame: "Rejoindre une partie"
+        joinGame: "Rejoindre une partie",
+        joinLastGame: "Rejoindre la dernière partie"
       }
+    },
+
+    createGame: {
+      title:
+        "Tu pourras jouer en ligne en partageant le lien de la partie à tes amis.",
+      playersCount: "{{count}} joueurs",
+      multicolor: "Multi-couleur",
+      createGame: "Nouvelle partie"
     }
   }
 };

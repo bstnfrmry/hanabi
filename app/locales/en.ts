@@ -11,6 +11,14 @@ export const en = {
         passAndPlay: "Pass and play",
         joinGame: "Join game"
       }
+    },
+
+    createGame: {
+      title:
+        "You will be able to play online by sharing the game link to your friends.",
+      playersCount: "{{count}} players"
     }
   }
 };
+
+export type locales = typeof en;

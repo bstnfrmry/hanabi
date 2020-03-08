@@ -2,8 +2,9 @@
   "expo": {
     "name": "Hanabi",
     "slug": "hanabi",
-    "privacy": "private",
+    "privacy": "public",
     "sdkVersion": "36.0.0",
+    "scheme": "hanabi",
     "platforms": [
       "ios",
       "android",

@@ -1,0 +1,337 @@
+import assert from "assert";
+import { cloneDeep, findIndex, flatMap, last, range, zipObject } from "lodash";
+import { shuffle } from "shuffle-seed";
+
+import GameState, {
+  Action,
+  Card,
+  CardHint,
+  Color,
+  GameOptions,
+  GameStatus,
+  Hand,
+  HintAction,
+  Number,
+  Player
+} from "./state";
+
+export const colors: Color[] = [
+  Color.WHITE,
+  Color.BLUE,
+  Color.RED,
+  Color.GREEN,
+  Color.YELLOW,
+  Color.MULTICOLOR
+];
+
+export const numbers: Number[] = [1, 2, 3, 4, 5];
+
+const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
+export const MaxHints = 8;
+
+export function isPlayable(card: Card, playedCards: Card[]): boolean {
+  const isPreviousHere =
+    card.number === 1 || // first card on the pile
+    findIndex(
+      playedCards,
+      c => card.number === c.number + 1 && card.color === c.color
+    ) > -1; // previous card belongs to the playedCards
+
+  const isSameNotHere =
+    findIndex(
+      playedCards,
+      c => c.number === card.number && c.color === card.color
+    ) === -1;
+
+  return isPreviousHere && isSameNotHere;
+}
+
+/**
+ * Side effect function that applies the given hint on a given hand's cards
+ */
+function applyHint(hand: Hand, hint: HintAction) {
+  hand.forEach(card => {
+    if (card[hint.type] === hint.value) {
+      // positive hint, e.g. card is a red 5 and the hint is "color red"
+      Object.keys(card.hint[hint.type]).forEach(value => {
+        if (value == hint.value) {
+          // == because we want '2' == 2
+          // it has to be this value
+          card.hint[hint.type][value] = 2;
+        } else {
+          // all other values are impossible
+          card.hint[hint.type][value] = 0;
+        }
+      });
+    } else {
+      // negative hint
+      card.hint[hint.type][hint.value] = 0;
+    }
+  });
+}
+
+export function emptyHint(options: GameOptions): CardHint {
+  return {
+    color: {
+      blue: 1,
+      red: 1,
+      green: 1,
+      white: 1,
+      yellow: 1,
+      multicolor: options.multicolor ? 1 : 0
+    },
+    number: { 0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
+  };
+}
+
+export function isReplayMode(state: GameState) {
+  return state.replayCursor !== undefined;
+}
+
+export function isGameOver(state: GameState) {
+  return (
+    state.actionsLeft <= 0 ||
+    state.tokens.strikes >= 3 ||
+    getMaximumPossibleScore(state) === (state.playedCards || []).length
+  );
+}
+
+export function commitAction(state: GameState, action: Action): GameState {
+  // the function should be pure
+  const s = cloneDeep(state) as GameState;
+
+  s.history.push({ ...state, turnsHistory: [], history: [] });
+
+  assert(action.from === state.currentPlayer);
+  const player = s.players[action.from];
+
+  let newCard = null as Card;
+  if (action.action === "discard" || action.action === "play") {
+    // remove the card from hand
+    const [card] = player.hand.splice(action.cardIndex, 1);
+    action.card = card;
+    /** PLAY */
+    if (action.action === "play") {
+      if (isPlayable(card, s.playedCards)) {
+        s.playedCards.push(card);
+        if (card.number === 5) {
+          // play a 5, win a hint
+          if (s.tokens.hints < MaxHints) s.tokens.hints += 1;
+        }
+      } else {
+        // strike !
+        s.tokens.strikes += 1;
+        s.discardPile.push(card);
+      }
+    } else {
+      /** DISCARD */
+      if (s.tokens.hints < MaxHints) {
+        s.discardPile.push(card);
+        s.tokens.hints += 1;
+      } else {
+        throw new Error(
+          "Invalid action, cannot discard when the hints are maxed out!"
+        );
+      }
+    }
+
+    // in both cases (play, discard) we need to remove a card from the hand and get a new one
+    if (s.drawPile && s.drawPile.length) {
+      newCard = s.drawPile.pop();
+      newCard.hint = emptyHint(state.options);
+      player.hand.unshift(newCard);
+    }
+  }
+
+  /** HINT */
+  if (action.action === "hint") {
+    assert(s.tokens.hints > 0);
+    s.tokens.hints -= 1;
+
+    assert(action.from !== action.to);
+    const hand = s.players[action.to].hand;
+    applyHint(hand, action);
+  }
+
+  // there's no card in the pile (or the last card was just drawn)
+  // decrease the actionsLeft counter.
+  // The game ends when it reaches 0.
+  if (!s.drawPile || s.drawPile.length === 0) {
+    s.actionsLeft -= 1;
+  }
+
+  // update player
+  s.currentPlayer = (s.currentPlayer + 1) % s.options.playersCount;
+
+  // update history
+  s.turnsHistory.push({ action, card: newCard });
+
+  if (isGameOver(s)) {
+    s.status = GameStatus.OVER;
+  }
+
+  return s;
+}
+
+/**
+ * Rollback the state for the given amount of turns
+ */
+export function goBackToState(state: GameState, turnsBack = 1) {
+  const lastState = last(state.history);
+
+  if (!lastState) {
+    return null;
+  }
+
+  const previousState = {
+    history: state.history.slice(0, -1),
+    turnsHistory: state.turnsHistory.slice(0, -1),
+    ...lastState
+  };
+
+  if (--turnsBack === 0) {
+    return previousState;
+  }
+
+  return goBackToState(previousState, turnsBack);
+}
+
+export function emptyPlayer(id: string, name: string): Player {
+  return {
+    hand: [],
+    name,
+    id,
+    bot: false
+  };
+}
+
+export function getColors(state: GameState) {
+  return state.options.multicolor ? colors : colors.slice(0, -1);
+}
+
+export function getScore(state: GameState) {
+  return state.playedCards.length;
+}
+
+export function getMaximumScore(state: GameState) {
+  return state.options.multicolor ? 30 : 25;
+}
+
+export function getPlayedCardsPile(
+  state: GameState
+): { [key in Color]: Number } {
+  const colors = getColors(state);
+
+  return zipObject(
+    colors,
+    colors.map(color => {
+      const topCard = last(
+        state.playedCards.filter(card => card.color === color)
+      );
+
+      return topCard ? topCard.number : 0;
+    })
+  ) as { [key in Color]: Number };
+}
+
+/**
+ * Compute the max possible score with remaining cards in hand & deck
+ * Doesn't take in account remaining turns
+ */
+export function getMaximumPossibleScore(state: GameState): number {
+  const playableCards = [
+    ...state.drawPile,
+    ...flatMap(state.players, p => p.hand)
+  ];
+  const playedCardsPile = getPlayedCardsPile(state);
+
+  let maxScore = getMaximumScore(state);
+
+  Object.keys(playedCardsPile).forEach(color => {
+    let value = playedCardsPile[color];
+
+    while (value < 5) {
+      const nextCard = playableCards.find(
+        card => card.color === color && card.number === value + 1
+      );
+
+      if (!nextCard) {
+        maxScore -= 5 - value;
+        break;
+      }
+      value += 1;
+    }
+  });
+
+  return maxScore;
+}
+
+export function joinGame(state: GameState, player: Player): GameState {
+  const game = cloneDeep(state) as GameState;
+  const hand = game.drawPile.splice(
+    0,
+    startingHandSize[game.options.playersCount]
+  );
+
+  game.players = game.players || [];
+  game.players.push({ ...player, hand, index: game.players.length });
+
+  hand.forEach(card => (card.hint = emptyHint(state.options)));
+
+  return game;
+}
+
+export function newGame(options: GameOptions): GameState {
+  assert(options.playersCount > 1 && options.playersCount < 6);
+
+  // all cards but multicolors
+  let cards = flatMap(colors.slice(0, -1), color => [
+    { number: 1, color },
+    { number: 1, color },
+    { number: 1, color },
+    { number: 2, color },
+    { number: 2, color },
+    { number: 3, color },
+    { number: 3, color },
+    { number: 4, color },
+    { number: 4, color },
+    { number: 5, color }
+  ]);
+
+  // Add extensions cards when applicable
+  if (options.multicolor) {
+    cards.push(
+      { number: 1, color: Color.MULTICOLOR },
+      { number: 2, color: Color.MULTICOLOR },
+      { number: 3, color: Color.MULTICOLOR },
+      { number: 4, color: Color.MULTICOLOR },
+      { number: 5, color: Color.MULTICOLOR }
+    );
+  }
+
+  cards = cards.map((c, i) => ({ ...c, id: i })) as Card[];
+
+  const deck = shuffle(cards, options.seed);
+
+  const currentPlayer = shuffle(range(options.playersCount), options.seed)[0];
+
+  return {
+    id: options.id,
+    status: GameStatus.LOBBY,
+    playedCards: [],
+    drawPile: deck,
+    discardPile: [],
+    players: [],
+    tokens: {
+      hints: MaxHints,
+      strikes: 0
+    },
+    currentPlayer,
+    options,
+    actionsLeft: options.playersCount + 1, // this will be decreased when the draw pile is empty
+    turnsHistory: [],
+    history: [],
+    createdAt: Date.now(),
+    synced: false
+  };
+}

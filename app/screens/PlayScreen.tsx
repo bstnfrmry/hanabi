@@ -1,0 +1,111 @@
+import { useRoute } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { StatusBar, StyleSheet, View } from "react-native";
+
+import { LobbyView } from "../components/LobbyView";
+import { Logs } from "../components/Logs";
+import { PlayedCardsView } from "../components/PlayedCardsView";
+import { PlayerView } from "../components/PlayerView";
+import { ScoreView } from "../components/ScoreView";
+import { TokenView } from "../components/TokenView";
+import { useGame } from "../context/GameContext";
+import { usePlayer } from "../context/PlayerContext";
+import { Color, GameStatus, Player } from "../game/state";
+import { Colors } from "../styles/colors";
+import { Column, Row } from "../ui/Layout";
+import { Text } from "../ui/Text";
+
+export const PlayScreen: React.FC = () => {
+  const route = useRoute();
+  const { game, loadGame } = useGame();
+  const { playerId } = usePlayer();
+  const [selectedPlayer, setSeletedPlayer] = useState<Player>();
+
+  const { gameId } = route.params;
+
+  useEffect(() => {
+    if (!gameId) {
+      return;
+    }
+
+    loadGame(gameId);
+  }, [gameId]);
+
+  const onSelectPlayer = (player: Player) => {
+    setSeletedPlayer(player);
+  };
+
+  if (!game) {
+    return <Text value={"Loading game..."} />;
+  }
+
+  return (
+    <View style={Styles.screen}>
+      <Row>
+        <ScoreView />
+      </Row>
+
+      <Row marginTop={5} style={{ height: "10%" }}>
+        <Column flex={1}>
+          <PlayedCardsView />
+        </Column>
+
+        <Column flex={1}>
+          <View style={Styles.tokens}>
+            <TokenView
+              amount={game.tokens.hints}
+              color={Color.BLUE}
+              style={Styles.token}
+            />
+            <TokenView
+              amount={game.tokens.strikes}
+              color={Color.RED}
+              style={Styles.token}
+            />
+          </View>
+        </Column>
+      </Row>
+
+      <Row marginTop={4}>
+        <Logs />
+      </Row>
+
+      {game.players.map(player => {
+        const isSelected = player === selectedPlayer;
+
+        return (
+          <PlayerView
+            key={player.id}
+            player={player}
+            selected={isSelected}
+            style={Styles.player}
+            onSelect={player => onSelectPlayer(player)}
+          />
+        );
+      })}
+
+      {game.status === GameStatus.LOBBY && <LobbyView />}
+    </View>
+  );
+};
+
+const Styles = StyleSheet.create({
+  screen: {
+    paddingTop: StatusBar.currentHeight + 4,
+    flex: 1,
+    padding: 4,
+    backgroundColor: Colors.Blue.Dark
+  },
+  player: {
+    width: "100%",
+    paddingVertical: 8,
+    marginVertical: 8,
+    borderTopWidth: 1
+  },
+  tokens: {
+    flexDirection: "row"
+  },
+  token: {
+    marginHorizontal: 2
+  }
+});

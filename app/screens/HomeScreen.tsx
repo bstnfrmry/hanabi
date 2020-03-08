@@ -1,16 +1,29 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, SafeAreaView, StyleSheet, View } from "react-native";
-import { TouchableHighlight } from "react-native-gesture-handler";
+import {
+  AsyncStorage,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  View
+} from "react-native";
 
 import { Routes } from "../routes";
 import { Colors } from "../styles/colors";
+import { Button } from "../ui/Button";
 import { Text } from "../ui/Text";
 
 export const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
+  const [lastGameId, setLastGameId] = useState<string>();
+
+  useEffect(() => {
+    AsyncStorage.getItem("lastGameId").then(lastGameId => {
+      setLastGameId(lastGameId);
+    });
+  }, []);
 
   const onCreateGamePress = () => {
     navigation.navigate(Routes.CreateGame);
@@ -24,6 +37,10 @@ export const HomeScreen: React.FC = () => {
     navigation.navigate(Routes.JoinGame);
   };
 
+  const onJoinLastGamePress = () => {
+    navigation.navigate(Routes.Play, { gameId: lastGameId });
+  };
+
   return (
     <SafeAreaView style={style.screen}>
       <View style={style.header}>
@@ -31,34 +48,35 @@ export const HomeScreen: React.FC = () => {
           source={require("../../assets/images/logo.png")}
           style={style.logo}
         />
-        <Text style={style.title}>{t("app:name")}</Text>
-        <Text style={style.subtitle}>{t("screens:home:tagline")}</Text>
+        <Text style={style.title} value={t("app:name")} />
+        <Text style={style.subtitle} value={t("screens:home:tagline")} />
       </View>
 
       <View>
-        <TouchableHighlight onPress={onCreateGamePress}>
-          <View style={style.button}>
-            <Text style={style.buttonText}>
-              {t("screens:home:buttons:createGame")}
-            </Text>
-          </View>
-        </TouchableHighlight>
+        <Button
+          text={t("screens:home:buttons:createGame")}
+          onPress={() => onCreateGamePress()}
+        />
 
-        <TouchableHighlight onPress={onPassAndPlayPress}>
-          <View style={style.button}>
-            <Text style={style.buttonText}>
-              {t("screens:home:buttons:passAndPlay")}
-            </Text>
-          </View>
-        </TouchableHighlight>
+        <Button
+          marginTop={4}
+          text={t("screens:home:buttons:passAndPlay")}
+          onPress={() => onPassAndPlayPress()}
+        />
 
-        <TouchableHighlight onPress={onJoinGamePress}>
-          <View style={style.button}>
-            <Text style={style.buttonText}>
-              {t("screens:home:buttons:joinGame")}
-            </Text>
-          </View>
-        </TouchableHighlight>
+        <Button
+          marginTop={4}
+          text={t("screens:home:buttons:joinGame")}
+          onPress={() => onJoinGamePress()}
+        />
+
+        {lastGameId && (
+          <Button
+            marginTop={4}
+            text={t("screens:home:buttons:joinLastGame")}
+            onPress={() => onJoinLastGamePress()}
+          />
+        )}
       </View>
     </SafeAreaView>
   );

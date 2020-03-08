@@ -1,40 +1,56 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import * as Font from "expo-font";
-import React, { useEffect, useState } from "react";
-import { I18nextProvider } from "react-i18next";
+import React, { Suspense } from "react";
+import { View } from "react-native";
 
-import i18n from "./app/i18n";
+import { FontsProvider } from "./app/context/FontsProvider";
+import { GameProvider } from "./app/context/GameContext";
+import { I18nProvider } from "./app/context/I18nContext";
+import { NetworkProvider } from "./app/context/NetworkContext";
+import { PlayerProvider } from "./app/context/PlayerContext";
 import { Routes } from "./app/routes";
 import { CreateGameScreen } from "./app/screens/CreateGameScreen";
 import { HomeScreen } from "./app/screens/HomeScreen";
+import { JoinGameScreen } from "./app/screens/JoinGameScreen";
+import { PlayScreen } from "./app/screens/PlayScreen";
+import { Text } from "./app/ui/Text";
 
 const Stack = createStackNavigator();
 
 const App: React.FC = () => {
-  const [fontLoaded, setFontLoaded] = useState(false);
-
-  useEffect(() => {
-    Font.loadAsync({
-      "Kalam Regular": require("./assets/fonts/Kalam-Regular.ttf")
-    }).then(() => {
-      setFontLoaded(true);
-    });
-  }, []);
-
-  if (!fontLoaded) {
-    return null;
-  }
+  const fallback = (
+    <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+      <Text value="Suspense" />
+    </View>
+  );
 
   return (
-    <I18nextProvider i18n={i18n}>
-      <NavigationContainer>
-        <Stack.Navigator headerMode="none">
-          <Stack.Screen component={HomeScreen} name={Routes.Home} />
-          <Stack.Screen component={CreateGameScreen} name={Routes.CreateGame} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </I18nextProvider>
+    <Suspense fallback={fallback}>
+      <I18nProvider>
+        <FontsProvider>
+          <NetworkProvider>
+            <PlayerProvider>
+              <GameProvider>
+                <NavigationContainer>
+                  <Stack.Navigator headerMode="none">
+                    <Stack.Screen component={HomeScreen} name={Routes.Home} />
+                    <Stack.Screen
+                      component={CreateGameScreen}
+                      name={Routes.CreateGame}
+                    />
+                    <Stack.Screen
+                      component={JoinGameScreen}
+                      name={Routes.JoinGame}
+                    />
+                    <Stack.Screen component={PlayScreen} name={Routes.Play} />
+                  </Stack.Navigator>
+                </NavigationContainer>
+              </GameProvider>
+            </PlayerProvider>
+          </NetworkProvider>
+        </FontsProvider>
+      </I18nProvider>
+    </Suspense>
   );
 };
 
