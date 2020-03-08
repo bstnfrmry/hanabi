@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ViewProps } from "react-native";
+import { ScrollView, ViewProps } from "react-native";
 
 import { useGame } from "../context/GameContext";
 import { Text } from "../ui/Text";
@@ -7,12 +7,14 @@ import { Text } from "../ui/Text";
 type Props = ViewProps & {};
 
 export const Logs: React.FC<Props> = props => {
+  const { style } = props;
+
   const { game } = useGame();
 
-  const turns = [...game.turnsHistory.reverse()];
+  const turns = [...game.turnsHistory].reverse();
 
   return (
-    <View>
+    <ScrollView indicatorStyle="white" style={[style]}>
       {turns.map((turn, i) => {
         let sentence = game.players[turn.action.from].name;
 
@@ -27,6 +29,6 @@ export const Logs: React.FC<Props> = props => {
 
         return <Text key={i} value={sentence} />;
       })}
-    </View>
+    </ScrollView>
   );
 };

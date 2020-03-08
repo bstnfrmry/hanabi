@@ -45,7 +45,7 @@ export const PlayScreen: React.FC = () => {
         <ScoreView />
       </Row>
 
-      <Row marginTop={5} style={{ height: "10%" }}>
+      <Row marginTop={4}>
         <Column flex={1}>
           <PlayedCardsView />
         </Column>
@@ -66,7 +66,7 @@ export const PlayScreen: React.FC = () => {
         </Column>
       </Row>
 
-      <Row marginTop={4}>
+      <Row marginTop={4} style={{ height: "10%" }}>
         <Logs />
       </Row>
 
@@ -74,13 +74,14 @@ export const PlayScreen: React.FC = () => {
         const isSelected = player === selectedPlayer;
 
         return (
-          <PlayerView
-            key={player.id}
-            player={player}
-            selected={isSelected}
-            style={Styles.player}
-            onSelect={player => onSelectPlayer(player)}
-          />
+          <Row key={player.id} marginTop={20}>
+            <PlayerView
+              player={player}
+              selected={isSelected}
+              style={Styles.player}
+              onSelect={player => onSelectPlayer(player)}
+            />
+          </Row>
         );
       })}
 
@@ -97,10 +98,7 @@ const Styles = StyleSheet.create({
     backgroundColor: Colors.Blue.Dark
   },
   player: {
-    width: "100%",
-    paddingVertical: 8,
-    marginVertical: 8,
-    borderTopWidth: 1
+    width: "100%"
   },
   tokens: {
     flexDirection: "row"
