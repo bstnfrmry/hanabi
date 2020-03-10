@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AsyncStorage } from "react-native";
 
 import * as actions from "../game/actions";
+import play from "../game/ai";
 import GameState, {
   Action,
   GameHintsLevel,
@@ -23,7 +24,9 @@ type GameContextProps = {
   createGame: (playersCount: number, multicolor: boolean) => string;
   startGame: () => void;
   joinGame: () => string;
+  addBot: () => string;
   play: (action: Action) => void;
+  autoPlay: () => void;
   isGameFull: () => boolean;
 };
 
@@ -83,7 +86,7 @@ export const GameProvider: React.FC = props => {
 
     createGame: (playersCount: number, multicolor: boolean) => {
       const game = actions.newGame({
-        id: "123456",
+        id: "123456111",
         playersCount,
         multicolor,
         allowRollback: true,
@@ -109,12 +112,30 @@ export const GameProvider: React.FC = props => {
       updateGame(actions.commitAction(game, action));
     },
 
+    autoPlay: () => {
+      updateGame(play(game));
+    },
+
     joinGame: () => {
       updateGame(
         actions.joinGame(game, {
           id: playerId,
           name: playerName,
           bot: false
+        })
+      );
+
+      return playerId;
+    },
+
+    addBot: () => {
+      const botsIndex = game.players.filter(player => player.bot).length + 1;
+
+      updateGame(
+        actions.joinGame(game, {
+          id: `${new Date()}`,
+          name: `Bot #${botsIndex}`,
+          bot: true
         })
       );
 

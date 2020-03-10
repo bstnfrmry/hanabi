@@ -11,7 +11,14 @@ import { Text } from "../ui/Text";
 
 export const LobbyView: React.FC = () => {
   const { t } = useTranslation();
-  const { game, selfPlayer, startGame, joinGame, isGameFull } = useGame();
+  const {
+    game,
+    selfPlayer,
+    startGame,
+    joinGame,
+    addBot,
+    isGameFull
+  } = useGame();
   const { playerName, updateName } = usePlayer();
 
   const [name, setName] = useState(playerName);
@@ -23,7 +30,10 @@ export const LobbyView: React.FC = () => {
   const onJoinGamePress = async () => {
     await updateName(name);
     joinGame();
-    console.log("join");
+  };
+
+  const onBotAddPress = async () => {
+    addBot();
   };
 
   const onStartGamePress = () => {
@@ -50,6 +60,13 @@ export const LobbyView: React.FC = () => {
             onPress={() => onJoinGamePress()}
           />
         </View>
+      )}
+
+      {selfPlayer && !isGameFull() && (
+        <Button
+          text={t("screens:play:addBot")}
+          onPress={() => onBotAddPress()}
+        />
       )}
 
       {isGameFull() && (

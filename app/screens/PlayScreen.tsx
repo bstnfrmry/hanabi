@@ -1,6 +1,14 @@
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
+import {
+  BackHandler,
+  Modal,
+  StatusBar,
+  StyleSheet,
+  ToastAndroid,
+  TouchableHighlight,
+  View
+} from "react-native";
 
 import { LobbyView } from "../components/LobbyView";
 import { Logs } from "../components/Logs";
@@ -11,13 +19,17 @@ import { TokenView } from "../components/TokenView";
 import { useGame } from "../context/GameContext";
 import { usePlayer } from "../context/PlayerContext";
 import { Color, GameStatus, Player } from "../game/state";
+import { Routes } from "../routes";
 import { Colors } from "../styles/colors";
 import { Column, Row } from "../ui/Layout";
-import { Text } from "../ui/Text";
+import { Text, TextSize } from "../ui/Text";
 
 export const PlayScreen: React.FC = () => {
+  const navigation = useNavigation();
+  const [exiting, setExiting] = useState(false);
+
   const route = useRoute();
-  const { game, loadGame, selfPlayer } = useGame();
+  const { game, loadGame, autoPlay, selfPlayer, currentPlayer } = useGame();
   const { playerId } = usePlayer();
   const [selectedPlayer, setSeletedPlayer] = useState<Player>();
 
@@ -30,6 +42,36 @@ export const PlayScreen: React.FC = () => {
 
     loadGame(gameId);
   }, [gameId]);
+
+  useEffect(() => {
+    const handler = BackHandler.addEventListener("hardwareBackPress", () => {
+      setExiting(true);
+      return true;
+    });
+
+    return () => {
+      handler.remove();
+    };
+  }, []);
+
+  /**
+   * Play for bots.
+   */
+  useEffect(() => {
+    if (!game) return;
+    if (game.status !== GameStatus.ONGOING) return;
+    console.log(selfPlayer.index);
+    if (!selfPlayer || selfPlayer.index) return;
+    if (!currentPlayer.bot) return;
+
+    console.log("prefoo");
+    const timeout = setTimeout(() => {
+      console.log("foo");
+      autoPlay();
+    }, game.options.botsWait);
+
+    return () => clearTimeout(timeout);
+  }, [game && currentPlayer, game && game.status]);
 
   const onSelectPlayer = (player: Player) => {
     setSeletedPlayer(player);
@@ -47,6 +89,51 @@ export const PlayScreen: React.FC = () => {
 
   return (
     <View style={Styles.screen}>
+      <Modal animationType="slide" transparent={true} visible={exiting}>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            flex: 1
+          }}
+        >
+          <View style={{ padding: 20, backgroundColor: Colors.White }}>
+            <Text
+              size={TextSize.L}
+              style={{ color: Colors.Blue.Dark, marginBottom: 20 }}
+              value="You are about to exit the game"
+            />
+            <Row>
+              <TouchableHighlight
+                style={{ flex: 1 }}
+                onPress={() => {
+                  setExiting(false);
+                }}
+              >
+                <Text
+                  size={TextSize.L}
+                  style={{ color: Colors.Blue.Dark }}
+                  value="Cancel"
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{ flex: 1 }}
+                onPress={() => {
+                  navigation.navigate(Routes.Home);
+                  setExiting(false);
+                }}
+              >
+                <Text
+                  size={TextSize.L}
+                  style={{ color: Colors.Blue.Dark }}
+                  value="Exit"
+                />
+              </TouchableHighlight>
+            </Row>
+          </View>
+        </View>
+      </Modal>
+
       <Row>
         <ScoreView />
       </Row>
@@ -90,14 +177,16 @@ export const PlayScreen: React.FC = () => {
           </Row>
         );
       })}
-      <Row marginTop={20}>
-        <PlayerView
-          player={selfPlayer}
-          selected={selfPlayer === selectedPlayer}
-          style={Styles.player}
-          onSelect={player => onSelectPlayer(player)}
-        />
-      </Row>
+      {selfPlayer && (
+        <Row marginTop={20}>
+          <PlayerView
+            player={selfPlayer}
+            selected={selfPlayer === selectedPlayer}
+            style={Styles.player}
+            onSelect={player => onSelectPlayer(player)}
+          />
+        </Row>
+      )}
 
       {game.status === GameStatus.LOBBY && <LobbyView />}
     </View>
