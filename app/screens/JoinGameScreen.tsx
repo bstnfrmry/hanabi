@@ -12,7 +12,7 @@ export const JoinGameScreen: React.FC = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
 
-  const [gameId, setGameId] = useState("");
+  const [gameId, setGameId] = useState("1234569");
 
   const onChangeGameId = (gameId: string) => {
     setGameId(gameId);

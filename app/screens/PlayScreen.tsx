@@ -60,7 +60,6 @@ export const PlayScreen: React.FC = () => {
   useEffect(() => {
     if (!game) return;
     if (game.status !== GameStatus.ONGOING) return;
-    console.log(selfPlayer.index);
     if (!selfPlayer || selfPlayer.index) return;
     if (!currentPlayer.bot) return;
 
