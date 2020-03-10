@@ -12,7 +12,7 @@ import { Square } from "../ui/Layout";
 import { CardSize } from "./CardView";
 
 type Props = {
-  color: Color;
+  color?: Color;
   size: CardSize;
   style?: StyleProp<ViewStyle>;
 };
@@ -20,9 +20,13 @@ type Props = {
 export const CardWrapperView: React.FC<Props> = props => {
   const { color, children, style } = props;
 
+  const source = color
+    ? ColorMap[color]
+    : require("../../assets/images/cards/gray.png");
+
   return (
     <Square style={[Styles.wrapper, style]}>
-      <ImageBackground source={ColorMap[color]} style={Styles.image}>
+      <ImageBackground source={source} style={Styles.image}>
         {children}
       </ImageBackground>
     </Square>

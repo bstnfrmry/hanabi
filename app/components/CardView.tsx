@@ -26,7 +26,11 @@ export const CardView: React.FC<Props> = props => {
   const showHints = size === CardSize.L;
 
   return (
-    <CardWrapperView color={card.color} size={size} style={style}>
+    <CardWrapperView
+      color={visible ? card.color : null}
+      size={size}
+      style={style}
+    >
       {visible && (
         <Row alignItems="center" flex={1} justifyContent="center">
           <Text
