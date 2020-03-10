@@ -17,7 +17,7 @@ import { Text } from "../ui/Text";
 
 export const PlayScreen: React.FC = () => {
   const route = useRoute();
-  const { game, loadGame } = useGame();
+  const { game, loadGame, selfPlayer } = useGame();
   const { playerId } = usePlayer();
   const [selectedPlayer, setSeletedPlayer] = useState<Player>();
 
@@ -38,6 +38,12 @@ export const PlayScreen: React.FC = () => {
   if (!game) {
     return <Text value={"Loading game..."} />;
   }
+
+  const position = selfPlayer ? selfPlayer.index : game.players.length;
+  const otherPlayers = [
+    ...game.players.slice(position + 1),
+    ...game.players.slice(0, position)
+  ];
 
   return (
     <View style={Styles.screen}>
@@ -70,7 +76,7 @@ export const PlayScreen: React.FC = () => {
         <Logs />
       </Row>
 
-      {game.players.map(player => {
+      {otherPlayers.map(player => {
         const isSelected = player === selectedPlayer;
 
         return (
@@ -84,6 +90,14 @@ export const PlayScreen: React.FC = () => {
           </Row>
         );
       })}
+      <Row marginTop={20}>
+        <PlayerView
+          player={selfPlayer}
+          selected={selfPlayer === selectedPlayer}
+          style={Styles.player}
+          onSelect={player => onSelectPlayer(player)}
+        />
+      </Row>
 
       {game.status === GameStatus.LOBBY && <LobbyView />}
     </View>
