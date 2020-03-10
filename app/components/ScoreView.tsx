@@ -36,6 +36,17 @@ export const ScoreView: React.FC<Props> = props => {
           value={`${maxScore}`}
         />
       )}
+      {game.actionsLeft > 0 && game.actionsLeft <= game.options.playersCount && (
+        <Text
+          size={TextSize.L}
+          style={{
+            color: Colors.Red.Medium
+          }}
+          value={`· ${game.actionsLeft} turn${
+            game.actionsLeft > 1 ? "s" : ""
+          } left`}
+        />
+      )}
     </Row>
   );
 };

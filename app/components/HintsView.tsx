@@ -6,7 +6,7 @@ import { useGame } from "../context/GameContext";
 import { getColors } from "../game/actions";
 import { Color, HintType } from "../game/state";
 import { ColorMap, Colors } from "../styles/colors";
-import { Column, Row, Square } from "../ui/Layout";
+import { Row, Square } from "../ui/Layout";
 import { Text } from "../ui/Text";
 
 type Props = ViewProps & {
@@ -34,7 +34,7 @@ export const HintsView: React.FC<Props> = props => {
   };
 
   return (
-    <Column style={[Styles.hints, style]}>
+    <View style={[Styles.hints, style]}>
       <Row>
         {colors.map(color => {
           const isSelected = color === selected;
@@ -68,18 +68,14 @@ export const HintsView: React.FC<Props> = props => {
             >
               <Square>
                 <View style={[Styles.hint, isSelected && Styles.selectedHint]}>
-                  <Text
-                    adjustsFontSizeToFit
-                    style={Styles.hintText}
-                    value={`${number}`}
-                  />
+                  <Text style={Styles.hintText} value={`${number}`} />
                 </View>
               </Square>
             </TouchableOpacity>
           );
         })}
       </Row>
-    </Column>
+    </View>
   );
 };
 

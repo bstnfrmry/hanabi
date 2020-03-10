@@ -137,9 +137,7 @@ export const PlayerView: React.FC<Props> = props => {
     const cardIndex = player.hand.indexOf(card);
 
     play({
-      action: "play",
-      from: currentPlayer.index,
-      card,
+      action: card,
       cardIndex
     });
   };
@@ -163,7 +161,14 @@ export const PlayerView: React.FC<Props> = props => {
                 {isTurn && (
                   <Text
                     size={TextSize.L}
-                    style={Styles.currentTurn}
+                    style={[
+                      Styles.currentTurn,
+                      {
+                        color: isSelfPlayerTurn
+                          ? Colors.Yellow.Medium
+                          : Colors.White
+                      }
+                    ]}
                     value={"➤ "}
                   />
                 )}
@@ -216,7 +221,12 @@ export const PlayerView: React.FC<Props> = props => {
               <HintsView
                 onHintPress={(type, value) => onHintPress(type, value)}
               />
-              {hint && <Text value={textualHint(hint, player.hand)} />}
+              {hint && (
+                <Text
+                  style={Styles.hintText}
+                  value={textualHint(hint, player.hand)}
+                />
+              )}
               <Button
                 disabled={!hint}
                 marginTop={10}
@@ -268,6 +278,7 @@ const Styles = StyleSheet.create({
   selectedCard: {
     borderWidth: 3
   },
+  hintText: { marginTop: -60 }, // TODO fix that horrible margin-top
   actions: {
     marginTop: 8,
     alignSelf: "flex-end"

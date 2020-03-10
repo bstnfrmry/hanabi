@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, ViewProps } from "react-native";
+import { StyleSheet, View, ViewProps } from "react-native";
 
 import { useGame } from "../context/GameContext";
 import { Color } from "../game/state";

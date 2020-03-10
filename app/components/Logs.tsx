@@ -2,6 +2,7 @@ import React from "react";
 import { ScrollView, ViewProps } from "react-native";
 
 import { useGame } from "../context/GameContext";
+import { GameStatus } from "../game/state";
 import { Text } from "../ui/Text";
 
 type Props = ViewProps & {};
@@ -15,6 +16,19 @@ export const Logs: React.FC<Props> = props => {
 
   return (
     <ScrollView indicatorStyle="white" style={[style]}>
+      {game.status === GameStatus.OVER && (
+        <>
+          <Text
+            style={{ fontFamily: "Kalam Bold", lineHeight: 20 }}
+            value={`The game is over!`}
+          />
+          <Text
+            style={{ fontFamily: "Kalam Bold", lineHeight: 20 }}
+            value={`Your score is ${game.playedCards.length} 🎉`}
+          />
+        </>
+      )}
+
       {turns.map((turn, i) => {
         let sentence = game.players[turn.action.from].name;
 

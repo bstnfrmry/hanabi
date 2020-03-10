@@ -10,7 +10,8 @@ export const FontsProvider: React.FC = props => {
 
   useEffect(() => {
     Font.loadAsync({
-      "Kalam Regular": require("../../assets/fonts/Kalam-Regular.ttf")
+      "Kalam Regular": require("../../assets/fonts/Kalam-Regular.ttf"),
+      "Kalam Bold": require("../../assets/fonts/Kalam-Bold.ttf")
     }).then(() => {
       setFontLoaded(true);
     });

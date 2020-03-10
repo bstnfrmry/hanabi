@@ -15,7 +15,7 @@ import { usePlayer } from "../context/PlayerContext";
 import { Color, GameStatus, Player } from "../game/state";
 import { Colors } from "../styles/colors";
 import { Column, Row } from "../ui/Layout";
-import { Text } from "../ui/Text";
+import { Text, TextSize } from "../ui/Text";
 
 export const PlayScreen: React.FC = () => {
   const route = useRoute();
@@ -53,13 +53,13 @@ export const PlayScreen: React.FC = () => {
         <ScoreView />
       </Row>
 
-      <Row marginTop={4}>
+      <Row marginTop={4} style={Styles.secondRow}>
         <Column flex={1}>
           <PlayedCardsView />
         </Column>
 
         <Column flex={1}>
-          <View style={Styles.tokens}>
+          <Row style={Styles.tokens}>
             <TokenView
               amount={game.tokens.hints}
               color={Color.BLUE}
@@ -72,12 +72,31 @@ export const PlayScreen: React.FC = () => {
             />
             <DrawPileView style={Styles.token} />
             <DiscardView style={Styles.token} />
-          </View>
+          </Row>
         </Column>
       </Row>
 
-      <Row marginTop={4} style={{ height: "10%" }}>
-        <Logs />
+      <Row marginTop={4} style={{ height: "20%" }}>
+        <Column flex={2}>
+          <Logs />
+        </Column>
+        <Column flex={1}>
+          <Row>
+            <Column>
+              <Text size={TextSize.S} style={Styles.beurk} value="deck" />
+              {game.drawPile.length < 6 && (
+                <Text
+                  size={TextSize.S}
+                  style={Styles.beurk2}
+                  value={`${game.drawPile.length} left`}
+                />
+              )}
+            </Column>
+            <Column>
+              <Text size={TextSize.S} style={Styles.beurk} value="discard" />
+            </Column>
+          </Row>
+        </Column>
       </Row>
 
       {otherPlayers.map(player => {
@@ -94,14 +113,17 @@ export const PlayScreen: React.FC = () => {
           </Row>
         );
       })}
-      <Row marginTop={20}>
-        <PlayerView
-          player={selfPlayer}
-          selected={selfPlayer === selectedPlayer}
-          style={Styles.player}
-          onSelect={player => onSelectPlayer(player)}
-        />
-      </Row>
+
+      {game.players.length > 0 && (
+        <Row marginTop={20}>
+          <PlayerView
+            player={selfPlayer}
+            selected={selfPlayer === selectedPlayer}
+            style={Styles.player}
+            onSelect={player => onSelectPlayer(player)}
+          />
+        </Row>
+      )}
 
       {game.status === GameStatus.LOBBY && <LobbyView />}
     </View>
@@ -115,6 +137,9 @@ const Styles = StyleSheet.create({
     padding: 4,
     backgroundColor: Colors.Blue.Dark
   },
+  secondRow: {
+    justifyContent: "space-between" // TODO fix this that does not work
+  },
   player: {
     width: "100%"
   },
@@ -123,5 +148,13 @@ const Styles = StyleSheet.create({
   },
   token: {
     marginHorizontal: 2
+  },
+  beurk: {
+    marginHorizontal: 10,
+    textAlign: "center"
+  },
+  beurk2: {
+    marginHorizontal: 5,
+    color: Colors.Red.Medium
   }
 });
