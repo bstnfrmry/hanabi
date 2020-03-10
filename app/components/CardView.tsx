@@ -1,8 +1,14 @@
 import React from "react";
-import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+import {
+  ImageBackground,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle
+} from "react-native";
 
-import { Card } from "../game/state";
-import { Colors } from "../styles/colors";
+import { Card, HintLevel } from "../game/state";
+import { ColorMap, Colors } from "../styles/colors";
 import { Row } from "../ui/Layout";
 import { Text, TextSize } from "../ui/Text";
 import { CardHints } from "./CardHints";
@@ -32,10 +38,28 @@ export const CardView: React.FC<Props> = props => {
   const { card, size = CardSize.M, visible = true, style } = props;
 
   const showHints = size === CardSize.L;
+  const showCardNumber =
+    visible || card.hint.number[card.number] === HintLevel.SURE;
+  const showCardColorHint =
+    !visible && card.hint.color[card.color] === HintLevel.SURE;
 
   return (
-    <CardWrapperView color={card.color} size={size} style={style}>
-      {visible && (
+    <CardWrapperView
+      color={visible ? card.color : null}
+      size={size}
+      style={style}
+    >
+      {showCardColorHint && (
+        <View style={Styles.colorHint}>
+          <ImageBackground
+            imageStyle={{ borderRadius: 50 }}
+            source={ColorMap[card.color]}
+            style={Styles.colorHintImage}
+          />
+        </View>
+      )}
+
+      {showCardNumber && (
         <Row alignItems="center" flex={1} justifyContent="center">
           <Text
             outlined
@@ -45,6 +69,7 @@ export const CardView: React.FC<Props> = props => {
           />
         </Row>
       )}
+
       {showHints && <CardHints card={card} style={Styles.hints} />}
     </CardWrapperView>
   );
@@ -52,8 +77,22 @@ export const CardView: React.FC<Props> = props => {
 
 const Styles = StyleSheet.create({
   hints: {
+    position: "absolute",
+    bottom: 0,
     marginTop: "auto",
-    paddingBottom: "1%",
     width: "100%"
+  },
+  colorHint: {
+    position: "absolute",
+    top: "15%",
+    left: "15%",
+    width: "70%",
+    height: "70%",
+    borderRadius: 50
+  },
+  colorHintImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 50
   }
 });

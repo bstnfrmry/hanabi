@@ -92,7 +92,7 @@ const Styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.White,
     flex: 1,
-    margin: 1,
+    margin: 4,
     backgroundColor: Colors.White
   },
   hintImage: {

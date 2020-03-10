@@ -83,7 +83,7 @@ export const GameProvider: React.FC = props => {
 
     createGame: (playersCount: number, multicolor: boolean) => {
       const game = actions.newGame({
-        id: "12345",
+        id: "123456",
         playersCount,
         multicolor,
         allowRollback: true,
