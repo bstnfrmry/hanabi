@@ -2,6 +2,8 @@ import { useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 
+import { DiscardView } from "../components/DiscardView";
+import { DrawPileView } from "../components/DrawPileView";
 import { LobbyView } from "../components/LobbyView";
 import { Logs } from "../components/Logs";
 import { PlayedCardsView } from "../components/PlayedCardsView";
@@ -68,6 +70,8 @@ export const PlayScreen: React.FC = () => {
               color={Color.RED}
               style={Styles.token}
             />
+            <DrawPileView style={Styles.token} />
+            <DiscardView style={Styles.token} />
           </View>
         </Column>
       </Row>

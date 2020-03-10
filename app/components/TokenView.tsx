@@ -2,8 +2,7 @@ import React from "react";
 import { ImageBackground, StyleSheet, View, ViewProps } from "react-native";
 
 import { Color } from "../game/state";
-import { ColorMap, Colors } from "../styles/colors";
-import { Square } from "../ui/Layout";
+import { ColorMap } from "../styles/colors";
 import { Text, TextSize } from "../ui/Text";
 
 type Props = ViewProps & {
