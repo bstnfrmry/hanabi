@@ -150,18 +150,36 @@ export const PlayerView: React.FC<Props> = props => {
     <View style={style}>
       <Container>
         <View style={Styles.playerName}>
-          {isTurn && (
-            <Text size={TextSize.L} style={Styles.currentTurn} value={">"} />
-          )}
-          <Text size={TextSize.L} value={player.name} />
-          {selected && (
-            <Button
-              style={Styles.unselectPlayerButton}
-              text="×"
-              variant={ButtonVariant.Void}
-              onPress={() => onUnselectPlayer()}
-            />
-          )}
+          <Row>
+            <Column>
+              {isSelfPlayer && isSelfPlayerTurn && (
+                <Text
+                  size={TextSize.M}
+                  style={Styles.currentTurn}
+                  value={"Your turn"}
+                />
+              )}
+              <Row>
+                {isTurn && (
+                  <Text
+                    size={TextSize.L}
+                    style={Styles.currentTurn}
+                    value={"➤ "}
+                  />
+                )}
+                <Text size={TextSize.L} value={player.name} />
+              </Row>
+            </Column>
+
+            {selected && (
+              <Button
+                style={Styles.unselectPlayerButton}
+                text="×"
+                variant={ButtonVariant.Void}
+                onPress={() => onUnselectPlayer()}
+              />
+            )}
+          </Row>
         </View>
 
         <TouchableWithoutFeedback
@@ -231,12 +249,11 @@ export const PlayerView: React.FC<Props> = props => {
 
 const Styles = StyleSheet.create({
   playerName: {
-    flexDirection: "row",
-    alignItems: "center",
     minWidth: "50%"
   },
   currentTurn: {
-    marginRight: 2
+    marginRight: 2,
+    color: Colors.Yellow.Medium
   },
   unselectPlayerButton: {
     marginLeft: "auto"
