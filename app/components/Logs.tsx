@@ -19,9 +19,9 @@ export const Logs: React.FC<Props> = props => {
         let sentence = game.players[turn.action.from].name;
 
         if (turn.action.action === "discard") {
-          sentence += ` discarded ${turn.card.color} / ${turn.card.number}`;
+          sentence += ` discarded ${turn.action.card.number} ${turn.action.card.color}`;
         } else if (turn.action.action === "play") {
-          sentence += ` played ${turn.card.color} / ${turn.card.number}`;
+          sentence += ` played ${turn.action.card.number} ${turn.action.card.color}`;
         } else if (turn.action.action === "hint") {
           const target = game.players[turn.action.to].name;
           sentence += ` hinted ${target} about ${turn.action.value}'s`;
