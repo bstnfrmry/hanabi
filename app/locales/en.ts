@@ -1,3 +1,5 @@
+import play from "../game/ai";
+
 export const en = {
   app: {
     name: "Hanabi"
@@ -20,6 +22,13 @@ export const en = {
       playersCount: "{{count}} players",
       multicolor: "New game - with multicolors",
       createGame: "New game - no multicolor"
+    },
+
+    play: {
+      joinGame: "Join game",
+      shareCode: "Share this code {{gameId}}",
+      addBot: "Ajouter une IA",
+      startGame: "Start game"
     }
   }
 };

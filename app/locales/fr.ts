@@ -22,6 +22,11 @@ export const fr: locales = {
       playersCount: "{{count}} joueurs",
       multicolor: "Multi-couleur",
       createGame: "Nouvelle partie"
+    },
+
+    play: {
+      joinGame: "Rejoindre la partie",
+      shareCode: "Partager le code {{gameId}}"
     }
   }
 };

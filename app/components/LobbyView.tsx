@@ -47,7 +47,7 @@ export const LobbyView: React.FC = () => {
       })}
 
       <View>
-        <Text value={`Share this code : ${game.id}`} />
+        <Text value={t("screens:play:shareCode", { gameId: game.id })} />
       </View>
 
       {!selfPlayer && (
