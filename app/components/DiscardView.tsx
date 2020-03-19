@@ -1,18 +1,16 @@
 import { chunk, orderBy } from "lodash";
 import React from "react";
-import { StyleSheet, View, ViewProps } from "react-native";
+import { View, ViewProps } from "react-native";
 
 import { useGame } from "../context/GameContext";
 import { getColors } from "../game/actions";
 import { Row } from "../ui/Layout";
-import { CardSize, CardView } from "./CardView";
+import { CardView } from "./CardView";
 import { CardWrapperView } from "./CardWrapperView";
-import { DiscardPileView } from "./DiscardPileView";
 
 type Props = ViewProps;
 
 export const DiscardView: React.FC<Props> = props => {
-  const { style } = props;
   const { game } = useGame();
 
   const rows = chunk(getColors(game), 2);
@@ -56,4 +54,3 @@ export const DiscardView: React.FC<Props> = props => {
     </View>
   );
 };
-const Styles = StyleSheet.create({});
