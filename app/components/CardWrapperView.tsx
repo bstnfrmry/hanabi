@@ -13,19 +13,21 @@ import { CardSize } from "./CardView";
 
 type Props = {
   color?: Color;
-  size: CardSize;
+  size?: CardSize;
   style?: StyleProp<ViewStyle>;
 };
 
 export const CardWrapperView: React.FC<Props> = props => {
-  const { color, children, style } = props;
+  const { color, children, style, size } = props;
 
   const source = color
     ? ColorMap[color]
     : require("../../assets/images/cards/gray.png");
 
+  const sizeStyle = size ? { width: size, height: size } : {};
+
   return (
-    <Square style={[Styles.wrapper, style]}>
+    <Square style={[Styles.wrapper, sizeStyle, style]}>
       <ImageBackground source={source} style={Styles.image}>
         {children}
       </ImageBackground>

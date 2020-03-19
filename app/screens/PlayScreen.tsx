@@ -10,6 +10,7 @@ import {
   View
 } from "react-native";
 
+import { DiscardPileView } from "../components/DiscardPileView";
 import { DiscardView } from "../components/DiscardView";
 import { DrawPileView } from "../components/DrawPileView";
 import { LobbyView } from "../components/LobbyView";
@@ -34,6 +35,7 @@ export const PlayScreen: React.FC = () => {
   const { game, loadGame, autoPlay, selfPlayer, currentPlayer } = useGame();
   const { playerId } = usePlayer();
   const [selectedPlayer, setSeletedPlayer] = useState<Player>();
+  const [isDiscardOpen, setIsDiscardOpen] = useState(false);
 
   const { gameId } = route.params;
 
@@ -56,6 +58,10 @@ export const PlayScreen: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    setIsDiscardOpen(false);
+  }, [currentPlayer]);
+
   /**
    * Play for bots.
    */
@@ -76,6 +82,10 @@ export const PlayScreen: React.FC = () => {
 
   const onSelectPlayer = (player: Player) => {
     setSeletedPlayer(player);
+  };
+
+  const onDiscardClick = () => {
+    setIsDiscardOpen(!isDiscardOpen);
   };
 
   if (!game) {
@@ -157,32 +167,45 @@ export const PlayScreen: React.FC = () => {
               style={Styles.token}
             />
             <DrawPileView style={Styles.token} />
-            <DiscardView style={Styles.token} />
+            <DiscardPileView style={Styles.token} onClick={onDiscardClick} />
           </Row>
         </Column>
       </Row>
 
       <Row marginTop={4} style={{ height: "20%" }}>
-        <Column flex={2}>
-          <Logs />
-        </Column>
-        <Column flex={1}>
-          <Row>
-            <Column>
-              <Text size={TextSize.S} style={Styles.beurk} value="deck" />
-              {game.drawPile.length < 6 && (
-                <Text
-                  size={TextSize.S}
-                  style={Styles.beurk2}
-                  value={`${game.drawPile.length} left`}
-                />
-              )}
+        {isDiscardOpen && (
+          <Column flex={1}>
+            <DiscardView />
+          </Column>
+        )}
+        {!isDiscardOpen && (
+          <>
+            <Column flex={2}>
+              <Logs />
             </Column>
-            <Column>
-              <Text size={TextSize.S} style={Styles.beurk} value="discard" />
+            <Column flex={1}>
+              <Row>
+                <Column>
+                  <Text size={TextSize.S} style={Styles.beurk} value="deck" />
+                  {game.drawPile.length < 6 && (
+                    <Text
+                      size={TextSize.S}
+                      style={Styles.beurk2}
+                      value={`${game.drawPile.length} left`}
+                    />
+                  )}
+                </Column>
+                <Column>
+                  <Text
+                    size={TextSize.S}
+                    style={Styles.beurk}
+                    value="discard"
+                  />
+                </Column>
+              </Row>
             </Column>
-          </Row>
-        </Column>
+          </>
+        )}
       </Row>
 
       {otherPlayers.map(player => {
@@ -200,7 +223,7 @@ export const PlayScreen: React.FC = () => {
         );
       })}
 
-      {game.players.length > 0 && (
+      {selfPlayer && (
         <Row marginTop={20}>
           <PlayerView
             player={selfPlayer}

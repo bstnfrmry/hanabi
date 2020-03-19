@@ -30,8 +30,8 @@ export const PositionMap = {
 };
 
 export enum CardSize {
-  M,
-  L
+  M = 40,
+  L = 60
 }
 
 export const CardView: React.FC<Props> = props => {

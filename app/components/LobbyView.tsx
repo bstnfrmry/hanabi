@@ -42,10 +42,6 @@ export const LobbyView: React.FC = () => {
 
   return (
     <View>
-      {game.players.map(player => {
-        return <Text key={player.id} value={player.name} />;
-      })}
-
       <View>
         <Text value={t("screens:play:shareCode", { gameId: game.id })} />
       </View>
@@ -73,6 +69,8 @@ export const LobbyView: React.FC = () => {
         <View>
           <Button
             disabled={!name}
+            marginLeft={10}
+            marginTop={40}
             text={t("screens:play:startGame")}
             onPress={() => onStartGamePress()}
           />
