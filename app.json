@@ -23,6 +23,10 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "package": "fr.hanabi.hanabi",
+      "versionCode": 1
+    },
     "ios": {
       "supportsTablet": true
     }

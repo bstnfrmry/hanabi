@@ -200,7 +200,7 @@ export const PlayScreen: React.FC = () => {
         );
       })}
 
-      {game.players.length > 0 && (
+      {selfPlayer && (
         <Row marginTop={20}>
           <PlayerView
             player={selfPlayer}
