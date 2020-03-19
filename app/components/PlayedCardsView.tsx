@@ -1,4 +1,4 @@
-import { sortBy } from "lodash";
+import { orderBy } from "lodash";
 import React from "react";
 import { StyleSheet, View, ViewProps } from "react-native";
 
@@ -15,7 +15,7 @@ export const PlayedCardsView: React.FC<Props> = props => {
   const { game } = useGame();
 
   const colors = getColors(game);
-  const orderedCards = sortBy(game.playedCards, card => card.number, "desc");
+  const orderedCards = orderBy(game.playedCards, card => card.number, "desc");
 
   return (
     <View style={[Styles.container, style]}>

@@ -11,6 +11,7 @@ import {
   Card,
   Color,
   GameStatus,
+  HintAction,
   HintType,
   Number,
   Player
@@ -19,7 +20,7 @@ import { Colors } from "../styles/colors";
 import { Button, ButtonVariant } from "../ui/Button";
 import { Column, Row } from "../ui/Layout";
 import { Text, TextSize } from "../ui/Text";
-import { CardSize, CardView } from "./CardView";
+import { CardSize, CardView, PositionMap } from "./CardView";
 import { HintsView } from "./HintsView";
 
 type Props = ViewProps & {
@@ -27,6 +28,35 @@ type Props = ViewProps & {
   selected: boolean;
   onSelect: (player: Player) => void;
 };
+
+function isCardHintable(hint: HintAction, card: Card) {
+  return hint.type === "color"
+    ? card.color === hint.value
+    : card.number === hint.value;
+}
+
+function textualHint(hint: HintAction, cards: Card[]) {
+  const hintableCards = cards
+    .map((c, i) => (isCardHintable(hint, c) ? i : null))
+    .filter(i => i !== null)
+    .map(i => PositionMap[i]);
+
+  if (hintableCards.length === 0) {
+    if (hint.type === "color") return `You have no ${hint.value} cards.`;
+    else return `You have no ${hint.value}s.`;
+  }
+
+  if (hintableCards.length === 1) {
+    if (hint.type === "color")
+      return `Your card ${hintableCards[0]} is ${hint.value}`;
+    else return `Your card ${hintableCards[0]} is a ${hint.value}`;
+  }
+
+  if (hint.type === "color")
+    return `Your cards ${hintableCards.join(", ")} are ${hint.value}`;
+
+  return `Your cards ${hintableCards.join(", ")} are ${hint.value}s`;
+}
 
 export const PlayerView: React.FC<Props> = props => {
   const { player, selected, onSelect, style } = props;
@@ -107,9 +137,7 @@ export const PlayerView: React.FC<Props> = props => {
     const cardIndex = player.hand.indexOf(card);
 
     play({
-      action: "play",
-      from: currentPlayer.index,
-      card,
+      action: card,
       cardIndex
     });
   };
@@ -120,18 +148,43 @@ export const PlayerView: React.FC<Props> = props => {
     <View style={style}>
       <Container>
         <View style={Styles.playerName}>
-          {isTurn && (
-            <Text size={TextSize.L} style={Styles.currentTurn} value={">"} />
-          )}
-          <Text size={TextSize.L} value={player.name} />
-          {selected && (
-            <Button
-              style={Styles.unselectPlayerButton}
-              text="×"
-              variant={ButtonVariant.Void}
-              onPress={() => onUnselectPlayer()}
-            />
-          )}
+          <Row>
+            <Column>
+              {isSelfPlayer && isSelfPlayerTurn && (
+                <Text
+                  size={TextSize.M}
+                  style={Styles.currentTurn}
+                  value={"Your turn"}
+                />
+              )}
+              <Row>
+                {isTurn && (
+                  <Text
+                    size={TextSize.L}
+                    style={[
+                      Styles.currentTurn,
+                      {
+                        color: isSelfPlayerTurn
+                          ? Colors.Yellow.Medium
+                          : Colors.White
+                      }
+                    ]}
+                    value={"➤ "}
+                  />
+                )}
+                <Text size={TextSize.L} value={player.name} />
+              </Row>
+            </Column>
+
+            {selected && (
+              <Button
+                style={Styles.unselectPlayerButton}
+                text="×"
+                variant={ButtonVariant.Void}
+                onPress={() => onUnselectPlayer()}
+              />
+            )}
+          </Row>
         </View>
 
         <TouchableWithoutFeedback
@@ -168,6 +221,12 @@ export const PlayerView: React.FC<Props> = props => {
               <HintsView
                 onHintPress={(type, value) => onHintPress(type, value)}
               />
+              {hint && (
+                <Text
+                  style={Styles.hintText}
+                  value={textualHint(hint, player.hand)}
+                />
+              )}
               <Button
                 disabled={!hint}
                 marginTop={10}
@@ -200,12 +259,11 @@ export const PlayerView: React.FC<Props> = props => {
 
 const Styles = StyleSheet.create({
   playerName: {
-    flexDirection: "row",
-    alignItems: "center",
     minWidth: "50%"
   },
   currentTurn: {
-    marginRight: 2
+    marginRight: 2,
+    color: Colors.Yellow.Medium
   },
   unselectPlayerButton: {
     marginLeft: "auto"
@@ -220,6 +278,7 @@ const Styles = StyleSheet.create({
   selectedCard: {
     borderWidth: 3
   },
+  hintText: { marginTop: -60 }, // TODO fix that horrible margin-top
   actions: {
     marginTop: 8,
     alignSelf: "flex-end"

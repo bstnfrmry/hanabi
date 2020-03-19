@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ViewProps } from "react-native";
+import { ViewProps } from "react-native";
 
 import { useGame } from "../context/GameContext";
 import {
@@ -7,6 +7,8 @@ import {
   getMaximumScore,
   getScore
 } from "../game/actions";
+import { Colors } from "../styles/colors";
+import { Row } from "../ui/Layout";
 import { Text, TextSize } from "../ui/Text";
 
 type Props = ViewProps & {};
@@ -19,11 +21,32 @@ export const ScoreView: React.FC<Props> = props => {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <View>
+    <Row>
       <Text
         size={TextSize.L}
-        value={`Score: ${score} / ${maxPossibleScore} / ${maxScore}`}
+        value={`Score: ${score} / ${maxPossibleScore} `}
       />
-    </View>
+      {maxPossibleScore !== maxScore && (
+        <Text
+          size={TextSize.L}
+          style={{
+            textDecorationLine: "line-through",
+            color: Colors.Gray.Medium
+          }}
+          value={`${maxScore}`}
+        />
+      )}
+      {game.actionsLeft > 0 && game.actionsLeft <= game.options.playersCount && (
+        <Text
+          size={TextSize.L}
+          style={{
+            color: Colors.Red.Medium
+          }}
+          value={`· ${game.actionsLeft} turn${
+            game.actionsLeft > 1 ? "s" : ""
+          } left`}
+        />
+      )}
+    </Row>
   );
 };

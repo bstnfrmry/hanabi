@@ -7,7 +7,7 @@ export const fr: locales = {
 
   screens: {
     home: {
-      tagline: "Joue à Hanabi en ligne avec tes amis!",
+      tagline: "Joue à Hanabi en ligne avec tes amis !",
       buttons: {
         createGame: "Créer une partie",
         passAndPlay: "Passe et joue",
@@ -20,7 +20,7 @@ export const fr: locales = {
       title:
         "Tu pourras jouer en ligne en partageant le lien de la partie à tes amis.",
       playersCount: "{{count}} joueurs",
-      multicolor: "Multi-couleur",
+      multicolor: "Multicolores",
       createGame: "Nouvelle partie"
     },
 
