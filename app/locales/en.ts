@@ -20,8 +20,8 @@ export const en = {
       title:
         "You will be able to play online by sharing the game link to your friends.",
       playersCount: "{{count}} players",
-      multicolor: "New game - with multicolors",
-      createGame: "New game - no multicolor"
+      multicolor: "Use multicolors",
+      createGame: "New game"
     },
 
     play: {
@@ -29,6 +29,10 @@ export const en = {
       shareCode: "Share this code {{gameId}}",
       addBot: "Ajouter une IA",
       startGame: "Start game"
+    },
+
+    joinGame: {
+      title: "Join game"
     }
   }
 };

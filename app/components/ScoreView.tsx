@@ -42,7 +42,7 @@ export const ScoreView: React.FC<Props> = props => {
           style={{
             color: Colors.Red.Medium
           }}
-          value={`· ${game.actionsLeft} turn${
+          value={` · ${game.actionsLeft} turn${
             game.actionsLeft > 1 ? "s" : ""
           } left`}
         />

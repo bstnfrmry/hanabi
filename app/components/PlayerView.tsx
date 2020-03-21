@@ -137,7 +137,9 @@ export const PlayerView: React.FC<Props> = props => {
     const cardIndex = player.hand.indexOf(card);
 
     play({
-      action: card,
+      action: "play",
+      from: currentPlayer.index,
+      card,
       cardIndex
     });
   };
