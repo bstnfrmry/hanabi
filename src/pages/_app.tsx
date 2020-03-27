@@ -1,8 +1,9 @@
 import "../styles/style.css";
 
 import * as Sentry from "@sentry/browser";
-import NextApp from "next/app";
+import NextApp, { AppProps } from "next/app";
 import Head from "next/head";
+import Router from "next/router";
 import React, { ErrorInfo, useState } from "react";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -10,12 +11,20 @@ import useConnectivity from "~/hooks/connectivity";
 import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
 import { NetworkContext } from "~/hooks/network";
 
+import { initGA, logPageView } from "../lib/analytics";
+
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   environment: process.env.NODE_ENV
 });
 
+Router.events.on("routeChangeComplete", () => logPageView());
+
 export default class App extends NextApp {
+  componentDidMount() {
+    initGA();
+  }
+
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     Sentry.withScope(scope => {
       Object.keys(errorInfo).forEach(key => {
@@ -29,11 +38,11 @@ export default class App extends NextApp {
   }
 
   render() {
-    return <Hanabi Component={this.props.Component} />;
+    return <Hanabi {...this.props} />;
   }
 }
 
-function Hanabi(props: any) {
+function Hanabi(props: AppProps) {
   const { Component } = props;
 
   const [showOffline, setShowOffline] = useState(true);
