@@ -67,6 +67,22 @@ export default class FirebaseNetwork implements Network {
     return () => ref.off();
   }
 
+  subscribeToOnGoingGames(callback: GamesHandler) {
+    const ref = this.db
+      .ref("/games")
+      // Only games created less than 5 hours ago
+      .orderByChild("createdAt")
+      .startAt(Date.now() - 5 * 60 * 60 * 1000);
+
+    ref.on("value", event => {
+      const games = Object.values(event.val() || {}).map(fillEmptyValues);
+
+      callback(games);
+    });
+
+    return () => ref.off();
+  }
+
   subscribeToGame(gameId: string, callback: GameHandler) {
     const ref = this.db.ref(`/games/${gameId}`);
 

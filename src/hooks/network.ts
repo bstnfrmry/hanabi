@@ -13,6 +13,8 @@ export type UnsubscribeHandler = () => void;
 export interface Network {
   subscribeToPublicGames(callback: GamesHandler): UnsubscribeHandler;
 
+  subscribeToOnGoingGames(callback: GamesHandler): UnsubscribeHandler;
+
   subscribeToGame(gameId: string, callback: GameHandler): UnsubscribeHandler;
 
   updateGame(game: IGameState): Promise<void>;
