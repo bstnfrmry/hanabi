@@ -5,6 +5,7 @@ import NextApp, { AppProps } from "next/app";
 import Head from "next/head";
 import Router from "next/router";
 import React, { ErrorInfo, useState } from "react";
+import FullStory from "react-fullstory";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
 import useConnectivity from "~/hooks/connectivity";
@@ -12,6 +13,8 @@ import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
 import { NetworkContext } from "~/hooks/network";
 
 import { initGA, logPageView } from "../lib/analytics";
+
+const FS_ORG_ID = "T0W6G";
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -66,6 +69,7 @@ function Hanabi(props: AppProps) {
         <meta content="#00153f" name="theme-color" />
         <meta content="Play the hanabi card game online." name="Description" />
       </Head>
+      <FullStory org={FS_ORG_ID} />
       <NetworkContext.Provider value={network}>
         <div className="aspect-ratio--object">
           {/* Offline indicator */}

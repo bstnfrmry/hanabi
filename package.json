@@ -26,6 +26,7 @@
     "rc-slider": "^9.2.1",
     "react": "16.8.6",
     "react-dom": "16.8.6",
+    "react-fullstory": "^1.4.0",
     "react-ga": "^2.7.0",
     "react-modal": "^3.9.1",
     "react-popover": "^0.5.10",
