@@ -47,13 +47,6 @@ export default function Hint(props: Props) {
           width: 0.5rem;
           height: 0.5rem;
         }
-
-        @media screen and (min-width: 60em) {
-          .hint {
-            width: 1rem;
-            height: 1rem;
-          }
-        }
       `}</style>
     </>
   );

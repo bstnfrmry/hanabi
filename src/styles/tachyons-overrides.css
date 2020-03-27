@@ -41,12 +41,20 @@
     width: 3rem;
   }
 
+  .h2\.5 {
+    height: 4rem;
+  }
+
+  .w2\.5 {
+    width: 4rem;
+  }
+
   .h3\.5-l {
-    height: 7rem;
+    height: 5rem;
   }
 
   .w3\.5-l {
-    width: 7rem;
+    width: 5rem;
   }
 
   .h4\.5-l {

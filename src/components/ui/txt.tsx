@@ -2,14 +2,16 @@ import classnames from "classnames";
 import React, { HTMLAttributes, ReactNode } from "react";
 
 export enum TxtSize {
+  TINY = "tiny",
   SMALL = "small",
   MEDIUM = "medium",
   LARGE = "large"
 }
 
 const TxtSizes = {
-  [TxtSize.SMALL]: "f6 f4-l",
-  [TxtSize.MEDIUM]: "f4 f3-l",
+  [TxtSize.TINY]: "f8",
+  [TxtSize.SMALL]: "f6 f5-l",
+  [TxtSize.MEDIUM]: "f4",
   [TxtSize.LARGE]: "ttu f2 f1-l tracked"
 };
 

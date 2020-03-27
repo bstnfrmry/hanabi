@@ -18,7 +18,7 @@ export default function Vignettes(props: Props) {
 
   return (
     <div className="flex flex-column items-center ml6-l">
-      <div className="flex flex-row mb1 mb3-l">
+      <div className="flex flex-row mb1">
         {colors.map((color, i) => (
           <Vignette
             key={i}
