@@ -32,7 +32,7 @@ export default function GameBoard(props: Props) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="pa2 pa3-l shadow-5 bg-black-50">
+    <div className="pa2 pv2-l ph3-l shadow-5 bg-black-50">
       <div>
         <Txt
           uppercase

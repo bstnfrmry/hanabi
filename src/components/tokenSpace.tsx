@@ -17,7 +17,7 @@ function Token(props: TokenProps) {
     return (
       <Txt
         className={classnames(
-          "ba flex items-center justify-center br-100 h2 w2 h3-l w3-l o-70 gray ba ml2",
+          "ba flex items-center justify-center br-100 h2 w2 o-70 gray ba ml2",
           `bg-${color}`,
           `b--${color}`
         )}
@@ -28,12 +28,12 @@ function Token(props: TokenProps) {
   }
 
   return (
-    <div className="relative h2 w2 h3-l w3-l ml2">
+    <div className="relative h2 w2 ml2">
       {range(amount).map(i => (
         <Txt
           key={i}
           className={classnames(
-            "outline-main-dark absolute ba flex items-center justify-center br-100 h2 w2 h3-l w3-l ba mr2",
+            "outline-main-dark absolute ba flex items-center justify-center br-100 h2 w2 ba mr2",
             `bg-${color}`,
             `b--${color}`
           )}

@@ -19,7 +19,7 @@ function CardPile(props: CardPileProps) {
   if (!cards.length) {
     return (
       <div className="w-50 mw6">
-        <CardWrapper className="mr1" color={color} size={CardSize.MEDIUM} />
+        <CardWrapper className="mr1" color={color} size={CardSize.SMALL} />
       </div>
     );
   }
@@ -34,7 +34,7 @@ function CardPile(props: CardPileProps) {
           card={card}
           className={classnames("mr1", { "nl2 nl3-l": i > 0 })}
           context={ICardContext.DISCARDED}
-          size={CardSize.MEDIUM}
+          size={CardSize.SMALL}
         />
       ))}
     </div>

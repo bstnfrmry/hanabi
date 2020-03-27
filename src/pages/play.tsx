@@ -430,7 +430,7 @@ export default function Play() {
                 onStartGame={onStartGame}
               />
             ) : (
-              <div className="h4 h5-l overflow-y-scroll pa2 ph3-l">
+              <div className="h4 overflow-y-scroll pa2 pt0-l ph3-l">
                 {selectedArea.type === ActionAreaType.ROLLBACK && (
                   <div className="h-100 flex flex-column items-center justify-center pa2">
                     <Txt

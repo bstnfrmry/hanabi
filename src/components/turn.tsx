@@ -48,7 +48,7 @@ export default function Turn(props: Props) {
           <Card
             card={turn.action.card}
             context={ICardContext.DISCARDED}
-            size={CardSize.SMALL}
+            size={CardSize.TINY}
           />
         </Txt>
       )}
@@ -59,7 +59,7 @@ export default function Turn(props: Props) {
           <Card
             card={turn.action.card}
             context={ICardContext.PLAYED}
-            size={CardSize.SMALL}
+            size={CardSize.TINY}
           />
         </Txt>
       )}
@@ -70,7 +70,7 @@ export default function Turn(props: Props) {
           <Card
             card={turn.card}
             context={ICardContext.DRAWN}
-            size={CardSize.SMALL}
+            size={CardSize.TINY}
           />
         </Txt>
       )}

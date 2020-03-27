@@ -96,7 +96,7 @@ export default function PlayerGame(props: Props) {
     <>
       <div
         className={classnames(
-          "cards flex justify-between bg-main-dark pa2 pv3 relative",
+          "cards flex justify-between bg-main-dark pa2 pv2-l ph3-l relative",
           { "flex-column": selected }
         )}
         onClick={() => {
@@ -185,7 +185,7 @@ export default function PlayerGame(props: Props) {
 
           {selected && (
             <a
-              className="absolute top-0 right-0 mt3 mr3"
+              className="absolute top-0 right-0 mt2 mr3"
               // className={classnames({ ml2: player.reaction || self })}
               onClick={() => onCloseArea()}
             >
@@ -194,11 +194,7 @@ export default function PlayerGame(props: Props) {
           )}
         </div>
 
-        <div
-          className={classnames("flex justify-end flex-grow-1 dib", {
-            mt2: selected
-          })}
-        >
+        <div className={classnames("flex justify-end flex-grow-1 dib")}>
           {player.hand.map((card, i) => (
             <Card
               key={i}
@@ -291,7 +287,7 @@ export default function PlayerGame(props: Props) {
         }}
       >
         {canPlay && selected && player !== selfPlayer && (
-          <div className="flex flex-column items-end pb2 mr2 mb2">
+          <div className="flex flex-column items-end pb2 mr2">
             <Vignettes
               pendingHint={pendingHint}
               onSelect={action => setPendingHint(action)}
