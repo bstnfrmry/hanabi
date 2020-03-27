@@ -49,6 +49,7 @@ export default function Play() {
    * Request notification permissions when game starts
    */
   useEffect(() => {
+    if (typeof Notification === "undefined") return;
     if (!game) return;
     if (game.status !== IGameStatus.ONGOING) return;
 
@@ -102,6 +103,7 @@ export default function Play() {
    * Notify player it's time to play when document isn't focused.
    */
   useEffect(() => {
+    if (typeof Notification === "undefined") return;
     if (!currentPlayer) return;
     if (currentPlayer !== selfPlayer) return;
     if (document.hasFocus()) return;
