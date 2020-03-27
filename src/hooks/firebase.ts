@@ -4,6 +4,7 @@ import firebase from "firebase/app";
 
 import IGameState, {
   fillEmptyValues,
+  GameMode,
   IGameStatus,
   IPlayer
 } from "~/game/state";
@@ -36,6 +37,7 @@ function gameIsPublic(game: IGameState) {
   return (
     !game.options.private &&
     game.status === IGameStatus.LOBBY &&
+    game.options.gameMode === GameMode.NETWORK &&
     game.players.length &&
     game.players.length < game.options.playersCount
   );
