@@ -6,3 +6,19 @@ Being locked down in March 2020, we were willing to play the Hanabi game remotel
 
 Like us, please buy the [physical version](https://fr.asmodee.com/fr/games/hanabi/products/hanabi/) to support its creator if you like this game! 
 
+## Setup
+
+The project uses the [Next.JS](https://nextjs.org/) framework and [Firebase Realtime Database](https://firebase.google.com/) as a back-end.
+
+You'll need to setup a free Firebase account to test the project locally.
+
+```bash
+# Install dependencies
+$ yarn
+
+# Configure Firebase
+$ cp .env.sample && open .env
+
+# Launch development environment
+$ yarn dev
+```
