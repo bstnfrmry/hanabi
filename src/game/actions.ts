@@ -97,12 +97,20 @@ export function isGameOver(state: IGameState) {
 }
 
 export function commitAction(state: IGameState, action: IAction): IGameState {
+  const actionIsntFromCurrentPlayer = action.from !== state.currentPlayer;
+  const isSelfHinting = action.action === "hint" && action.from == action.to;
+  const isHintingWithoutTokens =
+    action.action === "hint" && state.tokens.hints === 0;
+
+  if (actionIsntFromCurrentPlayer || isHintingWithoutTokens || isSelfHinting) {
+    return state;
+  }
+
   // the function should be pure
   const s = cloneDeep(state) as IGameState;
 
   s.history.push({ ...state, turnsHistory: [], history: [] });
 
-  assert(action.from === state.currentPlayer);
   const player = s.players[action.from];
 
   let newCard = null as ICard;
@@ -145,10 +153,8 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
 
   /** HINT */
   if (action.action === "hint") {
-    assert(s.tokens.hints > 0);
     s.tokens.hints -= 1;
 
-    assert(action.from !== action.to);
     const hand = s.players[action.to].hand;
     applyHint(hand, action);
   }
