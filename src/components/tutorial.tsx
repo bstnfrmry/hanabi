@@ -59,7 +59,7 @@ const steps = {
   [ITutorialStep.HINT_TOKENS]: {
     title: "Hint tokens",
     body:
-      "- Giving a hint costs 1 hint token.\n- Discarding a card grants 1 hint token.\n- Playing a 5 gives 1 hint token as a bonus"
+      "Some actions have a cost.\n\n- Giving a hint costs 1 hint token.\n- Discarding a card grants 1 hint token.\n- Playing a 5 gives 1 hint token as a bonus"
   },
   [ITutorialStep.STRIKE_TOKENS]: {
     title: "Strike tokens",

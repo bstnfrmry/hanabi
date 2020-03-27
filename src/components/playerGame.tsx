@@ -110,7 +110,7 @@ export default function PlayerGame(props: Props) {
             {!selected && player === selfPlayer && player === currentPlayer && (
               <Tutorial placement="right" step={ITutorialStep.YOUR_TURN}>
                 <Txt
-                  className="yellow mt1"
+                  className="yellow nt1"
                   id="your-turn"
                   size={TxtSize.SMALL}
                   value={
