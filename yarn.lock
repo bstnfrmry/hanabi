@@ -6684,6 +6684,11 @@ react-error-overlay@5.1.6:
   version "5.1.6"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.6.tgz#0cd73407c5d141f9638ae1e0c63e7b2bf7e9929d"
 
+react-fullstory@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-fullstory/-/react-fullstory-1.4.0.tgz#eec34cb9790e2e1f78e97e23306a3ca460276da9"
+  integrity sha512-lMYTFfgcG1w0XXGHDM9beP/Is56Mct9OjBMRAqY5bmeKVxWnQjHDgmJff1jmakq6w3Wr5fX2UvBSP1RcNwTV1A==
+
 react-ga@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-2.7.0.tgz#24328f157f31e8cffbf4de74a3396536679d8d7c"
