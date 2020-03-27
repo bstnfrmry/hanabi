@@ -52,9 +52,7 @@ export default function Rules(props: Props) {
             size={TxtSize.LARGE}
             value="Hanabi"
           />
-
           <Title>Objective</Title>
-
           <Paragraph>
             Hanabi is a card game created by Antoine Bauza. It's cooperative,
             which means that players are not against each other but assemble to
@@ -64,7 +62,6 @@ export default function Rules(props: Props) {
             bit chaotic. They will need to help each other to prevent the show
             turning to disaster.
           </Paragraph>
-
           <Paragraph>
             The goal of the pyrotechnics team is to build 5 fireworks, one of
             each color (white, red, blue, yellow, green) by combining increasing
@@ -72,9 +69,7 @@ export default function Rules(props: Props) {
             <br />
             With the multicolor option, you need to build a 6th firework.
           </Paragraph>
-
           <Title>Setup</Title>
-
           <Paragraph>
             The app sets up everything for you, which is handy 😉. At the
             beginning of a game, you will have 8 blue tokens - your hints - and
@@ -87,13 +82,10 @@ export default function Rules(props: Props) {
             <br />· In a 2 or 3 player game, each player will be dealt 5 cards
             <br />· In a 4 or 5 player game, each player will be dealt 4 cards
           </Paragraph>
-
           <Paragraph>
             As you will see, players are not allowed to look at their own cards!
           </Paragraph>
-
           <Title>Playing the game</Title>
-
           <Paragraph>
             On each player's turn, they take one (and only one) of the three
             following actions. You are not allowed to pass.
@@ -107,9 +99,7 @@ export default function Rules(props: Props) {
             Players are not allowed to give hints or suggestions on other
             player's turns!
           </Paragraph>
-
           <Subtitle>1. Give information</Subtitle>
-
           <Paragraph>
             When you give information, it will remove a blue token. Note: If you
             have no more blue tokens, you cannot choose to give information and
@@ -119,9 +109,7 @@ export default function Rules(props: Props) {
             player's hand by clicking on it. You can tell the player either
             about one (and only one) color, or one (and only one) value of card.
           </Paragraph>
-
           <Subtitle>2. Discard a card</Subtitle>
-
           <Paragraph>
             Discarding a card returns a blue token. You discard a card from your
             hand by tapping it. You then draw a new card from the deck and it
@@ -132,9 +120,7 @@ export default function Rules(props: Props) {
             <br />
             You can consult discarded cards by clicking on the grey deck
           </Paragraph>
-
           <Subtitle>3. Play a card</Subtitle>
-
           <Paragraph>
             At your turn, to play a card, take a card from your hand and play
             it.
@@ -149,15 +135,12 @@ export default function Rules(props: Props) {
             <br />
             Then you will draw a replacement card from the deck.
           </Paragraph>
-
           <Paragraph>
             When a player finishes a firework by playing a value 5 card on it,
             it will return one blue token to the lid of the box as a bonus. If
             all the blue tokens are in the box lid, you do not get the bonus.
           </Paragraph>
-
           <Title>End of the Game</Title>
-
           <Paragraph>
             Hanabi can end in three ways:
             <br />
@@ -176,6 +159,47 @@ export default function Rules(props: Props) {
             <br />
             The players then score their performance based on the fireworks they
             assembled.
+          </Paragraph>
+          <Txt
+            className="w-100 ttu tc mt5 mb4 dib"
+            size={TxtSize.LARGE}
+            value="Who are we?"
+          />
+          <Paragraph>
+            We are a group of board-game addicts. Locked down in 2020, we were
+            willing to find an alternative to play together remotely. <br />
+            Since we both have fun coding and playing Hanabi, we decided to
+            create an online mobile-friendly version of the game.
+            <br />
+            <br />
+            👉 Like us, please buy the{" "}
+            <a
+              className="lavender"
+              href="https://fr.asmodee.com/fr/games/hanabi/products/hanabi/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              physical version
+            </a>{" "}
+            to support its creator if you like this game!
+          </Paragraph>
+          <Paragraph>
+            Don't hesitate to{" "}
+            <a className="lavender" href="mailto:bastien.formery@gmail.com">
+              contact us
+            </a>{" "}
+            if you have any question or suggestion.
+            <br />
+            We also have a{" "}
+            <a
+              className="lavender"
+              href="https://github.com/bstnfrmry/hanabi/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              public Github repository
+            </a>{" "}
+            if you'd like to contribute.
           </Paragraph>
         </div>
       </div>
