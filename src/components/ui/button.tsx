@@ -60,7 +60,7 @@ export default function Button(props: Props) {
         "bn shadow-2 ttu tracked outline-0 lh-normal",
         { "pointer grow": !disabled },
         { "o-80": disabled },
-        { "bg-cta": primary },
+        { "bg-cta shadow-light": primary },
         { "main-dark": !disabled && !void_ },
         { "bg-transparent near-white": void_ }
       )}

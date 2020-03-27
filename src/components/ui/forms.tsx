@@ -10,10 +10,11 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 
 interface FieldProps extends LabelHTMLAttributes<HTMLLabelElement> {
   label: ReactNode;
+  subText?: string;
 }
 
 export function Field(props: FieldProps) {
-  const { label, className, children, ...attributes } = props;
+  const { label, subText, className, children, ...attributes } = props;
 
   return (
     <label
@@ -23,7 +24,12 @@ export function Field(props: FieldProps) {
         className
       )}
     >
-      <Txt size={TxtSize.MEDIUM} value={label} />
+      <div className="flex flex-column">
+        <Txt size={TxtSize.MEDIUM} value={label} />
+        {subText && (
+          <Txt className="lavender" size={TxtSize.SMALL} value={subText} />
+        )}
+      </div>
       {children}
     </label>
   );

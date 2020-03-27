@@ -5,6 +5,7 @@ import Popover from "react-popover";
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import ReactionsPopover from "~/components/reactionsPopover";
+import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import Vignettes from "~/components/vignettes";
@@ -89,8 +90,8 @@ export default function PlayerGame(props: Props) {
   const cardContext = selected
     ? ICardContext.TARGETED_PLAYER
     : self
-    ? ICardContext.SELF_PLAYER
-    : ICardContext.OTHER_PLAYER;
+      ? ICardContext.SELF_PLAYER
+      : ICardContext.OTHER_PLAYER;
 
   return (
     <>
@@ -107,16 +108,22 @@ export default function PlayerGame(props: Props) {
         <div className="flex items-center">
           <div className="flex flex-column">
             {!selected && player === selfPlayer && player === currentPlayer && (
-              <Txt
-                className="yellow absolute top-0 mt1"
-                id="your-turn"
-                size={TxtSize.SMALL}
-                value="Your turn"
-              />
+              <Tutorial placement="right" step={ITutorialStep.YOUR_TURN}>
+                <Txt
+                  className="yellow mt1"
+                  id="your-turn"
+                  size={TxtSize.SMALL}
+                  value={
+                    game.status === IGameStatus.ONGOING
+                      ? "Your turn"
+                      : "You'll start first"
+                  }
+                />
+              </Tutorial>
             )}
             <div className={classnames("flex items-center")}>
               {player === currentPlayer && (
-                <Txt className="yellow mr1" size={TxtSize.SMALL} value="➤" />
+                <Txt className="yellow mr2" size={TxtSize.SMALL} value="➤" />
               )}
               <PlayerName
                 className="mr2"

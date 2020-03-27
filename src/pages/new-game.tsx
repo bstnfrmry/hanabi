@@ -1,4 +1,4 @@
-import { keyBy } from "lodash";
+import classnames from "classnames";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import shortid from "shortid";
@@ -6,7 +6,7 @@ import shortid from "shortid";
 import HomeButton from "~/components/homeButton";
 import Button, { ButtonSize } from "~/components/ui/button";
 import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
-import Txt from "~/components/ui/txt";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import { newGame } from "~/game/actions";
 import { GameMode, IGameHintsLevel } from "~/game/state";
 import useNetwork from "~/hooks/network";
@@ -27,7 +27,8 @@ const BotsSpeeds = {
 export default function NewGame() {
   const router = useRouter();
   const network = useNetwork();
-  const { offline } = router.query;
+
+  const [offline, setOffline] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [seed, setSeed] = useState<string>();
   const [playersCount, setPlayersCount] = useState(3);
@@ -75,22 +76,30 @@ export default function NewGame() {
         className="flex flex-column w-50-m w-50-l w-80"
         style={{ margin: "auto" }}
       >
-        <div className="f4 pb4 lavender">
-          {offline
-            ? `In this pass-and-play mode, you can play offline with multiple
-              players by passing the device to each player on their turn`
-            : `You will be able to play online by sharing the game link to your
-            friends.`}
+        <div className="flex justify-between ph1 items-center pb2 mb2 bb b--yellow-light">
+          <Txt size={TxtSize.MEDIUM} value="Players" />
+          <div className="flex">
+            {PlayerCounts.map(count => {
+              return (
+                <Button
+                  key={count}
+                  className={classnames("ph4 pv2", {
+                    "bg-lavender": playersCount !== count,
+                    "z-5": playersCount === count
+                  })}
+                  size={ButtonSize.SMALL}
+                  style={{
+                    ...(playersCount === count && {
+                      transform: "scale(1.20)"
+                    })
+                  }}
+                  text={`${count}`}
+                  onClick={() => setPlayersCount(count)}
+                />
+              );
+            })}
+          </div>
         </div>
-        <Field className="pb2 mb2 bb b--yellow-light" label="Players">
-          <Select
-            className="w3 indent"
-            id="players-count"
-            options={keyBy(PlayerCounts)}
-            value={playersCount}
-            onChange={e => setPlayersCount(+e.target.value)}
-          />
-        </Field>
 
         <Field label="Multicolor">
           <Checkbox
@@ -110,7 +119,23 @@ export default function NewGame() {
 
         {showAdvanced && (
           <>
-            <Field className="pb2 mb2 bb b--yellow-light" label="Private">
+            <Field
+              className="pb2 mb2  bb b--yellow-light"
+              label="Pass & Play"
+              subText="Physically pass the device to each player on their turn"
+            >
+              <Checkbox
+                checked={offline}
+                id="offline"
+                onChange={e => setOffline(e.target.checked)}
+              />
+            </Field>
+
+            <Field
+              className="pb2 mb2 bb b--yellow-light"
+              label="Private"
+              subText="Your game won't be visible in the 'Join Room' section"
+            >
               <Checkbox
                 checked={private_}
                 onChange={e => setPrivate(e.target.checked)}
@@ -170,9 +195,16 @@ export default function NewGame() {
             </Field>
           </>
         )}
-        <div className="flex flex-1 justify-end w-75">
+        <div className="f4 mt4 mb2 lavender">
+          {offline
+            ? `In this pass-and-play mode, you can play offline with multiple
+              players that are physically in the same room by passing the device to each player on their turn`
+            : `You will be able to play online by sharing the game link to your
+            friends.`}
+        </div>
+        <div className="flex flex-1 justify-center">
           <Button
-            className="flex-1 justify-end mt5"
+            className="flex-1 justify-end mt2"
             id="new-game"
             size={ButtonSize.LARGE}
             text="New game"
