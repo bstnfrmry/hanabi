@@ -36,7 +36,7 @@ export default function InstructionsArea(props: Props) {
           <div className="flex justify-between items-center mb2">
             {!isReplayMode(game) && (
               <>
-                <div className="flex flex-column">
+                <div className="flex flex-column w-100">
                   <Txt
                     className="db"
                     size={TxtSize.MEDIUM}
@@ -51,23 +51,24 @@ export default function InstructionsArea(props: Props) {
                         reachableScore > game.playedCards.length
                           ? "Keep practicing"
                           : "You did great!"
-                      }`}
+                        }`}
                     />
                   )}
-                </div>
-                <div className="flex flex-column items-end">
-                  <Button
-                    className="nowrap"
-                    size={ButtonSize.TINY}
-                    text="Toggle stats"
-                    onClick={() => onToggleStats()}
-                  />
-                  <Button
-                    className="mt1 nowrap"
-                    size={ButtonSize.TINY}
-                    text="Watch replay"
-                    onClick={() => onReplay()}
-                  />
+                  <div className="flex w-100 justify-between mv2">
+                    <Button
+                      className="nowrap w4"
+                      size={ButtonSize.TINY}
+                      text="Watch replay"
+                      onClick={() => onReplay()}
+                    />
+                    <Button
+                      primary
+                      className="nowrap w4"
+                      size={ButtonSize.TINY}
+                      text="Toggle stats"
+                      onClick={() => onToggleStats()}
+                    />
+                  </div>
                 </div>
               </>
             )}

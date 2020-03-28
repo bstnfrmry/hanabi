@@ -53,7 +53,7 @@ export default function PlayerStats(props: Props) {
   return (
     <div className="flex flex-column w4.5">
       {totalCount && (
-        <div className="flex mb2" style={{ height: 12, width: "100%" }}>
+        <div className="flex mb2" style={{ height: 10, width: "100%" }}>
           <div
             className="h-100"
             style={{
@@ -90,7 +90,7 @@ export default function PlayerStats(props: Props) {
         />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${hintsCount}`} />
         <Txt
-          className="ml1 lavender"
+          className="ml1 lavender w2 nowrap"
           size={TxtSize.TINY}
           value={`· ${percentage(hintsCount, totalCount)}`}
         />
@@ -104,7 +104,7 @@ export default function PlayerStats(props: Props) {
         />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${discardsCount}`} />
         <Txt
-          className="ml1 lavender"
+          className="ml1 lavender w2 nowrap"
           size={TxtSize.TINY}
           value={`· ${percentage(discardsCount, totalCount)}`}
         />
@@ -118,7 +118,7 @@ export default function PlayerStats(props: Props) {
         />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${playsCount}`} />
         <Txt
-          className="ml1 lavender"
+          className="ml1 lavender w2 nowrap"
           size={TxtSize.TINY}
           value={`· ${percentage(playsCount, totalCount)}`}
         />
