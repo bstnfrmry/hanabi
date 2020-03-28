@@ -110,7 +110,7 @@ export default function PlayerGame(props: Props) {
               <Txt
                 className="yellow absolute top-0 mt1"
                 id="your-turn"
-                size={TxtSize.SMALL}
+                size={TxtSize.TINY}
                 value="Your turn"
               />
             )}

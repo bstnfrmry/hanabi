@@ -10,13 +10,14 @@ import { GameMode, IGameStatus } from "~/game/state";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
+  reachableScore?: number;
   interturn: boolean;
   onSelectDiscard: Function;
   onReplay: Function;
 }
 
 export default function InstructionsArea(props: Props) {
-  const { interturn, onReplay } = props;
+  const { reachableScore, interturn, onReplay } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -38,13 +39,20 @@ export default function InstructionsArea(props: Props) {
                   <Txt
                     className="db"
                     size={TxtSize.MEDIUM}
-                    value={`The game is over!`}
+                    value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
                   />
-                  <Txt
-                    className="db"
-                    size={TxtSize.MEDIUM}
-                    value={`Your score is ${game.playedCards.length} 🎉`}
-                  />
+                  {reachableScore && (
+                    <Txt
+                      multiline
+                      className="db mt1 lavender"
+                      size={TxtSize.SMALL}
+                      value={`Estimated max score for this shuffle: ${reachableScore}. ${
+                        reachableScore > game.playedCards.length
+                          ? "Keep practicing"
+                          : "You did great!"
+                      }`}
+                    />
+                  )}
                 </div>
                 <Button
                   className="ml3 nowrap"
