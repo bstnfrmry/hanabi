@@ -247,7 +247,6 @@ function findGivableHint(
     const card = hand[i];
 
     if (isPlayable(card, state.playedCards)) {
-      console.log("isplayable", card);
       hasPlayableCard = true;
       // we don't hint the first hinted card.
       const shouldHint = isFirstHintedCardOrBefore
