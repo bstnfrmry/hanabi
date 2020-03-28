@@ -42,6 +42,7 @@ export default function Play() {
   const router = useRouter();
   const online = useConnectivity();
   const [game, setGame] = useState<IGameState>(null);
+  const [displayStats, setDisplayStats] = useState(false);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
   const [selectedArea, selectArea] = useState<ISelectedArea>({
@@ -404,6 +405,10 @@ export default function Play() {
   function onSelectPlayer(player, cardIndex) {
     const self = player.id === selfPlayer.id;
 
+    if (displayStats) {
+      return;
+    }
+
     onSelectArea({
       id: self ? `game-${player.id}-${cardIndex}` : `game-${player.id}`,
       type: self ? ActionAreaType.SELF_PLAYER : ActionAreaType.OTHER_PLAYER,
@@ -446,6 +451,15 @@ export default function Play() {
     network.updateGame({
       ...omit(game, ["replayCursor"]),
       synced: false
+    });
+  }
+
+  function onToggleStats() {
+    setDisplayStats(!displayStats);
+
+    selectArea({
+      id: "instructions",
+      type: ActionAreaType.INSTRUCTIONS
     });
   }
 
@@ -514,6 +528,7 @@ export default function Play() {
                     reachableScore={reachableScore}
                     onReplay={onReplay}
                     onSelectDiscard={onSelectDiscard}
+                    onToggleStats={onToggleStats}
                   />
                 )}
               </div>
@@ -540,6 +555,7 @@ export default function Play() {
             <div className="flex flex-column">
               <div className="h-100 overflow-y-scroll">
                 <PlayersBoard
+                  displayStats={displayStats}
                   selectedArea={selectedArea}
                   onCloseArea={onCloseArea}
                   onCommitAction={onCommitAction}

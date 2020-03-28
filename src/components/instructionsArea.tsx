@@ -14,10 +14,11 @@ interface Props {
   interturn: boolean;
   onSelectDiscard: Function;
   onReplay: Function;
+  onToggleStats: Function;
 }
 
 export default function InstructionsArea(props: Props) {
-  const { reachableScore, interturn, onReplay } = props;
+  const { reachableScore, interturn, onReplay, onToggleStats } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -54,12 +55,20 @@ export default function InstructionsArea(props: Props) {
                     />
                   )}
                 </div>
-                <Button
-                  className="ml3 nowrap"
-                  size={ButtonSize.TINY}
-                  text="Watch replay"
-                  onClick={() => onReplay()}
-                />
+                <div className="flex flex-column items-end">
+                  <Button
+                    className="nowrap"
+                    size={ButtonSize.TINY}
+                    text="Toggle stats"
+                    onClick={() => onToggleStats()}
+                  />
+                  <Button
+                    className="mt1 nowrap"
+                    size={ButtonSize.TINY}
+                    text="Watch replay"
+                    onClick={() => onReplay()}
+                  />
+                </div>
               </>
             )}
           </div>
