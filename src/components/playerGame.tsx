@@ -112,7 +112,7 @@ export default function PlayerGame(props: Props) {
                 <Txt
                   className="yellow nt1"
                   id="your-turn"
-                  size={TxtSize.SMALL}
+                  size={TxtSize.TINY}
                   value={
                     game.status === IGameStatus.ONGOING
                       ? "Your turn"

@@ -18,13 +18,20 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 import {
   commitAction,
   getMaximumPossibleScore,
+  getScore,
   goBackToState,
   isReplayMode,
-  joinGame
+  joinGame,
+  newGame
 } from "~/game/actions";
 import play from "~/game/ai";
+import cheat from "~/game/ai-cheater";
 import { playSound } from "~/game/sound";
-import IGameState, { GameMode, IGameStatus } from "~/game/state";
+import IGameState, {
+  GameMode,
+  IGameHintsLevel,
+  IGameStatus
+} from "~/game/state";
 import useConnectivity from "~/hooks/connectivity";
 import { GameContext, useCurrentPlayer, useSelfPlayer } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
@@ -35,6 +42,7 @@ export default function Play() {
   const router = useRouter();
   const online = useConnectivity();
   const [game, setGame] = useState<IGameState>(null);
+  const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
   const [selectedArea, selectArea] = useState<ISelectedArea>({
     id: "instructions",
@@ -242,6 +250,43 @@ export default function Play() {
 
     return () => clearTimeout(timeout);
   }, [game && game.currentPlayer, game && game.status, game && game.synced]);
+
+  /**
+   * At the start of the game, compute and store the maximum score
+   * that our cheating AI can achieve.
+   */
+  useEffect(() => {
+    if (!game) return;
+    if (![IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status)) return;
+
+    let sameGame = newGame({
+      id: game.id,
+      playersCount: game.options.playersCount,
+      multicolor: game.options.multicolor,
+      allowRollback: false,
+      preventLoss: false,
+      seed: game.options.seed,
+      private: true,
+      hintsLevel: IGameHintsLevel.NONE,
+      botsWait: 1000,
+      turnsHistory: false,
+      gameMode: GameMode.NETWORK
+    });
+
+    game.players.forEach(player => {
+      sameGame = joinGame(sameGame, {
+        id: player.id,
+        name: player.name,
+        bot: true
+      });
+    });
+
+    while (sameGame.status !== IGameStatus.OVER) {
+      sameGame = cheat(sameGame);
+    }
+
+    setReachableScore(getScore(sameGame));
+  }, [game && game.status]);
 
   function onJoinGame(player) {
     const playerId = shortid();
@@ -466,6 +511,7 @@ export default function Play() {
                 ) && (
                   <InstructionsArea
                     interturn={interturn}
+                    reachableScore={reachableScore}
                     onReplay={onReplay}
                     onSelectDiscard={onSelectDiscard}
                   />
