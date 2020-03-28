@@ -107,7 +107,7 @@ export default function PlayerGame(props: Props) {
       >
         <div className="flex items-center">
           <div className="flex flex-column">
-            {!selected && player === selfPlayer && player === currentPlayer && (
+            {player === selfPlayer && player === currentPlayer && (
               <Tutorial placement="right" step={ITutorialStep.YOUR_TURN}>
                 <Txt
                   className="yellow nt1"

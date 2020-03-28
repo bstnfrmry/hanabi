@@ -180,7 +180,11 @@ export default function Tutorial(props: Props) {
                 <Button
                   size={ButtonSize.TINY}
                   text={lastStep ? "✓" : ">"}
-                  onClick={nextStep}
+                  onClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    nextStep();
+                  }}
                 />
               </>
             )}
