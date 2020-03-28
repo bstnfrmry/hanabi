@@ -172,7 +172,12 @@ export function getLastOptimistCardOfCurrentPlayer(
     g => g.action.action === "hint" && g.action.to === state.currentPlayer
   );
 
-  if (lastTimeHinted === -1) {
+  const lastTimePlayed = findLastIndex(
+    state.turnsHistory,
+    g => g.action.action === "play" && g.action.from === state.currentPlayer
+  );
+
+  if (lastTimeHinted === -1 || lastTimePlayed > lastTimeHinted) {
     return null;
   }
 
@@ -234,27 +239,43 @@ function findGivableHint(
 ): IAction | undefined {
   // find the first playable card and give a hint on it.
   // if possible, give an optimist hint.
+
+  // while we have not reached the second hinted card
+  let isFirstHintedCardOrBefore = true;
+  let hasPlayableCard = false;
   for (let i = 0; i < hand.length; i++) {
     const card = hand[i];
-    if (
-      isPlayable(card, state.playedCards) &&
-      (card.hint.color[card.color] < 2 || card.hint.number[card.number] < 2)
-    ) {
-      // find the type of hint to give, trying to find the most optimist one
-      // (if there's a card with the same color, give the number hint)
-      let type;
-      if (hand.slice(0, i).find(c => c.color === card.color)) {
-        type = card.hint.number[card.number] < 2 ? "number" : "color";
-      } else {
-        type = card.hint.color[card.color] < 2 ? "color" : "number";
+
+    if (isPlayable(card, state.playedCards)) {
+      console.log("isplayable", card);
+      hasPlayableCard = true;
+      // we don't hint the first hinted card.
+      const shouldHint = isFirstHintedCardOrBefore
+        ? card.hint.color[card.color] < 2 && card.hint.number[card.number] < 2
+        : card.hint.color[card.color] < 2 || card.hint.number[card.number] < 2;
+
+      if (shouldHint) {
+        // find the type of hint to give, trying to find the most optimist one
+        // (if there's a card with the same color, give the number hint)
+        let type;
+        if (hand.slice(0, i).find(c => c.color === card.color)) {
+          type = card.hint.number[card.number] < 2 ? "number" : "color";
+        } else {
+          type = card.hint.color[card.color] < 2 ? "color" : "number";
+        }
+        return {
+          action: "hint",
+          from: state.currentPlayer,
+          to: pIndex,
+          type,
+          value: card[type]
+        };
       }
-      return {
-        action: "hint",
-        from: state.currentPlayer,
-        to: pIndex,
-        type,
-        value: card[type]
-      };
+    }
+
+    // if the card has hints, we switch the condition
+    if (card.hint.color[card.color] < 2 || card.hint.number[card.number] < 2) {
+      isFirstHintedCardOrBefore = false;
     }
   }
 
@@ -262,10 +283,22 @@ function findGivableHint(
   const lastCard = hand[hand.length - 1];
   if (
     isCardDangerous(lastCard, state) &&
-    (lastCard.hint.color[lastCard.color] < 2 ||
-      lastCard.hint.number[lastCard.number] < 2)
+    (lastCard.hint.color[lastCard.color] < 2 &&
+      lastCard.hint.number[lastCard.number] < 2) &&
+    !hasPlayableCard
   ) {
-    const type = lastCard.hint.number[lastCard.number] < 2 ? "number" : "color";
+    const type =
+      // if it's a 5 and the number hint is not given
+      lastCard.number === 5 && lastCard.hint.number[lastCard.number] < 2
+        ? "number"
+        : // if it's a multicolor and the color hint is not given
+        lastCard.color === "multicolor" &&
+          lastCard.hint.color[lastCard.color] < 2
+        ? "color"
+        : // otherwise give a non given hint
+        lastCard.hint.number[lastCard.number] < 2
+        ? "number"
+        : "color";
     return {
       action: "hint",
       from: state.currentPlayer,
@@ -315,7 +348,8 @@ export function chooseAction(state: IGameView): IAction {
       optimistCardIndex > -1 &&
       currentGameView.hand[optimistCardIndex].deductions.some(c =>
         isPlayable(c, state.playedCards)
-      )
+      ) &&
+      !isLastDiscardableCard(currentGameView.hand, optimistCardIndex, state)
     ) {
       return {
         action: "play",
@@ -357,6 +391,21 @@ export function chooseAction(state: IGameView): IAction {
     from: state.currentPlayer,
     cardIndex: 0
   };
+}
+
+function isLastDiscardableCard(
+  hand: IHiddenCard[],
+  cardIndex: number,
+  state: IGameState
+) {
+  let lastDiscardableCard = true;
+  for (let i = hand.length - 1; i >= cardIndex + 1; i--) {
+    if (isCardDiscardable(hand[i], state)) {
+      lastDiscardableCard = false;
+      return lastDiscardableCard;
+    }
+  }
+  return lastDiscardableCard;
 }
 
 /**
