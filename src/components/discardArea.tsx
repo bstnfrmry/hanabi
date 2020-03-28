@@ -32,7 +32,7 @@ function CardPile(props: CardPileProps) {
         <Card
           key={i}
           card={card}
-          className={classnames("mr1", { "nl2 nl3-l": i > 0 })}
+          className={classnames("mr1", { nl2: i > 0 })}
           context={ICardContext.DISCARDED}
           size={CardSize.SMALL}
         />
