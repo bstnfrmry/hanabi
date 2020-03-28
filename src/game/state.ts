@@ -31,7 +31,7 @@ export default interface IGameState {
  */
 
 export interface IGameOptions {
-  id: string;
+  // id: string;
   playersCount: number;
   multicolor: boolean;
   allowRollback: boolean;

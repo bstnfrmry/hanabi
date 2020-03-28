@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "server": "ts-node-dev --respawn --project tsconfig.server.json src/server/index.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "server": "firebase-server -p 3001",
     "lint": "eslint '**/*.{ts,tsx}'",
     "test": "cypress run",
-    "deploy-database": "firebase deploy --only database"
+    "deploy-database": "firebase deploy --only database",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@sentry/browser": "^5.12.4",
@@ -18,11 +19,15 @@
     "@types/react-popover": "^0.5.3",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-source-maps": "^0.0.3",
+    "apollo-server": "^2.11.0",
     "classnames": "^2.2.6",
     "dotenv-webpack": "^1.7.0",
     "firebase": "^6.3.4",
+    "graphql": "^14.6.0",
+    "knex": "^0.20.13",
     "lodash": "^4.17.15",
     "next": "^9.2",
+    "pg": "^7.18.2",
     "rc-slider": "^9.2.1",
     "react": "16.8.6",
     "react-dom": "16.8.6",
@@ -35,6 +40,11 @@
     "shuffle-seed": "^1.1.6"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.13.1",
+    "@graphql-codegen/typescript": "1.13.1",
+    "@graphql-codegen/typescript-operations": "1.13.1",
+    "@graphql-codegen/typescript-react-apollo": "1.13.1",
+    "@graphql-codegen/typescript-resolvers": "1.13.1",
     "@types/node": "^12.6.9",
     "@types/rc-slider": "^8.6.5",
     "@types/react": "^16.8.24",
@@ -51,6 +61,8 @@
     "lint-staged": "^9.2.5",
     "postcss-color-mod-function": "^3.0.3",
     "prettier": "^1.18.2",
+    "ts-node": "^8.8.1",
+    "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.5.3"
   }
 }
