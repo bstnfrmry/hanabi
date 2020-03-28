@@ -73,7 +73,7 @@ export default function NewGame() {
     <div className="w-100 h-100 overflow-y-scroll pv4 flex items-center pv6-l relative bg-main-dark ph2 ph3-l shadow-5 br3">
       <HomeButton className="absolute top-1 right-1" />
       <div
-        className="flex flex-column w-50-m w-50-l w-80"
+        className="flex flex-column w-75-m w-50-l w-80"
         style={{ margin: "auto" }}
       >
         <div className="flex justify-between ph1 items-center pb2 mb2 bb b--yellow-light">
@@ -83,7 +83,7 @@ export default function NewGame() {
               return (
                 <Button
                   key={count}
-                  className={classnames("ph4 pv2", {
+                  className={classnames("ph3 ph4-l pv2", {
                     "bg-lavender": playersCount !== count,
                     "z-5": playersCount === count
                   })}
