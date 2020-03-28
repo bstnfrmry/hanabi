@@ -243,45 +243,50 @@ export default function PlayerGame(props: Props) {
           ...(!selected && { opacity: 0, transform: "translateY(-100px)" })
         }}
       >
-        {canPlay && selected && player === selfPlayer && (
-          <div className="flex flex-column items-end mb2">
-            <div className="flex justify-end items-center h-100-l">
-              {hasSelectedCard && (
-                <Txt
-                  className="pb1 pb2-l ml1 mb2 mr3 ml2-l"
-                  value={`Card ${PositionMap[selectedCard]} selected`}
-                />
-              )}
+        {canPlay &&
+          selected &&
+          player === selfPlayer &&
+          selfPlayer === currentPlayer && (
+            <div className="flex flex-column items-end mb2">
+              <div className="flex justify-end items-center h-100-l">
+                {hasSelectedCard && (
+                  <Txt
+                    className="pb1 pb2-l ml1 mb2 mr3 ml2-l"
+                    value={`Card ${PositionMap[selectedCard]} selected`}
+                  />
+                )}
 
-              {hasSelectedCard && (
-                <div className="flex flex pb2">
-                  {["discard", "play"].map(action => (
-                    <Button
-                      key={action}
-                      className="mr2"
-                      disabled={action === "discard" && game.tokens.hints === 8}
-                      id={action}
-                      text={action}
-                      onClick={() =>
-                        onCommitAction({
-                          action,
-                          from: selfPlayer.index,
-                          cardIndex: selectedCard
-                        })
-                      }
-                    />
-                  ))}
-                </div>
+                {hasSelectedCard && (
+                  <div className="flex flex pb2">
+                    {["discard", "play"].map(action => (
+                      <Button
+                        key={action}
+                        className="mr2"
+                        disabled={
+                          action === "discard" && game.tokens.hints === 8
+                        }
+                        id={action}
+                        text={action}
+                        onClick={() =>
+                          onCommitAction({
+                            action,
+                            from: selfPlayer.index,
+                            cardIndex: selectedCard
+                          })
+                        }
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+              {hasSelectedCard && game.tokens.hints === MaxHints && (
+                <Txt className="orange mr2 flex flex-column items-end">
+                  <span>8 tokens</span>
+                  <span>You cannot discard</span>
+                </Txt>
               )}
             </div>
-            {hasSelectedCard && game.tokens.hints === MaxHints && (
-              <Txt className="orange mr2 flex flex-column items-end">
-                <span>8 tokens</span>
-                <span>You cannot discard</span>
-              </Txt>
-            )}
-          </div>
-        )}
+          )}
       </div>
 
       {/* Other player actions */}
@@ -293,41 +298,50 @@ export default function PlayerGame(props: Props) {
           ...(!selected && { opacity: 0, transform: "translateY(-100px)" })
         }}
       >
-        {canPlay && selected && player !== selfPlayer && (
-          <div className="flex flex-column items-end pb2 mr2">
-            <Vignettes
-              pendingHint={pendingHint}
-              onSelect={action => setPendingHint(action)}
-            />
-
-            <div className="mt2 flex items-center">
-              {pendingHint.value && game.tokens.hints !== 0 && (
-                <Txt
-                  italic
-                  className="mr3"
-                  value={textualHint(pendingHint, player.hand)}
-                />
-              )}
-              {game.tokens.hints === 0 && (
-                <Txt className="mr3 orange" value="No tokens left to hint" />
-              )}
-
-              <Button
-                disabled={!pendingHint.type || game.tokens.hints === 0}
-                id="give-hint"
-                text="Hint"
-                onClick={() =>
-                  onCommitAction({
-                    action: "hint",
-                    from: currentPlayer.index,
-                    to: player.index,
-                    ...pendingHint
-                  })
-                }
+        {canPlay &&
+          selected &&
+          player !== selfPlayer &&
+          selfPlayer === currentPlayer && (
+            <div className="flex flex-column items-end pb2 mr2">
+              <Vignettes
+                pendingHint={pendingHint}
+                onSelect={action => setPendingHint(action)}
               />
+
+              <div className="mt2 flex items-center">
+                {pendingHint.value && game.tokens.hints !== 0 && (
+                  <Txt
+                    italic
+                    className="mr3"
+                    value={textualHint(pendingHint, player.hand)}
+                  />
+                )}
+                {game.tokens.hints === 0 && (
+                  <Txt className="mr3 orange" value="No tokens left to hint" />
+                )}
+                {!pendingHint.value && game.tokens.hints > 0 && (
+                  <Txt
+                    className="mr3"
+                    value="Select either a color or number to hint"
+                  />
+                )}
+
+                <Button
+                  disabled={!pendingHint.type || game.tokens.hints === 0}
+                  id="give-hint"
+                  text="Hint"
+                  onClick={() =>
+                    onCommitAction({
+                      action: "hint",
+                      from: currentPlayer.index,
+                      to: player.index,
+                      ...pendingHint
+                    })
+                  }
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
     </>
   );
