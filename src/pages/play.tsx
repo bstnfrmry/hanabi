@@ -173,6 +173,8 @@ export default function Play() {
   const hintsCount = game ? game.tokens.hints : 0;
   const previousHintsCount = usePrevious(hintsCount);
   useEffect(() => {
+    if (previousHintsCount === undefined) return;
+
     const timeout = setTimeout(() => {
       playSound(`/static/sounds/coin.mp3`);
     }, 500);
@@ -181,6 +183,8 @@ export default function Play() {
   }, [hintsCount === previousHintsCount + 1]);
 
   useEffect(() => {
+    if (previousHintsCount === undefined) return;
+
     const timeout = setTimeout(() => {
       playSound(`/static/sounds/swoosh.wav`);
     }, 200);
@@ -191,6 +195,8 @@ export default function Play() {
   const turnsCount = game ? game.turnsHistory.length : 0;
   const previousTurnsCount = usePrevious(turnsCount);
   useEffect(() => {
+    if (previousTurnsCount === undefined) return;
+
     playSound(`/static/sounds/rewind.mp3`);
   }, [turnsCount === previousTurnsCount - 1]);
 
@@ -199,6 +205,7 @@ export default function Play() {
    */
   useEffect(() => {
     if (!game) return;
+    if (!game.discardPile.length) return;
 
     playSound(`/static/sounds/card-scrape.mp3`);
   }, [game && game.discardPile.length]);

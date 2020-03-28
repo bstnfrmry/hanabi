@@ -67,13 +67,25 @@ export default function Lobby(props: Props) {
           <div className="flex justify-between items-start flex-grow-1 align-start w-100 mb2">
             <div>
               <div className="flex flex-column justify-center mb2">
-                <Txt
-                  value={
-                    gameFull
-                      ? "Everybody's here!"
-                      : `${game.players.length} / ${game.options.playersCount} joined already`
-                  }
-                />
+                <div className="flex items-center">
+                  <Txt
+                    value={
+                      gameFull
+                        ? "Everybody's here!"
+                        : `${game.players.length} / ${game.options.playersCount} joined already`
+                    }
+                  />
+                  {canStart && (
+                    <Button
+                      primary
+                      className="ml3"
+                      disabled={!gameFull}
+                      id="start-game"
+                      text="Start game"
+                      onClick={() => onStartGame()}
+                    />
+                  )}
+                </div>
                 {selfPlayer && !gameFull && (
                   <div>
                     <Txt className="gray">Wait for others, or </Txt>
@@ -88,15 +100,6 @@ export default function Lobby(props: Props) {
                 )}
               </div>
             </div>
-            {canStart && (
-              <Button
-                primary
-                disabled={!gameFull}
-                id="start-game"
-                text="Start game"
-                onClick={() => onStartGame()}
-              />
-            )}
           </div>
         )}
 

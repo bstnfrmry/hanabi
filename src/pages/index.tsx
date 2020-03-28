@@ -42,13 +42,6 @@ export default function Home() {
         />
         <Button
           className="mb4"
-          id="offline"
-          size={ButtonSize.LARGE}
-          text="Pass and play"
-          onClick={() => router.push("/new-game?offline=1")}
-        />
-        <Button
-          className="mb4"
           id="join-room"
           size={ButtonSize.LARGE}
           text="Join a room"

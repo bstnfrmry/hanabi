@@ -27,7 +27,8 @@ export enum ITutorialStep {
   SELF_PLAYER = 3,
   OTHER_PLAYERS = 4,
   HINT_TOKENS = 5,
-  STRIKE_TOKENS = 6
+  STRIKE_TOKENS = 6,
+  YOUR_TURN = 7
 }
 
 const steps = {
@@ -58,12 +59,17 @@ const steps = {
   [ITutorialStep.HINT_TOKENS]: {
     title: "Hint tokens",
     body:
-      "- Giving a hint costs 1 hint token.\n- Discarding a card grants 1 hint token.\n- Playing a 5 gives 1 hint token as a bonus"
+      "Some actions have a cost.\n\n- Giving a hint costs 1 hint token.\n- Discarding a card grants 1 hint token.\n- Playing a 5 gives 1 hint token as a bonus"
   },
   [ITutorialStep.STRIKE_TOKENS]: {
     title: "Strike tokens",
     body:
       "Playing a wrong card will discard it and cost you 1 strike token.\nReaching 3 strike tokens will instantly lose the game."
+  },
+  [ITutorialStep.YOUR_TURN]: {
+    title: "It's your turn",
+    body:
+      "You have 3 options:\n\n- Tap your game to play a card...\n- ... or discard it\n- Tap one of your teammates games to give them a hint"
   }
 };
 
@@ -174,7 +180,11 @@ export default function Tutorial(props: Props) {
                 <Button
                   size={ButtonSize.TINY}
                   text={lastStep ? "✓" : ">"}
-                  onClick={nextStep}
+                  onClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    nextStep();
+                  }}
                 />
               </>
             )}
