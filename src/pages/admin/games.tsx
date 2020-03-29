@@ -37,6 +37,7 @@ export default function Games() {
         <thead>
           <tr>
             <td>#</td>
+            <th>Seed</th>
             <td>Created</td>
             <td>Mode</td>
             <td>Status</td>
@@ -64,6 +65,7 @@ export default function Games() {
                   return (
                     <tr key={game.id}>
                       <td>{game.id}</td>
+                      <td>{game.options.seed}</td>
                       <td>{moment(game.createdAt).fromNow()}</td>
                       <td>{game.options.gameMode}</td>
                       <td>{game.status}</td>
