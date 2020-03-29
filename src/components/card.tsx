@@ -9,7 +9,7 @@ import React, {
 import Hint from "~/components/hint";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { getColors, numbers } from "~/game/actions";
-import { ICard, IGameHintsLevel } from "~/game/state";
+import { ICard, ICardHint, IGameHintsLevel } from "~/game/state";
 import { useGame } from "~/hooks/game";
 
 export enum CardSize {
@@ -173,6 +173,14 @@ export default function Card(props: Props) {
         />
       )}
 
+      {/* Whether the card has received hints */}
+      {position !== null && hasPositiveHint(card.hint) && (
+        <div
+          className="absolute right-0 top-0 bg-hints br--bottom br--left br-100"
+          style={{ width: "20%", height: "20%" }}
+        />
+      )}
+
       {/* show positive hints with a larger type */}
       {displayHints && hidden && (
         <div
@@ -218,5 +226,12 @@ export default function Card(props: Props) {
         </div>
       )}
     </CardWrapper>
+  );
+}
+
+function hasPositiveHint(hint: ICardHint) {
+  return (
+    Object.values(hint.color).indexOf(2) > -1 ||
+    Object.values(hint.number).indexOf(2) > -1
   );
 }
