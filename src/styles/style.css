@@ -9,10 +9,16 @@
   --color-yellow: #f4d03f;
   --color-green: #52be80;
 
+  --color-white-dark: #4a4a4a;
+  --color-red-dark: #701c13;
+  --color-blue-dark: #0e4061;
+  --color-yellow-dark: #69560a;
+  --color-green-dark: #094021;
+
   --color-hints: rgb(0, 61, 181);
   --color-strikes: rgb(192, 21, 21);
 
-  --color-gray-light: #ddd;
+  --color-gray-light: #aaa;
 }
 
 @import "./tachyons.css";
@@ -53,9 +59,38 @@ body ::-webkit-scrollbar {
   background-color: var(--color-lavender);
 }
 
-
 .b--lavender {
   border-color: var(--color-lavender);
+}
+
+.txt-red-dark {
+  color: color-mod(var(--color-red) lightness(15%));
+  text-shadow: 0 0 2px color-mod(var(--color-red) lightness(90%));
+}
+
+.txt-blue-dark {
+  color: color-mod(var(--color-blue) lightness(15%));
+  text-shadow: 0 0 2px color-mod(var(--color-blue) lightness(90%));
+}
+
+.txt-yellow-dark {
+  color: color-mod(var(--color-yellow) lightness(15%));
+  text-shadow: 0 0 2px color-mod(var(--color-yellow) lightness(90%));
+}
+
+.txt-white-dark {
+  color: color-mod(var(--color-white) lightness(15%));
+  text-shadow: 0 0 2px color-mod(var(--color-yellow) lightness(90%));
+}
+
+.txt-green-dark {
+  color: color-mod(var(--color-green) lightness(15%));
+  text-shadow: 0 0 2px color-mod(var(--color-green) lightness(90%));
+}
+
+.txt-multicolor-dark {
+  color: color-mod(var(--color-white) lightness(15%));
+  text-shadow: 0 0 2px color-mod(var(--color-white) lightness(90%));
 }
 
 /**
@@ -235,6 +270,11 @@ body ::-webkit-scrollbar {
  * Shadows
  */
 
-.shadow-light { 
-  box-shadow: 0px 2px 12px 0px rgba( 255, 255, 255, .4 )
+.shadow-light {
+  box-shadow: 0px 2px 12px 0px rgba(255, 255, 255, 0.4);
+}
+
+/* Safari fix? */
+button {
+  -webkit-appearance: none;
 }
