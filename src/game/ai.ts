@@ -363,10 +363,11 @@ export function chooseAction(state: IGameView): IAction {
     for (let i = 1; i < state.options.playersCount; i++) {
       const pIndex = (state.currentPlayer + i) % state.options.playersCount;
       const player = Object.values(state.players)[pIndex];
-
-      const action = findGivableHint(player.hand, pIndex, state);
-      if (action) {
-        return action;
+      if (!playerKnowsWhatToPlay(pIndex, state)) {
+        const action = findGivableHint(player.hand, pIndex, state);
+        if (action) {
+          return action;
+        }
       }
     }
   }
@@ -428,4 +429,17 @@ export default function play(state: IGameState): IGameState {
   const gameView = gameStateToGameView(state);
   const action = chooseAction(gameView);
   return commitAction(state, action);
+}
+
+function playerKnowsWhatToPlay(pIndex: number, state: IGameView) {
+  // we should not be looking at that player's game view but
+  // if we only look at the optimist property that's ok
+  const playerGameViewHand = state.gameViews[pIndex].hand;
+  const playerHand = Object.values(state.players)[pIndex].hand;
+  const hasOptimistPlayableCard =
+    playerGameViewHand.filter(
+      (c, i) => c.optimist && isPlayable(playerHand[i], state.playedCards)
+    ).length > 0;
+
+  return hasOptimistPlayableCard;
 }
