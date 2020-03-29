@@ -43,6 +43,10 @@ body ::-webkit-scrollbar {
   display: none;
 }
 
+button {
+  background-color: white;
+}
+
 /**
  * Text colors
  */
