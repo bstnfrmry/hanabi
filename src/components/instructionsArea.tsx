@@ -14,10 +14,11 @@ interface Props {
   interturn: boolean;
   onSelectDiscard: Function;
   onReplay: Function;
+  onToggleStats: Function;
 }
 
 export default function InstructionsArea(props: Props) {
-  const { reachableScore, interturn, onReplay } = props;
+  const { reachableScore, interturn, onReplay, onToggleStats } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -35,7 +36,7 @@ export default function InstructionsArea(props: Props) {
           <div className="flex justify-between items-center mb2">
             {!isReplayMode(game) && (
               <>
-                <div className="flex flex-column">
+                <div className="flex flex-column w-100">
                   <Txt
                     className="db"
                     size={TxtSize.MEDIUM}
@@ -50,16 +51,25 @@ export default function InstructionsArea(props: Props) {
                         reachableScore > game.playedCards.length
                           ? "Keep practicing"
                           : "You did great!"
-                      }`}
+                        }`}
                     />
                   )}
+                  <div className="flex w-100 justify-between mv2">
+                    <Button
+                      className="nowrap w4"
+                      size={ButtonSize.TINY}
+                      text="Watch replay"
+                      onClick={() => onReplay()}
+                    />
+                    <Button
+                      primary
+                      className="nowrap w4"
+                      size={ButtonSize.TINY}
+                      text="Toggle stats"
+                      onClick={() => onToggleStats()}
+                    />
+                  </div>
                 </div>
-                <Button
-                  className="ml3 nowrap"
-                  size={ButtonSize.TINY}
-                  text="Watch replay"
-                  onClick={() => onReplay()}
-                />
               </>
             )}
           </div>

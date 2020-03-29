@@ -42,6 +42,7 @@ export default function Play() {
   const router = useRouter();
   const online = useConnectivity();
   const [game, setGame] = useState<IGameState>(null);
+  const [displayStats, setDisplayStats] = useState(false);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
   const [selectedArea, selectArea] = useState<ISelectedArea>({
@@ -404,6 +405,10 @@ export default function Play() {
   function onSelectPlayer(player, cardIndex) {
     const self = player.id === selfPlayer.id;
 
+    if (displayStats) {
+      return;
+    }
+
     onSelectArea({
       id: self ? `game-${player.id}-${cardIndex}` : `game-${player.id}`,
       type: self ? ActionAreaType.SELF_PLAYER : ActionAreaType.OTHER_PLAYER,
@@ -449,6 +454,15 @@ export default function Play() {
     });
   }
 
+  function onToggleStats() {
+    setDisplayStats(!displayStats);
+
+    selectArea({
+      id: "instructions",
+      type: ActionAreaType.INSTRUCTIONS
+    });
+  }
+
   if (!game) {
     return <LoadingScreen />;
   }
@@ -482,42 +496,43 @@ export default function Play() {
                 onStartGame={onStartGame}
               />
             ) : (
-              <div className="h4 overflow-y-scroll pa2 pt0-l ph3-l">
-                {selectedArea.type === ActionAreaType.ROLLBACK && (
-                  <div className="h-100 flex flex-column items-center justify-center pa2">
-                    <Txt
-                      className="w-75"
-                      size={TxtSize.MEDIUM}
-                      value="You're about to roll back the last action!"
-                    />
-                    <div className="mt4">
-                      <Button text="Abort" onClick={() => onCloseArea()} />
-                      <Button
-                        primary
-                        className="ml4"
-                        text="Roll back"
-                        onClick={() => onRollback()}
-                      />
-                    </div>
+                  <div className="h4 overflow-y-scroll pa2 pt0-l ph3-l">
+                    {selectedArea.type === ActionAreaType.ROLLBACK && (
+                      <div className="h-100 flex flex-column items-center justify-center pa2">
+                        <Txt
+                          className="w-75"
+                          size={TxtSize.MEDIUM}
+                          value="You're about to roll back the last action!"
+                        />
+                        <div className="mt4">
+                          <Button text="Abort" onClick={() => onCloseArea()} />
+                          <Button
+                            primary
+                            className="ml4"
+                            text="Roll back"
+                            onClick={() => onRollback()}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedArea.type === ActionAreaType.DISCARD && (
+                      <DiscardArea onCloseArea={onCloseArea} />
+                    )}
+
+                    {![ActionAreaType.ROLLBACK, ActionAreaType.DISCARD].includes(
+                      selectedArea.type
+                    ) && (
+                        <InstructionsArea
+                          interturn={interturn}
+                          reachableScore={reachableScore}
+                          onReplay={onReplay}
+                          onSelectDiscard={onSelectDiscard}
+                          onToggleStats={onToggleStats}
+                        />
+                      )}
                   </div>
                 )}
-
-                {selectedArea.type === ActionAreaType.DISCARD && (
-                  <DiscardArea onCloseArea={onCloseArea} />
-                )}
-
-                {![ActionAreaType.ROLLBACK, ActionAreaType.DISCARD].includes(
-                  selectedArea.type
-                ) && (
-                  <InstructionsArea
-                    interturn={interturn}
-                    reachableScore={reachableScore}
-                    onReplay={onReplay}
-                    onSelectDiscard={onSelectDiscard}
-                  />
-                )}
-              </div>
-            )}
           </div>
 
           {interturn && (
@@ -540,6 +555,7 @@ export default function Play() {
             <div className="flex flex-column">
               <div className="h-100 overflow-y-scroll">
                 <PlayersBoard
+                  displayStats={displayStats}
                   selectedArea={selectedArea}
                   onCloseArea={onCloseArea}
                   onCommitAction={onCommitAction}
