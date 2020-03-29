@@ -90,8 +90,8 @@ export default function PlayerGame(props: Props) {
   const cardContext = selected
     ? ICardContext.TARGETED_PLAYER
     : self
-      ? ICardContext.SELF_PLAYER
-      : ICardContext.OTHER_PLAYER;
+    ? ICardContext.SELF_PLAYER
+    : ICardContext.OTHER_PLAYER;
 
   return (
     <>
@@ -116,6 +116,8 @@ export default function PlayerGame(props: Props) {
                   value={
                     game.status === IGameStatus.ONGOING
                       ? "Your turn"
+                      : game.status === IGameStatus.OVER
+                      ? ""
                       : "You'll start first"
                   }
                 />
