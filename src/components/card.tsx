@@ -158,7 +158,7 @@ export default function Card(props: Props) {
     >
       {/* Card value */}
       <Txt
-        className={classnames("white outline-main-dark", {
+        className={classnames(`txt-${color}-dark`, {
           mb3: displayHints && size === CardSize.LARGE
         })}
         size={CardTextSizes[size]}
@@ -168,7 +168,7 @@ export default function Card(props: Props) {
       {/* Card position */}
       {position !== null && size === CardSize.LARGE && (
         <Txt
-          className="absolute left-0 top-0 ma1 black-20"
+          className="absolute left-0 top-0 ma1 black-40"
           value={PositionMap[position]}
         />
       )}
@@ -177,9 +177,12 @@ export default function Card(props: Props) {
       {displayHints && hidden && (
         <div
           className={classnames(
-            "top-0 br-100 w-50 h-50 flex justify-center items-center outline-main-dark",
-            { [`bg-${card.color}`]: card.hint.color[card.color] === 2 },
-            { [`ba b--${card.color}`]: card.hint.color[card.color] === 2 }
+            "top-0 br-100 w-50 h-50 flex justify-center items-center",
+            {
+              [`bg-${card.color} txt-${card.color}-dark ba b--${card.color}`]:
+                card.hint.color[card.color] === 2,
+              [`txt-white-dark`]: card.hint.color[card.color] !== 2
+            }
           )}
         >
           {card.hint.number[card.number] === 2 && <Txt value={card.number} />}
