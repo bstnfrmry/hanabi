@@ -164,17 +164,18 @@ export interface IDeduction extends ICard {
 
 export type IGameView = IGameState & { gameViews: IPlayerView[] };
 
-export function getLastOptimistCardOfCurrentPlayer(
-  state: IGameState
+export function getLastOptimistCardOfPlayer(
+  state: IGameState,
+  player: number
 ): ICard | null {
   const lastTimeHinted = findLastIndex(
     state.turnsHistory,
-    g => g.action.action === "hint" && g.action.to === state.currentPlayer
+    g => g.action.action === "hint" && g.action.to === player
   );
 
   const lastTimePlayed = findLastIndex(
     state.turnsHistory,
-    g => g.action.action === "play" && g.action.from === state.currentPlayer
+    g => g.action.action === "play" && g.action.from === player
   );
 
   if (lastTimeHinted === -1 || lastTimePlayed > lastTimeHinted) {
@@ -184,8 +185,7 @@ export function getLastOptimistCardOfCurrentPlayer(
   const lastHintReceived = state.turnsHistory[lastTimeHinted]
     .action as IHintAction;
 
-  const gameWhenLastHinted =
-    state.history[lastTimeHinted].players[state.currentPlayer].hand;
+  const gameWhenLastHinted = state.history[lastTimeHinted].players[player].hand;
 
   const firstHintedCard = gameWhenLastHinted.find(
     card => card[lastHintReceived.type] === lastHintReceived.value
@@ -199,11 +199,10 @@ export function gameStateToGameView(gameState: IGameState): IGameView {
   const state = cloneDeep(gameState) as IGameView;
   state.gameViews = [];
 
-  const lastOptimistCard = getLastOptimistCardOfCurrentPlayer(state);
-
   // add a parallel array to the players that give their view of the game
   // and make all level 0 deductions
   Object.values(state.players).forEach((player: IPlayer, i) => {
+    const lastOptimistCard = getLastOptimistCardOfPlayer(state, i);
     const gameView = { hand: [] };
     const possibleCards = getPossibleCards(state, i);
     player.hand.forEach((card: ICard) => {
@@ -374,15 +373,30 @@ export function chooseAction(state: IGameView): IAction {
 
   // discard otherwise
   if (state.tokens.hints < 8) {
-    for (let i = currentGameView.hand.length - 1; i >= 0; i--) {
+    let definitelyDiscardableCard = false;
+    let discardableIndex = -1;
+    for (let i = 0; i < currentGameView.hand.length; i++) {
       const card = currentGameView.hand[i];
-      if (isCardDiscardable(card, state)) {
-        return {
-          action: "discard",
-          from: state.currentPlayer,
-          cardIndex: i
-        };
+
+      // if the card is definitely discardable (never playable)
+      if (
+        card.deductions.every(
+          deduction => !isCardEverPlayable(deduction, state)
+        )
+      ) {
+        definitelyDiscardableCard = true;
+        discardableIndex = i;
+      } else if (isCardDiscardable(card, state) && !definitelyDiscardableCard) {
+        discardableIndex = i;
       }
+    }
+
+    if (discardableIndex > -1) {
+      return {
+        action: "discard",
+        from: state.currentPlayer,
+        cardIndex: discardableIndex
+      };
     }
   }
 
