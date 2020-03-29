@@ -1,6 +1,6 @@
 import { last, sortBy } from "lodash";
 
-import { colors, commitAction, MaxHints } from "~/game/actions";
+import { commitAction, MaxHints } from "~/game/actions";
 import IGameState, { ICard, IColor } from "~/game/state";
 
 function canPlay(game: IGameState, card: ICard) {
