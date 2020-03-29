@@ -53,6 +53,11 @@ body ::-webkit-scrollbar {
   background-color: var(--color-lavender);
 }
 
+
+.b--lavender {
+  border-color: var(--color-lavender);
+}
+
 /**
  * Background colors
  */

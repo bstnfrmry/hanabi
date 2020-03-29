@@ -7,6 +7,7 @@ import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
+  displayStats: boolean;
   selectedArea: ISelectedArea;
   onSelectPlayer: Function;
   onNotifyPlayer: Function;
@@ -22,6 +23,7 @@ const Item = posed.div({
 
 export default function PlayersBoard(props: Props) {
   const {
+    displayStats,
     selectedArea,
     onSelectPlayer,
     onNotifyPlayer,
@@ -61,6 +63,7 @@ export default function PlayersBoard(props: Props) {
           >
             <PlayerGame
               active={currentPlayer === otherPlayer}
+              displayStats={displayStats}
               id={`player-game-${i + 1}`}
               player={otherPlayer}
               selected={selectedPlayer && selectedPlayer === otherPlayer}
@@ -78,6 +81,7 @@ export default function PlayersBoard(props: Props) {
             <PlayerGame
               active={currentPlayer === selfPlayer}
               cardIndex={cardIndex}
+              displayStats={displayStats}
               id="player-game-self"
               player={selfPlayer}
               selected={selectedPlayer && selectedPlayer === selfPlayer}

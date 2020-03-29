@@ -4,6 +4,7 @@ import Popover from "react-popover";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
+import PlayerStats from "~/components/playerStats";
 import ReactionsPopover from "~/components/reactionsPopover";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button from "~/components/ui/button";
@@ -49,6 +50,7 @@ interface Props extends HTMLAttributes<HTMLElement> {
   active?: boolean;
   self?: boolean;
   cardIndex?: number;
+  displayStats: boolean;
   onSelectPlayer: Function;
   onNotifyPlayer?: Function;
   onReaction?: Function;
@@ -68,6 +70,7 @@ export default function PlayerGame(props: Props) {
     onCloseArea,
     onReaction,
     active,
+    displayStats,
     ...attributes
   } = props;
 
@@ -90,8 +93,8 @@ export default function PlayerGame(props: Props) {
   const cardContext = selected
     ? ICardContext.TARGETED_PLAYER
     : self
-      ? ICardContext.SELF_PLAYER
-      : ICardContext.OTHER_PLAYER;
+    ? ICardContext.SELF_PLAYER
+    : ICardContext.OTHER_PLAYER;
 
   return (
     <>
@@ -202,36 +205,43 @@ export default function PlayerGame(props: Props) {
         </div>
 
         <div className={classnames("flex justify-end flex-grow-1 dib")}>
-          {player.hand.map((card, i) => (
-            <Card
-              key={i}
-              card={card}
-              className={classnames({
-                ma1: selected,
-                "mr1 mr2-l": i < player.hand.length - 1
-              })}
-              context={cardContext}
-              hidden={hideCards}
-              position={i}
-              selected={
-                selected &&
-                (player === selfPlayer
-                  ? selectedCard === i
-                  : isCardHintable(pendingHint, card))
-              }
-              size={selected ? CardSize.LARGE : CardSize.MEDIUM}
-              style={{
-                ...(selected && { transition: "all 50ms ease-in-out" })
-              }}
-              onClick={e => {
-                e.stopPropagation();
-                onSelectPlayer(player, i);
-                if (player === selfPlayer) {
-                  selectCard(i);
+          {displayStats && (
+            <div className="ml3">
+              <PlayerStats player={player} />
+            </div>
+          )}
+
+          {!displayStats &&
+            player.hand.map((card, i) => (
+              <Card
+                key={i}
+                card={card}
+                className={classnames({
+                  ma1: selected,
+                  "mr1 mr2-l": i < player.hand.length - 1
+                })}
+                context={cardContext}
+                hidden={hideCards}
+                position={i}
+                selected={
+                  selected &&
+                  (player === selfPlayer
+                    ? selectedCard === i
+                    : isCardHintable(pendingHint, card))
                 }
-              }}
-            />
-          ))}
+                size={selected ? CardSize.LARGE : CardSize.MEDIUM}
+                style={{
+                  ...(selected && { transition: "all 50ms ease-in-out" })
+                }}
+                onClick={e => {
+                  e.stopPropagation();
+                  onSelectPlayer(player, i);
+                  if (player === selfPlayer) {
+                    selectCard(i);
+                  }
+                }}
+              />
+            ))}
         </div>
       </div>
 
@@ -243,45 +253,50 @@ export default function PlayerGame(props: Props) {
           ...(!selected && { opacity: 0, transform: "translateY(-100px)" })
         }}
       >
-        {canPlay && selected && player === selfPlayer && (
-          <div className="flex flex-column items-end mb2">
-            <div className="flex justify-end items-center h-100-l">
-              {hasSelectedCard && (
-                <Txt
-                  className="pb1 pb2-l ml1 mb2 mr3 ml2-l"
-                  value={`Card ${PositionMap[selectedCard]} selected`}
-                />
-              )}
+        {canPlay &&
+          selected &&
+          player === selfPlayer &&
+          selfPlayer === currentPlayer && (
+            <div className="flex flex-column items-end mb2">
+              <div className="flex justify-end items-center h-100-l">
+                {hasSelectedCard && (
+                  <Txt
+                    className="pb1 pb2-l ml1 mb2 mr3 ml2-l"
+                    value={`Card ${PositionMap[selectedCard]} selected`}
+                  />
+                )}
 
-              {hasSelectedCard && (
-                <div className="flex flex pb2">
-                  {["discard", "play"].map(action => (
-                    <Button
-                      key={action}
-                      className="mr2"
-                      disabled={action === "discard" && game.tokens.hints === 8}
-                      id={action}
-                      text={action}
-                      onClick={() =>
-                        onCommitAction({
-                          action,
-                          from: selfPlayer.index,
-                          cardIndex: selectedCard
-                        })
-                      }
-                    />
-                  ))}
-                </div>
+                {hasSelectedCard && (
+                  <div className="flex flex pb2">
+                    {["discard", "play"].map(action => (
+                      <Button
+                        key={action}
+                        className="mr2"
+                        disabled={
+                          action === "discard" && game.tokens.hints === 8
+                        }
+                        id={action}
+                        text={action}
+                        onClick={() =>
+                          onCommitAction({
+                            action,
+                            from: selfPlayer.index,
+                            cardIndex: selectedCard
+                          })
+                        }
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+              {hasSelectedCard && game.tokens.hints === MaxHints && (
+                <Txt className="orange mr2 flex flex-column items-end">
+                  <span>8 tokens</span>
+                  <span>You cannot discard</span>
+                </Txt>
               )}
             </div>
-            {hasSelectedCard && game.tokens.hints === MaxHints && (
-              <Txt className="orange mr2 flex flex-column items-end">
-                <span>8 tokens</span>
-                <span>You cannot discard</span>
-              </Txt>
-            )}
-          </div>
-        )}
+          )}
       </div>
 
       {/* Other player actions */}
@@ -293,41 +308,50 @@ export default function PlayerGame(props: Props) {
           ...(!selected && { opacity: 0, transform: "translateY(-100px)" })
         }}
       >
-        {canPlay && selected && player !== selfPlayer && (
-          <div className="flex flex-column items-end pb2 mr2">
-            <Vignettes
-              pendingHint={pendingHint}
-              onSelect={action => setPendingHint(action)}
-            />
-
-            <div className="mt2 flex items-center">
-              {pendingHint.value && game.tokens.hints !== 0 && (
-                <Txt
-                  italic
-                  className="mr3"
-                  value={textualHint(pendingHint, player.hand)}
-                />
-              )}
-              {game.tokens.hints === 0 && (
-                <Txt className="mr3 orange" value="No tokens left to hint" />
-              )}
-
-              <Button
-                disabled={!pendingHint.type || game.tokens.hints === 0}
-                id="give-hint"
-                text="Hint"
-                onClick={() =>
-                  onCommitAction({
-                    action: "hint",
-                    from: currentPlayer.index,
-                    to: player.index,
-                    ...pendingHint
-                  })
-                }
+        {canPlay &&
+          selected &&
+          player !== selfPlayer &&
+          selfPlayer === currentPlayer && (
+            <div className="flex flex-column items-end pb2 mr2">
+              <Vignettes
+                pendingHint={pendingHint}
+                onSelect={action => setPendingHint(action)}
               />
+
+              <div className="mt2 flex items-center">
+                {pendingHint.value && game.tokens.hints !== 0 && (
+                  <Txt
+                    italic
+                    className="mr3"
+                    value={textualHint(pendingHint, player.hand)}
+                  />
+                )}
+                {game.tokens.hints === 0 && (
+                  <Txt className="mr3 orange" value="No tokens left to hint" />
+                )}
+                {!pendingHint.value && game.tokens.hints > 0 && (
+                  <Txt
+                    className="mr3"
+                    value="Select either a color or number to hint"
+                  />
+                )}
+
+                <Button
+                  disabled={!pendingHint.type || game.tokens.hints === 0}
+                  id="give-hint"
+                  text="Hint"
+                  onClick={() =>
+                    onCommitAction({
+                      action: "hint",
+                      from: currentPlayer.index,
+                      to: player.index,
+                      ...pendingHint
+                    })
+                  }
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
     </>
   );
