@@ -1,6 +1,6 @@
 import { last, sortBy } from "lodash";
 
-import { commitAction, MaxHints } from "~/game/actions";
+import { colors, commitAction, MaxHints } from "~/game/actions";
 import IGameState, { ICard, IColor } from "~/game/state";
 
 function canPlay(game: IGameState, card: ICard) {
@@ -98,10 +98,16 @@ export default function play(game: IGameState): IGameState {
     });
   }
 
-  const [despairDiscardedCard] = sortBy(
-    currentPlayer.hand,
-    card => -card.number
-  );
+  const [despairDiscardedCard] = sortBy(currentPlayer.hand, [
+    // highest number
+    card => -card.number,
+    // if multiple, the color where pile is lowest
+    // not perfect since usually you look at played cards and others game
+    card => game.playedCards.filter(c => c.color === card.color).length
+  ]);
+
+  // TODO one day, optimize game end
+
   return commitAction(game, {
     action: "discard",
     card: despairDiscardedCard,

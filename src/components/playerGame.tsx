@@ -119,6 +119,8 @@ export default function PlayerGame(props: Props) {
                   value={
                     game.status === IGameStatus.ONGOING
                       ? "Your turn"
+                      : game.status === IGameStatus.OVER
+                      ? ""
                       : "You'll start first"
                   }
                 />
