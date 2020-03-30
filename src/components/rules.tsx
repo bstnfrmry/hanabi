@@ -36,9 +36,10 @@ export default function Rules(props: Props) {
     <div className="absolute bg-main-dark z-9999 aspect-ratio--object overflow-y-scroll flex justify-center pa4 relative tj lh-copy">
       <div className="w-75-l">
         <Button
+          void
           className="absolute left-2 top-1"
           size={ButtonSize.MEDIUM}
-          text="<"
+          text="< Back"
           onClick={() => setShowRules(false)}
         />
         <img

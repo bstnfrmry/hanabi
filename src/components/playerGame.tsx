@@ -93,8 +93,8 @@ export default function PlayerGame(props: Props) {
   const cardContext = selected
     ? ICardContext.TARGETED_PLAYER
     : self
-    ? ICardContext.SELF_PLAYER
-    : ICardContext.OTHER_PLAYER;
+      ? ICardContext.SELF_PLAYER
+      : ICardContext.OTHER_PLAYER;
 
   return (
     <>
@@ -120,8 +120,8 @@ export default function PlayerGame(props: Props) {
                     game.status === IGameStatus.ONGOING
                       ? "Your turn"
                       : game.status === IGameStatus.OVER
-                      ? ""
-                      : "You'll start first"
+                        ? ""
+                        : "You'll start first"
                   }
                 />
               </Tutorial>
@@ -209,7 +209,7 @@ export default function PlayerGame(props: Props) {
         <div className={classnames("flex justify-end flex-grow-1 dib")}>
           {displayStats && (
             <div className="ml3">
-              <PlayerStats player={player} />
+              <PlayerStats className="w4.5" player={player} />
             </div>
           )}
 

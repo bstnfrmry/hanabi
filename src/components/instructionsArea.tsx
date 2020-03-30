@@ -1,3 +1,5 @@
+import { route } from "next/dist/next-server/server/router";
+import { useRouter } from "next/router";
 import React from "react";
 import posed, { PoseGroup } from "react-pose";
 
@@ -21,6 +23,7 @@ export default function InstructionsArea(props: Props) {
   const { reachableScore, interturn, onReplay, onToggleStats } = props;
 
   const game = useGame();
+  const router = useRouter();
   const selfPlayer = useSelfPlayer();
 
   const history = isReplayMode(game)
@@ -29,6 +32,11 @@ export default function InstructionsArea(props: Props) {
 
   const showHistory = isReplayMode(game) ? true : history;
   const showSync = game.options.gameMode === GameMode.NETWORK;
+
+  function onViewSummary() {
+    router.push(`/summary?gameId=${game.id}&playerId=${selfPlayer.id}`);
+  }
+
   return (
     <div>
       <Tutorial placement="below" step={ITutorialStep.WELCOME}>
@@ -60,6 +68,12 @@ export default function InstructionsArea(props: Props) {
                       size={ButtonSize.TINY}
                       text="Watch replay"
                       onClick={() => onReplay()}
+                    />
+                    <Button
+                      className="nowrap w4 ml-auto-m mr1-m"
+                      size={ButtonSize.TINY}
+                      text="View summary"
+                      onClick={() => onViewSummary()}
                     />
                     <Button
                       primary

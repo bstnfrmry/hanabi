@@ -118,14 +118,8 @@ export default function Tutorial(props: Props) {
   const { step, placement, children } = props;
 
   const [pose, setPose] = useState(null);
-  const {
-    currentStep,
-    previousStep,
-    nextStep,
-    lastStep,
-    skip,
-    totalSteps
-  } = useContext(TutorialContext);
+  const { currentStep, previousStep, nextStep, lastStep, skip, totalSteps } =
+    useContext(TutorialContext) || {};
 
   useEffect(() => {
     if (step !== currentStep) return;

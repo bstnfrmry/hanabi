@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import { groupBy } from "lodash";
 import React, { useEffect, useState } from "react";
 
@@ -7,9 +8,10 @@ import { useGame } from "~/hooks/game";
 
 interface Props {
   player: IPlayer;
+  className?: string;
 }
 
-function percentage(num, den) {
+export function percentage(num, den) {
   if (!den) {
     return "-";
   }
@@ -24,7 +26,7 @@ const Colors = {
 };
 
 export default function PlayerStats(props: Props) {
-  const { player } = props;
+  const { player, className } = props;
 
   const game = useGame();
 
@@ -51,7 +53,7 @@ export default function PlayerStats(props: Props) {
   }, []);
 
   return (
-    <div className="flex flex-column w4.5">
+    <div className={classnames("flex flex-column", className)}>
       {totalCount && (
         <div className="flex mb2" style={{ height: 10, width: "100%" }}>
           <div

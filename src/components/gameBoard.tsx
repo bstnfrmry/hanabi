@@ -16,9 +16,9 @@ import {
 import { useGame } from "~/hooks/game";
 
 interface Props {
-  onSelectDiscard: Function;
-  onMenuClick: Function;
-  onShowRollback: Function;
+  onSelectDiscard?: Function;
+  onMenuClick?: Function;
+  onShowRollback?: Function;
 }
 
 export { CardWrapper } from "~/components/card";
@@ -51,7 +51,7 @@ export default function GameBoard(props: Props) {
               className="red ml2"
               value={`· ${game.actionsLeft} turn${
                 game.actionsLeft > 1 ? "s" : ""
-              } left`}
+                } left`}
             />
           )}
       </div>
@@ -84,12 +84,12 @@ export default function GameBoard(props: Props) {
             {game.drawPile.length <= 5 ? (
               <Txt className="red mt1" value={`${game.drawPile.length} left`} />
             ) : (
-              <Txt className="gray mt1" value="deck" />
-            )}
+                <Txt className="gray mt1" value="deck" />
+              )}
           </div>
           <div
             className="pointer relative mr2 tc flex flex-column items-center"
-            onClick={() => onSelectDiscard()}
+            onClick={() => onSelectDiscard && onSelectDiscard()}
           >
             <Tutorial placement="below" step={ITutorialStep.DISCARD_PILE}>
               <CardWrapper color="light-silver relative flex flex-column">
@@ -128,7 +128,7 @@ export default function GameBoard(props: Props) {
           </div>
 
           <div className="flex flex absolute top-0 right-0 mt2 mr2">
-            {game.options.allowRollback && (
+            {onShowRollback && game.options.allowRollback && (
               <Button
                 void
                 disabled={!game.history.length}
@@ -137,7 +137,9 @@ export default function GameBoard(props: Props) {
                 onClick={() => onShowRollback()}
               />
             )}
-            <HomeButton void className="ml1" onClick={onMenuClick} />
+            {onMenuClick && (
+              <HomeButton void className="ml1" onClick={onMenuClick} />
+            )}
           </div>
         </div>
       </div>
