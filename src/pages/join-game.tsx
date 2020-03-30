@@ -12,15 +12,17 @@ export default function JoinGame() {
   const router = useRouter();
   const network = useNetwork();
 
+  const [lastRefresh, setLastRefresh] = useState<number>(Date.now());
   const [loading, setLoading] = useState<boolean>(true);
   const [games, setGames] = useState<IGameState[]>([]);
 
   useEffect(() => {
-    network.subscribeToPublicGames(games => {
+    setLoading(true);
+    network.getPublicGames(games => {
       setLoading(false);
       setGames(games);
     });
-  }, []);
+  }, [lastRefresh]);
 
   if (loading) {
     return <LoadingScreen />;
@@ -77,6 +79,13 @@ export default function JoinGame() {
             ))}
           </div>
         )}
+
+        <Button
+          className="ml2 flex justify-center"
+          size={ButtonSize.MEDIUM}
+          text="refresh"
+          onClick={() => setLastRefresh(Date.now())}
+        />
       </div>
     </div>
   );

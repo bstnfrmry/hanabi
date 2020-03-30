@@ -50,14 +50,15 @@ export default class FirebaseNetwork implements Network {
     this.db = db || setupFirebase();
   }
 
-  subscribeToPublicGames(callback: GamesHandler) {
+  getPublicGames(callback: GamesHandler) {
     const ref = this.db
       .ref("/games")
       // Only games created less than 10 minutes ago
       .orderByChild("createdAt")
-      .startAt(Date.now() - 10 * 60 * 1000);
+      .startAt(Date.now() - 10 * 60 * 1000)
+      .limitToFirst(30);
 
-    ref.on("value", event => {
+    ref.once("value", event => {
       const games = Object.values(event.val() || {})
         .map(fillEmptyValues)
         // Game is public
@@ -65,8 +66,6 @@ export default class FirebaseNetwork implements Network {
 
       callback(games);
     });
-
-    return () => ref.off();
   }
 
   subscribeToOnGoingGames(callback: GamesHandler) {

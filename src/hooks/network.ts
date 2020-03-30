@@ -11,7 +11,7 @@ export type GameHandler = (game: IGameState) => void;
 export type UnsubscribeHandler = () => void;
 
 export interface Network {
-  subscribeToPublicGames(callback: GamesHandler): UnsubscribeHandler;
+  getPublicGames(callback: GamesHandler): void;
 
   subscribeToOnGoingGames(callback: GamesHandler): UnsubscribeHandler;
 
