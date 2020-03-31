@@ -52,7 +52,7 @@ function isCardPossible(card: ICard, possibleCards: ICard[]): boolean {
   );
 }
 
-function isCardDangerous(card: ICard, state: IGameState): boolean {
+export function isCardDangerous(card: ICard, state: IGameState): boolean {
   if (!isCardEverPlayable(card, state)) {
     return false;
   }
@@ -96,7 +96,10 @@ function isCardEverPlayable(card: ICard, state: IGameState): boolean {
 /**
  * Check whether the current card can be discarded
  */
-function isCardDiscardable(card: IHiddenCard, state: IGameState): boolean {
+export function isCardDiscardable(
+  card: IHiddenCard,
+  state: IGameState
+): boolean {
   // AI can discard a card that can never be played (already played or because of discards)
   if (
     card.deductions.every(deduction => !isCardEverPlayable(deduction, state))
@@ -292,11 +295,11 @@ function findGivableHint(
         : // if it's a multicolor and the color hint is not given
         lastCard.color === "multicolor" &&
           lastCard.hint.color[lastCard.color] < 2
-        ? "color"
-        : // otherwise give a non given hint
-        lastCard.hint.number[lastCard.number] < 2
-        ? "number"
-        : "color";
+          ? "color"
+          : // otherwise give a non given hint
+          lastCard.hint.number[lastCard.number] < 2
+            ? "number"
+            : "color";
     return {
       action: "hint",
       from: state.currentPlayer,

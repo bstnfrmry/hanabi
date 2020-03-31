@@ -101,8 +101,15 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   const isSelfHinting = action.action === "hint" && action.from == action.to;
   const isHintingWithoutTokens =
     action.action === "hint" && state.tokens.hints === 0;
+  const isDiscardingWithMaxTokens =
+    action.action === "discard" && state.tokens.hints === MaxHints;
 
-  if (actionIsntFromCurrentPlayer || isHintingWithoutTokens || isSelfHinting) {
+  if (
+    actionIsntFromCurrentPlayer ||
+    isHintingWithoutTokens ||
+    isSelfHinting ||
+    isDiscardingWithMaxTokens
+  ) {
     return state;
   }
 
@@ -133,14 +140,8 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
       }
     } else {
       /** DISCARD */
-      if (s.tokens.hints < MaxHints) {
-        s.discardPile.push(card);
-        s.tokens.hints += 1;
-      } else {
-        throw new Error(
-          "Invalid action, cannot discard when the hints are maxed out!"
-        );
-      }
+      s.discardPile.push(card);
+      s.tokens.hints += 1;
     }
 
     // in both cases (play, discard) we need to remove a card from the hand and get a new one
