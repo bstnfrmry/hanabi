@@ -105,32 +105,28 @@ export default function GameStats() {
                 <div key={i} className="flex justify-end w-100">
                   {playerState.hand.map((card, cardIndex) => {
                     return (
-                      <div
-                        key={card.id}
-                        style={{
-                          margin: "1px 1px 0 0",
-                          width: "15px",
-                          height: "15px",
-                          backgroundColor: cardToStateColor(
-                            fillEmptyValues(state),
-                            playerState,
-                            card,
-                            cardIndex
-                          )
-                        }}
-                      >
-                        {/* {card.number} {card.color} */}
+                      <div key={card.id} className="flex items-center">
+                        <Card
+                          card={card}
+                          context={ICardContext.OTHER}
+                          size={CardSize.TINY}
+                          style={{ margin: "1px" }}
+                        />
+                        <div
+                          style={{
+                            margin: "1px 1px 0 0",
+                            width: "15px",
+                            height: "15px",
+                            backgroundColor: cardToStateColor(
+                              fillEmptyValues(state),
+                              playerState,
+                              card,
+                              cardIndex
+                            )
+                          }}
+                        ></div>
                       </div>
                     );
-                    // return (
-                    //   <Card
-                    //     key={card.id}
-                    //     card={card}
-                    //     context={ICardContext.OTHER}
-                    //     size={CardSize.TINY}
-                    //     style={{ margin: "1px" }}
-                    //   />
-                    // );
                   })}
                 </div>
               );
