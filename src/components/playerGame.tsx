@@ -76,6 +76,7 @@ export default function PlayerGame(props: Props) {
   } = props;
 
   const game = useGame();
+  const [cardsAreVisible, setCardsAreVisible] = useState(false);
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const [selectedCard, selectCard] = useState<number>(cardIndex);
   const [pendingHint, setPendingHint] = useState<IHintAction>({
@@ -86,10 +87,23 @@ export default function PlayerGame(props: Props) {
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
 
-  const hideCards =
-    (self || !selfPlayer) &&
-    (isReplayMode(game) || game.status !== IGameStatus.OVER);
-  const canPlay = [IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status);
+  let hideCards = true;
+  // Show cards to other players
+  if (!self && selfPlayer) {
+    hideCards = false;
+  }
+  // Show cards in replay mode (when toggled)
+  if (isReplayMode(game) && cardsAreVisible) {
+    hideCards = false;
+  }
+  // Show cards when game is over (when toggled)
+  if (game.status === IGameStatus.OVER && !isReplayMode(game)) {
+    hideCards = false;
+  }
+
+  const canPlay =
+    [IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status) &&
+    !isReplayMode(game);
 
   const hasSelectedCard = selectedCard !== null;
   const cardContext = selected
@@ -220,9 +234,10 @@ export default function PlayerGame(props: Props) {
             <div className="relative flex justify-end flex-grow-1 dib">
               {selected && (
                 <Txt
-                  className="absolute top--1.5 left-1"
+                  className="lavender absolute top--1 right-2 dib"
                   size={TxtSize.TINY}
-                  value="͢"
+                  style={{ marginTop: "-1px" }}
+                  value="⟶"
                 />
               )}
               <PoseGroup>
@@ -315,6 +330,19 @@ export default function PlayerGame(props: Props) {
               )}
             </div>
           )}
+
+        {selected && isReplayMode(game) && player === selfPlayer && (
+          <div className="flex flex-column items-end mb2">
+            <div className="flex justify-end items-center h-100-l">
+              <Button
+                text={"Toggle cards"}
+                onClick={() => {
+                  setCardsAreVisible(!cardsAreVisible);
+                }}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Other player actions */}

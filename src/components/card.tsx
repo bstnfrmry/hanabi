@@ -142,7 +142,7 @@ export default function Card(props: Props) {
     ].includes(context);
 
   if (selected) {
-    style.transform = "scale(1.20)";
+    // style.transform = "scale(1.20)";
   }
 
   return (
