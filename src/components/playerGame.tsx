@@ -1,6 +1,7 @@
 import classnames from "classnames";
-import React, { HTMLAttributes, useState } from "react";
+import React, { HTMLAttributes, useEffect, useState } from "react";
 import Popover from "react-popover";
+import posed, { PoseGroup } from "react-pose";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
@@ -84,6 +85,7 @@ export default function PlayerGame(props: Props) {
 
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
+
   const hideCards =
     (self || !selfPlayer) &&
     (isReplayMode(game) || game.status !== IGameStatus.OVER);
@@ -93,8 +95,8 @@ export default function PlayerGame(props: Props) {
   const cardContext = selected
     ? ICardContext.TARGETED_PLAYER
     : self
-    ? ICardContext.SELF_PLAYER
-    : ICardContext.OTHER_PLAYER;
+      ? ICardContext.SELF_PLAYER
+      : ICardContext.OTHER_PLAYER;
 
   return (
     <>
@@ -120,8 +122,8 @@ export default function PlayerGame(props: Props) {
                     game.status === IGameStatus.ONGOING
                       ? "Your turn"
                       : game.status === IGameStatus.OVER
-                      ? ""
-                      : "You'll start first"
+                        ? ""
+                        : "You'll start first"
                   }
                 />
               </Tutorial>
@@ -206,44 +208,58 @@ export default function PlayerGame(props: Props) {
           )}
         </div>
 
-        <div className={classnames("flex justify-end flex-grow-1 dib")}>
+        <div
+          className={classnames("flex justify-end self-end flex-grow-1 dib")}
+        >
           {displayStats && (
             <div className="ml3">
               <PlayerStats player={player} />
             </div>
           )}
-
-          {!displayStats &&
-            player.hand.map((card, i) => (
-              <Card
-                key={i}
-                card={card}
-                className={classnames({
-                  ma1: selected,
-                  "mr1 mr2-l": i < player.hand.length - 1
-                })}
-                context={cardContext}
-                hidden={hideCards}
-                position={i}
-                selected={
-                  selected &&
-                  (player === selfPlayer
-                    ? selectedCard === i
-                    : isCardHintable(pendingHint, card))
-                }
-                size={selected ? CardSize.LARGE : CardSize.MEDIUM}
-                style={{
-                  ...(selected && { transition: "all 50ms ease-in-out" })
-                }}
-                onClick={e => {
-                  e.stopPropagation();
-                  onSelectPlayer(player, i);
-                  if (player === selfPlayer) {
-                    selectCard(i);
-                  }
-                }}
-              />
-            ))}
+          {!displayStats && (
+            <div className="relative flex justify-end flex-grow-1 dib">
+              {selected && (
+                <Txt
+                  className="absolute top--1.5 left-1"
+                  size={TxtSize.TINY}
+                  value="͢"
+                />
+              )}
+              <PoseGroup>
+                {player.hand.map((card, i) => (
+                  <AnimatedCard key={card.id}>
+                    <Card
+                      card={card}
+                      className={classnames({
+                        ma1: selected,
+                        "mr1 mr2-l": i < player.hand.length - 1
+                      })}
+                      context={cardContext}
+                      hidden={hideCards}
+                      position={i}
+                      selected={
+                        selected &&
+                        (player === selfPlayer
+                          ? selectedCard === i
+                          : isCardHintable(pendingHint, card))
+                      }
+                      size={selected ? CardSize.LARGE : CardSize.MEDIUM}
+                      style={{
+                        ...(selected && { transition: "all 50ms ease-in-out" })
+                      }}
+                      onClick={e => {
+                        e.stopPropagation();
+                        onSelectPlayer(player, i);
+                        if (player === selfPlayer) {
+                          selectCard(i);
+                        }
+                      }}
+                    />
+                  </AnimatedCard>
+                ))}
+              </PoseGroup>
+            </div>
+          )}
         </div>
       </div>
 
@@ -358,3 +374,19 @@ export default function PlayerGame(props: Props) {
     </>
   );
 }
+
+const AnimatedCard = posed.div({
+  enter: {
+    opacity: 1,
+    transition: {
+      delay: 200,
+      duration: 100
+    }
+  },
+  exit: {
+    opacity: 0.1,
+    transition: {
+      duration: 100
+    }
+  }
+});

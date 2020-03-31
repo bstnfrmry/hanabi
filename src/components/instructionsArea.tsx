@@ -106,6 +106,10 @@ export default function InstructionsArea(props: Props) {
               );
             })}
           </PoseGroup>
+          <Txt
+            className="lavender dib mt2"
+            value={history.length ? "Game started" : "Game start"}
+          />
         </div>
       )}
     </div>

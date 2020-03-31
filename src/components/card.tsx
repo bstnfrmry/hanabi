@@ -117,7 +117,7 @@ export default function Card(props: Props) {
   const {
     card,
     context,
-    onClick = () => {},
+    onClick = () => { },
     hidden = false,
     playable = true,
     size = CardSize.MEDIUM,
