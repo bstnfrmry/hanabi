@@ -1,5 +1,5 @@
-import { groupBy } from "lodash";
-import React from "react";
+import { groupBy, range } from "lodash";
+import React, { useState } from "react";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -20,6 +20,13 @@ import { useGame } from "~/hooks/game";
 
 const CountPerNumber = { 1: 3, 2: 2, 3: 2, 4: 2, 5: 1 };
 
+const Colors = {
+  Play: "#B7E1BC",
+  Discard: "#E9AFC7",
+  Other: "#c4c4c4",
+  Dangerous: "#820000"
+};
+
 function cardToStateColor(
   game: IGameState,
   player: IPlayer,
@@ -27,18 +34,18 @@ function cardToStateColor(
   cardIndex: number
 ) {
   if (isPlayable(card, game.playedCards)) {
-    return "green";
+    return Colors.Play;
   }
 
   if (isCardDangerous(card, game)) {
-    return "red";
+    return Colors.Dangerous;
   }
 
   const playedCard = game.playedCards.find(
     c => card.number === c.number && card.color === c.color
   );
   if (playedCard) {
-    return "pink";
+    return Colors.Discard;
   }
 
   const discardedCardsOfSameColorAndInferiorValue = game.discardPile.filter(
@@ -49,7 +56,7 @@ function cardToStateColor(
     card.color === IColor.MULTICOLOR &&
     discardedCardsOfSameColorAndInferiorValue.length
   ) {
-    return "blue";
+    return Colors.Discard;
   }
   const groupedByNumber = groupBy(
     discardedCardsOfSameColorAndInferiorValue,
@@ -59,14 +66,15 @@ function cardToStateColor(
     return groupedByNumber[number].length === CountPerNumber[number];
   });
   if (allCardsInDiscard) {
-    return "blue";
+    return Colors.Discard;
   }
 
-  return "gray";
+  return Colors.Other;
 }
 
 export default function GameStats() {
   const game = useGame();
+  const [displayCards, setDisplayCards] = useState(false);
 
   const firstPlayerIndex = game.turnsHistory[0].action.from;
   const orderedPlayers = [
@@ -75,12 +83,15 @@ export default function GameStats() {
   ];
 
   return (
-    <div className="flex justify-between w-100">
+    <div
+      className="flex justify-around w-100"
+      onClick={() => setDisplayCards(!displayCards)}
+    >
       {orderedPlayers.map((player, playerIndex) => {
         const firstHand = game.history[0].players[playerIndex].hand;
 
         return (
-          <div key={player.id} className="mh1 flex flex-column items-center">
+          <div key={player.id} className="flex flex-column items-center">
             <Txt size={TxtSize.SMALL} value={player.name} />
             <div className="flex justify-between w-100 mh1">
               {firstHand.map((card, cardIndex) => {
@@ -88,7 +99,8 @@ export default function GameStats() {
                   <Txt
                     key={cardIndex}
                     className="lavender"
-                    size={TxtSize.SMALL}
+                    size={TxtSize.TINY}
+                    style={{ width: "12px", textAlign: "center" }}
                     value={PositionMap[cardIndex]}
                   />
                 );
@@ -106,25 +118,29 @@ export default function GameStats() {
                   {playerState.hand.map((card, cardIndex) => {
                     return (
                       <div key={card.id} className="flex items-center">
-                        <Card
-                          card={card}
-                          context={ICardContext.OTHER}
-                          size={CardSize.TINY}
-                          style={{ margin: "1px" }}
-                        />
-                        <div
-                          style={{
-                            margin: "1px 1px 0 0",
-                            width: "15px",
-                            height: "15px",
-                            backgroundColor: cardToStateColor(
-                              fillEmptyValues(state),
-                              playerState,
-                              card,
-                              cardIndex
-                            )
-                          }}
-                        ></div>
+                        {displayCards && (
+                          <Card
+                            card={card}
+                            context={ICardContext.OTHER}
+                            size={CardSize.TINY}
+                            style={{ margin: "1px" }}
+                          />
+                        )}
+                        {!displayCards && (
+                          <div
+                            style={{
+                              margin: "1px 1px 0 0",
+                              width: "12px",
+                              height: "6px",
+                              backgroundColor: cardToStateColor(
+                                fillEmptyValues(state),
+                                playerState,
+                                card,
+                                cardIndex
+                              )
+                            }}
+                          />
+                        )}
                       </div>
                     );
                   })}
@@ -134,6 +150,50 @@ export default function GameStats() {
           </div>
         );
       })}
+      <div className="flex flex-column w1 nl3" style={{ paddingTop: 30 }}>
+        {game.history.map((state, i) => {
+          return (
+            <div key={i} className="flex relative">
+              <div
+                className="flex"
+                style={{ height: "6px", margin: "1px 1px 0 0" }}
+              >
+                {range(0, state.tokens.strikes).map(x => {
+                  return (
+                    <div
+                      key={x}
+                      className="bg-strikes outline-main-dark absolute flex items-center justify-center br-100 h-100 w-100 mr2"
+                      style={{
+                        width: "6px",
+                        height: "6px",
+                        left: `-${x * 2}px`
+                      }}
+                    />
+                  );
+                })}
+              </div>
+              <div
+                className="flex"
+                style={{ height: "6px", margin: "1px 1px 0 0" }}
+              >
+                {range(0, state.tokens.hints).map(x => {
+                  return (
+                    <div
+                      key={x}
+                      className="bg-hints outline-main-dark absolute flex items-center justify-center br-100 h-100 w-100 mr2"
+                      style={{
+                        width: "6px",
+                        height: "6px",
+                        right: `-${8 + x * 2}px`
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
