@@ -9,7 +9,13 @@ import React, {
 import Hint from "~/components/hint";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { getColors, numbers } from "~/game/actions";
-import { ICard, ICardHint, IGameHintsLevel } from "~/game/state";
+import {
+  ICard,
+  ICardHint,
+  IColor,
+  IGameHintsLevel,
+  IHintLevel
+} from "~/game/state";
 import { useGame } from "~/hooks/game";
 
 export enum CardSize {
@@ -117,7 +123,7 @@ export default function Card(props: Props) {
   const {
     card,
     context,
-    onClick = () => {},
+    onClick = () => { },
     hidden = false,
     playable = true,
     size = CardSize.MEDIUM,
@@ -182,20 +188,7 @@ export default function Card(props: Props) {
       )}
 
       {/* show positive hints with a larger type */}
-      {displayHints && hidden && (
-        <div
-          className={classnames(
-            "top-0 br-100 w-50 h-50 flex justify-center items-center",
-            {
-              [`bg-${card.color} txt-${card.color}-dark ba b--${card.color}`]:
-                card.hint.color[card.color] === 2,
-              [`txt-white-dark`]: card.hint.color[card.color] !== 2
-            }
-          )}
-        >
-          {card.hint.number[card.number] === 2 && <Txt value={card.number} />}
-        </div>
-      )}
+      {displayHints && hidden && <CardPartialHint card={card} size={size} />}
 
       {/* show other hints, including negative hints */}
       {displayHints && size === CardSize.LARGE && (
@@ -233,5 +226,55 @@ function hasPositiveHint(hint: ICardHint) {
   return (
     Object.values(hint.color).indexOf(2) > -1 ||
     Object.values(hint.number).indexOf(2) > -1
+  );
+}
+
+interface CardPartialHintProps {
+  card: ICard;
+  size: CardSize;
+}
+
+function CardPartialHint(props: CardPartialHintProps) {
+  const { card, size } = props;
+
+  let className = "";
+
+  // when card is sure, apply a colored background and border using the card color
+  if (card.hint.color[card.color] === IHintLevel.SURE) {
+    className = `bg-${card.color} txt-${card.color}-dark ba b--${card.color}`;
+  }
+
+  const possibleColors = Object.keys(card.hint.color).filter(
+    color => card.hint.color[color] === IHintLevel.POSSIBLE
+  );
+
+  // when they are only 2 possible cards and one of them is rainbow,
+  // apply a rainbow background and a thick border using the other possible color
+  if (
+    card.hint.color.rainbow === IHintLevel.POSSIBLE &&
+    possibleColors.length === 2
+  ) {
+    const possibleColor = possibleColors.find(
+      color => color !== IColor.RAINBOW
+    );
+
+    className = classnames(`bg-rainbow-circle ba b--${possibleColor}-clear`, {
+      "bw1.5": size !== CardSize.LARGE,
+      bw2: size === CardSize.LARGE
+    });
+  }
+
+  return (
+    <div
+      className={classnames(
+        "top-0 br-100 w-50 h-50 flex justify-center items-center",
+        className,
+        {
+          [`txt-white-dark`]: card.hint.color[card.color] !== 2
+        }
+      )}
+    >
+      {card.hint.number[card.number] === 2 && <Txt value={card.number} />}
+    </div>
   );
 }

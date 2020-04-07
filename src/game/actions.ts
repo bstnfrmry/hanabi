@@ -1,5 +1,13 @@
 import assert from "assert";
-import { cloneDeep, findIndex, flatMap, last, range, zipObject } from "lodash";
+import {
+  cloneDeep,
+  findIndex,
+  flatMap,
+  last,
+  orderBy,
+  range,
+  zipObject
+} from "lodash";
 import { shuffle } from "shuffle-seed";
 
 import IGameState, {
@@ -12,6 +20,8 @@ import IGameState, {
   IGameStatus,
   IHand,
   IHintAction,
+  IHintLevel,
+  IHintType,
   INumber,
   IPlayer
 } from "./state";
@@ -50,37 +60,70 @@ export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
 /**
  * Side effect function that applies the given hint on a given hand's cards
  */
-function applyHint(hand: IHand, hint: IHintAction) {
+function applyHint(state: IGameState, hand: IHand, hint: IHintAction) {
   hand.forEach(card => {
-    if (card[hint.type] === hint.value) {
-      // positive hint, e.g. card is a red 5 and the hint is "color red"
-      Object.keys(card.hint[hint.type]).forEach(value => {
-        if (value == hint.value) {
-          // == because we want '2' == 2
-          // it has to be this value
-          card.hint[hint.type][value] = 2;
-        } else {
-          // all other values are impossible
-          card.hint[hint.type][value] = 0;
-        }
-      });
-    } else {
+    if (!matchHint(hint, card)) {
       // negative hint
-      card.hint[hint.type][hint.value] = 0;
+      card.hint[hint.type][hint.value] = IHintLevel.IMPOSSIBLE;
+      return;
     }
+
+    // ensure rainbow is already treated last
+    const types = orderBy(
+      Object.keys(card.hint[hint.type]),
+      type => type === "rainbow"
+    );
+
+    types
+      // skip hints already flagged as impossible
+      .filter(value => card.hint[hint.type][value] !== IHintLevel.IMPOSSIBLE)
+      .forEach(value => {
+        if (value == hint.value) {
+          // it has to be this value (or rainbow when applicable)
+          card.hint[hint.type][value] =
+            hint.type === "color" &&
+              state.options.variant === GameVariant.RAINBOW
+              ? IHintLevel.POSSIBLE
+              : IHintLevel.SURE;
+          return;
+        }
+
+        if (value === "rainbow") {
+          // it's possibly rainbow
+          card.hint.number[value] = IHintLevel.POSSIBLE;
+
+          const hasImpossibleColors = Object.values(card.hint.color).find(
+            v => v !== IHintLevel.IMPOSSIBLE
+          );
+          if (hasImpossibleColors) {
+            // if the card already as any impossible values for a color, then it's rainbow for sure
+            // set all colors to impossible
+            Object.keys(card.hint.color).forEach(value => {
+              card.hint.number[value] = IHintLevel.IMPOSSIBLE;
+            });
+            // set rainbow hint to sure
+            card.hint.number[value] = IHintLevel.SURE;
+          }
+
+          return;
+        }
+
+        // all other values are impossible
+        card.hint[hint.type][value] = IHintLevel.IMPOSSIBLE;
+      });
   });
 }
 
 export function emptyHint(options: IGameOptions): ICardHint {
   return {
     color: {
-      blue: 1,
-      red: 1,
-      green: 1,
-      white: 1,
-      yellow: 1,
-      multicolor: options.variant === GameVariant.MULTICOLOR ? 1 : 0,
-      rainbow: 0
+      [IColor.BLUE]: 1,
+      [IColor.RED]: 1,
+      [IColor.GREEN]: 1,
+      [IColor.YELLOW]: 1,
+      [IColor.WHITE]: 1,
+      [IColor.MULTICOLOR]: options.variant === GameVariant.MULTICOLOR ? 1 : 0,
+      [IColor.RAINBOW]: 1 // Should never be used directly
     },
     number: { 0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
   };
@@ -90,6 +133,12 @@ export function matchColor(colorA: IColor, colorB: IColor) {
   return (
     colorA === colorB || colorA === IColor.RAINBOW || colorB === IColor.RAINBOW
   );
+}
+
+export function matchHint(hint: IHintAction, card: ICard) {
+  return hint.type === "color"
+    ? matchColor(card.color, hint.value as IColor)
+    : hint.value === card.number;
 }
 
 export function isReplayMode(state: IGameState) {
@@ -164,7 +213,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
     s.tokens.hints -= 1;
 
     const hand = s.players[action.to].hand;
-    applyHint(hand, action);
+    applyHint(s, hand, action);
   }
 
   // there's no card in the pile (or the last card was just drawn)

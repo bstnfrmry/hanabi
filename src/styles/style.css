@@ -188,6 +188,17 @@ button {
   )
 }
 
+.bg-rainbow-circle {
+  background-image: radial-gradient(
+    circle at bottom left,
+    var(--color-white) 0% 28%,
+    var(--color-blue) 28% 43%,
+    var(--color-green) 43% 57%,
+    var(--color-yellow) 57% 72%,
+    var(--color-red) 72% 100%
+  )
+}
+
 .bg-hints {
   background: linear-gradient(
     to bottom right,
@@ -243,8 +254,32 @@ button {
   border-color: color-mod(var(--color-green) shade(20%));
 }
 
-.b--multicolor {
+.b--multicolor, .b--rainbow {
   border-color: color-mod(var(--color-white) shade(10%));
+}
+
+.b--white-clear {
+  border-color: var(--color-white);
+}
+
+.b--red-clear {
+  border-color: var(--color-red);
+}
+
+.b--blue-clear {
+  border-color: var(--color-blue);
+}
+
+.b--yellow-clear {
+  border-color: var(--color-yellow);
+}
+
+.b--green-clear {
+  border-color: var(--color-green);
+}
+
+.b--multicolor-clear, .b--rainbow-clear {
+  border-color: var(--color-white);
 }
 
 .b--hints {
