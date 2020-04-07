@@ -61,46 +61,34 @@ export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
  * Side effect function that applies the given hint on a given hand's cards
  */
 function applyHint(state: IGameState, hand: IHand, hint: IHintAction) {
-  const hasRainbowColor = state.options.variant === GameVariant.RAINBOW;
-  const isColorHint = hint.type === "color";
-
   hand.forEach(card => {
-    if (matchHint(hint, card)) {
-      // positive hint, e.g. card is a red 5 and the hint is "color red"
+    if (!matchHint(hint, card)) {
+      card.hint[hint.type][hint.value] = 0;
+      if (hint.type === "color") {
+        card.hint.color.rainbow = 0;
+      }
+    } else {
       Object.keys(card.hint[hint.type]).forEach(value => {
-        if (value == hint.value) {
-          // == because we want '2' == 2
-
-          // min to current value so that impossible hints can never become possible/sure
-          card.hint[hint.type][value] = Math.min(
-            card.hint[hint.type][value],
-            //
-            hasRainbowColor && isColorHint ? 1 : 2
-          );
-        } else if (value !== "rainbow" || card.hint.color[hint.value] !== 0) {
-          // all other values are impossible
+        if (value != hint.value && value !== "rainbow") {
           card.hint[hint.type][value] = 0;
         }
       });
-    } else {
-      // negative hint
-      card.hint[hint.type][hint.value] = 0;
-
-      const impossibleColor = Object.keys(card.hint.color).find(
-        color => card.hint.color[color] === 0
-      );
-      // if there was another impossible color, it cannot be rainbow
-      if (hasRainbowColor && isColorHint && impossibleColor) {
-        card.hint.color.rainbow = 0;
-      }
     }
 
-    // if there's only possible color, make it sure
+    // if there's only one possible color, make it sure
     const onlyPossibleColors = Object.keys(card.hint.color).filter(
       color => card.hint.color[color] === 1
     );
     if (onlyPossibleColors.length === 1) {
       card.hint.color[onlyPossibleColors[0]] = 2;
+    }
+
+    // if there's only one possible number, make it sure
+    const onlyPossibleNumbers = Object.keys(card.hint.color).filter(
+      color => card.hint.number[color] === 1
+    );
+    if (onlyPossibleNumbers.length === 1) {
+      card.hint.number[onlyPossibleNumbers[0]] = 2;
     }
   });
 }

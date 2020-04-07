@@ -241,7 +241,9 @@ function CardPartialHint(props: CardPartialHintProps) {
 
   // when card is sure, apply a colored background and border using the card color
   if (card.hint.color[card.color] === IHintLevel.SURE) {
-    className = `bg-${card.color} txt-${card.color}-dark ba b--${card.color}`;
+    const color = card.color === IColor.RAINBOW ? `rainbow-circle` : card.color;
+
+    className = `bg-${color} txt-${card.color}-dark ba b--${card.color}`;
   }
 
   const possibleColors = Object.keys(card.hint.color).filter(
