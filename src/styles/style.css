@@ -97,6 +97,11 @@ button {
   text-shadow: 0 0 2px color-mod(var(--color-white) lightness(90%));
 }
 
+.txt-rainbow-dark {
+  color: color-mod(var(--color-white) lightness(15%));
+  text-shadow: 0 0 2px color-mod(var(--color-white) lightness(90%));
+}
+
 /**
  * Background colors
  */
@@ -170,6 +175,17 @@ button {
     var(--color-red) 216deg 288deg,
     var(--color-yellow) 288deg 360deg
   );
+}
+
+.bg-rainbow {
+  background-image: radial-gradient(
+    circle at bottom left,
+    var(--color-white) 0% 20%,
+    var(--color-blue) 20% 40%,
+    var(--color-green) 40% 60%,
+    var(--color-yellow) 60% 80%,
+    var(--color-red) 80% 100%
+  )
 }
 
 .bg-hints {

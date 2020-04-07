@@ -3,6 +3,7 @@ import { cloneDeep, findIndex, flatMap, last, range, zipObject } from "lodash";
 import { shuffle } from "shuffle-seed";
 
 import IGameState, {
+  GameVariant,
   IAction,
   ICard,
   ICardHint,
@@ -78,10 +79,17 @@ export function emptyHint(options: IGameOptions): ICardHint {
       green: 1,
       white: 1,
       yellow: 1,
-      multicolor: options.multicolor ? 1 : 0
+      multicolor: options.variant === GameVariant.MULTICOLOR ? 1 : 0,
+      rainbow: 0
     },
     number: { 0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
   };
+}
+
+export function matchColor(colorA: IColor, colorB: IColor) {
+  return (
+    colorA === colorB || colorA === IColor.RAINBOW || colorB === IColor.RAINBOW
+  );
 }
 
 export function isReplayMode(state: IGameState) {
@@ -212,7 +220,39 @@ export function emptyPlayer(id: string, name: string): IPlayer {
 }
 
 export function getColors(state: IGameState) {
-  return state.options.multicolor ? colors : colors.slice(0, -1);
+  switch (state.options.variant) {
+    case GameVariant.MULTICOLOR:
+      return [
+        IColor.BLUE,
+        IColor.GREEN,
+        IColor.RED,
+        IColor.WHITE,
+        IColor.YELLOW,
+        IColor.MULTICOLOR
+      ];
+    case GameVariant.RAINBOW:
+      return [
+        IColor.BLUE,
+        IColor.GREEN,
+        IColor.RED,
+        IColor.WHITE,
+        IColor.YELLOW,
+        IColor.RAINBOW
+      ];
+    case GameVariant.CLASSIC:
+    default:
+      return [
+        IColor.BLUE,
+        IColor.GREEN,
+        IColor.RED,
+        IColor.WHITE,
+        IColor.YELLOW
+      ];
+  }
+}
+
+export function getHintableColors(state: IGameState) {
+  return getColors(state).filter(color => color !== IColor.RAINBOW);
 }
 
 export function getScore(state: IGameState) {
@@ -220,7 +260,14 @@ export function getScore(state: IGameState) {
 }
 
 export function getMaximumScore(state: IGameState) {
-  return state.options.multicolor ? 30 : 25;
+  switch (state.options.variant) {
+    case GameVariant.MULTICOLOR:
+    case GameVariant.RAINBOW:
+      return 30;
+    case GameVariant.CLASSIC:
+    default:
+      return 25;
+  }
 }
 
 export function getPlayedCardsPile(
@@ -304,14 +351,30 @@ export function newGame(options: IGameOptions): IGameState {
     { number: 5, color }
   ]);
 
-  // Add extensions cards when applicable
-  if (options.multicolor) {
+  // Add multicolor cards when applicable
+  if (options.variant === GameVariant.MULTICOLOR) {
     cards.push(
       { number: 1, color: IColor.MULTICOLOR },
       { number: 2, color: IColor.MULTICOLOR },
       { number: 3, color: IColor.MULTICOLOR },
       { number: 4, color: IColor.MULTICOLOR },
       { number: 5, color: IColor.MULTICOLOR }
+    );
+  }
+
+  // Add rainbow cards when applicable
+  if (options.variant === GameVariant.RAINBOW) {
+    cards.push(
+      { number: 1, color: IColor.RAINBOW },
+      { number: 1, color: IColor.RAINBOW },
+      { number: 1, color: IColor.RAINBOW },
+      { number: 2, color: IColor.RAINBOW },
+      { number: 2, color: IColor.RAINBOW },
+      { number: 3, color: IColor.RAINBOW },
+      { number: 3, color: IColor.RAINBOW },
+      { number: 4, color: IColor.RAINBOW },
+      { number: 4, color: IColor.RAINBOW },
+      { number: 5, color: IColor.RAINBOW }
     );
   }
 

@@ -263,7 +263,7 @@ export default function Play() {
     let sameGame = newGame({
       id: game.id,
       playersCount: game.options.playersCount,
-      multicolor: game.options.multicolor,
+      variant: game.options.variant,
       allowRollback: false,
       preventLoss: false,
       seed: game.options.seed,
@@ -496,43 +496,43 @@ export default function Play() {
                 onStartGame={onStartGame}
               />
             ) : (
-              <div className="h4 overflow-y-scroll pa2 pt0-l ph3-l">
-                {selectedArea.type === ActionAreaType.ROLLBACK && (
-                  <div className="h-100 flex flex-column items-center justify-center pa2">
-                    <Txt
-                      className="w-75"
-                      size={TxtSize.MEDIUM}
-                      value="You're about to roll back the last action!"
-                    />
-                    <div className="mt4">
-                      <Button text="Abort" onClick={() => onCloseArea()} />
-                      <Button
-                        primary
-                        className="ml4"
-                        text="Roll back"
-                        onClick={() => onRollback()}
-                      />
-                    </div>
+                  <div className="h4 overflow-y-scroll pa2 pt0-l ph3-l">
+                    {selectedArea.type === ActionAreaType.ROLLBACK && (
+                      <div className="h-100 flex flex-column items-center justify-center pa2">
+                        <Txt
+                          className="w-75"
+                          size={TxtSize.MEDIUM}
+                          value="You're about to roll back the last action!"
+                        />
+                        <div className="mt4">
+                          <Button text="Abort" onClick={() => onCloseArea()} />
+                          <Button
+                            primary
+                            className="ml4"
+                            text="Roll back"
+                            onClick={() => onRollback()}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedArea.type === ActionAreaType.DISCARD && (
+                      <DiscardArea onCloseArea={onCloseArea} />
+                    )}
+
+                    {![ActionAreaType.ROLLBACK, ActionAreaType.DISCARD].includes(
+                      selectedArea.type
+                    ) && (
+                        <InstructionsArea
+                          interturn={interturn}
+                          reachableScore={reachableScore}
+                          onReplay={onReplay}
+                          onSelectDiscard={onSelectDiscard}
+                          onToggleStats={onToggleStats}
+                        />
+                      )}
                   </div>
                 )}
-
-                {selectedArea.type === ActionAreaType.DISCARD && (
-                  <DiscardArea onCloseArea={onCloseArea} />
-                )}
-
-                {![ActionAreaType.ROLLBACK, ActionAreaType.DISCARD].includes(
-                  selectedArea.type
-                ) && (
-                  <InstructionsArea
-                    interturn={interturn}
-                    reachableScore={reachableScore}
-                    onReplay={onReplay}
-                    onSelectDiscard={onSelectDiscard}
-                    onToggleStats={onToggleStats}
-                  />
-                )}
-              </div>
-            )}
           </div>
 
           {interturn && (

@@ -32,8 +32,8 @@ export default interface IGameState {
 
 export interface IGameOptions {
   id: string;
+  variant?: GameVariant;
   playersCount: number;
-  multicolor: boolean;
   allowRollback: boolean;
   preventLoss: boolean;
   seed: string;
@@ -42,6 +42,12 @@ export interface IGameOptions {
   turnsHistory: boolean;
   botsWait: number;
   gameMode: GameMode;
+}
+
+export enum GameVariant {
+  CLASSIC = "classic",
+  MULTICOLOR = "multicolor",
+  RAINBOW = "rainbow"
 }
 
 export enum GameMode {
@@ -70,7 +76,8 @@ export enum IColor {
   BLUE = "blue",
   WHITE = "white",
   YELLOW = "yellow",
-  MULTICOLOR = "multicolor"
+  MULTICOLOR = "multicolor",
+  RAINBOW = "rainbow"
 }
 
 export type INumber = 1 | 2 | 3 | 4 | 5;

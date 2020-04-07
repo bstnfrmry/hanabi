@@ -10,14 +10,14 @@ import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import Vignettes from "~/components/vignettes";
-import { isReplayMode, MaxHints } from "~/game/actions";
+import { isReplayMode, matchColor, MaxHints } from "~/game/actions";
 import { playSound } from "~/game/sound";
-import { ICard, IGameStatus, IHintAction, IPlayer } from "~/game/state";
+import { ICard, IColor, IGameStatus, IHintAction, IPlayer } from "~/game/state";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 function isCardHintable(hint: IHintAction, card: ICard) {
   return hint.type === "color"
-    ? card.color === hint.value
+    ? matchColor(card.color, hint.value as IColor)
     : card.number === hint.value;
 }
 
@@ -93,8 +93,8 @@ export default function PlayerGame(props: Props) {
   const cardContext = selected
     ? ICardContext.TARGETED_PLAYER
     : self
-    ? ICardContext.SELF_PLAYER
-    : ICardContext.OTHER_PLAYER;
+      ? ICardContext.SELF_PLAYER
+      : ICardContext.OTHER_PLAYER;
 
   return (
     <>
@@ -120,8 +120,8 @@ export default function PlayerGame(props: Props) {
                     game.status === IGameStatus.ONGOING
                       ? "Your turn"
                       : game.status === IGameStatus.OVER
-                      ? ""
-                      : "You'll start first"
+                        ? ""
+                        : "You'll start first"
                   }
                 />
               </Tutorial>
