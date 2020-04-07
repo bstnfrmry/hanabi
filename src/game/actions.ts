@@ -61,56 +61,47 @@ export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
  * Side effect function that applies the given hint on a given hand's cards
  */
 function applyHint(state: IGameState, hand: IHand, hint: IHintAction) {
+  const hasRainbowColor = state.options.variant === GameVariant.RAINBOW;
+  const isColorHint = hint.type === "color";
+
   hand.forEach(card => {
-    if (!matchHint(hint, card)) {
+    if (matchHint(hint, card)) {
+      // positive hint, e.g. card is a red 5 and the hint is "color red"
+      Object.keys(card.hint[hint.type]).forEach(value => {
+        if (value == hint.value) {
+          // == because we want '2' == 2
+
+          // min to current value so that impossible hints can never become possible/sure
+          card.hint[hint.type][value] = Math.min(
+            card.hint[hint.type][value],
+            //
+            hasRainbowColor && isColorHint ? 1 : 2
+          );
+        } else if (value !== "rainbow" || card.hint.color[hint.value] !== 0) {
+          // all other values are impossible
+          card.hint[hint.type][value] = 0;
+        }
+      });
+    } else {
       // negative hint
-      card.hint[hint.type][hint.value] = IHintLevel.IMPOSSIBLE;
-      return;
+      card.hint[hint.type][hint.value] = 0;
+
+      const impossibleColor = Object.keys(card.hint.color).find(
+        color => card.hint.color[color] === 0
+      );
+      // if there was another impossible color, it cannot be rainbow
+      if (hasRainbowColor && isColorHint && impossibleColor) {
+        card.hint.color.rainbow = 0;
+      }
     }
 
-    // ensure rainbow is already treated last
-    const types = orderBy(
-      Object.keys(card.hint[hint.type]),
-      type => type === "rainbow"
+    // if there's only possible color, make it sure
+    const onlyPossibleColors = Object.keys(card.hint.color).filter(
+      color => card.hint.color[color] === 1
     );
-
-    types
-      // skip hints already flagged as impossible
-      .filter(value => card.hint[hint.type][value] !== IHintLevel.IMPOSSIBLE)
-      .forEach(value => {
-        if (value == hint.value) {
-          // it has to be this value (or rainbow when applicable)
-          card.hint[hint.type][value] =
-            hint.type === "color" &&
-              state.options.variant === GameVariant.RAINBOW
-              ? IHintLevel.POSSIBLE
-              : IHintLevel.SURE;
-          return;
-        }
-
-        if (value === "rainbow") {
-          // it's possibly rainbow
-          card.hint.number[value] = IHintLevel.POSSIBLE;
-
-          const hasImpossibleColors = Object.values(card.hint.color).find(
-            v => v !== IHintLevel.IMPOSSIBLE
-          );
-          if (hasImpossibleColors) {
-            // if the card already as any impossible values for a color, then it's rainbow for sure
-            // set all colors to impossible
-            Object.keys(card.hint.color).forEach(value => {
-              card.hint.number[value] = IHintLevel.IMPOSSIBLE;
-            });
-            // set rainbow hint to sure
-            card.hint.number[value] = IHintLevel.SURE;
-          }
-
-          return;
-        }
-
-        // all other values are impossible
-        card.hint[hint.type][value] = IHintLevel.IMPOSSIBLE;
-      });
+    if (onlyPossibleColors.length === 1) {
+      card.hint.color[onlyPossibleColors[0]] = 2;
+    }
   });
 }
 
