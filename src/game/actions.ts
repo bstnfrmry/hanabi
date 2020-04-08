@@ -60,35 +60,40 @@ export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
 /**
  * Side effect function that applies the given hint on a given hand's cards
  */
-function applyHint(state: IGameState, hand: IHand, hint: IHintAction) {
+function applyHint(hand: IHand, hint: IHintAction) {
   hand.forEach(card => {
-    if (!matchHint(hint, card)) {
-      card.hint[hint.type][hint.value] = 0;
-      if (hint.type === "color") {
-        card.hint.color.rainbow = 0;
-      }
+    if (matchHint(hint, card)) {
+      // positive hint on card - mark all other values as impossible (except rainbow)
+      Object.keys(card.hint[hint.type])
+        .filter(value => value !== IColor.RAINBOW)
+        .filter(value => value != hint.value)
+        .forEach(value => {
+          card.hint[hint.type][value] = IHintLevel.IMPOSSIBLE;
+        });
     } else {
-      Object.keys(card.hint[hint.type]).forEach(value => {
-        if (value != hint.value && value !== "rainbow") {
-          card.hint[hint.type][value] = 0;
-        }
-      });
+      // negative hint on card - mark as impossible
+      card.hint[hint.type][hint.value] = IHintLevel.IMPOSSIBLE;
+
+      // for color hints, also mark rainbow as impossible
+      if (hint.type === "color") {
+        card.hint.color.rainbow = IHintLevel.IMPOSSIBLE;
+      }
     }
 
     // if there's only one possible color, make it sure
     const onlyPossibleColors = Object.keys(card.hint.color).filter(
-      color => card.hint.color[color] === 1
+      color => card.hint.color[color] === IHintLevel.POSSIBLE
     );
     if (onlyPossibleColors.length === 1) {
-      card.hint.color[onlyPossibleColors[0]] = 2;
+      card.hint.color[onlyPossibleColors[0]] = IHintLevel.SURE;
     }
 
     // if there's only one possible number, make it sure
-    const onlyPossibleNumbers = Object.keys(card.hint.color).filter(
-      color => card.hint.number[color] === 1
+    const onlyPossibleNumbers = Object.keys(card.hint.number).filter(
+      number => card.hint.number[number] === IHintLevel.POSSIBLE
     );
     if (onlyPossibleNumbers.length === 1) {
-      card.hint.number[onlyPossibleNumbers[0]] = 2;
+      card.hint.number[onlyPossibleNumbers[0]] = IHintLevel.SURE;
     }
   });
 }
@@ -192,7 +197,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
     s.tokens.hints -= 1;
 
     const hand = s.players[action.to].hand;
-    applyHint(s, hand, action);
+    applyHint(hand, action);
   }
 
   // there's no card in the pile (or the last card was just drawn)

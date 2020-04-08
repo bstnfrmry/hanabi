@@ -246,12 +246,11 @@ function CardPartialHint(props: CardPartialHintProps) {
     className = `bg-${color} txt-${card.color}-dark ba b--${card.color}`;
   }
 
+  // when they are only 2 possible cards and one of them is rainbow,
+  // apply a rainbow background and a thick border using the other possible color
   const possibleColors = Object.keys(card.hint.color).filter(
     color => card.hint.color[color] === IHintLevel.POSSIBLE
   );
-
-  // when they are only 2 possible cards and one of them is rainbow,
-  // apply a rainbow background and a thick border using the other possible color
   if (
     card.hint.color.rainbow === IHintLevel.POSSIBLE &&
     possibleColors.length === 2
