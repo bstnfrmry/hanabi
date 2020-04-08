@@ -180,7 +180,7 @@ export default function Card(props: Props) {
       )}
 
       {/* Whether the card has received hints */}
-      {position !== null && hasPositiveHint(card.hint) && (
+      {position !== null && hasReceivedHint(card.hint) && (
         <div
           className="absolute right-0 top-0 bg-hints br--bottom br--left br-100"
           style={{ width: "20%", height: "20%" }}
@@ -222,10 +222,10 @@ export default function Card(props: Props) {
   );
 }
 
-function hasPositiveHint(hint: ICardHint) {
+function hasReceivedHint(hint: ICardHint) {
   return (
-    Object.values(hint.color).indexOf(2) > -1 ||
-    Object.values(hint.number).indexOf(2) > -1
+    Object.values(hint.color).indexOf(0) > -1 ||
+    Object.values(hint.number).indexOf(0) > -1
   );
 }
 
