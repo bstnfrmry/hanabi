@@ -61,8 +61,12 @@ export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
  * Side effect function that applies the given hint on a given hand's cards
  */
 function applyHint(hand: IHand, hint: IHintAction) {
-  hand.forEach(card => {
+  hint.cardsIndex = [];
+
+  hand.forEach((card, index) => {
     if (matchHint(hint, card)) {
+      hint.cardsIndex.push(index);
+
       // positive hint on card - mark all other values as impossible (except rainbow)
       Object.keys(card.hint[hint.type])
         .filter(value => value !== IColor.RAINBOW)

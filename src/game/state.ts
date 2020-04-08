@@ -131,6 +131,7 @@ export interface IHintAction {
   to: number;
   type: IHintType;
   value: IColor | INumber;
+  cardsIndex?: number[];
 }
 
 export type IAction = IDiscardAction | IPlayAction | IHintAction;

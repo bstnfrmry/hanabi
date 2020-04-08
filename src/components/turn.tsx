@@ -1,9 +1,9 @@
 import React from "react";
 
-import Card, { CardSize, ICardContext } from "~/components/card";
+import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Hint from "~/components/hint";
 import PlayerName from "~/components/playerName";
-import Txt from "~/components/ui/txt";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import { IHintLevel, ITurn } from "~/game/state";
 import { useGame } from "~/hooks/game";
 
@@ -39,6 +39,15 @@ export default function Turn(props: Props) {
           />
           {turn.action.type === "color" && " cards"}
           {turn.action.type === "number" && "s"}
+          {turn.action.cardsIndex && (
+            <Txt
+              className="lavender ml1"
+              size={TxtSize.TINY}
+              value={`${turn.action.cardsIndex
+                .map(index => PositionMap[index])
+                .join(", ")}`}
+            />
+          )}
         </Txt>
       )}
 
@@ -50,6 +59,11 @@ export default function Turn(props: Props) {
             context={ICardContext.DISCARDED}
             size={CardSize.TINY}
           />
+          <Txt
+            className="lavender ml1"
+            size={TxtSize.TINY}
+            value={`${PositionMap[turn.action.cardIndex]}`}
+          />
         </Txt>
       )}
 
@@ -60,6 +74,11 @@ export default function Turn(props: Props) {
             card={turn.action.card}
             context={ICardContext.PLAYED}
             size={CardSize.TINY}
+          />
+          <Txt
+            className="lavender ml1"
+            size={TxtSize.TINY}
+            value={`${PositionMap[turn.action.cardIndex]}`}
           />
         </Txt>
       )}
