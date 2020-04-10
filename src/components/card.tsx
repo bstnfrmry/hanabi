@@ -3,10 +3,13 @@ import React, {
   CSSProperties,
   HTMLAttributes,
   MouseEventHandler,
-  ReactNode
+  ReactNode,
+  useState
 } from "react";
+import Popover from "react-popover";
 
 import Hint from "~/components/hint";
+import Turn from "~/components/turn";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { getColors, numbers } from "~/game/actions";
 import { ICard, IColor, IGameHintsLevel, IHintLevel } from "~/game/state";
@@ -179,6 +182,8 @@ export default function Card(props: Props) {
   } = props;
 
   const game = useGame();
+  const [isHintPopoverOpen, setIsHintPopoverOpen] = useState(false)
+
   const colors = getColors(game);
   const color = hidden ? "gray-light" : card.color;
 
@@ -193,7 +198,11 @@ export default function Card(props: Props) {
     ].includes(context);
 
   if (selected) {
-    style.transform = "scale(1.20)";
+    try {
+      style.transform = "scale(1.20)";
+    } catch (e) {
+      //
+    }
   }
 
   return (
@@ -226,10 +235,27 @@ export default function Card(props: Props) {
 
       {/* Whether the card has received hints */}
       {position !== null && card.receivedHints?.length > 0 && (
-        <div
-          className="absolute right-0 top-0 bg-hints br--bottom br--left br-100"
-          style={{ width: "20%", height: "20%" }}
-        />
+        <Popover body={<div className="flex items-center justify-center b--yellow ba bw1 bg-white pa2 pr3 br2 gray">
+          <div className="flex flex-column">
+            {card?.receivedHints?.map((turn, i) => {
+              return <div key={i} className="nb1">
+                <Turn includePlayer={true} showDrawn={false} showPosition={false} turn={turn} />
+              </div>
+            })}
+          </div>
+        </div>} className="z-999" isOpen={isHintPopoverOpen} onOuterAction={() => setIsHintPopoverOpen(false)}>
+          <div
+            className="absolute right-0 top-0 bg-hints br--bottom br--left br-100"
+            style={{ width: "20%", height: "20%" }}
+            onClick={e => {
+              e.preventDefault()
+              e.stopPropagation()
+              setIsHintPopoverOpen(true)
+            }}
+            onMouseEnter={() => setIsHintPopoverOpen(true)}
+            onMouseLeave={() => setIsHintPopoverOpen(false)}
+          />
+        </Popover>
       )}
 
       {/* show positive hints with a larger type */}

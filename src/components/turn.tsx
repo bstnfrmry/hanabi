@@ -11,10 +11,11 @@ interface Props {
   turn: ITurn;
   includePlayer: boolean;
   showDrawn: boolean;
+  showPosition?: boolean;
 }
 
 export default function Turn(props: Props) {
-  const { turn, includePlayer = false, showDrawn } = props;
+  const { turn, includePlayer = false, showDrawn, showPosition = true } = props;
 
   const game = useGame();
 
@@ -39,7 +40,7 @@ export default function Turn(props: Props) {
           />
           {turn.action.type === "color" && " cards"}
           {turn.action.type === "number" && "s"}
-          {turn.action.cardsIndex && (
+          {showPosition && turn.action.cardsIndex && (
             <Txt
               className="lavender ml1"
               size={TxtSize.TINY}
