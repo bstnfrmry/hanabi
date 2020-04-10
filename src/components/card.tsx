@@ -217,7 +217,10 @@ export default function Card(props: Props) {
       data-card={PositionMap[position]}
       playable={playable}
       size={size}
-      style={style}
+      style={{
+        ...style,
+        userSelect: 'none'
+      }}
       onClick={onClick}
       {...longPressProps}
     >
