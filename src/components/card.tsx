@@ -14,6 +14,7 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 import { getColors, numbers } from "~/game/actions";
 import { ICard, IColor, IGameHintsLevel, IHintLevel } from "~/game/state";
 import { useGame } from "~/hooks/game";
+import useLongPress from "~/hooks/longPress";
 
 export enum CardSize {
   TINY = "tiny",
@@ -183,6 +184,9 @@ export default function Card(props: Props) {
 
   const game = useGame();
   const [isHintPopoverOpen, setIsHintPopoverOpen] = useState(false)
+  const longPressProps = useLongPress(() => {
+    setIsHintPopoverOpen(true)
+  })
 
   const colors = getColors(game);
   const color = hidden ? "gray-light" : card.color;
@@ -247,13 +251,7 @@ export default function Card(props: Props) {
           <div
             className="absolute right-0 top-0 bg-hints br--bottom br--left br-100"
             style={{ width: "20%", height: "20%" }}
-            onClick={e => {
-              e.preventDefault()
-              e.stopPropagation()
-              setIsHintPopoverOpen(true)
-            }}
-            onMouseEnter={() => setIsHintPopoverOpen(true)}
-            onMouseLeave={() => setIsHintPopoverOpen(false)}
+            {...longPressProps}
           />
         </Popover>
       )}
