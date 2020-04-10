@@ -21,7 +21,6 @@ import IGameState, {
   IHand,
   IHintAction,
   IHintLevel,
-  IHintType,
   INumber,
   IPlayer
 } from "./state";
@@ -66,6 +65,11 @@ function applyHint(hand: IHand, hint: IHintAction) {
   hand.forEach((card, index) => {
     if (matchHint(hint, card)) {
       hint.cardsIndex.push(index);
+
+      if (!card.receivedHints) {
+        card.receivedHints = [];
+      }
+      card.receivedHints.push({ action: hint });
 
       // positive hint on card - mark all other values as impossible (except rainbow)
       Object.keys(card.hint[hint.type])
@@ -415,7 +419,12 @@ export function newGame(options: IGameOptions): IGameState {
     );
   }
 
-  cards = cards.map((c, i) => ({ ...c, id: i })) as ICard[];
+  cards = cards.map((c, i) => {
+    return {
+      ...c,
+      id: i
+    };
+  });
 
   const deck = shuffle(cards, options.seed);
 

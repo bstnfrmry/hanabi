@@ -105,6 +105,7 @@ export interface ICard {
   number: INumber;
   hint?: ICardHint;
   id?: number;
+  receivedHints?: ITurn[];
 }
 
 export type IActionType = "discard" | "play" | "hint";
