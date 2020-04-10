@@ -210,83 +210,86 @@ export default function Card(props: Props) {
   }
 
   return (
-    <CardWrapper
-      className={classnames({ "bw1 z-5": selected }, className)}
-      color={color}
-      context={context}
-      data-card={PositionMap[position]}
-      playable={playable}
-      size={size}
-      style={style}
-      onClick={onClick}
-    >
-      {/* Card value */}
-      <Txt
-        className={classnames(`txt-${color}-dark`, {
-          mb3: displayHints && size === CardSize.LARGE
-        })}
-        size={CardTextSizes[size]}
-        value={number}
-      />
-
-      {/* Card position */}
-      {position !== null && size === CardSize.LARGE && (
+    <div {...longPressProps}>
+      <CardWrapper
+        className={classnames({ "bw1 z-5": selected }, className)}
+        color={color}
+        context={context}
+        data-card={PositionMap[position]}
+        playable={playable}
+        size={size}
+        style={style}
+        onClick={onClick}
+      >
+        {/* Card value */}
         <Txt
-          className="absolute left-0 top-0 ma1 black-40"
-          value={PositionMap[position]}
+          className={classnames(`txt-${color}-dark`, {
+            mb3: displayHints && size === CardSize.LARGE
+          })}
+          size={CardTextSizes[size]}
+          value={number}
         />
-      )}
 
-      {/* Whether the card has received hints */}
-      {position !== null && card.receivedHints?.length > 0 && (
-        <Popover body={<div className="flex items-center justify-center b--yellow ba bw1 bg-white pa2 pr3 br2 gray">
-          <div className="flex flex-column">
-            {card?.receivedHints?.map((turn, i) => {
-              return <div key={i} className="nb1">
-                <Turn includePlayer={true} showDrawn={false} showPosition={false} turn={turn} />
-              </div>
-            })}
-          </div>
-        </div>} className="z-999" isOpen={isHintPopoverOpen} onOuterAction={() => setIsHintPopoverOpen(false)}>
-          <div
-            className="absolute right-0 top-0 bg-hints br--bottom br--left br-100"
-            style={{ width: "20%", height: "20%" }}
-            {...longPressProps}
+        {/* Card position */}
+        {position !== null && size === CardSize.LARGE && (
+          <Txt
+            className="absolute left-0 top-0 ma1 black-40"
+            value={PositionMap[position]}
           />
-        </Popover>
-      )}
+        )}
 
-      {/* show positive hints with a larger type */}
-      {displayHints && hidden && <CardPartialHint card={card} size={size} />}
+        {/* Whether the card has received hints */}
+        {position !== null && card.receivedHints?.length > 0 && (
+          <Popover body={<div className="flex items-center justify-center b--yellow ba bw1 bg-black pa2 pr3 br2">
+            <div className="flex flex-column">
+              {card?.receivedHints?.map((turn, i) => {
+                return <div key={i} className="nb1">
+                  <Turn includePlayer={true} showDrawn={false} showPosition={false} turn={turn} />
+                </div>
+              })}
+            </div>
+          </div>} className="z-999" isOpen={isHintPopoverOpen} onOuterAction={() => setIsHintPopoverOpen(false)}>
+            <div
+              className="absolute right-0 top-0 bg-hints br--bottom br--left br-100"
+              style={{ width: "20%", height: "20%" }}
+              onMouseEnter={() => setIsHintPopoverOpen(true)}
+              onMouseLeave={() => setIsHintPopoverOpen(false)}
+            />
+          </Popover>
+        )}
 
-      {/* show other hints, including negative hints */}
-      {displayHints && size === CardSize.LARGE && (
-        <div className="flex absolute w-100 right-0 bottom-0 pv1 flex-l items-center flex-column bg-black-50">
-          <div className="flex justify-around w-100">
-            {colors.map(color => (
-              <Hint
-                key={color}
-                hint={card.hint.color[color]}
-                type="color"
-                value={color}
-              />
-            ))}
+        {/* show positive hints with a larger type */}
+        {displayHints && hidden && <CardPartialHint card={card} size={size} />}
+
+        {/* show other hints, including negative hints */}
+        {displayHints && size === CardSize.LARGE && (
+          <div className="flex absolute w-100 right-0 bottom-0 pv1 flex-l items-center flex-column bg-black-50">
+            <div className="flex justify-around w-100">
+              {colors.map(color => (
+                <Hint
+                  key={color}
+                  hint={card.hint.color[color]}
+                  type="color"
+                  value={color}
+                />
+              ))}
+            </div>
+            <div
+              className="flex justify-around white mt1 mt2-l"
+              style={{ width: `${(numbers.length / colors.length) * 100}%` }}
+            >
+              {numbers.map(number => (
+                <Hint
+                  key={number}
+                  hint={card.hint.number[number]}
+                  type="number"
+                  value={number}
+                />
+              ))}
+            </div>
           </div>
-          <div
-            className="flex justify-around white mt1 mt2-l"
-            style={{ width: `${(numbers.length / colors.length) * 100}%` }}
-          >
-            {numbers.map(number => (
-              <Hint
-                key={number}
-                hint={card.hint.number[number]}
-                type="number"
-                value={number}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-    </CardWrapper>
+        )}
+      </CardWrapper>
+    </div>
   );
 }
