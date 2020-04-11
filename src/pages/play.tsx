@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import shortid from "shortid";
 
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
+import DiscardArea from "~/components/discardArea";
 import GameBoard from "~/components/gameBoard";
 import InstructionsArea from "~/components/instructionsArea";
 import LoadingScreen from "~/components/loadingScreen";
@@ -18,7 +19,6 @@ import Tutorial, {
 } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import VisibleDiscardArea from "~/components/visibleDiscardArea";
 import {
   commitAction,
   getMaximumPossibleScore,
@@ -365,23 +365,6 @@ export default function Play() {
     });
   }
 
-  // async function onRollback() {
-  //   let lastNonAI = 1;
-  //   // check whether the previous player is a bot
-  //   // adding players length to avoid a negative mod
-  //   let checkedPlayer =
-  //     (game.players.length + game.currentPlayer - 1) % game.players.length;
-  //   while (game.players[checkedPlayer].bot && lastNonAI < game.players.length) {
-  //     lastNonAI += 1;
-  //     // check the player even before
-  //     checkedPlayer =
-  //       (game.currentPlayer + game.players.length - lastNonAI) %
-  //       game.players.length;
-  //   }
-
-  //   network.updateGame(goBackToState(game, lastNonAI));
-  // }
-
   async function onNotifyPlayer(player) {
     network.setNotification(game, player, true);
   }
@@ -548,7 +531,7 @@ export default function Play() {
                       placement="below"
                       step={ITutorialStep.DISCARD_PILE}
                     >
-                      <VisibleDiscardArea />
+                      <DiscardArea />
                     </Tutorial>
                   </div>
                 </div>
