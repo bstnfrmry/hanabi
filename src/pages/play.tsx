@@ -556,7 +556,7 @@ export default function Play() {
 
           {!interturn && (
             <div className="flex flex-column">
-              <div className="h-100 ">
+              <div className="h-100">
                 <PlayersBoard
                   displayStats={displayStats}
                   selectedArea={selectedArea}
