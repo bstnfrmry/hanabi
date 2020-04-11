@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import shortid from "shortid";
 
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
-import DiscardArea from "~/components/discardArea";
 import GameBoard from "~/components/gameBoard";
 import InstructionsArea from "~/components/instructionsArea";
 import LoadingScreen from "~/components/loadingScreen";
@@ -12,14 +11,18 @@ import Lobby from "~/components/lobby";
 import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
 import ReplayViewver from "~/components/replayViewer";
-import { TutorialProvider } from "~/components/tutorial";
+import RollbackArea from "~/components/rollbackArea";
+import Tutorial, {
+  ITutorialStep,
+  TutorialProvider
+} from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
+import VisibleDiscardArea from "~/components/visibleDiscardArea";
 import {
   commitAction,
   getMaximumPossibleScore,
   getScore,
-  goBackToState,
   isReplayMode,
   joinGame,
   newGame
@@ -355,29 +358,29 @@ export default function Play() {
     });
   }
 
-  function onShowRollback() {
-    return selectArea({
+  function onRollbackClick() {
+    onSelectArea({
       id: "rollback",
       type: ActionAreaType.ROLLBACK
     });
   }
 
-  async function onRollback() {
-    let lastNonAI = 1;
-    // check whether the previous player is a bot
-    // adding players length to avoid a negative mod
-    let checkedPlayer =
-      (game.players.length + game.currentPlayer - 1) % game.players.length;
-    while (game.players[checkedPlayer].bot && lastNonAI < game.players.length) {
-      lastNonAI += 1;
-      // check the player even before
-      checkedPlayer =
-        (game.currentPlayer + game.players.length - lastNonAI) %
-        game.players.length;
-    }
+  // async function onRollback() {
+  //   let lastNonAI = 1;
+  //   // check whether the previous player is a bot
+  //   // adding players length to avoid a negative mod
+  //   let checkedPlayer =
+  //     (game.players.length + game.currentPlayer - 1) % game.players.length;
+  //   while (game.players[checkedPlayer].bot && lastNonAI < game.players.length) {
+  //     lastNonAI += 1;
+  //     // check the player even before
+  //     checkedPlayer =
+  //       (game.currentPlayer + game.players.length - lastNonAI) %
+  //       game.players.length;
+  //   }
 
-    network.updateGame(goBackToState(game, lastNonAI));
-  }
+  //   network.updateGame(goBackToState(game, lastNonAI));
+  // }
 
   async function onNotifyPlayer(player) {
     network.setNotification(game, player, true);
@@ -414,13 +417,6 @@ export default function Play() {
       type: self ? ActionAreaType.SELF_PLAYER : ActionAreaType.OTHER_PLAYER,
       player,
       cardIndex
-    });
-  }
-
-  function onSelectDiscard() {
-    onSelectArea({
-      id: "discard",
-      type: ActionAreaType.DISCARD
     });
   }
 
@@ -473,66 +469,90 @@ export default function Play() {
         <div className="bg-main-dark relative flex flex-column w-100 h-100">
           <GameBoard
             onMenuClick={onMenuClick}
-            onSelectDiscard={onSelectDiscard}
-            onShowRollback={onShowRollback}
+            onRollbackClick={onRollbackClick}
           />
 
-          {isReplayMode(game) && (
-            <ReplayViewver
-              onReplayCursorChange={onReplayCursorChange}
-              onStopReplay={onStopReplay}
-            />
-          )}
-
-          <div className="flex flex-column  shadow-5 bg-black-50 bb b--yellow">
-            {selectedArea.type === ActionAreaType.MENU ? (
+          <div className="flex flex-column bg-black-50 bb b--yellow">
+            {selectedArea.type === ActionAreaType.MENU && (
               <div className="h4 pa2 ph3-l">
                 <MenuArea onCloseArea={onCloseArea} />
               </div>
-            ) : game.status === IGameStatus.LOBBY ? (
-              <Lobby
-                onAddBot={onAddBot}
-                onJoinGame={onJoinGame}
-                onStartGame={onStartGame}
-              />
-            ) : (
-              <div className="h4 overflow-y-scroll pa2 pt0-l ph3-l">
-                {selectedArea.type === ActionAreaType.ROLLBACK && (
-                  <div className="h-100 flex flex-column items-center justify-center pa2">
-                    <Txt
-                      className="w-75"
-                      size={TxtSize.MEDIUM}
-                      value="You're about to roll back the last action!"
-                    />
-                    <div className="mt4">
-                      <Button text="Abort" onClick={() => onCloseArea()} />
-                      <Button
-                        primary
-                        className="ml4"
-                        text="Roll back"
-                        onClick={() => onRollback()}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {selectedArea.type === ActionAreaType.DISCARD && (
-                  <DiscardArea onCloseArea={onCloseArea} />
-                )}
-
-                {![ActionAreaType.ROLLBACK, ActionAreaType.DISCARD].includes(
-                  selectedArea.type
-                ) && (
-                  <InstructionsArea
-                    interturn={interturn}
-                    reachableScore={reachableScore}
-                    onReplay={onReplay}
-                    onSelectDiscard={onSelectDiscard}
-                    onToggleStats={onToggleStats}
-                  />
-                )}
+            )}
+            {selectedArea.type === ActionAreaType.ROLLBACK && (
+              <div className="h4 pa2 ph3-l">
+                <RollbackArea onCloseArea={onCloseArea} />
               </div>
             )}
+
+            {![ActionAreaType.ROLLBACK, ActionAreaType.MENU].includes(
+              selectedArea.type
+            ) &&
+              (game.status === IGameStatus.LOBBY ? (
+                <Lobby
+                  onAddBot={onAddBot}
+                  onJoinGame={onJoinGame}
+                  onStartGame={onStartGame}
+                />
+              ) : (
+                <div className="h4 pt0-l overflow-y-scroll">
+                  {game.status === IGameStatus.OVER &&
+                    (isReplayMode(game) ? (
+                      <ReplayViewver
+                        onReplayCursorChange={onReplayCursorChange}
+                        onStopReplay={onStopReplay}
+                      />
+                    ) : (
+                      <div className="flex flex-column w-100 bb mb1 ph2">
+                        <Txt
+                          className="db"
+                          size={TxtSize.MEDIUM}
+                          value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
+                        />
+                        {reachableScore && (
+                          <Txt
+                            multiline
+                            className="db mt1 lavender"
+                            size={TxtSize.SMALL}
+                            value={`Estimated max score for this shuffle: ${reachableScore}. ${
+                              reachableScore > game.playedCards.length
+                                ? "Keep practicing"
+                                : "You did great!"
+                            }`}
+                          />
+                        )}
+                        <div className="flex w-100 justify-between mv2">
+                          <Button
+                            className="nowrap w4"
+                            size={ButtonSize.TINY}
+                            text="Watch replay"
+                            onClick={() => onReplay()}
+                          />
+                          <Button
+                            primary
+                            className="nowrap w4"
+                            size={ButtonSize.TINY}
+                            text="Toggle stats"
+                            onClick={() => onToggleStats()}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  <div className="flex justify-between h-100 pa1 pa2-l">
+                    <InstructionsArea
+                      interturn={interturn}
+                      reachableScore={reachableScore}
+                      onReplay={onReplay}
+                      onToggleStats={onToggleStats}
+                    />
+                    <Tutorial
+                      placement="below"
+                      step={ITutorialStep.DISCARD_PILE}
+                    >
+                      <VisibleDiscardArea />
+                    </Tutorial>
+                  </div>
+                </div>
+              ))}
           </div>
 
           {interturn && (
@@ -553,7 +573,7 @@ export default function Play() {
 
           {!interturn && (
             <div className="flex flex-column">
-              <div className="h-100 overflow-y-scroll">
+              <div className="h-100 ">
                 <PlayersBoard
                   displayStats={displayStats}
                   selectedArea={selectedArea}

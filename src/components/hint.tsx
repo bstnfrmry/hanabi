@@ -8,6 +8,7 @@ interface Props {
   type: IHintType;
   value: IColor | INumber;
   hint: IHintLevel;
+  className?: string;
 }
 
 export default function Hint(props: Props) {
@@ -17,7 +18,12 @@ export default function Hint(props: Props) {
 
   return (
     <>
-      <div className="flex justify-center items-center hint">
+      <div
+        className={classnames(
+          props.className,
+          "flex justify-center items-center hint"
+        )}
+      >
         {hint !== 0 && (
           <div
             className={classnames(
