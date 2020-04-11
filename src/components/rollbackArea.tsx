@@ -1,12 +1,8 @@
-import { useRouter } from "next/router";
-import React, { useContext, useState } from "react";
+import React from "react";
 
-import Rules from "~/components/rules";
-import { TutorialContext } from "~/components/tutorial";
-import Button, { ButtonSize } from "~/components/ui/button";
+import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { goBackToState } from "~/game/actions";
-import { IGameStatus } from "~/game/state";
 import { useGame } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
 
@@ -18,12 +14,7 @@ export default function RollbackArea(props: Props) {
   const { onCloseArea } = props;
   const network = useNetwork();
 
-  // const router = useRouter();
   const game = useGame();
-
-  // function onMenuClick() {
-  //   router.push("/");
-  // }
 
   async function onRollback() {
     let lastNonAI = 1;
