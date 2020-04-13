@@ -226,7 +226,7 @@ export default function Card(props: Props) {
     >
       {/* Card value */}
       <Txt
-        className={classnames(`txt-${color}-dark`, {
+        className={classnames(`b txt-${color}-dark`, {
           mb3: displayHints && size === CardSize.LARGE
         })}
         size={CardTextSizes[size]}

@@ -20,20 +20,21 @@ export default function Turn(props: Props) {
   const game = useGame();
 
   return (
-    <div className="di mb2 pre">
+    <div className="dib">
       {includePlayer && (
         <>
-          <PlayerName player={game.players[turn.action.from]} />
-          <Txt value=" " />
+          <Txt className="inline-flex items-center gray" value="-" />
+          <PlayerName className="mh1" player={game.players[turn.action.from]} />
         </>
       )}
 
       {turn.action.action === "hint" && (
         <Txt className="inline-flex items-center">
           {"hinted "}
-          <PlayerName player={game.players[turn.action.to]} />
+          <PlayerName className="mh1" player={game.players[turn.action.to]} />
           {" about "}
           <Hint
+            className="mh1"
             hint={IHintLevel.POSSIBLE}
             type={turn.action.type}
             value={turn.action.value}
@@ -57,6 +58,7 @@ export default function Turn(props: Props) {
           {"discarded "}
           <Card
             card={turn.action.card}
+            className="mh1"
             context={ICardContext.DISCARDED}
             size={CardSize.TINY}
           />
@@ -73,6 +75,7 @@ export default function Turn(props: Props) {
           {"played "}
           <Card
             card={turn.action.card}
+            className="mh1"
             context={ICardContext.PLAYED}
             size={CardSize.TINY}
           />
@@ -89,6 +92,7 @@ export default function Turn(props: Props) {
           {" & drew "}
           <Card
             card={turn.card}
+            className="mh1" // When we'll add A, B, C
             context={ICardContext.DRAWN}
             size={CardSize.TINY}
           />

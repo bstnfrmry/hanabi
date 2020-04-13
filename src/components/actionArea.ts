@@ -19,11 +19,6 @@ interface IInstructionsSelectedArea {
   type: ActionAreaType.INSTRUCTIONS;
 }
 
-interface IDiscardSelectedArea {
-  id: "discard";
-  type: ActionAreaType.DISCARD;
-}
-
 interface IMenuArea {
   id: "menu";
   type: ActionAreaType.MENU;
@@ -47,6 +42,5 @@ export type ISelectedArea =
   | IInstructionsSelectedArea
   | IOtherPlayerSelectedArea
   | ISelfPlayerSelectedArea
-  | IDiscardSelectedArea
   | IMenuArea
   | IRollbackArea;
