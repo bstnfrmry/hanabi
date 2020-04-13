@@ -19,11 +19,6 @@ interface IInstructionsSelectedArea {
   type: ActionAreaType.INSTRUCTIONS;
 }
 
-interface IDiscardSelectedArea {
-  id: "discard";
-  type: ActionAreaType.DISCARD;
-}
-
 interface IMenuArea {
   id: "menu";
   type: ActionAreaType.MENU;
