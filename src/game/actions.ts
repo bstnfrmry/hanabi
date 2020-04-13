@@ -1,13 +1,5 @@
 import assert from "assert";
-import {
-  cloneDeep,
-  findIndex,
-  flatMap,
-  last,
-  orderBy,
-  range,
-  zipObject
-} from "lodash";
+import { cloneDeep, findIndex, flatMap, last, range, zipObject } from "lodash";
 import { shuffle } from "shuffle-seed";
 
 import IGameState, {

@@ -477,65 +477,65 @@ export default function Play() {
                   onStartGame={onStartGame}
                 />
               ) : (
-                  <div className="h4 pt0-l overflow-y-scroll">
-                    {game.status === IGameStatus.OVER &&
-                      (isReplayMode(game) ? (
-                        <ReplayViewer
-                          onReplayCursorChange={onReplayCursorChange}
-                          onStopReplay={onStopReplay}
-                        />
-                      ) : (
-                          <div className="flex flex-column w-100 bb mb1 ph2">
-                            <Txt
-                              className="db"
-                              size={TxtSize.MEDIUM}
-                              value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
-                            />
-                            {reachableScore && (
-                              <Txt
-                                multiline
-                                className="db mt1 lavender"
-                                size={TxtSize.SMALL}
-                                value={`Estimated max score for this shuffle: ${reachableScore}. ${
-                                  reachableScore > game.playedCards.length
-                                    ? "Keep practicing"
-                                    : "You did great!"
-                                  }`}
-                              />
-                            )}
-                            <div className="flex w-100 justify-between mv2">
-                              <Button
-                                className="nowrap w4"
-                                size={ButtonSize.TINY}
-                                text="Watch replay"
-                                onClick={() => onReplay()}
-                              />
-                              <Button
-                                primary
-                                className="nowrap w4"
-                                size={ButtonSize.TINY}
-                                text="Toggle stats"
-                                onClick={() => onToggleStats()}
-                              />
-                            </div>
-                          </div>
-                        ))}
-                    <div className="flex justify-between h-100 pa1 pa2-l">
-                      <InstructionsArea
-                        interturn={interturn}
-                        reachableScore={reachableScore}
-                        onReplay={onReplay}
-                        onToggleStats={onToggleStats}
+                <div className="h4 pt0-l overflow-y-scroll">
+                  {game.status === IGameStatus.OVER &&
+                    (isReplayMode(game) ? (
+                      <ReplayViewer
+                        onReplayCursorChange={onReplayCursorChange}
+                        onStopReplay={onStopReplay}
                       />
-                      <Tutorial
-                        placement="above"
-                        step={ITutorialStep.DISCARD_PILE}
-                      >
-                        <DiscardArea />
-                      </Tutorial>
-                    </div>
+                    ) : (
+                      <div className="flex flex-column w-100 bb mb1 ph2">
+                        <Txt
+                          className="db"
+                          size={TxtSize.MEDIUM}
+                          value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
+                        />
+                        {reachableScore && (
+                          <Txt
+                            multiline
+                            className="db mt1 lavender"
+                            size={TxtSize.SMALL}
+                            value={`Estimated max score for this shuffle: ${reachableScore}. ${
+                              reachableScore > game.playedCards.length
+                                ? "Keep practicing"
+                                : "You did great!"
+                            }`}
+                          />
+                        )}
+                        <div className="flex w-100 justify-between mv2">
+                          <Button
+                            className="nowrap w4"
+                            size={ButtonSize.TINY}
+                            text="Watch replay"
+                            onClick={() => onReplay()}
+                          />
+                          <Button
+                            primary
+                            className="nowrap w4"
+                            size={ButtonSize.TINY}
+                            text="Toggle stats"
+                            onClick={() => onToggleStats()}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  <div className="flex justify-between h-100 pa1 pa2-l">
+                    <InstructionsArea
+                      interturn={interturn}
+                      reachableScore={reachableScore}
+                      onReplay={onReplay}
+                      onToggleStats={onToggleStats}
+                    />
+                    <Tutorial
+                      placement="above"
+                      step={ITutorialStep.DISCARD_PILE}
+                    >
+                      <DiscardArea />
+                    </Tutorial>
                   </div>
-                ))}
+                </div>
+              ))}
           </div>
 
           {interturn && (

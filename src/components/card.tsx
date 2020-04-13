@@ -172,7 +172,7 @@ export default function Card(props: Props) {
   const {
     card,
     context,
-    onClick = () => { },
+    onClick,
     hidden = false,
     playable = true,
     size = CardSize.MEDIUM,
@@ -183,10 +183,10 @@ export default function Card(props: Props) {
   } = props;
 
   const game = useGame();
-  const [isHintPopoverOpen, setIsHintPopoverOpen] = useState(false)
+  const [isHintPopoverOpen, setIsHintPopoverOpen] = useState(false);
   const longPressProps = useLongPress(() => {
-    setIsHintPopoverOpen(true)
-  })
+    setIsHintPopoverOpen(true);
+  });
 
   const colors = getColors(game);
   const color = hidden ? "gray-light" : card.color;
@@ -219,7 +219,7 @@ export default function Card(props: Props) {
       size={size}
       style={{
         ...style,
-        userSelect: 'none'
+        userSelect: "none"
       }}
       onClick={onClick}
       {...longPressProps}
@@ -243,15 +243,29 @@ export default function Card(props: Props) {
 
       {/* Whether the card has received hints */}
       {position !== null && card.receivedHints?.length > 0 && (
-        <Popover body={<div className="flex items-center justify-center b--yellow ba bw1 bg-black pa2 pr3 br2">
-          <div className="flex flex-column">
-            {card?.receivedHints?.map((turn, i) => {
-              return <div key={i} className="nb1">
-                <Turn includePlayer={true} showDrawn={false} showPosition={false} turn={turn} />
+        <Popover
+          body={
+            <div className="flex items-center justify-center b--yellow ba bw1 bg-black pa2 pr3 br2">
+              <div className="flex flex-column">
+                {card?.receivedHints?.map((turn, i) => {
+                  return (
+                    <div key={i} className="nb1">
+                      <Turn
+                        includePlayer={true}
+                        showDrawn={false}
+                        showPosition={false}
+                        turn={turn}
+                      />
+                    </div>
+                  );
+                })}
               </div>
-            })}
-          </div>
-        </div>} className="z-999" isOpen={isHintPopoverOpen} onOuterAction={() => setIsHintPopoverOpen(false)}>
+            </div>
+          }
+          className="z-999"
+          isOpen={isHintPopoverOpen}
+          onOuterAction={() => setIsHintPopoverOpen(false)}
+        >
           <div
             className="absolute right-0 top-0 bg-hints br--bottom br--left br-100"
             style={{ width: "20%", height: "20%" }}
