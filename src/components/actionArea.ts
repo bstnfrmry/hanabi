@@ -42,6 +42,5 @@ export type ISelectedArea =
   | IInstructionsSelectedArea
   | IOtherPlayerSelectedArea
   | ISelfPlayerSelectedArea
-  | IDiscardSelectedArea
   | IMenuArea
   | IRollbackArea;
