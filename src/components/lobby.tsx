@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
 
+import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button from "~/components/ui/button";
 import { Checkbox, Field, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";

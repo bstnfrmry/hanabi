@@ -3,22 +3,20 @@ import posed, { PoseGroup } from "react-pose";
 
 import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
-import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { isReplayMode } from "~/game/actions";
-import { GameMode, IGameStatus } from "~/game/state";
+import { GameMode } from "~/game/state";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
   reachableScore?: number;
   interturn: boolean;
-  onSelectDiscard: Function;
   onReplay: Function;
   onToggleStats: Function;
 }
 
 export default function InstructionsArea(props: Props) {
-  const { reachableScore, interturn, onReplay, onToggleStats } = props;
+  const { interturn } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -30,52 +28,7 @@ export default function InstructionsArea(props: Props) {
   const showHistory = isReplayMode(game) ? true : history;
   const showSync = game.options.gameMode === GameMode.NETWORK;
   return (
-    <div>
-      <Tutorial placement="below" step={ITutorialStep.WELCOME}>
-        {game.status === IGameStatus.OVER && (
-          <div className="flex justify-between items-center mb2">
-            {!isReplayMode(game) && (
-              <>
-                <div className="flex flex-column w-100">
-                  <Txt
-                    className="db"
-                    size={TxtSize.MEDIUM}
-                    value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
-                  />
-                  {reachableScore && (
-                    <Txt
-                      multiline
-                      className="db mt1 lavender"
-                      size={TxtSize.SMALL}
-                      value={`Estimated max score for this shuffle: ${reachableScore}. ${
-                        reachableScore > game.playedCards.length
-                          ? "Keep practicing"
-                          : "You did great!"
-                        }`}
-                    />
-                  )}
-                  <div className="flex w-100 justify-between mv2">
-                    <Button
-                      className="nowrap w4"
-                      size={ButtonSize.TINY}
-                      text="Watch replay"
-                      onClick={() => onReplay()}
-                    />
-                    <Button
-                      primary
-                      className="nowrap w4"
-                      size={ButtonSize.TINY}
-                      text="Toggle stats"
-                      onClick={() => onToggleStats()}
-                    />
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-        )}
-      </Tutorial>
-
+    <div className="flex-grow-1 overflow-y-scroll">
       {showHistory && (
         <div className="relative">
           <PoseGroup>
@@ -106,6 +59,13 @@ export default function InstructionsArea(props: Props) {
               );
             })}
           </PoseGroup>
+          <Tutorial placement="below" step={ITutorialStep.WELCOME}>
+            <Txt
+              className="lavender"
+              size={TxtSize.SMALL}
+              value={history.length ? "Game started!" : "Game starts!"}
+            />
+          </Tutorial>
         </div>
       )}
     </div>
