@@ -63,7 +63,7 @@ export default function Turn(props: Props) {
             size={CardSize.TINY}
           />
           <Txt
-            className="lavender ml1"
+            className="lavender mr1"
             size={TxtSize.TINY}
             value={`${PositionMap[turn.action.cardIndex]}`}
           />
@@ -80,7 +80,7 @@ export default function Turn(props: Props) {
             size={CardSize.TINY}
           />
           <Txt
-            className="lavender ml1"
+            className="lavender mr1"
             size={TxtSize.TINY}
             value={`${PositionMap[turn.action.cardIndex]}`}
           />
@@ -92,7 +92,7 @@ export default function Turn(props: Props) {
           {" & drew "}
           <Card
             card={turn.card}
-            className="mh1" // When we'll add A, B, C
+            className="ml1"
             context={ICardContext.DRAWN}
             size={CardSize.TINY}
           />
