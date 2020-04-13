@@ -69,15 +69,13 @@ export default function Lobby(props: Props) {
             <div>
               <div className="flex flex-column justify-center mb2">
                 <div className="flex items-center">
-                  <Tutorial placement="below" step={ITutorialStep.WELCOME}>
-                    <Txt
-                      value={
-                        gameFull
-                          ? "Everybody's here!"
-                          : `${game.players.length} / ${game.options.playersCount} joined already`
-                      }
-                    />
-                  </Tutorial>
+                  <Txt
+                    value={
+                      gameFull
+                        ? "Everybody's here!"
+                        : `${game.players.length} / ${game.options.playersCount} joined already`
+                    }
+                  />
                   {canStart && (
                     <Button
                       primary

@@ -2,6 +2,7 @@ import React from "react";
 import posed, { PoseGroup } from "react-pose";
 
 import Turn from "~/components/turn";
+import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { isReplayMode } from "~/game/actions";
 import { GameMode } from "~/game/state";
@@ -58,6 +59,13 @@ export default function InstructionsArea(props: Props) {
               );
             })}
           </PoseGroup>
+          <Tutorial placement="below" step={ITutorialStep.WELCOME}>
+            <Txt
+              className="lavender"
+              size={TxtSize.SMALL}
+              value={history.length ? "Game started!" : "Game starts!"}
+            />
+          </Tutorial>
         </div>
       )}
     </div>

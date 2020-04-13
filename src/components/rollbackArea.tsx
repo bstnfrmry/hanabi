@@ -16,7 +16,7 @@ export default function RollbackArea(props: Props) {
 
   const game = useGame();
 
-  async function onRollback() {
+  function onRollback() {
     let lastNonAI = 1;
     // check whether the previous player is a bot
     // adding players length to avoid a negative mod

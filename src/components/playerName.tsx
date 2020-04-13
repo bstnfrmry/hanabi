@@ -35,14 +35,13 @@ export default function PlayerName(props: Props) {
   const you = !explicit && player.id === selfPlayer.id;
 
   return (
-    <span
-      className={classnames("relative inline-flex items-center", className)}
-    >
-      <Txt
-        className="truncate"
-        size={PlayerNameTextSizes[size]}
-        value={you ? "You" : player.name}
-      />
-    </span>
+    <Txt
+      className={classnames(
+        "relative inline-flex items-center truncate",
+        className
+      )}
+      size={PlayerNameTextSizes[size]}
+      value={you ? "You" : player.name}
+    />
   );
 }

@@ -11,7 +11,7 @@ import LoadingScreen from "~/components/loadingScreen";
 import Lobby from "~/components/lobby";
 import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
-import ReplayViewver from "~/components/replayViewer";
+import ReplayViewer from "~/components/replayViewer";
 import RollbackArea from "~/components/rollbackArea";
 import Tutorial, {
   ITutorialStep,
@@ -480,7 +480,7 @@ export default function Play() {
                 <div className="h4 pt0-l overflow-y-scroll">
                   {game.status === IGameStatus.OVER &&
                     (isReplayMode(game) ? (
-                      <ReplayViewver
+                      <ReplayViewer
                         onReplayCursorChange={onReplayCursorChange}
                         onStopReplay={onStopReplay}
                       />
@@ -528,7 +528,7 @@ export default function Play() {
                       onToggleStats={onToggleStats}
                     />
                     <Tutorial
-                      placement="below"
+                      placement="above"
                       step={ITutorialStep.DISCARD_PILE}
                     >
                       <DiscardArea />

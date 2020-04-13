@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function Hint(props: Props) {
-  const { type, value, hint } = props;
+  const { type, value, hint, className } = props;
 
   const color = type === "color" ? value : "white";
 
@@ -20,7 +20,7 @@ export default function Hint(props: Props) {
     <>
       <div
         className={classnames(
-          props.className,
+          className,
           "flex justify-center items-center hint"
         )}
       >

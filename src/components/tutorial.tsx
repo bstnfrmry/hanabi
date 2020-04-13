@@ -33,18 +33,18 @@ export enum ITutorialStep {
 
 const steps = {
   [ITutorialStep.WELCOME]: {
-    title: "Welcome!",
+    title: "Great!",
     body: "Let's learn how to play"
   },
   [ITutorialStep.PLAYED_CARDS]: {
     title: "Played cards",
     body:
-      "This will nest the cards that have been played.\nReach 5 on each color to win the game."
+      "This will nest the cards that have been played.\nCollectively, reach 5 on each color to win the game."
   },
   [ITutorialStep.DISCARD_PILE]: {
     title: "Discard",
     body:
-      "This pile contains all the cards you discarded.\nWatch out and avoid discarding the cards you need to finish the game."
+      "Here you will see the cards\nyou and your team discarded.\nAvoid discarding the ones\nyou need to finish the game."
   },
   [ITutorialStep.SELF_PLAYER]: {
     title: "Your game",
