@@ -1,9 +1,9 @@
 import React from "react";
 
-import Card, { CardSize, ICardContext } from "~/components/card";
+import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Hint from "~/components/hint";
 import PlayerName from "~/components/playerName";
-import Txt from "~/components/ui/txt";
+import Txt, { TxtSize } from "~/components/ui/txt";
 import { IHintLevel, ITurn } from "~/game/state";
 import { useGame } from "~/hooks/game";
 
@@ -11,10 +11,11 @@ interface Props {
   turn: ITurn;
   includePlayer: boolean;
   showDrawn: boolean;
+  showPosition?: boolean;
 }
 
 export default function Turn(props: Props) {
-  const { turn, includePlayer = false, showDrawn } = props;
+  const { turn, includePlayer = false, showDrawn, showPosition = true } = props;
 
   const game = useGame();
 
@@ -40,6 +41,15 @@ export default function Turn(props: Props) {
           />
           {turn.action.type === "color" && " cards"}
           {turn.action.type === "number" && "s"}
+          {showPosition && turn.action.cardsIndex && (
+            <Txt
+              className="lavender ml1"
+              size={TxtSize.TINY}
+              value={`${turn.action.cardsIndex
+                .map(index => PositionMap[index])
+                .join(", ")}`}
+            />
+          )}
         </Txt>
       )}
 
@@ -51,6 +61,11 @@ export default function Turn(props: Props) {
             className="mh1"
             context={ICardContext.DISCARDED}
             size={CardSize.TINY}
+          />
+          <Txt
+            className="lavender mr1"
+            size={TxtSize.TINY}
+            value={`${PositionMap[turn.action.cardIndex]}`}
           />
         </Txt>
       )}
@@ -64,6 +79,11 @@ export default function Turn(props: Props) {
             context={ICardContext.PLAYED}
             size={CardSize.TINY}
           />
+          <Txt
+            className="lavender mr1"
+            size={TxtSize.TINY}
+            value={`${PositionMap[turn.action.cardIndex]}`}
+          />
         </Txt>
       )}
 
@@ -72,7 +92,7 @@ export default function Turn(props: Props) {
           {" & drew "}
           <Card
             card={turn.card}
-            className="mh1" // When we'll add A, B, C
+            className="ml1"
             context={ICardContext.DRAWN}
             size={CardSize.TINY}
           />

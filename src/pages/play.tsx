@@ -266,7 +266,7 @@ export default function Play() {
     let sameGame = newGame({
       id: game.id,
       playersCount: game.options.playersCount,
-      multicolor: game.options.multicolor,
+      variant: game.options.variant,
       allowRollback: false,
       preventLoss: false,
       seed: game.options.seed,

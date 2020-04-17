@@ -37,12 +37,12 @@ export default function Games() {
         <thead>
           <tr>
             <td>#</td>
-            <th>Seed</th>
+            <td>Seed</td>
             <td>Created</td>
             <td>Mode</td>
             <td>Status</td>
             <td>Players</td>
-            <td>Multicolor</td>
+            <td>Mode</td>
             <td>Score</td>
           </tr>
         </thead>
@@ -72,7 +72,7 @@ export default function Games() {
                       <td>
                         {game.players.map(player => player.name).join(", ")}
                       </td>
-                      <td>{game.options.multicolor ? "Yes" : "No"}</td>
+                      <td>{game.options.variant}</td>
                       <td>
                         {getScore(game)} / {getMaximumScore(game)}
                       </td>

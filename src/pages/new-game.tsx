@@ -8,10 +8,22 @@ import Button, { ButtonSize } from "~/components/ui/button";
 import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { newGame } from "~/game/actions";
-import { GameMode, IGameHintsLevel } from "~/game/state";
+import { GameMode, GameVariant, IGameHintsLevel } from "~/game/state";
 import useNetwork from "~/hooks/network";
 
 const PlayerCounts = [2, 3, 4, 5];
+
+const Variants = {
+  [GameVariant.CLASSIC]: "Classic",
+  [GameVariant.MULTICOLOR]: "Multicolor",
+  [GameVariant.RAINBOW]: "Rainbow"
+};
+
+const VariantDescriptions = {
+  [GameVariant.CLASSIC]: "A classic game of Hanabi with 5 colors",
+  [GameVariant.MULTICOLOR]: "A 6th suite is added with only one card of each",
+  [GameVariant.RAINBOW]: "A 6th suite is added that matches every color"
+};
 
 const HintsLevels = {
   [IGameHintsLevel.DIRECT]: "Show direct hints",
@@ -32,7 +44,7 @@ export default function NewGame() {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [seed, setSeed] = useState<string>();
   const [playersCount, setPlayersCount] = useState(3);
-  const [multicolor, setMulticolor] = useState(false);
+  const [variant, setVariant] = useState(GameVariant.CLASSIC);
   const [allowRollback, setAllowRollback] = useState(true);
   const [preventLoss, setPreventLoss] = useState(false);
   const [private_, setPrivate] = useState(false);
@@ -53,7 +65,7 @@ export default function NewGame() {
     network.updateGame(
       newGame({
         id: gameId,
-        multicolor,
+        variant,
         playersCount,
         seed,
         allowRollback,
@@ -76,7 +88,7 @@ export default function NewGame() {
         className="flex flex-column w-75-m w-50-l w-80"
         style={{ margin: "auto" }}
       >
-        <div className="flex justify-between ph1 items-center pb2 mb2 bb b--yellow-light">
+        <div className="flex justify-between ph1 items-center pb4 mb4 bb b--yellow-light">
           <Txt size={TxtSize.MEDIUM} value="Players" />
           <div className="flex">
             {PlayerCounts.map(count => {
@@ -101,13 +113,37 @@ export default function NewGame() {
           </div>
         </div>
 
-        <Field label="Multicolor">
-          <Checkbox
-            checked={multicolor}
-            id="multicolor"
-            onChange={e => setMulticolor(e.target.checked)}
+        <div className="flex flex-column pb2 mb2 bb b--yellow-light ph1">
+          <div className="flex justify-between items-center">
+            <Txt size={TxtSize.MEDIUM} value="Mode" />
+            <div className="flex flex-column flex-row-l justify-end">
+              {Object.entries(Variants).map(([gameVariant, label]) => {
+                return (
+                  <Button
+                    key={gameVariant}
+                    className={classnames("ph1 ph3-l pv2 mt2 mt0-l", {
+                      "bg-lavender": variant !== gameVariant,
+                      "z-5": variant === gameVariant
+                    })}
+                    size={ButtonSize.SMALL}
+                    style={{
+                      ...(variant === gameVariant && {
+                        transform: "scale(1.20)"
+                      })
+                    }}
+                    text={`${label}`}
+                    onClick={() => setVariant(gameVariant as GameVariant)}
+                  />
+                );
+              })}
+            </div>
+          </div>
+          <Txt
+            className="lavender mt4 self-end"
+            size={TxtSize.SMALL}
+            value={VariantDescriptions[variant]}
           />
-        </Field>
+        </div>
 
         <a
           className="mv4 self-end underline pointer silver"
@@ -195,13 +231,13 @@ export default function NewGame() {
             </Field>
           </>
         )}
-        <div className="f4 mt4 mb2 lavender">
+        <Txt className="f4 mt4 mb4 tc lavender">
           {offline
             ? `In this pass-and-play mode, you can play offline with multiple
               players that are physically in the same room by passing the device to each player on their turn`
             : `You will be able to play online by sharing the game link to your
             friends.`}
-        </div>
+        </Txt>
         <div className="flex flex-1 justify-center">
           <Button
             className="flex-1 justify-end mt2"

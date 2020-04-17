@@ -1,5 +1,3 @@
-import "../styles/style.css";
-
 import * as Sentry from "@sentry/browser";
 import NextApp, { AppProps } from "next/app";
 import Head from "next/head";
@@ -13,6 +11,7 @@ import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
 import { NetworkContext } from "~/hooks/network";
 
 import { initGA, logPageView } from "../lib/analytics";
+import "../styles/style.css";
 
 const FS_ORG_ID = "T0W6G";
 
