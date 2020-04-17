@@ -1,3 +1,4 @@
+import Fireworks from "fireworks-canvas";
 import React from "react";
 import posed, { PoseGroup } from "react-pose";
 
