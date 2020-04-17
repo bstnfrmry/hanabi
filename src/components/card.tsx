@@ -109,6 +109,13 @@ interface CardPartialHintProps {
   size: CardSize;
 }
 
+/**
+ * Players can't view their own cards.
+ * However, we'll show them sure values/colors from their received hints when applicable.
+ * - Sure numbers will be displayed
+ * - Sure colors will be displayed
+ * - Sure (including rainbow) colors will display a rainbow background and a colored border
+ */
 function CardPartialHint(props: CardPartialHintProps) {
   const { card, size } = props;
 
@@ -205,7 +212,8 @@ export default function Card(props: Props) {
     try {
       style.transform = "scale(1.20)";
     } catch (e) {
-      //
+      // This operation sometimes crashes because of a conflict with react-popover
+      // This try/catch aims to prevent it and inhibate the error.
     }
   }
 
