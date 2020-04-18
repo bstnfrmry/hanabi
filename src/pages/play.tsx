@@ -1,6 +1,7 @@
+import Fireworks from "fireworks-canvas";
 import { last, omit } from "lodash";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import shortid from "shortid";
 
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
@@ -52,6 +53,7 @@ export default function Play() {
     id: "instructions",
     type: ActionAreaType.INSTRUCTIONS
   });
+  const fireworksRef = useRef();
   const { gameId } = router.query;
 
   const currentPlayer = useCurrentPlayer(game);
@@ -290,6 +292,29 @@ export default function Play() {
     }
 
     setReachableScore(getScore(sameGame));
+  }, [game && game.status]);
+
+  /**
+   * Display fireworks animation when game ends
+   */
+  useEffect(() => {
+    if (!game) return;
+    if (game.status !== IGameStatus.OVER) return;
+
+    const fireworks = new Fireworks(fireworksRef.current, {
+      maxRockets: 5, // max # of rockets to spawn
+      rocketSpawnInterval: 150, // milliseconds to check if new rockets should spawn
+      numParticles: 100, // number of particles to spawn when rocket explodes (+0-10)
+      explosionMinHeight: 10, // minimum percentage of height of container at which rockets explode
+      explosionChance: 1 // chance in each tick the rocket will explode
+    });
+    fireworks.start();
+
+    const timeout = setTimeout(() => {
+      fireworks.stop();
+    }, game.playedCards.length * 200); // stop rockets from spawning
+
+    return () => clearTimeout(timeout);
   }, [game && game.status]);
 
   function onJoinGame(player) {
@@ -570,6 +595,11 @@ export default function Play() {
             </div>
           )}
         </div>
+        <div
+          ref={fireworksRef}
+          className="fixed absolute--fill z-999"
+          style={{ pointerEvents: "none" }}
+        />
       </GameContext.Provider>
     </TutorialProvider>
   );

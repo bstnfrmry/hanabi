@@ -1,4 +1,3 @@
-import Fireworks from "fireworks-canvas";
 import React from "react";
 import posed, { PoseGroup } from "react-pose";
 
@@ -28,21 +27,6 @@ export default function InstructionsArea(props: Props) {
 
   const showHistory = isReplayMode(game) ? true : history;
   const showSync = game.options.gameMode === GameMode.NETWORK;
-
-  const container = document.getElementById("fireworksOverlay");
-  const options = {
-    maxRockets: 3, // max # of rockets to spawn
-    rocketSpawnInterval: 150, // milliseconds to check if new rockets should spawn
-    numParticles: 100, // number of particles to spawn when rocket explodes (+0-10)
-    explosionHeight: 10, // minimum percentage of height of container at which rockets explode
-    explosionChance: 0.05 // chance in each tick the rocket will explode
-  };
-  const fireworks = new Fireworks(container, options);
-  console.log(`${reachableScore}/${game.playedCards.length}`);
-  if (game.status === IGameStatus.OVER) {
-    const stop = fireworks.start();
-    setTimeout(() => stop(), game.playedCards.length * 200); // stop rockets from spawning
-  }
 
   return (
     <div className="flex-grow-1 overflow-y-scroll">
