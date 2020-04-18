@@ -1,13 +1,19 @@
 import { isGameOver, joinGame, newGame } from "./actions";
 import play from "./ai";
-import { GameMode, IGameHintsLevel, IGameOptions, IPlayer } from "./state";
+import {
+  GameMode,
+  GameVariant,
+  IGameHintsLevel,
+  IGameOptions,
+  IPlayer
+} from "./state";
 
 const scoresDistribution = {};
 
 const options: IGameOptions = {
   id: "benchmark",
   playersCount: 3,
-  multicolor: false,
+  variant: GameVariant.CLASSIC,
   allowRollback: false,
   private: false,
   preventLoss: false,

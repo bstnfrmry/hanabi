@@ -281,8 +281,8 @@ function findGivableHint(
   const lastCard = hand[hand.length - 1];
   if (
     isCardDangerous(lastCard, state) &&
-    (lastCard.hint.color[lastCard.color] < 2 &&
-      lastCard.hint.number[lastCard.number] < 2) &&
+    lastCard.hint.color[lastCard.color] < 2 &&
+    lastCard.hint.number[lastCard.number] < 2 &&
     !hasPlayableCard
   ) {
     const type =

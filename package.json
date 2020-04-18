@@ -24,7 +24,7 @@
     "fireworks-canvas": "^2.4.0",
     "husky": "^4.2.3",
     "lodash": "^4.17.15",
-    "next": "^9.3.3",
+    "next": "^9.3",
     "rc-slider": "^9.2.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -53,6 +53,6 @@
     "lint-staged": "^9.2.5",
     "postcss-color-mod-function": "^3.0.3",
     "prettier": "^1.18.2",
-    "typescript": "^3.5.3"
+    "typescript": "^3.7"
   }
 }

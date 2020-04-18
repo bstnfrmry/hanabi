@@ -1,7 +1,7 @@
 import React from "react";
 
 import Vignette from "~/components/vignette";
-import { getColors, numbers } from "~/game/actions";
+import { getHintableColors, numbers } from "~/game/actions";
 import { IHintAction } from "~/game/state";
 import { useGame } from "~/hooks/game";
 
@@ -14,7 +14,7 @@ export default function Vignettes(props: Props) {
   const { onSelect, pendingHint } = props;
 
   const game = useGame();
-  const colors = getColors(game);
+  const colors = getHintableColors(game);
 
   return (
     <div className="flex flex-column items-center ml6-l">

@@ -101,3 +101,8 @@
   max-height: 30vh;
 }
 
+/**
+ * Borders
+ */
+
+ .bw1\.5 { border-width: 0.15rem; }
