@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
 
+import DiscordButton from "~/components/discordButton";
 import Button from "~/components/ui/button";
 import { Checkbox, Field, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -171,6 +172,13 @@ export default function Lobby(props: Props) {
             <Button text="Copy" onClick={copy} />
           </div>
         )}
+
+        <div className="flex flex-column mt4">
+          <Txt value="Join our Discord" />
+          <div className="mt1">
+            <DiscordButton />
+          </div>
+        </div>
       </div>
     </div>
   );

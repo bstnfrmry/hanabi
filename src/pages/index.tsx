@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
+import DiscordButton from "~/components/discordButton";
 import Rules from "~/components/rules";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -32,7 +33,7 @@ export default function Home() {
       <span className="tc lavender">
         Play the Hanabi game online with friends!
       </span>
-      <div className="flex flex-column mt5">
+      <div className="flex flex-column items-center mt5">
         <Button
           className="mb4"
           id="create-room"
@@ -65,6 +66,10 @@ export default function Home() {
           What's Hanabi?
         </span>
         {showRules && <Rules setShowRules={setShowRules} />}
+
+        <div className="mt4">
+          <DiscordButton />
+        </div>
       </div>
     </div>
   );
