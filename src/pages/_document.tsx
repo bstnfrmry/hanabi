@@ -23,17 +23,6 @@ class Document extends NextDocument {
         <body>
           <Main />
           <NextScript />
-          <div
-            id="fireworksOverlay"
-            style={{
-              position: "absolute",
-              zIndex: 100,
-              width: "95%",
-              height: "100%",
-              margin: "0 auto",
-              pointerEvents: "none"
-            }}
-          />
         </body>
       </Html>
     );
