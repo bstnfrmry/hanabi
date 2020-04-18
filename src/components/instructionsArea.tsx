@@ -27,6 +27,7 @@ export default function InstructionsArea(props: Props) {
 
   const showHistory = isReplayMode(game) ? true : history;
   const showSync = game.options.gameMode === GameMode.NETWORK;
+
   return (
     <div className="flex-grow-1 overflow-y-scroll">
       {showHistory && (
