@@ -11,7 +11,7 @@ import {
   getMaximumScore,
   getScore
 } from "~/game/actions";
-import { useGame } from "~/hooks/game";
+import { useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
   onMenuClick: Function;
@@ -24,6 +24,7 @@ export default function GameBoard(props: Props) {
   const { onMenuClick, onRollbackClick } = props;
 
   const game = useGame();
+  const selfPlayer = useSelfPlayer();
   const score = getScore(game);
   const maxScore = getMaximumScore(game);
   const maxPossibleScore = getMaximumPossibleScore(game);
@@ -54,7 +55,7 @@ export default function GameBoard(props: Props) {
             )}
         </div>
         <div className="flex">
-          {game.options.allowRollback && (
+          {game.options.allowRollback && selfPlayer && (
             <Button
               void
               disabled={!game.history.length}

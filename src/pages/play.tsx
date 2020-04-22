@@ -414,7 +414,7 @@ export default function Play() {
   }
 
   function onSelectPlayer(player, cardIndex) {
-    const self = player.id === selfPlayer.id;
+    const self = player.id === selfPlayer?.id;
 
     if (displayStats) {
       return;

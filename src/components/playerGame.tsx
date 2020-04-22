@@ -85,6 +85,7 @@ export default function PlayerGame(props: Props) {
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
   const hideCards =
+    selfPlayer &&
     (self || !selfPlayer) &&
     (isReplayMode(game) || game.status !== IGameStatus.OVER);
   const canPlay = [IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status);
@@ -182,7 +183,7 @@ export default function PlayerGame(props: Props) {
             </Popover>
           )}
 
-          {active && !self && !player.notified && !player.bot && (
+          {active && selfPlayer && !self && !player.notified && !player.bot && (
             <a
               className="ml1 ml4-l"
               onClick={e => {
