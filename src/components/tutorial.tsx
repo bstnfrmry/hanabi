@@ -168,7 +168,7 @@ export default function Tutorial(props: Props) {
             )}
 
             {step !== ITutorialStep.WELCOME && (
-              <>
+              <div className="flex self-end mt1 ph1">
                 {step > 1 && (
                   <Button
                     className="mr1 mr2-l"
@@ -186,7 +186,7 @@ export default function Tutorial(props: Props) {
                     nextStep();
                   }}
                 />
-              </>
+              </div>
             )}
           </div>
         </div>
