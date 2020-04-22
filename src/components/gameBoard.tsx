@@ -11,6 +11,7 @@ import {
   getMaximumScore,
   getScore
 } from "~/game/actions";
+import { IGameStatus } from "~/game/state";
 import { useGame } from "~/hooks/game";
 
 interface Props {
@@ -57,7 +58,7 @@ export default function GameBoard(props: Props) {
           {game.options.allowRollback && (
             <Button
               void
-              disabled={!game.history.length}
+              disabled={game.status === IGameStatus.LOBBY}
               size={ButtonSize.TINY}
               text="⟲"
               onClick={() => onRollbackClick()}

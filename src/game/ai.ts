@@ -4,6 +4,7 @@ import {
   commitAction,
   getColors,
   getPlayedCardsPile,
+  getStateAtTurn,
   isPlayable,
   numbers
 } from "./actions";
@@ -188,7 +189,9 @@ export function getLastOptimistCardOfPlayer(
   const lastHintReceived = state.turnsHistory[lastTimeHinted]
     .action as IHintAction;
 
-  const gameWhenLastHinted = state.history[lastTimeHinted].players[player].hand;
+  const gameWhenLastHinted = getStateAtTurn(state, lastTimeHinted).players[
+    player
+  ].hand;
 
   const firstHintedCard = gameWhenLastHinted.find(
     card => card[lastHintReceived.type] === lastHintReceived.value
