@@ -38,6 +38,7 @@ import IGameState, {
 } from "~/game/state";
 import useConnectivity from "~/hooks/connectivity";
 import { GameContext, useCurrentPlayer, useSelfPlayer } from "~/hooks/game";
+import useLocalStorage from "~/hooks/localStorage";
 import useNetwork from "~/hooks/network";
 import usePrevious from "~/hooks/previous";
 
@@ -49,6 +50,7 @@ export default function Play() {
   const [displayStats, setDisplayStats] = useState(false);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
+  const [playerId] = useLocalStorage("playerId", shortid());
   const [selectedArea, selectArea] = useState<ISelectedArea>({
     id: "instructions",
     type: ActionAreaType.INSTRUCTIONS
@@ -318,21 +320,12 @@ export default function Play() {
   }, [game && game.status]);
 
   function onJoinGame(player) {
-    const playerId = shortid();
     const newState = joinGame(game, { id: playerId, ...player });
 
     setGame({ ...newState, synced: false });
     network.updateGame(newState);
 
     localStorage.setItem("gameId", gameId.toString());
-
-    if (game.options.gameMode === GameMode.NETWORK) {
-      router.replace({
-        pathname: "/play",
-        query: { gameId, playerId }
-      });
-      localStorage.setItem("playerId", playerId.toString());
-    }
   }
 
   function onAddBot() {

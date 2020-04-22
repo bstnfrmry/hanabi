@@ -7,6 +7,7 @@ import IGameState, {
   GameMode,
   IGameStatus
 } from "~/game/state";
+import useLocalStorage from "~/hooks/localStorage";
 
 export const GameContext = React.createContext(null);
 
@@ -37,7 +38,10 @@ export function useSelfPlayer(game: IGameState = useGame()) {
   const router = useRouter();
   const currentPlayer = useCurrentPlayer(game);
 
-  const { playerId } = router.query;
+  const [storedPlayerId] = useLocalStorage("playerId", null);
+
+  // Allows overwriting the playerId using the page URL for backwards compatibility
+  const playerId = router.query.playerId || storedPlayerId;
 
   if (!game) {
     return null;
