@@ -17,15 +17,6 @@ import IGameState, {
   IPlayer
 } from "./state";
 
-export const colors: IColor[] = [
-  IColor.WHITE,
-  IColor.BLUE,
-  IColor.RED,
-  IColor.GREEN,
-  IColor.YELLOW,
-  IColor.MULTICOLOR
-];
-
 export const numbers: INumber[] = [1, 2, 3, 4, 5];
 
 const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
@@ -51,7 +42,7 @@ export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
 /**
  * Side effect function that applies the given hint on a given hand's cards
  */
-function applyHint(hand: IHand, hint: IHintAction) {
+function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
   hint.cardsIndex = [];
 
   hand.forEach((card, index) => {
@@ -65,7 +56,11 @@ function applyHint(hand: IHand, hint: IHintAction) {
 
       // positive hint on card - mark all other values as impossible (except rainbow)
       Object.keys(card.hint[hint.type])
-        .filter(value => value !== IColor.RAINBOW)
+        .filter(value => {
+          return GameVariant.RAINBOW === game.options.variant
+            ? value !== IColor.RAINBOW
+            : true;
+        })
         .filter(value => value != hint.value)
         .forEach(value => {
           card.hint[hint.type][value] = IHintLevel.IMPOSSIBLE;
@@ -197,7 +192,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
     s.tokens.hints -= 1;
 
     const hand = s.players[action.to].hand;
-    applyHint(hand, action);
+    applyHint(hand, action, s);
   }
 
   // there's no card in the pile (or the last card was just drawn)
@@ -370,8 +365,15 @@ export function joinGame(state: IGameState, player: IPlayer): IGameState {
 export function newGame(options: IGameOptions): IGameState {
   assert(options.playersCount > 1 && options.playersCount < 6);
 
+  const baseColors = [
+    IColor.WHITE,
+    IColor.BLUE,
+    IColor.RED,
+    IColor.GREEN,
+    IColor.YELLOW
+  ];
   // all cards but multicolors
-  let cards = flatMap(colors.slice(0, -1), color => [
+  let cards = flatMap(baseColors, color => [
     { number: 1, color },
     { number: 1, color },
     { number: 1, color },
