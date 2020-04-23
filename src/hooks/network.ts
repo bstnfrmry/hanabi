@@ -15,6 +15,8 @@ export interface Network {
 
   subscribeToOnGoingGames(callback: GamesHandler): UnsubscribeHandler;
 
+  loadGame(gameId: string): Promise<IGameState>;
+
   subscribeToGame(gameId: string, callback: GameHandler): UnsubscribeHandler;
 
   updateGame(game: IGameState): Promise<void>;

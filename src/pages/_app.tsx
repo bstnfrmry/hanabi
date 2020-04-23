@@ -45,7 +45,7 @@ export default class App extends NextApp {
 }
 
 function Hanabi(props: AppProps) {
-  const { Component } = props;
+  const { Component, pageProps } = props;
 
   const [showOffline, setShowOffline] = useState(true);
   const online = useConnectivity();
@@ -84,7 +84,7 @@ function Hanabi(props: AppProps) {
             </div>
           )}
 
-          <Component />
+          <Component {...pageProps} />
         </div>
       </NetworkContext.Provider>
     </>

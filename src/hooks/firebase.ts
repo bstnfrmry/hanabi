@@ -84,6 +84,16 @@ export default class FirebaseNetwork implements Network {
     return () => ref.off();
   }
 
+  loadGame(gameId: string): Promise<IGameState> {
+    const ref = this.db.ref(`/games/${gameId}`);
+
+    return new Promise(resolve => {
+      ref.once("value", event => {
+        resolve(fillEmptyValues(event.val()));
+      });
+    });
+  }
+
   subscribeToGame(gameId: string, callback: GameHandler) {
     const ref = this.db.ref(`/games/${gameId}`);
 
