@@ -42,7 +42,6 @@ export function useSelfPlayer(game: IGameState = useGame()) {
 
   // Allows overwriting the playerId using the page URL for backwards compatibility
   const playerId = router.query.playerId || storedPlayerId;
-
   if (!game) {
     return null;
   }

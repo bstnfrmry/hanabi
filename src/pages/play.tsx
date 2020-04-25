@@ -75,6 +75,7 @@ export default function Play(props: Props) {
   const [displayStats, setDisplayStats] = useState(false);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
+  const [, setGameId] = useLocalStorage("gameId", null);
   const [playerId] = useLocalStorage("playerId", shortid());
   const [selectedArea, selectArea] = useState<ISelectedArea>({
     id: "instructions",
@@ -334,7 +335,7 @@ export default function Play(props: Props) {
     setGame({ ...newState, synced: false });
     network.updateGame(newState);
 
-    localStorage.setItem("gameId", game.id);
+    setGameId(game.id);
   }
 
   function onAddBot() {

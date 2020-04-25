@@ -7,12 +7,14 @@ export default function useLocalStorage<T>(
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
       const item = window.localStorage.getItem(key);
-      if (!item) {
+
+      if (!item && initialValue !== null) {
         window.localStorage.setItem(key, JSON.stringify(initialValue));
       }
 
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
+      console.error(error);
       return initialValue;
     }
   });
@@ -22,8 +24,7 @@ export default function useLocalStorage<T>(
       setStoredValue(value);
       window.localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
-      // @todo handle error
-      console.log(error);
+      console.error(error);
     }
   };
 

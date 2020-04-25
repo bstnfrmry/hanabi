@@ -12,7 +12,7 @@ export default function Home() {
   const [gameId] = useLocalStorage("gameId", null);
   const [playerId] = useLocalStorage("playerId", null);
 
-  const lastGame = gameId && playerId ? { gameId, playerId } : null;
+  const lastGame = gameId && playerId ? { gameId } : null;
 
   return (
     <div className="w-100 h-100 flex flex-column justify-center items-center bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
