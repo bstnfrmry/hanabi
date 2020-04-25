@@ -480,7 +480,7 @@ export default function Play(props: Props) {
             onRollbackClick={onRollbackClick}
           />
 
-          <div className="flex flex-column bg-black-50 bb b--yellow">
+          <div className="flex flex-column bg-black-50 bb b--yellow ph6.5-m">
             {selectedArea.type === ActionAreaType.MENU && (
               <div className="h4 pa2 ph3-l">
                 <MenuArea onCloseArea={onCloseArea} />

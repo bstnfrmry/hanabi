@@ -32,8 +32,17 @@
   width: 12rem;
 }
 
-.bw0\.5 {
-  border-width: 0.075rem;
+@media screen and (min-width: 50em) {
+  /**
+  * Padding - Medium Screens
+  */
+  .ph6\.5-m {
+    padding-left: 10rem; padding-right: 10rem;
+  }
+
+  .pr6\.5-m {
+    padding-right: 10rem;
+  }
 }
 
 @media screen and (min-width: 60em) {
@@ -109,4 +118,8 @@
  * Borders
  */
 
- .bw1\.5 { border-width: 0.15rem; }
+.bw0\.5 {
+  border-width: 0.075rem;
+}
+
+.bw1\.5 { border-width: 0.15rem; }
