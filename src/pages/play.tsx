@@ -9,7 +9,6 @@ import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import DiscardArea from "~/components/discardArea";
 import GameBoard from "~/components/gameBoard";
 import InstructionsArea from "~/components/instructionsArea";
-import LoadingScreen from "~/components/loadingScreen";
 import Lobby from "~/components/lobby";
 import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
@@ -54,10 +53,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async context => {
   const firebase = new FirebaseNetwork(setupFirebase());
   const game = await firebase.loadGame(gameId);
 
+  const protocol = process.env.NODE_ENV === "development" ? "http:" : "https:";
+  const { host } = context.req.headers;
+
   return {
     props: {
       game,
-      host: context.req.headers.host
+      host: `${protocol}//${host}`
     }
   };
 };
@@ -472,10 +474,6 @@ export default function Play(props: Props) {
       id: "instructions",
       type: ActionAreaType.INSTRUCTIONS
     });
-  }
-
-  if (!game) {
-    return <LoadingScreen />;
   }
 
   return (

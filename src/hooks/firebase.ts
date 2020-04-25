@@ -49,6 +49,25 @@ export default class FirebaseNetwork implements Network {
     this.db = db || setupFirebase();
   }
 
+  loadPublicGames(): Promise<IGameState[]> {
+    const ref = this.db
+      .ref("/games")
+      // Only games created less than 10 minutes ago
+      .orderByChild("createdAt")
+      .startAt(Date.now() - 10 * 60 * 1000);
+
+    return new Promise(resolve => {
+      ref.once("value", event => {
+        const games = Object.values(event.val() || {})
+          .map(fillEmptyValues)
+          // Game is public
+          .filter(gameIsPublic);
+
+        resolve(games);
+      });
+    });
+  }
+
   subscribeToPublicGames(callback: GamesHandler) {
     const ref = this.db
       .ref("/games")
