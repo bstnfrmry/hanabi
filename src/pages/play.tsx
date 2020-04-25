@@ -222,7 +222,7 @@ export default function Play(props: Props) {
     if (previousTurnsCount === undefined) return;
 
     playSound(`/static/sounds/rewind.mp3`);
-  }, [turnsCount === previousTurnsCount - 1]);
+  }, [turnsCount < previousTurnsCount]);
 
   /**
    * Play sound when discarding a card

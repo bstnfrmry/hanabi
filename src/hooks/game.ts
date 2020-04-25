@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
 
-import { isReplayMode } from "~/game/actions";
+import { getStateAtTurn, isReplayMode } from "~/game/actions";
 import IGameState, {
   fillEmptyValues,
   GameMode,
@@ -16,7 +16,7 @@ export function useGame() {
 
   if (isReplayMode(game)) {
     return {
-      ...fillEmptyValues(game.history[game.replayCursor]),
+      ...fillEmptyValues(getStateAtTurn(game, game.replayCursor)),
       originalGame: game,
       status: IGameStatus.OVER,
       replayCursor: game.replayCursor

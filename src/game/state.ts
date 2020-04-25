@@ -18,7 +18,6 @@ export default interface IGameState {
   // the last round of game when the draw is empty
   actionsLeft: number;
   turnsHistory: ITurn[];
-  history: IGameState[];
   createdAt: number;
   synced: boolean;
   // Replay mode
@@ -172,8 +171,6 @@ export function fillEmptyValues(state: IGameState): IGameState {
         hand: []
       })
     ),
-    turnsHistory: [],
-    history: [],
-    reactions: []
+    turnsHistory: []
   });
 }
