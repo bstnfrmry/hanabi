@@ -178,13 +178,15 @@ button {
 }
 
 .bg-multicolor {
-  background: conic-gradient(
+  background-image: url('/static/images/multicolor.svg');
+  background-size: contain
+  /* background: conic-gradient(
     var(--color-white) 0deg 72deg,
     var(--color-blue) 72deg 144deg,
     var(--color-green) 144deg 216deg,
     var(--color-red) 216deg 288deg,
     var(--color-yellow) 288deg 360deg
-  );
+  ); */
 }
 
 .bg-rainbow {

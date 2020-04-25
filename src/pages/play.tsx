@@ -439,6 +439,7 @@ export default function Play(props: Props) {
   }
 
   function onReplay() {
+    setDisplayStats(false);
     network.updateGame({
       ...game,
       replayCursor: game.turnsHistory.length - 1,

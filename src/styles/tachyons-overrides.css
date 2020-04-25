@@ -101,6 +101,10 @@
   max-height: 30vh;
 }
 
+.top--1\.5 {
+  top: -1.5rem
+}
+
 /**
  * Borders
  */
