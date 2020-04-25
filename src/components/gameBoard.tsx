@@ -11,7 +11,8 @@ import {
   getMaximumScore,
   getScore
 } from "~/game/actions";
-import { useGame } from "~/hooks/game";
+import { IGameStatus } from "~/game/state";
+import { useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
   onMenuClick: Function;
@@ -24,12 +25,13 @@ export default function GameBoard(props: Props) {
   const { onMenuClick, onRollbackClick } = props;
 
   const game = useGame();
+  const selfPlayer = useSelfPlayer();
   const score = getScore(game);
   const maxScore = getMaximumScore(game);
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="pa2 pv2-l ph3-l bg-black-50">
+    <div className="pa2 pv2-l ph6.5-m bg-black-50">
       <div className="flex justify-between items-center">
         <div>
           <Txt
@@ -54,10 +56,10 @@ export default function GameBoard(props: Props) {
             )}
         </div>
         <div className="flex">
-          {game.options.allowRollback && (
+          {game.options.allowRollback && selfPlayer && (
             <Button
               void
-              disabled={!game.history.length}
+              disabled={game.status === IGameStatus.LOBBY}
               size={ButtonSize.TINY}
               text="⟲"
               onClick={() => onRollbackClick()}

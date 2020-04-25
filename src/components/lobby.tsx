@@ -97,7 +97,7 @@ export default function Lobby(props: Props) {
   }
 
   return (
-    <div className="flex items-center justify-center h-100 w-100 bg-main-dark pa2">
+    <div className="flex items-center justify-center h-100 w-100 pa2">
       <Meta />
       <div className="flex flex-column pa2 w-100 h-100">
         <div className="mb3 ttu flex items-center">

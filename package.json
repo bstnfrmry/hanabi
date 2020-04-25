@@ -24,6 +24,7 @@
     "fireworks-canvas": "^2.4.0",
     "husky": "^4.2.3",
     "lodash": "^4.17.15",
+    "mem": "^6.1.0",
     "next": "^9.3",
     "nprogress": "^0.2.0",
     "rc-slider": "^9.2.1",

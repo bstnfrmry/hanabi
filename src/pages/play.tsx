@@ -39,6 +39,7 @@ import IGameState, {
 import useConnectivity from "~/hooks/connectivity";
 import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
 import { GameContext, useCurrentPlayer, useSelfPlayer } from "~/hooks/game";
+import useLocalStorage from "~/hooks/localStorage";
 import useNetwork from "~/hooks/network";
 import usePrevious from "~/hooks/previous";
 
@@ -74,6 +75,8 @@ export default function Play(props: Props) {
   const [displayStats, setDisplayStats] = useState(false);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
+  const [, setGameId] = useLocalStorage("gameId", null);
+  const [playerId] = useLocalStorage("playerId", shortid());
   const [selectedArea, selectArea] = useState<ISelectedArea>({
     id: "instructions",
     type: ActionAreaType.INSTRUCTIONS
@@ -219,7 +222,7 @@ export default function Play(props: Props) {
     if (previousTurnsCount === undefined) return;
 
     playSound(`/static/sounds/rewind.mp3`);
-  }, [turnsCount === previousTurnsCount - 1]);
+  }, [turnsCount < previousTurnsCount]);
 
   /**
    * Play sound when discarding a card
@@ -327,21 +330,12 @@ export default function Play(props: Props) {
   }, [game.status]);
 
   function onJoinGame(player) {
-    const playerId = shortid();
     const newState = joinGame(game, { id: playerId, ...player });
 
     setGame({ ...newState, synced: false });
     network.updateGame(newState);
 
-    localStorage.setItem("gameId", game.id);
-
-    if (game.options.gameMode === GameMode.NETWORK) {
-      router.replace({
-        pathname: "/play",
-        query: { gameId: game.id, playerId }
-      });
-      localStorage.setItem("playerId", playerId.toString());
-    }
+    setGameId(game.id);
   }
 
   function onAddBot() {
@@ -423,7 +417,7 @@ export default function Play(props: Props) {
   }
 
   function onSelectPlayer(player, cardIndex) {
-    const self = player.id === selfPlayer.id;
+    const self = player.id === selfPlayer?.id;
 
     if (displayStats) {
       return;
@@ -445,6 +439,7 @@ export default function Play(props: Props) {
   }
 
   function onReplay() {
+    setDisplayStats(false);
     network.updateGame({
       ...game,
       replayCursor: game.turnsHistory.length - 1,
@@ -485,7 +480,7 @@ export default function Play(props: Props) {
             onRollbackClick={onRollbackClick}
           />
 
-          <div className="flex flex-column bg-black-50 bb b--yellow">
+          <div className="flex flex-column bg-black-50 bb b--yellow ph6.5-m">
             {selectedArea.type === ActionAreaType.MENU && (
               <div className="h4 pa2 ph3-l">
                 <MenuArea onCloseArea={onCloseArea} />

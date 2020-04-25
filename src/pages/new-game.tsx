@@ -50,7 +50,9 @@ export default function NewGame() {
   const [private_, setPrivate] = useState(false);
   const [hintsLevel, setHintsLevel] = useState(IGameHintsLevel.DIRECT);
   const [turnsHistory, setTurnsHistory] = useState(true);
-  const [botsWait, setBotsWait] = useState(1000);
+  const [botsWait, setBotsWait] = useState(
+    process.env.NODE_ENV === "production" ? 1000 : 0
+  );
 
   /**
    * Initialise seed on first render

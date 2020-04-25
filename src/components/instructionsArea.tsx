@@ -49,7 +49,7 @@ export default function InstructionsArea(props: Props) {
                     includePlayer={true}
                     showDrawn={
                       !interturn &&
-                      game.players[turn.action.from].id !== selfPlayer.id
+                      game.players[turn.action.from].id !== selfPlayer?.id
                     }
                     turn={turn}
                   />

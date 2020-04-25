@@ -1,23 +1,18 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import Rules from "~/components/rules";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
+import useLocalStorage from "~/hooks/localStorage";
 
 export default function Home() {
   const router = useRouter();
-  const [lastGame, setLastGame] = useState(null);
   const [showRules, setShowRules] = useState(false);
+  const [gameId] = useLocalStorage("gameId", null);
+  const [playerId] = useLocalStorage("playerId", null);
 
-  useEffect(() => {
-    if (localStorage.gameId && localStorage.playerId) {
-      setLastGame({
-        gameId: localStorage.gameId,
-        playerId: localStorage.playerId
-      });
-    }
-  }, []);
+  const lastGame = gameId && playerId ? { gameId } : null;
 
   return (
     <div className="w-100 h-100 flex flex-column justify-center items-center bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">

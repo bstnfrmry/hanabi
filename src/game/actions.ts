@@ -17,6 +17,8 @@ import IGameState, {
   IPlayer
 } from "./state";
 
+import mem from 'mem';
+
 export const numbers: INumber[] = [1, 2, 3, 4, 5];
 
 const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
@@ -145,8 +147,6 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   // the function should be pure
   const s = cloneDeep(state) as IGameState;
 
-  s.history.push({ ...state, turnsHistory: [], history: [] });
-
   const player = s.players[action.from];
 
   let newCard = null as ICard;
@@ -218,25 +218,22 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
 /**
  * Rollback the state for the given amount of turns
  */
-export function goBackToState(state: IGameState, turnsBack = 1) {
-  const lastState = last(state.history);
+export const getStateAtTurn = mem((state: IGameState, turnIndex: number) => {
+  let newState = newGame(state.options);
 
-  if (!lastState) {
-    return null;
-  }
+  state.players.forEach(player => {
+    newState = joinGame(newState, player);
+  });
 
-  const previousState = {
-    history: state.history.slice(0, -1),
-    turnsHistory: state.turnsHistory.slice(0, -1),
-    ...lastState
-  };
+  state.turnsHistory.slice(0, turnIndex).forEach(turn => {
+    newState = commitAction(newState, turn.action);
+  });
 
-  if (--turnsBack === 0) {
-    return previousState;
-  }
+  newState.status = IGameStatus.ONGOING;
+  newState.createdAt = state.createdAt;
 
-  return goBackToState(previousState, turnsBack);
-}
+  return newState;
+})
 
 export function emptyPlayer(id: string, name: string): IPlayer {
   return {
@@ -439,7 +436,6 @@ export function newGame(options: IGameOptions): IGameState {
     options,
     actionsLeft: options.playersCount + 1, // this will be decreased when the draw pile is empty
     turnsHistory: [],
-    history: [],
     createdAt: Date.now(),
     synced: false
   };

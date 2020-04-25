@@ -1,6 +1,7 @@
 import classnames from "classnames";
 import React, { HTMLAttributes, useState } from "react";
 import Popover from "react-popover";
+import posed, { PoseGroup } from "react-pose";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
@@ -75,6 +76,7 @@ export default function PlayerGame(props: Props) {
   } = props;
 
   const game = useGame();
+  const [cardsAreVisible, setCardsAreVisible] = useState(false);
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const [selectedCard, selectCard] = useState<number>(cardIndex);
   const [pendingHint, setPendingHint] = useState<IHintAction>({
@@ -84,10 +86,28 @@ export default function PlayerGame(props: Props) {
 
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
-  const hideCards =
-    (self || !selfPlayer) &&
-    (isReplayMode(game) || game.status !== IGameStatus.OVER);
-  const canPlay = [IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status);
+
+  let hideCards = true;
+  // Show cards when spectating game
+  if (!selfPlayer) {
+    hideCards = false;
+  }
+  // Show cards to other players
+  if (!self && selfPlayer) {
+    hideCards = false;
+  }
+  // Show cards in replay mode (when toggled)
+  if (isReplayMode(game) && cardsAreVisible) {
+    hideCards = false;
+  }
+  // Show cards when game is over (when toggled)
+  if (game.status === IGameStatus.OVER && !isReplayMode(game)) {
+    hideCards = false;
+  }
+
+  const canPlay =
+    [IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status) &&
+    !isReplayMode(game);
 
   const hasSelectedCard = selectedCard !== null;
   const cardContext = selected
@@ -100,7 +120,7 @@ export default function PlayerGame(props: Props) {
     <>
       <div
         className={classnames(
-          "cards flex justify-between bg-main-dark pa2 pv2-l ph3-l relative",
+          "cards flex justify-between bg-main-dark pa2 pv2-l ph6.5-m relative",
           { "flex-column": selected }
         )}
         onClick={() => {
@@ -182,7 +202,7 @@ export default function PlayerGame(props: Props) {
             </Popover>
           )}
 
-          {active && !self && !player.notified && !player.bot && (
+          {active && selfPlayer && !self && !player.notified && !player.bot && (
             <a
               className="ml1 ml4-l"
               onClick={e => {
@@ -197,8 +217,7 @@ export default function PlayerGame(props: Props) {
 
           {selected && (
             <a
-              className="absolute top-0 right-0 mt2 mr3"
-              // className={classnames({ ml2: player.reaction || self })}
+              className="absolute top-0 right-0 mt2 mr3 pr6.5-m"
               onClick={() => onCloseArea()}
             >
               <Txt value="×" />
@@ -206,49 +225,65 @@ export default function PlayerGame(props: Props) {
           )}
         </div>
 
-        <div className={classnames("flex justify-end flex-grow-1 dib")}>
+        <div
+          className={classnames("flex justify-end self-end flex-grow-1 dib")}
+        >
           {displayStats && (
             <div className="ml3">
               <PlayerStats player={player} />
             </div>
           )}
-
-          {!displayStats &&
-            player.hand.map((card, i) => (
-              <Card
-                key={i}
-                card={card}
-                className={classnames({
-                  ma1: selected,
-                  "mr1 mr2-l": i < player.hand.length - 1
-                })}
-                context={cardContext}
-                hidden={hideCards}
-                position={i}
-                selected={
-                  selected &&
-                  (player === selfPlayer
-                    ? selectedCard === i
-                    : isCardHintable(pendingHint, card))
-                }
-                size={selected ? CardSize.LARGE : CardSize.MEDIUM}
-                style={{
-                  ...(selected && { transition: "all 50ms ease-in-out" })
-                }}
-                onClick={e => {
-                  e.stopPropagation();
-                  onSelectPlayer(player, i);
-                  if (player === selfPlayer) {
-                    selectCard(i);
-                  }
-                }}
-              />
-            ))}
+          {!displayStats && (
+            <div className="relative flex justify-end flex-grow-1 dib">
+              {selected && (
+                <Txt
+                  className="lavender absolute top--1 right-2 dib"
+                  size={TxtSize.TINY}
+                  style={{ marginTop: "-1px" }}
+                  value="⟶"
+                />
+              )}
+              <PoseGroup>
+                {player.hand.map((card, i) => (
+                  <AnimatedCard key={card.id}>
+                    <Card
+                      card={card}
+                      className={classnames({
+                        ma1: selected,
+                        "mr1 mr2-l": i < player.hand.length - 1
+                      })}
+                      context={cardContext}
+                      hidden={hideCards}
+                      position={i}
+                      selected={
+                        selected &&
+                        (player === selfPlayer
+                          ? selectedCard === i
+                          : isCardHintable(pendingHint, card))
+                      }
+                      size={selected ? CardSize.LARGE : CardSize.MEDIUM}
+                      style={{
+                        ...(selected && { transition: "all 50ms ease-in-out" })
+                      }}
+                      onClick={e => {
+                        e.stopPropagation();
+                        onSelectPlayer(player, i);
+                        if (player === selfPlayer) {
+                          selectCard(i);
+                        }
+                      }}
+                    />
+                  </AnimatedCard>
+                ))}
+              </PoseGroup>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Self player actions */}
       <div
+        className="ph6.5-m"
         style={{
           transform: "translateY(0)",
           transition: "transform 150ms ease-in-out",
@@ -299,10 +334,25 @@ export default function PlayerGame(props: Props) {
               )}
             </div>
           )}
+
+        {selected && isReplayMode(game) && player === selfPlayer && (
+          <div className="flex flex-column items-end mb2">
+            <div className="flex justify-end items-center h-100-l">
+              <Button
+                className="mr2"
+                text={"Toggle cards"}
+                onClick={() => {
+                  setCardsAreVisible(!cardsAreVisible);
+                }}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Other player actions */}
       <div
+        className="ph6.5-m"
         style={{
           opacity: 1,
           transform: "translateY(0)",
@@ -358,3 +408,19 @@ export default function PlayerGame(props: Props) {
     </>
   );
 }
+
+const AnimatedCard = posed.div({
+  enter: {
+    opacity: 1,
+    transition: {
+      delay: 200,
+      duration: 100
+    }
+  },
+  exit: {
+    opacity: 0.1,
+    transition: {
+      duration: 100
+    }
+  }
+});
