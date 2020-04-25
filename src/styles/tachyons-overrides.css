@@ -77,17 +77,6 @@
   .w4\.5-l {
     width: 12rem;
   }
-
-  /**
-  * Padding - Large Screens
-  */
-  .ph6\.5-l {
-    padding-left: 12rem; padding-right: 12rem;
-  }
-
-  .pr6\.5-l {
-    padding-right: 12rem;
-  }
 }
 
 /**

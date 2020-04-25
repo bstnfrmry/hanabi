@@ -100,7 +100,7 @@ export default function PlayerGame(props: Props) {
     <>
       <div
         className={classnames(
-          "cards flex justify-between bg-main-dark pa2 pv2-l ph6.5-m ph6.5-l relative",
+          "cards flex justify-between bg-main-dark pa2 pv2-l ph6.5-m relative",
           { "flex-column": selected }
         )}
         onClick={() => {
@@ -197,8 +197,7 @@ export default function PlayerGame(props: Props) {
 
           {selected && (
             <a
-              className="absolute top-0 right-0 mt2 mr3 pr6.5-m pr6.5-l"
-              // className={classnames({ ml2: player.reaction || self })}
+              className="absolute top-0 right-0 mt2 mr3 pr6.5-m"
               onClick={() => onCloseArea()}
             >
               <Txt value="×" />
@@ -249,7 +248,7 @@ export default function PlayerGame(props: Props) {
 
       {/* Self player actions */}
       <div
-        className="ph6.5-m ph6.5-l"
+        className="ph6.5-m"
         style={{
           transform: "translateY(0)",
           transition: "transform 150ms ease-in-out",
@@ -304,7 +303,7 @@ export default function PlayerGame(props: Props) {
 
       {/* Other player actions */}
       <div
-        className="ph6.5-m ph6.5-l"
+        className="ph6.5-m"
         style={{
           opacity: 1,
           transform: "translateY(0)",
