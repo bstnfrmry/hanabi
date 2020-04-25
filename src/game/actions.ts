@@ -17,6 +17,8 @@ import IGameState, {
   IPlayer
 } from "./state";
 
+import mem from 'mem';
+
 export const numbers: INumber[] = [1, 2, 3, 4, 5];
 
 const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
@@ -216,7 +218,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
 /**
  * Rollback the state for the given amount of turns
  */
-export function getStateAtTurn(state: IGameState, turnIndex: number) {
+export const getStateAtTurn = mem((state: IGameState, turnIndex: number) => {
   let newState = newGame(state.options);
 
   state.players.forEach(player => {
@@ -231,7 +233,7 @@ export function getStateAtTurn(state: IGameState, turnIndex: number) {
   newState.createdAt = state.createdAt;
 
   return newState;
-}
+})
 
 export function emptyPlayer(id: string, name: string): IPlayer {
   return {
