@@ -52,6 +52,11 @@ button {
   background: var(--color-yellow) !important;
 }
 
+#nprogress .spinner-icon {
+  border-top-color: var(--color-yellow) !important;
+  border-left-color: var(--color-yellow) !important;
+}
+
 /**
  * Text colors
  */
