@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import React, { HTMLAttributes, useEffect, useState } from "react";
+import React, { HTMLAttributes, useState } from "react";
 import Popover from "react-popover";
 import posed, { PoseGroup } from "react-pose";
 
@@ -109,8 +109,8 @@ export default function PlayerGame(props: Props) {
   const cardContext = selected
     ? ICardContext.TARGETED_PLAYER
     : self
-      ? ICardContext.SELF_PLAYER
-      : ICardContext.OTHER_PLAYER;
+    ? ICardContext.SELF_PLAYER
+    : ICardContext.OTHER_PLAYER;
 
   return (
     <>
@@ -136,8 +136,8 @@ export default function PlayerGame(props: Props) {
                     game.status === IGameStatus.ONGOING
                       ? "Your turn"
                       : game.status === IGameStatus.OVER
-                        ? ""
-                        : "You'll start first"
+                      ? ""
+                      : "You'll start first"
                   }
                 />
               </Tutorial>
@@ -335,6 +335,7 @@ export default function PlayerGame(props: Props) {
           <div className="flex flex-column items-end mb2">
             <div className="flex justify-end items-center h-100-l">
               <Button
+                className="mr2"
                 text={"Toggle cards"}
                 onClick={() => {
                   setCardsAreVisible(!cardsAreVisible);
