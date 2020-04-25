@@ -11,14 +11,14 @@ import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import Vignettes from "~/components/vignettes";
-import { isReplayMode, MaxHints } from "~/game/actions";
+import { isReplayMode, matchColor, MaxHints } from "~/game/actions";
 import { playSound } from "~/game/sound";
-import { ICard, IGameStatus, IHintAction, IPlayer } from "~/game/state";
+import { ICard, IColor, IGameStatus, IHintAction, IPlayer } from "~/game/state";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 function isCardHintable(hint: IHintAction, card: ICard) {
   return hint.type === "color"
-    ? card.color === hint.value
+    ? matchColor(card.color, hint.value as IColor)
     : card.number === hint.value;
 }
 

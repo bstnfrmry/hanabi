@@ -104,3 +104,9 @@
 .top--1\.5 {
   top: -1.5rem
 }
+
+/**
+ * Borders
+ */
+
+ .bw1\.5 { border-width: 0.15rem; }

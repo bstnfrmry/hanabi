@@ -3,14 +3,18 @@ import React, {
   CSSProperties,
   HTMLAttributes,
   MouseEventHandler,
-  ReactNode
+  ReactNode,
+  useState
 } from "react";
+import Popover from "react-popover";
 
 import Hint from "~/components/hint";
+import Turn from "~/components/turn";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { getColors, numbers } from "~/game/actions";
-import { ICard, ICardHint, IGameHintsLevel } from "~/game/state";
+import { ICard, IColor, IGameHintsLevel, IHintLevel } from "~/game/state";
 import { useGame } from "~/hooks/game";
+import useLongPress from "~/hooks/longPress";
 
 export enum CardSize {
   TINY = "tiny",
@@ -100,6 +104,64 @@ export function CardWrapper(props: CardWrapperProps) {
   );
 }
 
+interface CardPartialHintProps {
+  card: ICard;
+  size: CardSize;
+}
+
+/**
+ * Players can't view their own cards.
+ * However, we'll show them sure values/colors from their received hints when applicable.
+ * - Sure numbers will be displayed
+ * - Sure colors will be displayed
+ * - Sure (including rainbow) colors will display a rainbow background and a colored border
+ */
+function CardPartialHint(props: CardPartialHintProps) {
+  const { card, size } = props;
+
+  let className = "";
+
+  // when card is sure, apply a colored background and border using the card color
+  if (card.hint.color[card.color] === IHintLevel.SURE) {
+    const color = card.color === IColor.RAINBOW ? `rainbow-circle` : card.color;
+
+    className = `bg-${color} txt-${card.color}-dark ba b--${card.color}`;
+  }
+
+  // when they are only 2 possible cards and one of them is rainbow,
+  // apply a rainbow background and a thick border using the other possible color
+  const possibleColors = Object.keys(card.hint.color).filter(
+    color => card.hint.color[color] === IHintLevel.POSSIBLE
+  );
+  if (
+    card.hint.color.rainbow === IHintLevel.POSSIBLE &&
+    possibleColors.length === 2
+  ) {
+    const possibleColor = possibleColors.find(
+      color => color !== IColor.RAINBOW
+    );
+
+    className = classnames(`bg-rainbow-circle ba b--${possibleColor}-clear`, {
+      "bw1.5": size !== CardSize.LARGE,
+      bw2: size === CardSize.LARGE
+    });
+  }
+
+  return (
+    <div
+      className={classnames(
+        "top-0 br-100 w-50 h-50 flex justify-center items-center",
+        className,
+        {
+          [`txt-white-dark`]: card.hint.color[card.color] !== 2
+        }
+      )}
+    >
+      {card.hint.number[card.number] === 2 && <Txt value={card.number} />}
+    </div>
+  );
+}
+
 interface Props {
   card: ICard;
   context: ICardContext;
@@ -117,7 +179,7 @@ export default function Card(props: Props) {
   const {
     card,
     context,
-    onClick = () => { },
+    onClick,
     hidden = false,
     playable = true,
     size = CardSize.MEDIUM,
@@ -128,6 +190,11 @@ export default function Card(props: Props) {
   } = props;
 
   const game = useGame();
+  const [isHintPopoverOpen, setIsHintPopoverOpen] = useState(false);
+  const longPressProps = useLongPress(() => {
+    setIsHintPopoverOpen(true);
+  });
+
   const colors = getColors(game);
   const color = hidden ? "gray-light" : card.color;
 
@@ -142,7 +209,12 @@ export default function Card(props: Props) {
     ].includes(context);
 
   if (selected) {
-    // style.transform = "scale(1.20)";
+    try {
+      style.transform = "scale(1.20)";
+    } catch (e) {
+      // This operation sometimes crashes because of a conflict with react-popover
+      // This try/catch aims to prevent it and inhibate the error.
+    }
   }
 
   return (
@@ -153,12 +225,16 @@ export default function Card(props: Props) {
       data-card={PositionMap[position]}
       playable={playable}
       size={size}
-      style={style}
+      style={{
+        ...style,
+        userSelect: "none"
+      }}
       onClick={onClick}
+      {...longPressProps}
     >
       {/* Card value */}
       <Txt
-        className={classnames(`txt-${color}-dark`, {
+        className={classnames(`b txt-${color}-dark`, {
           mb3: displayHints && size === CardSize.LARGE
         })}
         size={CardTextSizes[size]}
@@ -174,28 +250,41 @@ export default function Card(props: Props) {
       )}
 
       {/* Whether the card has received hints */}
-      {position !== null && hasPositiveHint(card.hint) && (
-        <div
-          className="absolute right-0 top-0 bg-hints br--bottom br--left br-100"
-          style={{ width: "20%", height: "20%" }}
-        />
+      {position !== null && card.receivedHints?.length > 0 && (
+        <Popover
+          body={
+            <div className="flex items-center justify-center b--yellow ba bw1 bg-black pa2 pr3 br2">
+              <div className="flex flex-column">
+                {card?.receivedHints?.map((turn, i) => {
+                  return (
+                    <div key={i} className="nb1">
+                      <Turn
+                        includePlayer={true}
+                        showDrawn={false}
+                        showPosition={false}
+                        turn={turn}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          }
+          className="z-999"
+          isOpen={isHintPopoverOpen}
+          onOuterAction={() => setIsHintPopoverOpen(false)}
+        >
+          <div
+            className="absolute right-0 top-0 bg-hints br--bottom br--left br-100"
+            style={{ width: "20%", height: "20%" }}
+            onMouseEnter={() => setIsHintPopoverOpen(true)}
+            onMouseLeave={() => setIsHintPopoverOpen(false)}
+          />
+        </Popover>
       )}
 
       {/* show positive hints with a larger type */}
-      {displayHints && hidden && (
-        <div
-          className={classnames(
-            "top-0 br-100 w-50 h-50 flex justify-center items-center",
-            {
-              [`bg-${card.color} txt-${card.color}-dark ba b--${card.color}`]:
-                card.hint.color[card.color] === 2,
-              [`txt-white-dark`]: card.hint.color[card.color] !== 2
-            }
-          )}
-        >
-          {card.hint.number[card.number] === 2 && <Txt value={card.number} />}
-        </div>
-      )}
+      {displayHints && hidden && <CardPartialHint card={card} size={size} />}
 
       {/* show other hints, including negative hints */}
       {displayHints && size === CardSize.LARGE && (
@@ -226,12 +315,5 @@ export default function Card(props: Props) {
         </div>
       )}
     </CardWrapper>
-  );
-}
-
-function hasPositiveHint(hint: ICardHint) {
-  return (
-    Object.values(hint.color).indexOf(2) > -1 ||
-    Object.values(hint.number).indexOf(2) > -1
   );
 }

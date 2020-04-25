@@ -3,6 +3,7 @@ import { cloneDeep, findIndex, flatMap, last, range, zipObject } from "lodash";
 import { shuffle } from "shuffle-seed";
 
 import IGameState, {
+  GameVariant,
   IAction,
   ICard,
   ICardHint,
@@ -11,18 +12,10 @@ import IGameState, {
   IGameStatus,
   IHand,
   IHintAction,
+  IHintLevel,
   INumber,
   IPlayer
 } from "./state";
-
-export const colors: IColor[] = [
-  IColor.WHITE,
-  IColor.BLUE,
-  IColor.RED,
-  IColor.GREEN,
-  IColor.YELLOW,
-  IColor.MULTICOLOR
-];
 
 export const numbers: INumber[] = [1, 2, 3, 4, 5];
 
@@ -49,23 +42,53 @@ export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
 /**
  * Side effect function that applies the given hint on a given hand's cards
  */
-function applyHint(hand: IHand, hint: IHintAction) {
-  hand.forEach(card => {
-    if (card[hint.type] === hint.value) {
-      // positive hint, e.g. card is a red 5 and the hint is "color red"
-      Object.keys(card.hint[hint.type]).forEach(value => {
-        if (value == hint.value) {
-          // == because we want '2' == 2
-          // it has to be this value
-          card.hint[hint.type][value] = 2;
-        } else {
-          // all other values are impossible
-          card.hint[hint.type][value] = 0;
-        }
-      });
+function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
+  hint.cardsIndex = [];
+
+  hand.forEach((card, index) => {
+    if (matchHint(hint, card)) {
+      hint.cardsIndex.push(index);
+
+      if (!card.receivedHints) {
+        card.receivedHints = [];
+      }
+      card.receivedHints.push({ action: hint });
+
+      // positive hint on card - mark all other values as impossible (except rainbow)
+      Object.keys(card.hint[hint.type])
+        .filter(value => {
+          return GameVariant.RAINBOW === game.options.variant
+            ? value !== IColor.RAINBOW
+            : true;
+        })
+        .filter(value => value != hint.value)
+        .forEach(value => {
+          card.hint[hint.type][value] = IHintLevel.IMPOSSIBLE;
+        });
     } else {
-      // negative hint
-      card.hint[hint.type][hint.value] = 0;
+      // negative hint on card - mark as impossible
+      card.hint[hint.type][hint.value] = IHintLevel.IMPOSSIBLE;
+
+      // for color hints, also mark rainbow as impossible
+      if (hint.type === "color") {
+        card.hint.color.rainbow = IHintLevel.IMPOSSIBLE;
+      }
+    }
+
+    // if there's only one possible color, make it sure
+    const onlyPossibleColors = Object.keys(card.hint.color).filter(
+      color => card.hint.color[color] === IHintLevel.POSSIBLE
+    );
+    if (onlyPossibleColors.length === 1) {
+      card.hint.color[onlyPossibleColors[0]] = IHintLevel.SURE;
+    }
+
+    // if there's only one possible number, make it sure
+    const onlyPossibleNumbers = Object.keys(card.hint.number).filter(
+      number => card.hint.number[number] === IHintLevel.POSSIBLE
+    );
+    if (onlyPossibleNumbers.length === 1) {
+      card.hint.number[onlyPossibleNumbers[0]] = IHintLevel.SURE;
     }
   });
 }
@@ -73,19 +96,32 @@ function applyHint(hand: IHand, hint: IHintAction) {
 export function emptyHint(options: IGameOptions): ICardHint {
   return {
     color: {
-      blue: 1,
-      red: 1,
-      green: 1,
-      white: 1,
-      yellow: 1,
-      multicolor: options.multicolor ? 1 : 0
+      [IColor.BLUE]: 1,
+      [IColor.RED]: 1,
+      [IColor.GREEN]: 1,
+      [IColor.YELLOW]: 1,
+      [IColor.WHITE]: 1,
+      [IColor.MULTICOLOR]: options.variant === GameVariant.MULTICOLOR ? 1 : 0,
+      [IColor.RAINBOW]: 1 // Should never be used directly
     },
     number: { 0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
   };
 }
 
+export function matchColor(colorA: IColor, colorB: IColor) {
+  return (
+    colorA === colorB || colorA === IColor.RAINBOW || colorB === IColor.RAINBOW
+  );
+}
+
+export function matchHint(hint: IHintAction, card: ICard) {
+  return hint.type === "color"
+    ? matchColor(card.color, hint.value as IColor)
+    : hint.value === card.number;
+}
+
 export function isReplayMode(state: IGameState) {
-  return state.replayCursor !== undefined;
+  return state?.replayCursor !== undefined;
 }
 
 export function isGameOver(state: IGameState) {
@@ -156,7 +192,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
     s.tokens.hints -= 1;
 
     const hand = s.players[action.to].hand;
-    applyHint(hand, action);
+    applyHint(hand, action, s);
   }
 
   // there's no card in the pile (or the last card was just drawn)
@@ -212,7 +248,39 @@ export function emptyPlayer(id: string, name: string): IPlayer {
 }
 
 export function getColors(state: IGameState) {
-  return state.options.multicolor ? colors : colors.slice(0, -1);
+  switch (state.options.variant) {
+    case GameVariant.MULTICOLOR:
+      return [
+        IColor.BLUE,
+        IColor.GREEN,
+        IColor.RED,
+        IColor.WHITE,
+        IColor.YELLOW,
+        IColor.MULTICOLOR
+      ];
+    case GameVariant.RAINBOW:
+      return [
+        IColor.BLUE,
+        IColor.GREEN,
+        IColor.RED,
+        IColor.WHITE,
+        IColor.YELLOW,
+        IColor.RAINBOW
+      ];
+    case GameVariant.CLASSIC:
+    default:
+      return [
+        IColor.BLUE,
+        IColor.GREEN,
+        IColor.RED,
+        IColor.WHITE,
+        IColor.YELLOW
+      ];
+  }
+}
+
+export function getHintableColors(state: IGameState) {
+  return getColors(state).filter(color => color !== IColor.RAINBOW);
 }
 
 export function getScore(state: IGameState) {
@@ -220,7 +288,14 @@ export function getScore(state: IGameState) {
 }
 
 export function getMaximumScore(state: IGameState) {
-  return state.options.multicolor ? 30 : 25;
+  switch (state.options.variant) {
+    case GameVariant.MULTICOLOR:
+    case GameVariant.RAINBOW:
+      return 30;
+    case GameVariant.CLASSIC:
+    default:
+      return 25;
+  }
 }
 
 export function getPlayedCardsPile(
@@ -290,8 +365,15 @@ export function joinGame(state: IGameState, player: IPlayer): IGameState {
 export function newGame(options: IGameOptions): IGameState {
   assert(options.playersCount > 1 && options.playersCount < 6);
 
+  const baseColors = [
+    IColor.WHITE,
+    IColor.BLUE,
+    IColor.RED,
+    IColor.GREEN,
+    IColor.YELLOW
+  ];
   // all cards but multicolors
-  let cards = flatMap(colors.slice(0, -1), color => [
+  let cards = flatMap(baseColors, color => [
     { number: 1, color },
     { number: 1, color },
     { number: 1, color },
@@ -304,8 +386,8 @@ export function newGame(options: IGameOptions): IGameState {
     { number: 5, color }
   ]);
 
-  // Add extensions cards when applicable
-  if (options.multicolor) {
+  // Add multicolor cards when applicable
+  if (options.variant === GameVariant.MULTICOLOR) {
     cards.push(
       { number: 1, color: IColor.MULTICOLOR },
       { number: 2, color: IColor.MULTICOLOR },
@@ -315,7 +397,28 @@ export function newGame(options: IGameOptions): IGameState {
     );
   }
 
-  cards = cards.map((c, i) => ({ ...c, id: i })) as ICard[];
+  // Add rainbow cards when applicable
+  if (options.variant === GameVariant.RAINBOW) {
+    cards.push(
+      { number: 1, color: IColor.RAINBOW },
+      { number: 1, color: IColor.RAINBOW },
+      { number: 1, color: IColor.RAINBOW },
+      { number: 2, color: IColor.RAINBOW },
+      { number: 2, color: IColor.RAINBOW },
+      { number: 3, color: IColor.RAINBOW },
+      { number: 3, color: IColor.RAINBOW },
+      { number: 4, color: IColor.RAINBOW },
+      { number: 4, color: IColor.RAINBOW },
+      { number: 5, color: IColor.RAINBOW }
+    );
+  }
+
+  cards = cards.map((c, i) => {
+    return {
+      ...c,
+      id: i
+    };
+  });
 
   const deck = shuffle(cards, options.seed);
 

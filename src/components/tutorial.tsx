@@ -33,18 +33,18 @@ export enum ITutorialStep {
 
 const steps = {
   [ITutorialStep.WELCOME]: {
-    title: "Welcome!",
-    body: "Let's learn how to play"
+    title: "Tutorial",
+    body: "Let's learn how to play!"
   },
   [ITutorialStep.PLAYED_CARDS]: {
     title: "Played cards",
     body:
-      "This will nest the cards that have been played.\nReach 5 on each color to win the game."
+      "This will nest the cards that have been played.\nCollectively, reach 5 on each color to win the game."
   },
   [ITutorialStep.DISCARD_PILE]: {
     title: "Discard",
     body:
-      "This pile contains all the cards you discarded.\nWatch out and avoid discarding the cards you need to finish the game."
+      "Here you will see the cards\nyou and your team discarded.\nAvoid discarding the ones\nyou need to finish the game."
   },
   [ITutorialStep.SELF_PLAYER]: {
     title: "Your game",
@@ -80,9 +80,11 @@ interface TutorialProviderProps {
 export function TutorialProvider(props: TutorialProviderProps) {
   const { children } = props;
 
-  const [currentStep, setCurrentStep] = useState(
-    +localStorage.getItem(LocalStorageKey) || ITutorialStep.WELCOME
-  );
+  const [currentStep, setCurrentStep] = useState(ITutorialStep.WELCOME);
+
+  useEffect(() => {
+    setCurrentStep(+localStorage.getItem(LocalStorageKey));
+  }, []);
 
   function setStep(step: number) {
     setCurrentStep(step);
@@ -151,20 +153,20 @@ export default function Tutorial(props: Props) {
               <Txt className="gray mr2" value={`${step} / ${totalSteps - 1}`} />
             )}
           </span>
-          <div className="flex items-center mt2 mt4-l">
+          <div className="flex flex-column mt1 mt2-l">
             <Txt multiline className="mr4" value={body} />
 
             {step === ITutorialStep.WELCOME && (
-              <>
+              <div className="flex self-end mt1 ph1">
                 <Button
                   className="mr1 mr2-l"
                   id="skip-tutorial"
                   size={ButtonSize.TINY}
-                  text="Skip"
+                  text="✕ Skip"
                   onClick={skip}
                 />
                 <Button size={ButtonSize.TINY} text="Go !" onClick={nextStep} />
-              </>
+              </div>
             )}
 
             {step !== ITutorialStep.WELCOME && (

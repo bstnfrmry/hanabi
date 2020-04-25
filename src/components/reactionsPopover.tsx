@@ -26,7 +26,7 @@ export default function ReactionsPopover(props: Props) {
             e.stopPropagation();
             onClose();
             onReaction(null);
-            setImmediate(() => {
+            setTimeout(() => {
               onReaction(reaction);
             });
           }}

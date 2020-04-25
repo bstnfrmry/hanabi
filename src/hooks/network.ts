@@ -11,9 +11,13 @@ export type GameHandler = (game: IGameState) => void;
 export type UnsubscribeHandler = () => void;
 
 export interface Network {
+  loadPublicGames(): Promise<IGameState[]>;
+
   subscribeToPublicGames(callback: GamesHandler): UnsubscribeHandler;
 
   subscribeToOnGoingGames(callback: GamesHandler): UnsubscribeHandler;
+
+  loadGame(gameId: string): Promise<IGameState>;
 
   subscribeToGame(gameId: string, callback: GameHandler): UnsubscribeHandler;
 

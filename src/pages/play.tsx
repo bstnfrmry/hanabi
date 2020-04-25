@@ -1,25 +1,29 @@
+import Fireworks from "fireworks-canvas";
 import { last, omit } from "lodash";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import shortid from "shortid";
 
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import DiscardArea from "~/components/discardArea";
 import GameBoard from "~/components/gameBoard";
 import InstructionsArea from "~/components/instructionsArea";
-import LoadingScreen from "~/components/loadingScreen";
 import Lobby from "~/components/lobby";
 import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
-import ReplayViewver from "~/components/replayViewer";
-import { TutorialProvider } from "~/components/tutorial";
+import ReplayViewer from "~/components/replayViewer";
+import RollbackArea from "~/components/rollbackArea";
+import Tutorial, {
+  ITutorialStep,
+  TutorialProvider
+} from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import {
   commitAction,
   getMaximumPossibleScore,
   getScore,
-  goBackToState,
   isReplayMode,
   joinGame,
   newGame
@@ -33,15 +37,40 @@ import IGameState, {
   IGameStatus
 } from "~/game/state";
 import useConnectivity from "~/hooks/connectivity";
+import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
 import { GameContext, useCurrentPlayer, useSelfPlayer } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
 import usePrevious from "~/hooks/previous";
 
-export default function Play() {
+interface Props {
+  game: IGameState;
+  host: string;
+}
+
+export const getServerSideProps: GetServerSideProps<Props> = async context => {
+  const gameId = context.query.gameId as string;
+
+  const firebase = new FirebaseNetwork(setupFirebase());
+  const game = await firebase.loadGame(gameId);
+
+  const protocol = process.env.NODE_ENV === "development" ? "http:" : "https:";
+  const { host } = context.req.headers;
+
+  return {
+    props: {
+      game,
+      host: `${protocol}//${host}`
+    }
+  };
+};
+
+export default function Play(props: Props) {
+  const { game: initialGame, host } = props;
+
   const network = useNetwork();
   const router = useRouter();
   const online = useConnectivity();
-  const [game, setGame] = useState<IGameState>(null);
+  const [game, setGame] = useState<IGameState>(initialGame);
   const [displayStats, setDisplayStats] = useState(false);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
@@ -49,7 +78,7 @@ export default function Play() {
     id: "instructions",
     type: ActionAreaType.INSTRUCTIONS
   });
-  const { gameId } = router.query;
+  const fireworksRef = useRef();
 
   const currentPlayer = useCurrentPlayer(game);
   const selfPlayer = useSelfPlayer(game);
@@ -59,54 +88,45 @@ export default function Play() {
    */
   useEffect(() => {
     if (typeof Notification === "undefined") return;
-    if (!game) return;
     if (game.status !== IGameStatus.ONGOING) return;
 
     if (Notification.permission !== "granted") {
       Notification.requestPermission();
     }
-  }, [game && game.status === IGameStatus.ONGOING]);
+  }, [game.status === IGameStatus.ONGOING]);
 
   /**
    * Load game from database
    */
   useEffect(() => {
     if (!online) return;
-    if (!gameId) return;
 
-    return network.subscribeToGame(gameId as string, game => {
+    return network.subscribeToGame(game.id, game => {
       if (!game) {
         return router.push("/404");
       }
 
       setGame({ ...game, synced: true });
     });
-  }, [gameId, online]);
+  }, [online]);
 
   /**
    * Resets the selected area when a player plays.
    */
   useEffect(() => {
-    if (!game) return;
-
     selectArea({ id: "instructions", type: ActionAreaType.INSTRUCTIONS });
-  }, [game && game.turnsHistory.length]);
+  }, [game.turnsHistory.length]);
 
   /**
    * Toggle interturn state on new turn for pass & play
    */
   useEffect(() => {
-    if (!game) return;
     if (game.options.gameMode !== GameMode.PASS_AND_PLAY) return;
     if (game.players.length < game.options.playersCount) return;
     if (game.status !== IGameStatus.ONGOING) return;
 
     setInterturn(true);
-  }, [
-    game && game.turnsHistory.length,
-    game && game.players.length,
-    game && game.status
-  ]);
+  }, [game.turnsHistory.length, game.players.length, game.status]);
 
   /**
    * Notify player it's time to play when document isn't focused.
@@ -193,7 +213,7 @@ export default function Play() {
     return () => clearTimeout(timeout);
   }, [hintsCount === previousHintsCount - 1]);
 
-  const turnsCount = game ? game.turnsHistory.length : 0;
+  const turnsCount = game.turnsHistory.length;
   const previousTurnsCount = usePrevious(turnsCount);
   useEffect(() => {
     if (previousTurnsCount === undefined) return;
@@ -205,18 +225,15 @@ export default function Play() {
    * Play sound when discarding a card
    */
   useEffect(() => {
-    if (!game) return;
     if (!game.discardPile.length) return;
 
     playSound(`/static/sounds/card-scrape.mp3`);
-  }, [game && game.discardPile.length]);
+  }, [game.discardPile.length]);
 
   /**
    * Play sound when successfully playing a card
    */
   useEffect(() => {
-    if (!game) return;
-
     const latestCard = last(game.playedCards);
     if (!latestCard) return;
 
@@ -226,13 +243,12 @@ export default function Play() {
         : `/static/sounds/play.mp3`;
 
     playSound(path);
-  }, [game && game.playedCards.length]);
+  }, [game.playedCards.length]);
 
   /**
    * Play for bots.
    */
   useEffect(() => {
-    if (!game) return;
     if (!game.synced) return;
     if (game.status !== IGameStatus.ONGOING) return;
     if (!selfPlayer || selfPlayer.index) return;
@@ -250,20 +266,19 @@ export default function Play() {
     }, game.options.botsWait);
 
     return () => clearTimeout(timeout);
-  }, [game && game.currentPlayer, game && game.status, game && game.synced]);
+  }, [game.currentPlayer, game.status, game.synced]);
 
   /**
    * At the start of the game, compute and store the maximum score
    * that our cheating AI can achieve.
    */
   useEffect(() => {
-    if (!game) return;
     if (![IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status)) return;
 
     let sameGame = newGame({
       id: game.id,
       playersCount: game.options.playersCount,
-      multicolor: game.options.multicolor,
+      variant: game.options.variant,
       allowRollback: false,
       preventLoss: false,
       seed: game.options.seed,
@@ -287,7 +302,29 @@ export default function Play() {
     }
 
     setReachableScore(getScore(sameGame));
-  }, [game && game.status]);
+  }, [game.status]);
+
+  /**
+   * Display fireworks animation when game ends
+   */
+  useEffect(() => {
+    if (game.status !== IGameStatus.OVER) return;
+
+    const fireworks = new Fireworks(fireworksRef.current, {
+      maxRockets: 5, // max # of rockets to spawn
+      rocketSpawnInterval: 150, // milliseconds to check if new rockets should spawn
+      numParticles: 100, // number of particles to spawn when rocket explodes (+0-10)
+      explosionMinHeight: 10, // minimum percentage of height of container at which rockets explode
+      explosionChance: 1 // chance in each tick the rocket will explode
+    });
+    fireworks.start();
+
+    const timeout = setTimeout(() => {
+      fireworks.stop();
+    }, game.playedCards.length * 200); // stop rockets from spawning
+
+    return () => clearTimeout(timeout);
+  }, [game.status]);
 
   function onJoinGame(player) {
     const playerId = shortid();
@@ -296,12 +333,12 @@ export default function Play() {
     setGame({ ...newState, synced: false });
     network.updateGame(newState);
 
-    localStorage.setItem("gameId", gameId.toString());
+    localStorage.setItem("gameId", game.id);
 
     if (game.options.gameMode === GameMode.NETWORK) {
       router.replace({
         pathname: "/play",
-        query: { gameId, playerId }
+        query: { gameId: game.id, playerId }
       });
       localStorage.setItem("playerId", playerId.toString());
     }
@@ -355,28 +392,11 @@ export default function Play() {
     });
   }
 
-  function onShowRollback() {
-    return selectArea({
+  function onRollbackClick() {
+    onSelectArea({
       id: "rollback",
       type: ActionAreaType.ROLLBACK
     });
-  }
-
-  async function onRollback() {
-    let lastNonAI = 1;
-    // check whether the previous player is a bot
-    // adding players length to avoid a negative mod
-    let checkedPlayer =
-      (game.players.length + game.currentPlayer - 1) % game.players.length;
-    while (game.players[checkedPlayer].bot && lastNonAI < game.players.length) {
-      lastNonAI += 1;
-      // check the player even before
-      checkedPlayer =
-        (game.currentPlayer + game.players.length - lastNonAI) %
-        game.players.length;
-    }
-
-    network.updateGame(goBackToState(game, lastNonAI));
   }
 
   async function onNotifyPlayer(player) {
@@ -414,13 +434,6 @@ export default function Play() {
       type: self ? ActionAreaType.SELF_PLAYER : ActionAreaType.OTHER_PLAYER,
       player,
       cardIndex
-    });
-  }
-
-  function onSelectDiscard() {
-    onSelectArea({
-      id: "discard",
-      type: ActionAreaType.DISCARD
     });
   }
 
@@ -464,76 +477,97 @@ export default function Play() {
     });
   }
 
-  if (!game) {
-    return <LoadingScreen />;
-  }
-
   return (
     <TutorialProvider>
       <GameContext.Provider value={game}>
         <div className="bg-main-dark relative flex flex-column w-100 h-100">
           <GameBoard
             onMenuClick={onMenuClick}
-            onSelectDiscard={onSelectDiscard}
-            onShowRollback={onShowRollback}
+            onRollbackClick={onRollbackClick}
           />
 
-          {isReplayMode(game) && (
-            <ReplayViewver
-              onReplayCursorChange={onReplayCursorChange}
-              onStopReplay={onStopReplay}
-            />
-          )}
-
-          <div className="flex flex-column  shadow-5 bg-black-50 bb b--yellow">
-            {selectedArea.type === ActionAreaType.MENU ? (
+          <div className="flex flex-column bg-black-50 bb b--yellow">
+            {selectedArea.type === ActionAreaType.MENU && (
               <div className="h4 pa2 ph3-l">
                 <MenuArea onCloseArea={onCloseArea} />
               </div>
-            ) : game.status === IGameStatus.LOBBY ? (
-              <Lobby
-                onAddBot={onAddBot}
-                onJoinGame={onJoinGame}
-                onStartGame={onStartGame}
-              />
-            ) : (
-                  <div className="h4 overflow-y-scroll pa2 pt0-l ph3-l">
-                    {selectedArea.type === ActionAreaType.ROLLBACK && (
-                      <div className="h-100 flex flex-column items-center justify-center pa2">
+            )}
+            {selectedArea.type === ActionAreaType.ROLLBACK && (
+              <div className="h4 pa2 ph3-l">
+                <RollbackArea onCloseArea={onCloseArea} />
+              </div>
+            )}
+
+            {![ActionAreaType.ROLLBACK, ActionAreaType.MENU].includes(
+              selectedArea.type
+            ) &&
+              (game.status === IGameStatus.LOBBY ? (
+                <Lobby
+                  host={host}
+                  onAddBot={onAddBot}
+                  onJoinGame={onJoinGame}
+                  onStartGame={onStartGame}
+                />
+              ) : (
+                <div className="h4 pt0-l overflow-y-scroll">
+                  {game.status === IGameStatus.OVER &&
+                    (isReplayMode(game) ? (
+                      <ReplayViewer
+                        onReplayCursorChange={onReplayCursorChange}
+                        onStopReplay={onStopReplay}
+                      />
+                    ) : (
+                      <div className="flex flex-column w-100 bb mb1 ph2">
                         <Txt
-                          className="w-75"
+                          className="db"
                           size={TxtSize.MEDIUM}
-                          value="You're about to roll back the last action!"
+                          value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
                         />
-                        <div className="mt4">
-                          <Button text="Abort" onClick={() => onCloseArea()} />
+                        {reachableScore && (
+                          <Txt
+                            multiline
+                            className="db mt1 lavender"
+                            size={TxtSize.SMALL}
+                            value={`Estimated max score for this shuffle: ${reachableScore}. ${
+                              reachableScore > game.playedCards.length
+                                ? "Keep practicing"
+                                : "You did great!"
+                            }`}
+                          />
+                        )}
+                        <div className="flex w-100 justify-between mv2">
+                          <Button
+                            className="nowrap w4"
+                            size={ButtonSize.TINY}
+                            text="Watch replay"
+                            onClick={() => onReplay()}
+                          />
                           <Button
                             primary
-                            className="ml4"
-                            text="Roll back"
-                            onClick={() => onRollback()}
+                            className="nowrap w4"
+                            size={ButtonSize.TINY}
+                            text="Toggle stats"
+                            onClick={() => onToggleStats()}
                           />
                         </div>
                       </div>
-                    )}
-
-                    {selectedArea.type === ActionAreaType.DISCARD && (
-                      <DiscardArea onCloseArea={onCloseArea} />
-                    )}
-
-                    {![ActionAreaType.ROLLBACK, ActionAreaType.DISCARD].includes(
-                      selectedArea.type
-                    ) && (
-                        <InstructionsArea
-                          interturn={interturn}
-                          reachableScore={reachableScore}
-                          onReplay={onReplay}
-                          onSelectDiscard={onSelectDiscard}
-                          onToggleStats={onToggleStats}
-                        />
-                      )}
+                    ))}
+                  <div className="flex justify-between h-100 pa1 pa2-l">
+                    <InstructionsArea
+                      interturn={interturn}
+                      reachableScore={reachableScore}
+                      onReplay={onReplay}
+                      onToggleStats={onToggleStats}
+                    />
+                    <Tutorial
+                      placement="above"
+                      step={ITutorialStep.DISCARD_PILE}
+                    >
+                      <DiscardArea />
+                    </Tutorial>
                   </div>
-                )}
+                </div>
+              ))}
           </div>
 
           {interturn && (
@@ -554,7 +588,7 @@ export default function Play() {
 
           {!interturn && (
             <div className="flex flex-column">
-              <div className="h-100 overflow-y-scroll">
+              <div className="h-100">
                 <PlayersBoard
                   displayStats={displayStats}
                   selectedArea={selectedArea}
@@ -568,6 +602,11 @@ export default function Play() {
             </div>
           )}
         </div>
+        <div
+          ref={fireworksRef}
+          className="fixed absolute--fill z-999"
+          style={{ pointerEvents: "none" }}
+        />
       </GameContext.Provider>
     </TutorialProvider>
   );

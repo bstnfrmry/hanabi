@@ -1,9 +1,8 @@
-import "../styles/style.css";
-
 import * as Sentry from "@sentry/browser";
 import NextApp, { AppProps } from "next/app";
 import Head from "next/head";
 import Router from "next/router";
+import NProgress from "nprogress";
 import React, { ErrorInfo, useState } from "react";
 import FullStory from "react-fullstory";
 
@@ -13,6 +12,7 @@ import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
 import { NetworkContext } from "~/hooks/network";
 
 import { initGA, logPageView } from "../lib/analytics";
+import "../styles/style.css";
 
 const FS_ORG_ID = "T0W6G";
 
@@ -22,6 +22,22 @@ Sentry.init({
 });
 
 Router.events.on("routeChangeComplete", () => logPageView());
+
+let nprogressTimeout: NodeJS.Timeout = null;
+
+Router.events.on("routeChangeStart", () => {
+  nprogressTimeout = setTimeout(() => NProgress.start(), 200);
+});
+
+Router.events.on("routeChangeComplete", () => {
+  clearTimeout(nprogressTimeout);
+  NProgress.done();
+});
+
+Router.events.on("routeChangeError", () => {
+  clearTimeout(nprogressTimeout);
+  NProgress.done();
+});
 
 export default class App extends NextApp {
   componentDidMount() {
@@ -46,7 +62,7 @@ export default class App extends NextApp {
 }
 
 function Hanabi(props: AppProps) {
-  const { Component } = props;
+  const { Component, pageProps } = props;
 
   const [showOffline, setShowOffline] = useState(true);
   const online = useConnectivity();
@@ -85,7 +101,7 @@ function Hanabi(props: AppProps) {
             </div>
           )}
 
-          <Component />
+          <Component {...pageProps} />
         </div>
       </NetworkContext.Provider>
     </>
