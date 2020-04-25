@@ -1,8 +1,8 @@
 import { cloneDeep, filter, findLastIndex } from "lodash";
 
 import {
-  colors,
   commitAction,
+  getColors,
   getPlayedCardsPile,
   isPlayable,
   numbers
@@ -114,9 +114,12 @@ function isCardDiscardable(card: IHiddenCard, state: IGameState): boolean {
 
 export function getHintDeductions(
   hint: ICardHint,
-  possibleCards: ICard[]
+  possibleCards: ICard[],
+  game: IGameState
 ): IDeduction[] {
   const deductions: IDeduction[] = [];
+  const colors = getColors(game);
+
   colors.forEach(color => {
     numbers.forEach(number => {
       if (
@@ -208,7 +211,7 @@ export function gameStateToGameView(gameState: IGameState): IGameView {
     player.hand.forEach((card: ICard) => {
       gameView.hand.push({
         hint: card.hint,
-        deductions: getHintDeductions(card.hint, possibleCards),
+        deductions: getHintDeductions(card.hint, possibleCards, state),
         optimist: lastOptimistCard && card.id === lastOptimistCard.id
       } as IHiddenCard);
     });

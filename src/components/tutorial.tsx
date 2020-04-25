@@ -33,8 +33,8 @@ export enum ITutorialStep {
 
 const steps = {
   [ITutorialStep.WELCOME]: {
-    title: "Great!",
-    body: "Let's learn how to play"
+    title: "Tutorial",
+    body: "Let's learn how to play!"
   },
   [ITutorialStep.PLAYED_CARDS]: {
     title: "Played cards",
@@ -80,9 +80,11 @@ interface TutorialProviderProps {
 export function TutorialProvider(props: TutorialProviderProps) {
   const { children } = props;
 
-  const [currentStep, setCurrentStep] = useState(
-    +localStorage.getItem(LocalStorageKey) || ITutorialStep.WELCOME
-  );
+  const [currentStep, setCurrentStep] = useState(ITutorialStep.WELCOME);
+
+  useEffect(() => {
+    setCurrentStep(+localStorage.getItem(LocalStorageKey));
+  }, []);
 
   function setStep(step: number) {
     setCurrentStep(step);
@@ -151,20 +153,20 @@ export default function Tutorial(props: Props) {
               <Txt className="gray mr2" value={`${step} / ${totalSteps - 1}`} />
             )}
           </span>
-          <div className="flex items-center mt2 mt4-l">
+          <div className="flex flex-column mt1 mt2-l">
             <Txt multiline className="mr4" value={body} />
 
             {step === ITutorialStep.WELCOME && (
-              <>
+              <div className="flex self-end mt1 ph1">
                 <Button
                   className="mr1 mr2-l"
                   id="skip-tutorial"
                   size={ButtonSize.TINY}
-                  text="Skip"
+                  text="✕ Skip"
                   onClick={skip}
                 />
                 <Button size={ButtonSize.TINY} text="Go !" onClick={nextStep} />
-              </>
+              </div>
             )}
 
             {step !== ITutorialStep.WELCOME && (
