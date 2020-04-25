@@ -1,13 +1,52 @@
+import { last } from "lodash";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
 
 import Button from "~/components/ui/button";
 import { Checkbox, Field, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { GameMode } from "~/game/state";
+import { GameMode, IPlayer } from "~/game/state";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 
+function listPlayerNames(players: IPlayer[]) {
+  if (!players.length) {
+    return null;
+  }
+
+  if (players.length === 1) {
+    return players[0].name;
+  }
+
+  const firstNames = players
+    .slice(0, -1)
+    .map(player => player.name)
+    .join(", ");
+  const lastName = last(players).name;
+
+  return `${firstNames} & ${lastName}`;
+}
+
+function Meta() {
+  const game = useGame();
+
+  const playersNames = listPlayerNames(
+    game.players.filter(player => !player.bot)
+  );
+
+  const description = playersNames
+    ? `${playersNames} invited you to a game of Hanabi 🎉`
+    : `You've been invited to a game of Hanabi 🎉`;
+
+  return (
+    <Head>
+      <meta content={description} property="og:description" />
+    </Head>
+  );
+}
+
 interface Props {
+  host: string;
   onJoinGame: Function;
   onAddBot: Function;
   onStartGame: Function;
@@ -16,7 +55,7 @@ interface Props {
 const NAME_KEY = "name";
 
 export default function Lobby(props: Props) {
-  const { onJoinGame, onAddBot, onStartGame } = props;
+  const { host, onJoinGame, onAddBot, onStartGame } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -30,7 +69,7 @@ export default function Lobby(props: Props) {
     !gameFull;
   const canStart = gameFull;
 
-  const shareLink = `${window.location.origin}/play?gameId=${router.query.gameId}`;
+  const shareLink = `${host}/play?gameId=${router.query.gameId}`;
   const inputRef = React.createRef<HTMLInputElement>();
   function copy() {
     inputRef.current.select();
@@ -59,6 +98,7 @@ export default function Lobby(props: Props) {
 
   return (
     <div className="flex items-center justify-center h-100 w-100 bg-main-dark pa2">
+      <Meta />
       <div className="flex flex-column pa2 w-100 h-100">
         <div className="mb3 ttu flex items-center">
           <Txt size={TxtSize.MEDIUM} value="Lobby" />

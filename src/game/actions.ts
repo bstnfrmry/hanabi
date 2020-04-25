@@ -121,7 +121,7 @@ export function matchHint(hint: IHintAction, card: ICard) {
 }
 
 export function isReplayMode(state: IGameState) {
-  return state.replayCursor !== undefined;
+  return state?.replayCursor !== undefined;
 }
 
 export function isGameOver(state: IGameState) {
