@@ -1,5 +1,5 @@
 import Fireworks from "fireworks-canvas";
-import { last, omit } from "lodash";
+import { last, omit, shuffle } from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import shortid from "shortid";
@@ -318,6 +318,18 @@ export default function Play() {
     return () => clearTimeout(timeout);
   }, [game && game.status]);
 
+  /**
+   * Redirect players to next game
+   */
+  const previousNextGameId = usePrevious(game ? game.nextGameId : null);
+  useEffect(() => {
+    if (!game) return;
+    if (!game.nextGameId) return;
+    if (!previousNextGameId) return;
+
+    router.push(`/play?gameId=${game.nextGameId}`);
+  }, [game && game.nextGameId]);
+
   function onJoinGame(player) {
     const newState = joinGame(game, { id: playerId, ...player });
 
@@ -460,6 +472,24 @@ export default function Play() {
     });
   }
 
+  async function onRestartGame() {
+    const nextGameId = shortid();
+
+    let nextGame = newGame({
+      ...game.options,
+      id: nextGameId,
+      seed: `${Math.round(Math.random() * 10000)}`
+    });
+
+    shuffle(game.players).forEach(player => {
+      nextGame = joinGame(nextGame, player);
+    });
+
+    await network.updateGame(nextGame);
+
+    network.updateGame({ ...game, nextGameId });
+  }
+
   if (!game) {
     return <LoadingScreen />;
   }
@@ -503,25 +533,27 @@ export default function Play() {
                         onStopReplay={onStopReplay}
                       />
                     ) : (
-                      <div className="flex flex-column w-100 bb mb1 ph2">
-                        <Txt
-                          className="db"
-                          size={TxtSize.MEDIUM}
-                          value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
-                        />
-                        {reachableScore && (
+                      <div className="flex w-100 bb pb2 ph2">
+                        <div>
                           <Txt
-                            multiline
-                            className="db mt1 lavender"
+                            className="db"
                             size={TxtSize.SMALL}
-                            value={`Estimated max score for this shuffle: ${reachableScore}. ${
-                              reachableScore > game.playedCards.length
-                                ? "Keep practicing"
-                                : "You did great!"
-                            }`}
+                            value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
                           />
-                        )}
-                        <div className="flex w-100 justify-between mv2">
+                          {reachableScore && (
+                            <Txt
+                              multiline
+                              className="db mt1 lavender"
+                              size={TxtSize.SMALL}
+                              value={`Estimated max score for this shuffle: ${reachableScore}. ${
+                                reachableScore > game.playedCards.length
+                                  ? "Keep practicing"
+                                  : "You did great!"
+                              }`}
+                            />
+                          )}
+                        </div>
+                        <div className="flex flex-column">
                           <Button
                             className="nowrap w4"
                             size={ButtonSize.TINY}
@@ -529,11 +561,17 @@ export default function Play() {
                             onClick={() => onReplay()}
                           />
                           <Button
-                            primary
-                            className="nowrap w4"
+                            className="nowrap w4 mt2"
                             size={ButtonSize.TINY}
                             text="Toggle stats"
                             onClick={() => onToggleStats()}
+                          />
+                          <Button
+                            primary
+                            className="nowrap w4 mt2"
+                            size={ButtonSize.TINY}
+                            text="New game"
+                            onClick={() => onRestartGame()}
                           />
                         </div>
                       </div>
