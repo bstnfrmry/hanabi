@@ -1,3 +1,4 @@
+import { isString } from "lodash";
 import { useState } from "react";
 
 export default function useLocalStorage<T>(
@@ -12,7 +13,16 @@ export default function useLocalStorage<T>(
         window.localStorage.setItem(key, JSON.stringify(initialValue));
       }
 
-      return item ? JSON.parse(item) : initialValue;
+      try {
+        return item ? JSON.parse(item) : initialValue;
+      } catch (err) {
+        // Some legacy items are stored as raw strings instead of JSON strings.
+        // Restore it as a JSON string and return it.
+        if (isString(item)) {
+          window.localStorage.setItem(key, JSON.stringify(item));
+          return item;
+        }
+      }
     } catch (error) {
       console.error(error);
       return initialValue;
