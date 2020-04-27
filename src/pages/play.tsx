@@ -525,7 +525,7 @@ export default function Play() {
                   onStartGame={onStartGame}
                 />
               ) : (
-                <div className="h4 pt0-l overflow-y-scroll">
+                <>
                   {game.status === IGameStatus.OVER &&
                     (isReplayMode(game) ? (
                       <ReplayViewer
@@ -576,21 +576,23 @@ export default function Play() {
                         </div>
                       </div>
                     ))}
-                  <div className="flex justify-between h-100 pa1 pa2-l">
-                    <InstructionsArea
-                      interturn={interturn}
-                      reachableScore={reachableScore}
-                      onReplay={onReplay}
-                      onToggleStats={onToggleStats}
-                    />
-                    <Tutorial
-                      placement="above"
-                      step={ITutorialStep.DISCARD_PILE}
-                    >
-                      <DiscardArea />
-                    </Tutorial>
+                  <div className="h4 pt0-l overflow-y-scroll">
+                    <div className="flex justify-between h-100 pa1 pa2-l">
+                      <InstructionsArea
+                        interturn={interturn}
+                        reachableScore={reachableScore}
+                        onReplay={onReplay}
+                        onToggleStats={onToggleStats}
+                      />
+                      <Tutorial
+                        placement="above"
+                        step={ITutorialStep.DISCARD_PILE}
+                      >
+                        <DiscardArea />
+                      </Tutorial>
+                    </div>
                   </div>
-                </div>
+                </>
               ))}
           </div>
 
