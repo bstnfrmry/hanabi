@@ -8,7 +8,7 @@ import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import PlayerStats from "~/components/playerStats";
 import ReactionsPopover from "~/components/reactionsPopover";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
-import Button from "~/components/ui/button";
+import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import Vignettes from "~/components/vignettes";
 import { isReplayMode, matchColor, MaxHints } from "~/game/actions";
@@ -97,11 +97,7 @@ export default function PlayerGame(props: Props) {
     hideCards = false;
   }
   // Show cards in replay mode (when toggled)
-  if (isReplayMode(game) && cardsAreVisible) {
-    hideCards = false;
-  }
-  // Show cards when game is over (when toggled)
-  if (game.status === IGameStatus.OVER && !isReplayMode(game)) {
+  if (cardsAreVisible) {
     hideCards = false;
   }
 
@@ -137,11 +133,9 @@ export default function PlayerGame(props: Props) {
                   id="your-turn"
                   size={TxtSize.TINY}
                   value={
-                    game.status === IGameStatus.ONGOING
-                      ? "Your turn"
-                      : game.status === IGameStatus.OVER
-                      ? ""
-                      : "You'll start first"
+                    game.status === IGameStatus.LOBBY
+                      ? "You'll start first"
+                      : "Your turn"
                   }
                 />
               </Tutorial>
@@ -334,12 +328,15 @@ export default function PlayerGame(props: Props) {
               )}
             </div>
           )}
+      </div>
 
-        {selected && isReplayMode(game) && player === selfPlayer && (
-          <div className="flex flex-column items-end mb2">
-            <div className="flex justify-end items-center h-100-l">
+      {game.status === IGameStatus.OVER &&
+        player === selfPlayer &&
+        !displayStats && (
+          <div className="ph2 ph6.5-m mt2">
+            <div className="flex justify-end items-center">
               <Button
-                className="mr2"
+                size={ButtonSize.TINY}
                 text={"Toggle cards"}
                 onClick={() => {
                   setCardsAreVisible(!cardsAreVisible);
@@ -348,7 +345,6 @@ export default function PlayerGame(props: Props) {
             </div>
           </div>
         )}
-      </div>
 
       {/* Other player actions */}
       <div
