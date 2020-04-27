@@ -533,7 +533,7 @@ export default function Play() {
                         onStopReplay={onStopReplay}
                       />
                     ) : (
-                      <div className="flex w-100 bb pb2 ph2">
+                      <div className="flex justify-between w-100 bb pb2 ph2 ph0-l">
                         <div>
                           <Txt
                             className="db"
@@ -553,7 +553,7 @@ export default function Play() {
                             />
                           )}
                         </div>
-                        <div className="flex flex-column">
+                        <div className="flex flex-column ml2">
                           <Button
                             className="nowrap w4"
                             size={ButtonSize.TINY}
