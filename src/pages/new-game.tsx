@@ -86,6 +86,13 @@ export default function NewGame() {
   return (
     <div className="w-100 h-100 overflow-y-scroll pv4 flex items-center pv6-l relative bg-main-dark ph2 ph3-l shadow-5 br3">
       <HomeButton className="absolute top-1 right-1" />
+
+      <Button
+        onClick={() => {
+          throw new Error("test");
+        }}
+      />
+
       <div
         className="flex flex-column w-75-m w-50-l w-80"
         style={{ margin: "auto" }}
