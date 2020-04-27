@@ -46,7 +46,6 @@ function Meta() {
 }
 
 interface Props {
-  host: string;
   onJoinGame: Function;
   onAddBot: Function;
   onStartGame: Function;
@@ -55,7 +54,7 @@ interface Props {
 const NAME_KEY = "name";
 
 export default function Lobby(props: Props) {
-  const { host, onJoinGame, onAddBot, onStartGame } = props;
+  const { onJoinGame, onAddBot, onStartGame } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -69,7 +68,7 @@ export default function Lobby(props: Props) {
     !gameFull;
   const canStart = gameFull;
 
-  const shareLink = `${host}/play?gameId=${router.query.gameId}`;
+  const shareLink = `${window.location.origin}/play?gameId=${router.query.gameId}`;
   const inputRef = React.createRef<HTMLInputElement>();
   function copy() {
     inputRef.current.select();
