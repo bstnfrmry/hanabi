@@ -1,6 +1,5 @@
 import Fireworks from "fireworks-canvas";
 import { last, omit } from "lodash";
-import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import shortid from "shortid";
@@ -9,6 +8,7 @@ import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import DiscardArea from "~/components/discardArea";
 import GameBoard from "~/components/gameBoard";
 import InstructionsArea from "~/components/instructionsArea";
+import LoadingScreen from "~/components/loadingScreen";
 import Lobby from "~/components/lobby";
 import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
@@ -37,41 +37,16 @@ import IGameState, {
   IGameStatus
 } from "~/game/state";
 import useConnectivity from "~/hooks/connectivity";
-import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
 import { GameContext, useCurrentPlayer, useSelfPlayer } from "~/hooks/game";
 import useLocalStorage from "~/hooks/localStorage";
 import useNetwork from "~/hooks/network";
 import usePrevious from "~/hooks/previous";
 
-interface Props {
-  game: IGameState;
-  host: string;
-}
-
-export const getServerSideProps: GetServerSideProps<Props> = async context => {
-  const gameId = context.query.gameId as string;
-
-  const firebase = new FirebaseNetwork(setupFirebase());
-  const game = await firebase.loadGame(gameId);
-
-  const protocol = process.env.NODE_ENV === "development" ? "http:" : "https:";
-  const { host } = context.req.headers;
-
-  return {
-    props: {
-      game,
-      host: `${protocol}//${host}`
-    }
-  };
-};
-
-export default function Play(props: Props) {
-  const { game: initialGame, host } = props;
-
+export default function Play() {
   const network = useNetwork();
   const router = useRouter();
   const online = useConnectivity();
-  const [game, setGame] = useState<IGameState>(initialGame);
+  const [game, setGame] = useState<IGameState>(null);
   const [displayStats, setDisplayStats] = useState(false);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
@@ -86,17 +61,20 @@ export default function Play(props: Props) {
   const currentPlayer = useCurrentPlayer(game);
   const selfPlayer = useSelfPlayer(game);
 
+  const { gameId } = router.query;
+
   /**
    * Request notification permissions when game starts
    */
   useEffect(() => {
     if (typeof Notification === "undefined") return;
+    if (!game) return;
     if (game.status !== IGameStatus.ONGOING) return;
 
     if (Notification.permission !== "granted") {
       Notification.requestPermission();
     }
-  }, [game.status === IGameStatus.ONGOING]);
+  }, [game && game.status === IGameStatus.ONGOING]);
 
   /**
    * Load game from database
@@ -104,32 +82,37 @@ export default function Play(props: Props) {
   useEffect(() => {
     if (!online) return;
 
-    return network.subscribeToGame(game.id, game => {
+    return network.subscribeToGame(gameId as string, game => {
       if (!game) {
         return router.push("/404");
       }
 
       setGame({ ...game, synced: true });
     });
-  }, [online]);
+  }, [gameId, online]);
 
   /**
    * Resets the selected area when a player plays.
    */
   useEffect(() => {
     selectArea({ id: "instructions", type: ActionAreaType.INSTRUCTIONS });
-  }, [game.turnsHistory.length]);
+  }, [game && game.turnsHistory.length]);
 
   /**
    * Toggle interturn state on new turn for pass & play
    */
   useEffect(() => {
+    if (!game) return;
     if (game.options.gameMode !== GameMode.PASS_AND_PLAY) return;
     if (game.players.length < game.options.playersCount) return;
     if (game.status !== IGameStatus.ONGOING) return;
 
     setInterturn(true);
-  }, [game.turnsHistory.length, game.players.length, game.status]);
+  }, [
+    game && game.turnsHistory.length,
+    game && game.players.length,
+    game && game.status
+  ]);
 
   /**
    * Notify player it's time to play when document isn't focused.
@@ -216,7 +199,7 @@ export default function Play(props: Props) {
     return () => clearTimeout(timeout);
   }, [hintsCount === previousHintsCount - 1]);
 
-  const turnsCount = game.turnsHistory.length;
+  const turnsCount = game ? game.turnsHistory.length : 0;
   const previousTurnsCount = usePrevious(turnsCount);
   useEffect(() => {
     if (previousTurnsCount === undefined) return;
@@ -228,15 +211,18 @@ export default function Play(props: Props) {
    * Play sound when discarding a card
    */
   useEffect(() => {
+    if (!game) return;
     if (!game.discardPile.length) return;
 
     playSound(`/static/sounds/card-scrape.mp3`);
-  }, [game.discardPile.length]);
+  }, [game && game.discardPile.length]);
 
   /**
    * Play sound when successfully playing a card
    */
   useEffect(() => {
+    if (!game) return;
+
     const latestCard = last(game.playedCards);
     if (!latestCard) return;
 
@@ -246,12 +232,13 @@ export default function Play(props: Props) {
         : `/static/sounds/play.mp3`;
 
     playSound(path);
-  }, [game.playedCards.length]);
+  }, [game && game.playedCards.length]);
 
   /**
    * Play for bots.
    */
   useEffect(() => {
+    if (!game) return;
     if (!game.synced) return;
     if (game.status !== IGameStatus.ONGOING) return;
     if (!selfPlayer || selfPlayer.index) return;
@@ -269,13 +256,14 @@ export default function Play(props: Props) {
     }, game.options.botsWait);
 
     return () => clearTimeout(timeout);
-  }, [game.currentPlayer, game.status, game.synced]);
+  }, [game && game.currentPlayer, game && game.status, game && game.synced]);
 
   /**
    * At the start of the game, compute and store the maximum score
    * that our cheating AI can achieve.
    */
   useEffect(() => {
+    if (!game) return;
     if (![IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status)) return;
 
     let sameGame = newGame({
@@ -305,12 +293,13 @@ export default function Play(props: Props) {
     }
 
     setReachableScore(getScore(sameGame));
-  }, [game.status]);
+  }, [game && game.status]);
 
   /**
    * Display fireworks animation when game ends
    */
   useEffect(() => {
+    if (!game) return;
     if (game.status !== IGameStatus.OVER) return;
 
     const fireworks = new Fireworks(fireworksRef.current, {
@@ -327,7 +316,7 @@ export default function Play(props: Props) {
     }, game.playedCards.length * 200); // stop rockets from spawning
 
     return () => clearTimeout(timeout);
-  }, [game.status]);
+  }, [game && game.status]);
 
   function onJoinGame(player) {
     const newState = joinGame(game, { id: playerId, ...player });
@@ -471,6 +460,10 @@ export default function Play(props: Props) {
     });
   }
 
+  if (!game) {
+    return <LoadingScreen />;
+  }
+
   return (
     <TutorialProvider>
       <GameContext.Provider value={game}>
@@ -497,7 +490,6 @@ export default function Play(props: Props) {
             ) &&
               (game.status === IGameStatus.LOBBY ? (
                 <Lobby
-                  host={host}
                   onAddBot={onAddBot}
                   onJoinGame={onJoinGame}
                   onStartGame={onStartGame}
