@@ -609,6 +609,7 @@ export default function Play() {
                         onClick={() => onRestartGame()}
                       />
                       <Button
+                        outlined
                         className="nowrap ma1 flex-1"
                         size={ButtonSize.TINY}
                         text="Watch replay"
@@ -617,12 +618,14 @@ export default function Play() {
                     </div>
                     <div className="flex w-100-l">
                       <Button
+                        outlined
                         className="nowrap ma1 flex-1"
                         size={ButtonSize.TINY}
                         text={displayStats ? "Hide stats" : "Show stats"}
                         onClick={() => onToggleStats()}
                       />
                       <Button
+                        outlined
                         className="nowrap ma1 flex-1"
                         size={ButtonSize.TINY}
                         text={revealCards ? "Hide cards" : "Reveal cards"}
