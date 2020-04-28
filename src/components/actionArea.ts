@@ -14,9 +14,9 @@ interface ISelfPlayerSelectedArea {
   cardIndex?: number;
 }
 
-interface IInstructionsSelectedArea {
-  id: "instructions";
-  type: ActionAreaType.INSTRUCTIONS;
+interface ILogsSelectedArea {
+  id: "logs";
+  type: ActionAreaType.LOGS;
 }
 
 interface IMenuArea {
@@ -30,7 +30,7 @@ interface IRollbackArea {
 }
 
 export enum ActionAreaType {
-  INSTRUCTIONS,
+  LOGS,
   OTHER_PLAYER,
   SELF_PLAYER,
   DISCARD,
@@ -39,7 +39,7 @@ export enum ActionAreaType {
 }
 
 export type ISelectedArea =
-  | IInstructionsSelectedArea
+  | ILogsSelectedArea
   | IOtherPlayerSelectedArea
   | ISelfPlayerSelectedArea
   | IMenuArea

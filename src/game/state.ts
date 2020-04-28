@@ -21,9 +21,12 @@ export default interface IGameState {
   createdAt: number;
   synced: boolean;
   // Replay mode
-  replayCursor?: number;
   originalGame?: IGameState;
   nextGameId?: string;
+}
+
+export interface IReplay {
+  cursor: number;
 }
 
 /**

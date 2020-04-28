@@ -8,13 +8,18 @@ import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import PlayerStats from "~/components/playerStats";
 import ReactionsPopover from "~/components/reactionsPopover";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
-import Button, { ButtonSize } from "~/components/ui/button";
+import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import Vignettes from "~/components/vignettes";
-import { isReplayMode, matchColor, MaxHints } from "~/game/actions";
+import { matchColor, MaxHints } from "~/game/actions";
 import { playSound } from "~/game/sound";
 import { ICard, IColor, IGameStatus, IHintAction, IPlayer } from "~/game/state";
-import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
+import {
+  useCurrentPlayer,
+  useGame,
+  useReplay,
+  useSelfPlayer
+} from "~/hooks/game";
 
 function isCardHintable(hint: IHintAction, card: ICard) {
   return hint.type === "color"
@@ -78,6 +83,7 @@ export default function PlayerGame(props: Props) {
   } = props;
 
   const game = useGame();
+  const replay = useReplay();
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const [selectedCard, selectCard] = useState<number>(cardIndex);
   const [pendingHint, setPendingHint] = useState<IHintAction>({
@@ -104,7 +110,7 @@ export default function PlayerGame(props: Props) {
 
   const canPlay =
     [IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status) &&
-    !isReplayMode(game);
+    !replay.cursor;
 
   const hasSelectedCard = selectedCard !== null;
   const cardContext = selected
@@ -163,7 +169,7 @@ export default function PlayerGame(props: Props) {
             />
           )}
 
-          {self && !isReplayMode(game) && (
+          {self && !replay.cursor && (
             <Popover
               body={
                 <ReactionsPopover

@@ -1,5 +1,6 @@
 import assert from "assert";
 import { cloneDeep, findIndex, flatMap, last, range, zipObject } from "lodash";
+import mem from "mem";
 import { shuffle } from "shuffle-seed";
 
 import IGameState, {
@@ -16,8 +17,6 @@ import IGameState, {
   INumber,
   IPlayer
 } from "./state";
-
-import mem from 'mem';
 
 export const numbers: INumber[] = [1, 2, 3, 4, 5];
 
@@ -122,10 +121,6 @@ export function matchHint(hint: IHintAction, card: ICard) {
     : hint.value === card.number;
 }
 
-export function isReplayMode(state: IGameState) {
-  return state?.replayCursor !== undefined;
-}
-
 export function isGameOver(state: IGameState) {
   return (
     state.actionsLeft <= 0 ||
@@ -218,22 +213,25 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
 /**
  * Rollback the state for the given amount of turns
  */
-export const getStateAtTurn = mem((state: IGameState, turnIndex: number) => {
-  let newState = newGame(state.options);
+export const getStateAtTurn = mem(
+  (state: IGameState, turnIndex: number) => {
+    let newState = newGame(state.options);
 
-  state.players.forEach(player => {
-    newState = joinGame(newState, player);
-  });
+    state.players.forEach(player => {
+      newState = joinGame(newState, player);
+    });
 
-  state.turnsHistory.slice(0, turnIndex).forEach(turn => {
-    newState = commitAction(newState, turn.action);
-  });
+    state.turnsHistory.slice(0, turnIndex).forEach(turn => {
+      newState = commitAction(newState, turn.action);
+    });
 
-  newState.status = IGameStatus.ONGOING;
-  newState.createdAt = state.createdAt;
+    newState.status = IGameStatus.ONGOING;
+    newState.createdAt = state.createdAt;
 
-  return newState;
-})
+    return newState;
+  },
+  { cacheKey: args => args[1] }
+);
 
 export function emptyPlayer(id: string, name: string): IPlayer {
   return {

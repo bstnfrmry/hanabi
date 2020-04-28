@@ -1,5 +1,5 @@
 import Fireworks from "fireworks-canvas";
-import { last, omit, shuffle } from "lodash";
+import { last, shuffle } from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import shortid from "shortid";
@@ -7,9 +7,9 @@ import shortid from "shortid";
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import DiscardArea from "~/components/discardArea";
 import GameBoard from "~/components/gameBoard";
-import InstructionsArea from "~/components/instructionsArea";
 import LoadingScreen from "~/components/loadingScreen";
 import Lobby from "~/components/lobby";
+import Logs from "~/components/logs";
 import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
 import ReplayViewer from "~/components/replayViewer";
@@ -24,7 +24,6 @@ import {
   commitAction,
   getMaximumPossibleScore,
   getScore,
-  isReplayMode,
   joinGame,
   newGame
 } from "~/game/actions";
@@ -37,7 +36,12 @@ import IGameState, {
   IGameStatus
 } from "~/game/state";
 import useConnectivity from "~/hooks/connectivity";
-import { GameContext, useCurrentPlayer, useSelfPlayer } from "~/hooks/game";
+import {
+  GameContext,
+  ReplayContext,
+  useCurrentPlayer,
+  useSelfPlayer
+} from "~/hooks/game";
 import useLocalStorage from "~/hooks/localStorage";
 import useNetwork from "~/hooks/network";
 import usePrevious from "~/hooks/previous";
@@ -49,13 +53,14 @@ export default function Play() {
   const [game, setGame] = useState<IGameState>(null);
   const [displayStats, setDisplayStats] = useState(false);
   const [revealCards, setRevealCards] = useState(false);
+  const [replayCursor, setReplayCursor] = useState<number>(null);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
   const [, setGameId] = useLocalStorage("gameId", null);
   const [playerId] = useLocalStorage("playerId", shortid());
   const [selectedArea, selectArea] = useState<ISelectedArea>({
-    id: "instructions",
-    type: ActionAreaType.INSTRUCTIONS
+    id: "logs",
+    type: ActionAreaType.LOGS
   });
   const fireworksRef = useRef();
 
@@ -96,7 +101,7 @@ export default function Play() {
    * Resets the selected area when a player plays.
    */
   useEffect(() => {
-    selectArea({ id: "instructions", type: ActionAreaType.INSTRUCTIONS });
+    selectArea({ id: "logs", type: ActionAreaType.LOGS });
   }, [game && game.turnsHistory.length]);
 
   /**
@@ -383,8 +388,8 @@ export default function Play() {
 
   function onCloseArea() {
     selectArea({
-      id: "instructions",
-      type: ActionAreaType.INSTRUCTIONS
+      id: "logs",
+      type: ActionAreaType.LOGS
     });
   }
 
@@ -410,8 +415,8 @@ export default function Play() {
   function onSelectArea(area: ISelectedArea) {
     if (area.id === selectedArea.id) {
       return selectArea({
-        id: "instructions",
-        type: ActionAreaType.INSTRUCTIONS
+        id: "logs",
+        type: ActionAreaType.LOGS
       });
     }
 
@@ -443,32 +448,23 @@ export default function Play() {
   function onReplay() {
     setDisplayStats(false);
     setRevealCards(true);
-    network.updateGame({
-      ...game,
-      replayCursor: game.turnsHistory.length
-    });
+    setReplayCursor(game.turnsHistory.length);
   }
 
   function onReplayCursorChange(replayCursor: number) {
-    network.updateGame({
-      ...game,
-      replayCursor
-    });
+    setReplayCursor(replayCursor);
   }
 
   function onStopReplay() {
-    network.updateGame({
-      ...omit(game, ["replayCursor"]),
-      synced: false
-    });
+    setReplayCursor(null);
   }
 
   function onToggleStats() {
     setDisplayStats(!displayStats);
 
     selectArea({
-      id: "instructions",
-      type: ActionAreaType.INSTRUCTIONS
+      id: "logs",
+      type: ActionAreaType.LOGS
     });
   }
 
@@ -497,155 +493,158 @@ export default function Play() {
   return (
     <TutorialProvider>
       <GameContext.Provider value={game}>
-        <div className="bg-main-dark relative flex flex-column w-100 h-100">
-          <GameBoard
-            onMenuClick={onMenuClick}
-            onRollbackClick={onRollbackClick}
-          />
-          <div className="flex flex-column bg-black-50 bb b--yellow ph6.5-m">
-            {game.status === IGameStatus.LOBBY && (
-              <Lobby
-                onAddBot={onAddBot}
-                onJoinGame={onJoinGame}
-                onStartGame={onStartGame}
-              />
-            )}
-
-            {selectedArea.type === ActionAreaType.MENU && (
-              <div className="h3 pa2 ph3-l">
-                <MenuArea onCloseArea={onCloseArea} />
-              </div>
-            )}
-
-            {selectedArea.type === ActionAreaType.ROLLBACK && (
-              <div className="h3 pa2 ph3-l">
-                <RollbackArea onCloseArea={onCloseArea} />
-              </div>
-            )}
-
-            <div className="h4 pt0-l overflow-y-scroll">
-              <div className="flex justify-between h-100 pa1 pa2-l">
-                <InstructionsArea
-                  interturn={interturn}
-                  reachableScore={reachableScore}
-                  onReplay={onReplay}
-                  onToggleStats={onToggleStats}
-                />
-                <Tutorial placement="above" step={ITutorialStep.DISCARD_PILE}>
-                  <DiscardArea />
-                </Tutorial>
-              </div>
-            </div>
-          </div>
-
-          {interturn && (
-            <div className="flex-grow-1 flex flex-column items-center justify-center">
-              <Txt
-                size={TxtSize.MEDIUM}
-                value={`It's ${currentPlayer.name}'s turn!`}
-              />
-              <Button
-                primary
-                className="mt4"
-                size={ButtonSize.MEDIUM}
-                text={`Go !`}
-                onClick={() => setInterturn(false)}
-              />
-            </div>
-          )}
-          {!interturn && (
-            <div className="flex flex-grow-1 flex-column">
-              <div className="h-100">
-                <PlayersBoard
-                  displayStats={displayStats}
-                  revealCards={revealCards}
-                  selectedArea={selectedArea}
-                  onCloseArea={onCloseArea}
-                  onCommitAction={onCommitAction}
-                  onNotifyPlayer={onNotifyPlayer}
-                  onReaction={onReaction}
-                  onSelectPlayer={onSelectPlayer}
-                />
-              </div>
-            </div>
-          )}
-          {game.status === IGameStatus.OVER && (
-            <div className="flex flex-column bg-black-50 bt b--yellow pv3 pv4-l ph6.5-m">
-              {isReplayMode(game) && (
-                <ReplayViewer
-                  onReplayCursorChange={onReplayCursorChange}
-                  onStopReplay={onStopReplay}
+        <ReplayContext.Provider value={{ cursor: replayCursor }}>
+          <div className="bg-main-dark relative flex flex-column w-100 h-100">
+            <GameBoard
+              onMenuClick={onMenuClick}
+              onRollbackClick={onRollbackClick}
+            />
+            <div className="flex flex-column bg-black-50 bb b--yellow ph6.5-m">
+              {game.status === IGameStatus.LOBBY && (
+                <Lobby
+                  onAddBot={onAddBot}
+                  onJoinGame={onJoinGame}
+                  onStartGame={onStartGame}
                 />
               )}
 
-              {!isReplayMode(game) && (
-                <div className="flex flex-column flex-row-l justify-between items-center w-100 pb2 ph2 ph0-l">
-                  <div className="w-100 w-60-l">
-                    <Txt
-                      className="db"
-                      size={TxtSize.MEDIUM}
-                      value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
-                    />
-                    {reachableScore && (
-                      <Txt
-                        multiline
-                        className="db mt1 lavender"
-                        size={TxtSize.SMALL}
-                        value={`Estimated max score for this shuffle: ${reachableScore}. ${
-                          reachableScore > game.playedCards.length
-                            ? "Keep practicing"
-                            : "You did great!"
-                        }`}
-                      />
-                    )}
-                  </div>
-                  <div className="flex w-100 w-40-l flex-wrap items-start mt2 mt0-l">
-                    <div className="flex w-100-l">
-                      <Button
-                        primary
-                        className="nowrap ma1 flex-1"
-                        size={ButtonSize.TINY}
-                        text="New game"
-                        onClick={() => onRestartGame()}
-                      />
-                      <Button
-                        outlined
-                        className="nowrap ma1 flex-1"
-                        size={ButtonSize.TINY}
-                        text="Watch replay"
-                        onClick={() => onReplay()}
-                      />
-                    </div>
-                    <div className="flex w-100-l">
-                      <Button
-                        outlined
-                        className="nowrap ma1 flex-1"
-                        size={ButtonSize.TINY}
-                        text={displayStats ? "Hide stats" : "Show stats"}
-                        onClick={() => onToggleStats()}
-                      />
-                      <Button
-                        outlined
-                        className="nowrap ma1 flex-1"
-                        size={ButtonSize.TINY}
-                        text={revealCards ? "Hide cards" : "Reveal cards"}
-                        onClick={() => {
-                          setRevealCards(!revealCards);
-                        }}
-                      />
-                    </div>
+              {selectedArea.type === ActionAreaType.MENU && (
+                <div className="h3 pa2 ph3-l">
+                  <MenuArea onCloseArea={onCloseArea} />
+                </div>
+              )}
+
+              {selectedArea.type === ActionAreaType.ROLLBACK && (
+                <div className="h3 pa2 ph3-l">
+                  <RollbackArea onCloseArea={onCloseArea} />
+                </div>
+              )}
+
+              {game.status !== IGameStatus.LOBBY && (
+                <div className="h4 pt0-l overflow-y-scroll">
+                  <div className="flex justify-between h-100 pa1 pa2-l">
+                    <Logs interturn={interturn} />
+                    <Tutorial
+                      placement="above"
+                      step={ITutorialStep.DISCARD_PILE}
+                    >
+                      <DiscardArea />
+                    </Tutorial>
                   </div>
                 </div>
               )}
             </div>
-          )}
-        </div>
 
-        <div
-          ref={fireworksRef}
-          className="fixed absolute--fill z-999"
-          style={{ pointerEvents: "none" }}
-        />
+            {interturn && (
+              <div className="flex-grow-1 flex flex-column items-center justify-center">
+                <Txt
+                  size={TxtSize.MEDIUM}
+                  value={`It's ${currentPlayer.name}'s turn!`}
+                />
+                <Button
+                  primary
+                  className="mt4"
+                  size={ButtonSize.MEDIUM}
+                  text={`Go !`}
+                  onClick={() => setInterturn(false)}
+                />
+              </div>
+            )}
+            {!interturn && (
+              <div className="flex flex-grow-1 flex-column">
+                <div className="h-100">
+                  <PlayersBoard
+                    displayStats={displayStats}
+                    revealCards={revealCards}
+                    selectedArea={selectedArea}
+                    onCloseArea={onCloseArea}
+                    onCommitAction={onCommitAction}
+                    onNotifyPlayer={onNotifyPlayer}
+                    onReaction={onReaction}
+                    onSelectPlayer={onSelectPlayer}
+                  />
+                </div>
+              </div>
+            )}
+
+            {game.status === IGameStatus.OVER && (
+              <div className="flex flex-column bg-black-50 bt b--yellow pv3 pv4-l ph6.5-m">
+                {replayCursor !== null && (
+                  <ReplayViewer
+                    onReplayCursorChange={onReplayCursorChange}
+                    onStopReplay={onStopReplay}
+                  />
+                )}
+
+                {replayCursor === null && (
+                  <div className="flex flex-column flex-row-l justify-between items-center w-100 pb2 ph2 ph0-l">
+                    <div className="w-100 w-60-l">
+                      <Txt
+                        className="db"
+                        size={TxtSize.MEDIUM}
+                        value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
+                      />
+                      {reachableScore && (
+                        <Txt
+                          multiline
+                          className="db mt1 lavender"
+                          size={TxtSize.SMALL}
+                          value={`Estimated max score for this shuffle: ${reachableScore}. ${
+                            reachableScore > game.playedCards.length
+                              ? "Keep practicing"
+                              : "You did great!"
+                          }`}
+                        />
+                      )}
+                    </div>
+                    <div className="flex w-100 w-40-l flex-wrap items-start mt2 mt0-l">
+                      <div className="flex w-100-l">
+                        <Button
+                          primary
+                          className="nowrap ma1 flex-1"
+                          size={ButtonSize.TINY}
+                          text="New game"
+                          onClick={() => onRestartGame()}
+                        />
+                        <Button
+                          outlined
+                          className="nowrap ma1 flex-1"
+                          size={ButtonSize.TINY}
+                          text="Watch replay"
+                          onClick={() => onReplay()}
+                        />
+                      </div>
+                      <div className="flex w-100-l">
+                        <Button
+                          outlined
+                          className="nowrap ma1 flex-1"
+                          size={ButtonSize.TINY}
+                          text={displayStats ? "Hide stats" : "Show stats"}
+                          onClick={() => onToggleStats()}
+                        />
+                        <Button
+                          outlined
+                          className="nowrap ma1 flex-1"
+                          size={ButtonSize.TINY}
+                          text={revealCards ? "Hide cards" : "Reveal cards"}
+                          onClick={() => {
+                            setRevealCards(!revealCards);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div
+            ref={fireworksRef}
+            className="fixed absolute--fill z-999"
+            style={{ pointerEvents: "none" }}
+          />
+        </ReplayContext.Provider>
       </GameContext.Provider>
     </TutorialProvider>
   );

@@ -1,25 +1,26 @@
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
 
-import { getStateAtTurn, isReplayMode } from "~/game/actions";
-import IGameState, {
-  fillEmptyValues,
-  GameMode,
-  IGameStatus
-} from "~/game/state";
+import { getStateAtTurn } from "~/game/actions";
+import IGameState, { fillEmptyValues, GameMode, IReplay } from "~/game/state";
 import useLocalStorage from "~/hooks/localStorage";
 
 export const GameContext = React.createContext(null);
 
+export const ReplayContext = React.createContext(null);
+
+export function useReplay() {
+  return useContext<IReplay>(ReplayContext);
+}
+
 export function useGame() {
   const game = useContext<IGameState>(GameContext);
+  const replay = useReplay();
 
-  if (isReplayMode(game)) {
+  if (replay.cursor !== null) {
     return {
-      ...fillEmptyValues(getStateAtTurn(game, game.replayCursor)),
-      originalGame: game,
-      status: IGameStatus.OVER,
-      replayCursor: game.replayCursor
+      ...fillEmptyValues(getStateAtTurn(game, replay.cursor)),
+      originalGame: game
     };
   }
 
