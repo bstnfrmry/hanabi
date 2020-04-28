@@ -447,8 +447,11 @@ export default function Play() {
 
   function onReplay() {
     setDisplayStats(false);
-    setRevealCards(true);
     setReplayCursor(game.turnsHistory.length);
+
+    if (game.status === IGameStatus.OVER) {
+      setRevealCards(true);
+    }
   }
 
   function onReplayCursorChange(replayCursor: number) {

@@ -213,7 +213,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
 /**
  * Rollback the state for the given amount of turns
  */
-export const getStateAtTurn = mem(
+export const getStateAtTurn = mem<[IGameState, number], IGameState, string>(
   (state: IGameState, turnIndex: number) => {
     let newState = newGame(state.options);
 
@@ -230,7 +230,9 @@ export const getStateAtTurn = mem(
 
     return newState;
   },
-  { cacheKey: args => args[1] }
+  {
+    cacheKey: ([state, turn]) => `${state.id}-${turn}`
+  }
 );
 
 export function emptyPlayer(id: string, name: string): IPlayer {
