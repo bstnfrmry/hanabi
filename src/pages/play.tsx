@@ -502,98 +502,40 @@ export default function Play() {
             onMenuClick={onMenuClick}
             onRollbackClick={onRollbackClick}
           />
-
           <div className="flex flex-column bg-black-50 bb b--yellow ph6.5-m">
+            {game.status === IGameStatus.LOBBY && (
+              <Lobby
+                onAddBot={onAddBot}
+                onJoinGame={onJoinGame}
+                onStartGame={onStartGame}
+              />
+            )}
+
             {selectedArea.type === ActionAreaType.MENU && (
-              <div className="h4 pa2 ph3-l">
+              <div className="h3 pa2 ph3-l">
                 <MenuArea onCloseArea={onCloseArea} />
               </div>
             )}
+
             {selectedArea.type === ActionAreaType.ROLLBACK && (
-              <div className="h4 pa2 ph3-l">
+              <div className="h3 pa2 ph3-l">
                 <RollbackArea onCloseArea={onCloseArea} />
               </div>
             )}
 
-            {![ActionAreaType.ROLLBACK, ActionAreaType.MENU].includes(
-              selectedArea.type
-            ) &&
-              (game.status === IGameStatus.LOBBY ? (
-                <Lobby
-                  onAddBot={onAddBot}
-                  onJoinGame={onJoinGame}
-                  onStartGame={onStartGame}
+            <div className="h4 pt0-l overflow-y-scroll">
+              <div className="flex justify-between h-100 pa1 pa2-l">
+                <InstructionsArea
+                  interturn={interturn}
+                  reachableScore={reachableScore}
+                  onReplay={onReplay}
+                  onToggleStats={onToggleStats}
                 />
-              ) : (
-                <>
-                  {game.status === IGameStatus.OVER &&
-                    (isReplayMode(game) ? (
-                      <ReplayViewer
-                        onReplayCursorChange={onReplayCursorChange}
-                        onStopReplay={onStopReplay}
-                      />
-                    ) : (
-                      <div className="flex justify-between w-100 bb pb2 ph2 ph0-l">
-                        <div>
-                          <Txt
-                            className="db"
-                            size={TxtSize.SMALL}
-                            value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
-                          />
-                          {reachableScore && (
-                            <Txt
-                              multiline
-                              className="db mt1 lavender"
-                              size={TxtSize.SMALL}
-                              value={`Estimated max score for this shuffle: ${reachableScore}. ${
-                                reachableScore > game.playedCards.length
-                                  ? "Keep practicing"
-                                  : "You did great!"
-                              }`}
-                            />
-                          )}
-                        </div>
-                        <div className="flex flex-column ml2">
-                          <Button
-                            className="nowrap w4"
-                            size={ButtonSize.TINY}
-                            text="Watch replay"
-                            onClick={() => onReplay()}
-                          />
-                          <Button
-                            className="nowrap w4 mt2"
-                            size={ButtonSize.TINY}
-                            text="Toggle stats"
-                            onClick={() => onToggleStats()}
-                          />
-                          <Button
-                            primary
-                            className="nowrap w4 mt2"
-                            size={ButtonSize.TINY}
-                            text="New game"
-                            onClick={() => onRestartGame()}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  <div className="h4 pt0-l overflow-y-scroll">
-                    <div className="flex justify-between h-100 pa1 pa2-l">
-                      <InstructionsArea
-                        interturn={interturn}
-                        reachableScore={reachableScore}
-                        onReplay={onReplay}
-                        onToggleStats={onToggleStats}
-                      />
-                      <Tutorial
-                        placement="above"
-                        step={ITutorialStep.DISCARD_PILE}
-                      >
-                        <DiscardArea />
-                      </Tutorial>
-                    </div>
-                  </div>
-                </>
-              ))}
+                <Tutorial placement="above" step={ITutorialStep.DISCARD_PILE}>
+                  <DiscardArea />
+                </Tutorial>
+              </div>
+            </div>
           </div>
 
           {interturn && (
@@ -611,9 +553,8 @@ export default function Play() {
               />
             </div>
           )}
-
           {!interturn && (
-            <div className="flex flex-column">
+            <div className="flex flex-grow-1 flex-column">
               <div className="h-100">
                 <PlayersBoard
                   displayStats={displayStats}
@@ -627,7 +568,63 @@ export default function Play() {
               </div>
             </div>
           )}
+          {game.status === IGameStatus.OVER && (
+            <div className="flex flex-column bg-black-50 bt b--yellow pv3 pv4-l ph6.5-m">
+              {isReplayMode(game) && (
+                <ReplayViewer
+                  onReplayCursorChange={onReplayCursorChange}
+                  onStopReplay={onStopReplay}
+                />
+              )}
+
+              {!isReplayMode(game) && (
+                <div className="flex flex-column flex-row-l justify-between w-100 pb2 ph2 ph0-l">
+                  <div>
+                    <Txt
+                      className="db"
+                      size={TxtSize.MEDIUM}
+                      value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
+                    />
+                    {reachableScore && (
+                      <Txt
+                        multiline
+                        className="db mt1 lavender"
+                        size={TxtSize.SMALL}
+                        value={`Estimated max score for this shuffle: ${reachableScore}. ${
+                          reachableScore > game.playedCards.length
+                            ? "Keep practicing"
+                            : "You did great!"
+                        }`}
+                      />
+                    )}
+                  </div>
+                  <div className="flex justify-between justify-start-m items-start mt2">
+                    <Button
+                      primary
+                      className="nowrap mh1"
+                      size={ButtonSize.TINY}
+                      text="New game"
+                      onClick={() => onRestartGame()}
+                    />
+                    <Button
+                      className="nowrap mh1"
+                      size={ButtonSize.TINY}
+                      text="Watch replay"
+                      onClick={() => onReplay()}
+                    />
+                    <Button
+                      className="nowrap mh1"
+                      size={ButtonSize.TINY}
+                      text="Toggle stats"
+                      onClick={() => onToggleStats()}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
+
         <div
           ref={fireworksRef}
           className="fixed absolute--fill z-999"

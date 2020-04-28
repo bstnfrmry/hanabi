@@ -7,7 +7,7 @@ import { useGame } from "~/hooks/game";
 
 const SliderStyle = {
   HANDLE: {
-    backgroundColor: "var(--color-main)",
+    backgroundColor: "var(--color-yellow)",
     borderColor: "var(--color-yellow)",
     height: "18px",
     width: "18px"
@@ -40,7 +40,7 @@ export default function ReplayViewver(props: Props) {
   }, [game.replayCursor]);
 
   return (
-    <div className="bg-black-50 flex justify-between items-center pa2 bt bb b--yellow">
+    <div className="bg-black-50 flex justify-between items-center pa2">
       <div className="flex flex-column">
         <Txt className="db" size={TxtSize.SMALL} value={`Replay`} />
         <Txt

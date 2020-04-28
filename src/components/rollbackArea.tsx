@@ -51,7 +51,7 @@ export default function RollbackArea(props: Props) {
             : "You cannot rollback the game yet"
         }
       />
-      <div className="mt4">
+      <div className="mt2">
         <Button text="Abort" onClick={() => onCloseArea()} />
         <Button
           primary
