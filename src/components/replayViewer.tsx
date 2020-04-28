@@ -33,7 +33,7 @@ export default function ReplayViewver(props: Props) {
   const game = useGame();
   const [replayCursor, setReplayCursor] = useState(game.replayCursor);
 
-  const maxTurns = game.originalGame.turnsHistory.length - 1;
+  const maxTurns = game.originalGame.turnsHistory.length;
 
   useEffect(() => {
     setReplayCursor(game.replayCursor);

@@ -48,6 +48,7 @@ export default function Play() {
   const online = useConnectivity();
   const [game, setGame] = useState<IGameState>(null);
   const [displayStats, setDisplayStats] = useState(false);
+  const [revealCards, setRevealCards] = useState(false);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
   const [, setGameId] = useLocalStorage("gameId", null);
@@ -441,18 +442,17 @@ export default function Play() {
 
   function onReplay() {
     setDisplayStats(false);
+    setRevealCards(true);
     network.updateGame({
       ...game,
-      replayCursor: game.turnsHistory.length - 1,
-      synced: false
+      replayCursor: game.turnsHistory.length
     });
   }
 
   function onReplayCursorChange(replayCursor: number) {
     network.updateGame({
       ...game,
-      replayCursor,
-      synced: false
+      replayCursor
     });
   }
 
@@ -558,6 +558,7 @@ export default function Play() {
               <div className="h-100">
                 <PlayersBoard
                   displayStats={displayStats}
+                  revealCards={revealCards}
                   selectedArea={selectedArea}
                   onCloseArea={onCloseArea}
                   onCommitAction={onCommitAction}
@@ -578,8 +579,8 @@ export default function Play() {
               )}
 
               {!isReplayMode(game) && (
-                <div className="flex flex-column flex-row-l justify-between w-100 pb2 ph2 ph0-l">
-                  <div>
+                <div className="flex flex-column flex-row-l justify-between items-center w-100 pb2 ph2 ph0-l">
+                  <div className="w-100 w-60-l">
                     <Txt
                       className="db"
                       size={TxtSize.MEDIUM}
@@ -598,26 +599,38 @@ export default function Play() {
                       />
                     )}
                   </div>
-                  <div className="flex justify-between justify-start-m items-start mt2">
-                    <Button
-                      primary
-                      className="nowrap mh1"
-                      size={ButtonSize.TINY}
-                      text="New game"
-                      onClick={() => onRestartGame()}
-                    />
-                    <Button
-                      className="nowrap mh1"
-                      size={ButtonSize.TINY}
-                      text="Watch replay"
-                      onClick={() => onReplay()}
-                    />
-                    <Button
-                      className="nowrap mh1"
-                      size={ButtonSize.TINY}
-                      text="Toggle stats"
-                      onClick={() => onToggleStats()}
-                    />
+                  <div className="flex w-100 w-40-l flex-wrap items-start mt2 mt0-l">
+                    <div className="flex w-100-l">
+                      <Button
+                        primary
+                        className="nowrap ma1 flex-1"
+                        size={ButtonSize.TINY}
+                        text="New game"
+                        onClick={() => onRestartGame()}
+                      />
+                      <Button
+                        className="nowrap ma1 flex-1"
+                        size={ButtonSize.TINY}
+                        text="Watch replay"
+                        onClick={() => onReplay()}
+                      />
+                    </div>
+                    <div className="flex w-100-l">
+                      <Button
+                        className="nowrap ma1 flex-1"
+                        size={ButtonSize.TINY}
+                        text={displayStats ? "Hide stats" : "Show stats"}
+                        onClick={() => onToggleStats()}
+                      />
+                      <Button
+                        className="nowrap ma1 flex-1"
+                        size={ButtonSize.TINY}
+                        text={revealCards ? "Hide cards" : "Reveal cards"}
+                        onClick={() => {
+                          setRevealCards(!revealCards);
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               )}
