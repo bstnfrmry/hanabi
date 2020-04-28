@@ -73,7 +73,7 @@ export default function GameBoard(props: Props) {
         <div className="flex flex-column mb3">
           <PlayedCards cards={game.playedCards} />
         </div>
-        <div className="flex flex-row mt3 justify-right items-end ml2">
+        <div className="flex flex-row mt2 justify-right items-end ml2">
           <div className="mr2 relative flex flex-column items-center">
             <CardWrapper color={game.drawPile.length > 5 ? "main" : "strikes"}>
               {game.drawPile.map((card, i) => (
