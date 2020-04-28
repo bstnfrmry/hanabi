@@ -524,12 +524,28 @@ export default function Play() {
                 <div className="h4 pt0-l overflow-y-scroll">
                   <div className="flex justify-between h-100 pa1 pa2-l">
                     <Logs interturn={interturn} />
-                    <Tutorial
-                      placement="above"
-                      step={ITutorialStep.DISCARD_PILE}
-                    >
-                      <DiscardArea />
-                    </Tutorial>
+                    <div className="flex flex-column justify-between items-end">
+                      <Tutorial
+                        placement="above"
+                        step={ITutorialStep.DISCARD_PILE}
+                      >
+                        <DiscardArea />
+                      </Tutorial>
+                      <Button
+                        void
+                        size={ButtonSize.TINY}
+                        text={
+                          replayCursor === null ? "🕑 Rewind" : "Back to game"
+                        }
+                        onClick={() => {
+                          if (replayCursor === null) {
+                            onReplay();
+                          } else {
+                            onStopReplay();
+                          }
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               )}
@@ -564,6 +580,15 @@ export default function Play() {
                     onSelectPlayer={onSelectPlayer}
                   />
                 </div>
+              </div>
+            )}
+
+            {game.status === IGameStatus.ONGOING && replayCursor !== null && (
+              <div className="flex flex-column bg-black-50 bt b--yellow pv3 pv4-l ph6.5-m">
+                <ReplayViewer
+                  onReplayCursorChange={onReplayCursorChange}
+                  onStopReplay={onStopReplay}
+                />
               </div>
             )}
 
@@ -605,13 +630,6 @@ export default function Play() {
                           size={ButtonSize.TINY}
                           text="New game"
                           onClick={() => onRestartGame()}
-                        />
-                        <Button
-                          outlined
-                          className="nowrap ma1 flex-1"
-                          size={ButtonSize.TINY}
-                          text="Watch replay"
-                          onClick={() => onReplay()}
                         />
                       </div>
                       <div className="flex w-100-l">
