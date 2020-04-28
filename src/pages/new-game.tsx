@@ -240,9 +240,9 @@ export default function NewGame() {
             : `You will be able to play online by sharing the game link to your
             friends.`}
         </Txt>
-        <div className="flex flex-1 justify-center">
+        <div className="flex justify-center">
           <Button
-            className="flex-1 justify-end mt2"
+            className="justify-end mt2"
             id="new-game"
             size={ButtonSize.LARGE}
             text="New game"
