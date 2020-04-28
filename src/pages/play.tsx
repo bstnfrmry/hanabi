@@ -333,6 +333,7 @@ export default function Play() {
     if (!game.nextGameId) return;
     if (!previousNextGameId) return;
 
+    setRevealCards(false);
     router.push(`/play?gameId=${game.nextGameId}`);
   }, [game && game.nextGameId]);
 
