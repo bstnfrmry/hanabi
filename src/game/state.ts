@@ -23,6 +23,7 @@ export default interface IGameState {
   // Replay mode
   replayCursor?: number;
   originalGame?: IGameState;
+  nextGameId?: string;
 }
 
 /**

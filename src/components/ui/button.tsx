@@ -30,6 +30,7 @@ const ButtonTxtSizes = {
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   primary?: boolean;
+  outlined?: boolean;
   void?: boolean;
   size?: ButtonSize;
   onClick?: MouseEventHandler;
@@ -42,6 +43,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 export default function Button(props: Props) {
   const {
     primary = false,
+    outlined = false,
     void: void_,
     size = ButtonSize.MEDIUM,
     onClick,
@@ -57,11 +59,13 @@ export default function Button(props: Props) {
       className={classnames(
         className,
         ButtonSizes[size],
-        "bn shadow-2 ttu tracked outline-0 lh-normal",
+        "shadow-2 ttu tracked outline-0 lh-normal",
+        { bn: !outlined },
         { "pointer grow": !disabled },
         { "o-80": disabled },
         { "bg-cta shadow-light": primary },
-        { "main-dark": !disabled && !void_ },
+        { "bg-transparent ba b--white near-white": outlined },
+        { "main-dark": !disabled && !void_ && !outlined },
         { "bg-transparent near-white": void_ }
       )}
       disabled={disabled}

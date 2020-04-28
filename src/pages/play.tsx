@@ -1,5 +1,5 @@
 import Fireworks from "fireworks-canvas";
-import { last, omit } from "lodash";
+import { last, omit, shuffle } from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import shortid from "shortid";
@@ -48,6 +48,7 @@ export default function Play() {
   const online = useConnectivity();
   const [game, setGame] = useState<IGameState>(null);
   const [displayStats, setDisplayStats] = useState(false);
+  const [revealCards, setRevealCards] = useState(false);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
   const [, setGameId] = useLocalStorage("gameId", null);
@@ -318,6 +319,18 @@ export default function Play() {
     return () => clearTimeout(timeout);
   }, [game && game.status]);
 
+  /**
+   * Redirect players to next game
+   */
+  const previousNextGameId = usePrevious(game ? game.nextGameId : null);
+  useEffect(() => {
+    if (!game) return;
+    if (!game.nextGameId) return;
+    if (!previousNextGameId) return;
+
+    router.push(`/play?gameId=${game.nextGameId}`);
+  }, [game && game.nextGameId]);
+
   function onJoinGame(player) {
     const newState = joinGame(game, { id: playerId, ...player });
 
@@ -429,18 +442,17 @@ export default function Play() {
 
   function onReplay() {
     setDisplayStats(false);
+    setRevealCards(true);
     network.updateGame({
       ...game,
-      replayCursor: game.turnsHistory.length - 1,
-      synced: false
+      replayCursor: game.turnsHistory.length
     });
   }
 
   function onReplayCursorChange(replayCursor: number) {
     network.updateGame({
       ...game,
-      replayCursor,
-      synced: false
+      replayCursor
     });
   }
 
@@ -460,6 +472,24 @@ export default function Play() {
     });
   }
 
+  async function onRestartGame() {
+    const nextGameId = shortid();
+
+    let nextGame = newGame({
+      ...game.options,
+      id: nextGameId,
+      seed: `${Math.round(Math.random() * 10000)}`
+    });
+
+    shuffle(game.players).forEach(player => {
+      nextGame = joinGame(nextGame, player);
+    });
+
+    await network.updateGame(nextGame);
+
+    network.updateGame({ ...game, nextGameId });
+  }
+
   if (!game) {
     return <LoadingScreen />;
   }
@@ -472,90 +502,40 @@ export default function Play() {
             onMenuClick={onMenuClick}
             onRollbackClick={onRollbackClick}
           />
-
           <div className="flex flex-column bg-black-50 bb b--yellow ph6.5-m">
+            {game.status === IGameStatus.LOBBY && (
+              <Lobby
+                onAddBot={onAddBot}
+                onJoinGame={onJoinGame}
+                onStartGame={onStartGame}
+              />
+            )}
+
             {selectedArea.type === ActionAreaType.MENU && (
-              <div className="h4 pa2 ph3-l">
+              <div className="h3 pa2 ph3-l">
                 <MenuArea onCloseArea={onCloseArea} />
               </div>
             )}
+
             {selectedArea.type === ActionAreaType.ROLLBACK && (
-              <div className="h4 pa2 ph3-l">
+              <div className="h3 pa2 ph3-l">
                 <RollbackArea onCloseArea={onCloseArea} />
               </div>
             )}
 
-            {![ActionAreaType.ROLLBACK, ActionAreaType.MENU].includes(
-              selectedArea.type
-            ) &&
-              (game.status === IGameStatus.LOBBY ? (
-                <Lobby
-                  onAddBot={onAddBot}
-                  onJoinGame={onJoinGame}
-                  onStartGame={onStartGame}
+            <div className="h4 pt0-l overflow-y-scroll">
+              <div className="flex justify-between h-100 pa1 pa2-l">
+                <InstructionsArea
+                  interturn={interturn}
+                  reachableScore={reachableScore}
+                  onReplay={onReplay}
+                  onToggleStats={onToggleStats}
                 />
-              ) : (
-                <>
-                  {game.status === IGameStatus.OVER &&
-                    (isReplayMode(game) ? (
-                      <ReplayViewer
-                        onReplayCursorChange={onReplayCursorChange}
-                        onStopReplay={onStopReplay}
-                      />
-                    ) : (
-                      <div className="flex flex-column w-100 bb mb1 ph2">
-                        <Txt
-                          className="db"
-                          size={TxtSize.MEDIUM}
-                          value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
-                        />
-                        {reachableScore && (
-                          <Txt
-                            multiline
-                            className="db mt1 lavender"
-                            size={TxtSize.SMALL}
-                            value={`Estimated max score for this shuffle: ${reachableScore}. ${
-                              reachableScore > game.playedCards.length
-                                ? "Keep practicing"
-                                : "You did great!"
-                            }`}
-                          />
-                        )}
-                        <div className="flex w-100 justify-between mv2">
-                          <Button
-                            className="nowrap w4"
-                            size={ButtonSize.TINY}
-                            text="Watch replay"
-                            onClick={() => onReplay()}
-                          />
-                          <Button
-                            primary
-                            className="nowrap w4"
-                            size={ButtonSize.TINY}
-                            text="Toggle stats"
-                            onClick={() => onToggleStats()}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  <div className="h4 pt0-l overflow-y-scroll">
-                    <div className="flex justify-between h-100 pa1 pa2-l">
-                      <InstructionsArea
-                        interturn={interturn}
-                        reachableScore={reachableScore}
-                        onReplay={onReplay}
-                        onToggleStats={onToggleStats}
-                      />
-                      <Tutorial
-                        placement="above"
-                        step={ITutorialStep.DISCARD_PILE}
-                      >
-                        <DiscardArea />
-                      </Tutorial>
-                    </div>
-                  </div>
-                </>
-              ))}
+                <Tutorial placement="above" step={ITutorialStep.DISCARD_PILE}>
+                  <DiscardArea />
+                </Tutorial>
+              </div>
+            </div>
           </div>
 
           {interturn && (
@@ -573,12 +553,12 @@ export default function Play() {
               />
             </div>
           )}
-
           {!interturn && (
-            <div className="flex flex-column">
+            <div className="flex flex-grow-1 flex-column">
               <div className="h-100">
                 <PlayersBoard
                   displayStats={displayStats}
+                  revealCards={revealCards}
                   selectedArea={selectedArea}
                   onCloseArea={onCloseArea}
                   onCommitAction={onCommitAction}
@@ -589,7 +569,78 @@ export default function Play() {
               </div>
             </div>
           )}
+          {game.status === IGameStatus.OVER && (
+            <div className="flex flex-column bg-black-50 bt b--yellow pv3 pv4-l ph6.5-m">
+              {isReplayMode(game) && (
+                <ReplayViewer
+                  onReplayCursorChange={onReplayCursorChange}
+                  onStopReplay={onStopReplay}
+                />
+              )}
+
+              {!isReplayMode(game) && (
+                <div className="flex flex-column flex-row-l justify-between items-center w-100 pb2 ph2 ph0-l">
+                  <div className="w-100 w-60-l">
+                    <Txt
+                      className="db"
+                      size={TxtSize.MEDIUM}
+                      value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
+                    />
+                    {reachableScore && (
+                      <Txt
+                        multiline
+                        className="db mt1 lavender"
+                        size={TxtSize.SMALL}
+                        value={`Estimated max score for this shuffle: ${reachableScore}. ${
+                          reachableScore > game.playedCards.length
+                            ? "Keep practicing"
+                            : "You did great!"
+                        }`}
+                      />
+                    )}
+                  </div>
+                  <div className="flex w-100 w-40-l flex-wrap items-start mt2 mt0-l">
+                    <div className="flex w-100-l">
+                      <Button
+                        primary
+                        className="nowrap ma1 flex-1"
+                        size={ButtonSize.TINY}
+                        text="New game"
+                        onClick={() => onRestartGame()}
+                      />
+                      <Button
+                        outlined
+                        className="nowrap ma1 flex-1"
+                        size={ButtonSize.TINY}
+                        text="Watch replay"
+                        onClick={() => onReplay()}
+                      />
+                    </div>
+                    <div className="flex w-100-l">
+                      <Button
+                        outlined
+                        className="nowrap ma1 flex-1"
+                        size={ButtonSize.TINY}
+                        text={displayStats ? "Hide stats" : "Show stats"}
+                        onClick={() => onToggleStats()}
+                      />
+                      <Button
+                        outlined
+                        className="nowrap ma1 flex-1"
+                        size={ButtonSize.TINY}
+                        text={revealCards ? "Hide cards" : "Reveal cards"}
+                        onClick={() => {
+                          setRevealCards(!revealCards);
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
+
         <div
           ref={fireworksRef}
           className="fixed absolute--fill z-999"

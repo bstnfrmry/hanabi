@@ -52,6 +52,7 @@ interface Props extends HTMLAttributes<HTMLElement> {
   self?: boolean;
   cardIndex?: number;
   displayStats: boolean;
+  revealCards: boolean;
   onSelectPlayer: Function;
   onNotifyPlayer?: Function;
   onReaction?: Function;
@@ -72,11 +73,11 @@ export default function PlayerGame(props: Props) {
     onReaction,
     active,
     displayStats,
+    revealCards,
     ...attributes
   } = props;
 
   const game = useGame();
-  const [cardsAreVisible, setCardsAreVisible] = useState(false);
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const [selectedCard, selectCard] = useState<number>(cardIndex);
   const [pendingHint, setPendingHint] = useState<IHintAction>({
@@ -97,7 +98,7 @@ export default function PlayerGame(props: Props) {
     hideCards = false;
   }
   // Show cards in replay mode (when toggled)
-  if (cardsAreVisible) {
+  if (revealCards) {
     hideCards = false;
   }
 
@@ -329,22 +330,6 @@ export default function PlayerGame(props: Props) {
             </div>
           )}
       </div>
-
-      {game.status === IGameStatus.OVER &&
-        player === selfPlayer &&
-        !displayStats && (
-          <div className="ph2 ph6.5-m mt2">
-            <div className="flex justify-end items-center">
-              <Button
-                size={ButtonSize.TINY}
-                text={"Toggle cards"}
-                onClick={() => {
-                  setCardsAreVisible(!cardsAreVisible);
-                }}
-              />
-            </div>
-          </div>
-        )}
 
       {/* Other player actions */}
       <div
