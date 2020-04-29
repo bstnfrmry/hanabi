@@ -4,7 +4,8 @@ import posed, { PoseGroup } from "react-pose";
 import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { useGame, useReplay, useSelfPlayer } from "~/hooks/game";
+import { useGame, useSelfPlayer } from "~/hooks/game";
+import { useReplay } from "~/hooks/replay";
 
 interface Props {
   interturn: boolean;

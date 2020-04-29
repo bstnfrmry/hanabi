@@ -3,7 +3,8 @@ import React from "react";
 
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { useGame, useReplay } from "~/hooks/game";
+import { useGame } from "~/hooks/game";
+import { useReplay } from "~/hooks/replay";
 
 const SliderStyle = {
   HANDLE: {
@@ -27,7 +28,7 @@ interface Props {
   onStopReplay: () => void;
 }
 
-export default function ReplayViewver(props: Props) {
+export default function ReplayViewer(props: Props) {
   const { onReplayCursorChange, onStopReplay } = props;
 
   const game = useGame();

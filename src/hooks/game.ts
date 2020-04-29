@@ -2,16 +2,11 @@ import { useRouter } from "next/router";
 import React, { useContext } from "react";
 
 import useLocalStorage from "~/hooks/localStorage";
+import { useReplay } from "~/hooks/replay";
 import { getStateAtTurn } from "~/lib/actions";
-import IGameState, { fillEmptyValues, GameMode, IReplay } from "~/lib/state";
+import IGameState, { fillEmptyValues, GameMode } from "~/lib/state";
 
-export const GameContext = React.createContext(null);
-
-export const ReplayContext = React.createContext(null);
-
-export function useReplay() {
-  return useContext<IReplay>(ReplayContext);
-}
+export const GameContext = React.createContext<IGameState>(null);
 
 export function useGame() {
   const game = useContext<IGameState>(GameContext);

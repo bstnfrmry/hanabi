@@ -41,7 +41,7 @@ function canDiscard(game: IGameState, card: ICard) {
   return identicalDiscardedCards.length < AmountPerColor[card.number] - 1;
 }
 
-export default function play(game: IGameState): IGameState {
+export function cheat(game: IGameState): IGameState {
   const currentPlayer = game.players[game.currentPlayer];
   const canDiscardCards = game.tokens.hints < MaxHints;
 

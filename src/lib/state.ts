@@ -25,10 +25,6 @@ export default interface IGameState {
   nextGameId?: string;
 }
 
-export interface IReplay {
-  cursor: number;
-}
-
 /**
  * Subtypes of the game state
  */
