@@ -17,7 +17,6 @@ i18n
         translation: fr,
       },
     },
-    lng: "fr",
     fallbackLng: "en",
     debug: process.env.NODE_ENV === "development",
     interpolation: {
