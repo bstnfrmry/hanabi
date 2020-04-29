@@ -7,9 +7,9 @@ import HomeButton from "~/components/homeButton";
 import Button, { ButtonSize } from "~/components/ui/button";
 import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { newGame } from "~/game/actions";
-import { GameMode, GameVariant, IGameHintsLevel } from "~/game/state";
 import useNetwork from "~/hooks/network";
+import { newGame } from "~/lib/actions";
+import { GameMode, GameVariant, IGameHintsLevel } from "~/lib/state";
 
 const PlayerCounts = [2, 3, 4, 5];
 

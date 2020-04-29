@@ -2,10 +2,10 @@ import React from "react";
 
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { getStateAtTurn } from "~/game/actions";
-import IGameState from "~/game/state";
 import { useGame } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
+import { getStateAtTurn } from "~/lib/actions";
+import IGameState from "~/lib/state";
 
 interface Props {
   onCloseArea: Function;

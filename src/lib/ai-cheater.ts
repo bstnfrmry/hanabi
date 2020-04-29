@@ -1,7 +1,7 @@
 import { last, sortBy } from "lodash";
 
-import { commitAction, MaxHints } from "~/game/actions";
-import IGameState, { ICard, IColor } from "~/game/state";
+import { commitAction, MaxHints } from "~/lib/actions";
+import IGameState, { ICard, IColor } from "~/lib/state";
 
 function canPlay(game: IGameState, card: ICard) {
   const topCard = last(game.playedCards.filter(playedCard => playedCard.color === card.color));

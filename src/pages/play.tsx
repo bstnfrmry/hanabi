@@ -14,37 +14,19 @@ import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
 import ReplayViewer from "~/components/replayViewer";
 import RollbackArea from "~/components/rollbackArea";
-import Tutorial, {
-  ITutorialStep,
-  TutorialProvider
-} from "~/components/tutorial";
+import Tutorial, { ITutorialStep, TutorialProvider } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import {
-  commitAction,
-  getMaximumPossibleScore,
-  getScore,
-  joinGame,
-  newGame
-} from "~/game/actions";
-import play from "~/game/ai";
-import cheat from "~/game/ai-cheater";
-import { playSound } from "~/game/sound";
-import IGameState, {
-  GameMode,
-  IGameHintsLevel,
-  IGameStatus
-} from "~/game/state";
 import useConnectivity from "~/hooks/connectivity";
-import {
-  GameContext,
-  ReplayContext,
-  useCurrentPlayer,
-  useSelfPlayer
-} from "~/hooks/game";
+import { GameContext, ReplayContext, useCurrentPlayer, useSelfPlayer } from "~/hooks/game";
 import useLocalStorage from "~/hooks/localStorage";
 import useNetwork from "~/hooks/network";
 import usePrevious from "~/hooks/previous";
+import { commitAction, getMaximumPossibleScore, getScore, joinGame, newGame } from "~/lib/actions";
+import { play } from "~/lib/ai";
+import cheat from "~/lib/ai-cheater";
+import { playSound } from "~/lib/sound";
+import IGameState, { GameMode, IGameHintsLevel, IGameStatus } from "~/lib/state";
 
 export default function Play() {
   const network = useNetwork();
@@ -60,7 +42,7 @@ export default function Play() {
   const [playerId] = useLocalStorage("playerId", shortid());
   const [selectedArea, selectArea] = useState<ISelectedArea>({
     id: "logs",
-    type: ActionAreaType.LOGS
+    type: ActionAreaType.LOGS,
   });
   const fireworksRef = useRef();
 
@@ -114,11 +96,7 @@ export default function Play() {
     if (game.status !== IGameStatus.ONGOING) return;
 
     setInterturn(true);
-  }, [
-    game && game.turnsHistory.length,
-    game && game.players.length,
-    game && game.status
-  ]);
+  }, [game && game.turnsHistory.length, game && game.players.length, game && game.status]);
 
   /**
    * Notify player it's time to play when document isn't focused.
@@ -131,7 +109,7 @@ export default function Play() {
 
     const title = "Your turn!";
     const options = {
-      icon: "/static/hanabi-192.png"
+      icon: "/static/hanabi-192.png",
     };
 
     try {
@@ -172,10 +150,7 @@ export default function Play() {
     if (!selfPlayer.notified) return;
 
     playSound(`/static/sounds.bell.mp3`);
-    const timeout = setTimeout(
-      () => network.setNotification(game, selfPlayer, false),
-      10000
-    );
+    const timeout = setTimeout(() => network.setNotification(game, selfPlayer, false), 10000);
 
     return () => clearTimeout(timeout);
   }, [selfPlayer && selfPlayer.notified]);
@@ -232,10 +207,7 @@ export default function Play() {
     const latestCard = last(game.playedCards);
     if (!latestCard) return;
 
-    const path =
-      latestCard.number === 5
-        ? `/static/sounds/play-5.mp3`
-        : `/static/sounds/play.mp3`;
+    const path = latestCard.number === 5 ? `/static/sounds/play-5.mp3` : `/static/sounds/play.mp3`;
 
     playSound(path);
   }, [game && game.playedCards.length]);
@@ -283,14 +255,14 @@ export default function Play() {
       hintsLevel: IGameHintsLevel.NONE,
       botsWait: 1000,
       turnsHistory: false,
-      gameMode: GameMode.NETWORK
+      gameMode: GameMode.NETWORK,
     });
 
     game.players.forEach(player => {
       sameGame = joinGame(sameGame, {
         id: player.id,
         name: player.name,
-        bot: true
+        bot: true,
       });
     });
 
@@ -313,7 +285,7 @@ export default function Play() {
       rocketSpawnInterval: 150, // milliseconds to check if new rockets should spawn
       numParticles: 100, // number of particles to spawn when rocket explodes (+0-10)
       explosionMinHeight: 10, // minimum percentage of height of container at which rockets explode
-      explosionChance: 1 // chance in each tick the rocket will explode
+      explosionChance: 1, // chance in each tick the rocket will explode
     });
     fireworks.start();
 
@@ -351,7 +323,7 @@ export default function Play() {
     const botsCount = game.players.filter(p => p.bot).length;
 
     const bot = {
-      name: `AI #${botsCount + 1}`
+      name: `AI #${botsCount + 1}`,
     };
     const newState = joinGame(game, { id: playerId, ...bot, bot: true });
 
@@ -362,7 +334,7 @@ export default function Play() {
   async function onStartGame() {
     const newState = {
       ...game,
-      status: IGameStatus.ONGOING
+      status: IGameStatus.ONGOING,
     };
 
     setGame({ ...newState, synced: false });
@@ -371,8 +343,7 @@ export default function Play() {
 
   async function onCommitAction(action) {
     const newState = commitAction(game, action);
-    const misplay =
-      getMaximumPossibleScore(game) !== getMaximumPossibleScore(newState);
+    const misplay = getMaximumPossibleScore(game) !== getMaximumPossibleScore(newState);
     if (game.options.preventLoss && misplay) {
       if (!window.confirm("You fucked up · Keep going?")) {
         return;
@@ -390,14 +361,14 @@ export default function Play() {
   function onCloseArea() {
     selectArea({
       id: "logs",
-      type: ActionAreaType.LOGS
+      type: ActionAreaType.LOGS,
     });
   }
 
   function onRollbackClick() {
     onSelectArea({
       id: "rollback",
-      type: ActionAreaType.ROLLBACK
+      type: ActionAreaType.ROLLBACK,
     });
   }
 
@@ -417,7 +388,7 @@ export default function Play() {
     if (area.id === selectedArea.id) {
       return selectArea({
         id: "logs",
-        type: ActionAreaType.LOGS
+        type: ActionAreaType.LOGS,
       });
     }
 
@@ -435,14 +406,14 @@ export default function Play() {
       id: self ? `game-${player.id}-${cardIndex}` : `game-${player.id}`,
       type: self ? ActionAreaType.SELF_PLAYER : ActionAreaType.OTHER_PLAYER,
       player,
-      cardIndex
+      cardIndex,
     });
   }
 
   function onMenuClick() {
     onSelectArea({
       id: "menu",
-      type: ActionAreaType.MENU
+      type: ActionAreaType.MENU,
     });
   }
 
@@ -468,7 +439,7 @@ export default function Play() {
 
     selectArea({
       id: "logs",
-      type: ActionAreaType.LOGS
+      type: ActionAreaType.LOGS,
     });
   }
 
@@ -478,7 +449,7 @@ export default function Play() {
     let nextGame = newGame({
       ...game.options,
       id: nextGameId,
-      seed: `${Math.round(Math.random() * 10000)}`
+      seed: `${Math.round(Math.random() * 10000)}`,
     });
 
     shuffle(game.players).forEach(player => {
@@ -499,48 +470,36 @@ export default function Play() {
       <GameContext.Provider value={game}>
         <ReplayContext.Provider value={{ cursor: replayCursor }}>
           <div className="bg-main-dark relative flex flex-column w-100 h-100">
-            <GameBoard
-              onMenuClick={onMenuClick}
-              onRollbackClick={onRollbackClick}
-            />
+            <GameBoard onMenuClick={onMenuClick} onRollbackClick={onRollbackClick} />
             <div className="flex flex-column bg-black-50 bb b--yellow ph6.5-m">
-              {game.status === IGameStatus.LOBBY && (
-                <Lobby
-                  onAddBot={onAddBot}
-                  onJoinGame={onJoinGame}
-                  onStartGame={onStartGame}
-                />
-              )}
-
               {selectedArea.type === ActionAreaType.MENU && (
-                <div className="h3 pa2 ph3-l">
+                <div className="h4 pa2 ph3-l">
                   <MenuArea onCloseArea={onCloseArea} />
                 </div>
               )}
 
+              {game.status === IGameStatus.LOBBY && (
+                <Lobby onAddBot={onAddBot} onJoinGame={onJoinGame} onStartGame={onStartGame} />
+              )}
+
               {selectedArea.type === ActionAreaType.ROLLBACK && (
-                <div className="h3 pa2 ph3-l">
+                <div className="h4 pa2 ph3-l">
                   <RollbackArea onCloseArea={onCloseArea} />
                 </div>
               )}
 
-              {game.status !== IGameStatus.LOBBY && (
+              {selectedArea.type === ActionAreaType.LOGS && game.status !== IGameStatus.LOBBY && (
                 <div className="h4 pt0-l overflow-y-scroll">
                   <div className="flex justify-between h-100 pa1 pa2-l">
                     <Logs interturn={interturn} />
                     <div className="flex flex-column justify-between items-end">
-                      <Tutorial
-                        placement="above"
-                        step={ITutorialStep.DISCARD_PILE}
-                      >
+                      <Tutorial placement="above" step={ITutorialStep.DISCARD_PILE}>
                         <DiscardArea />
                       </Tutorial>
                       <Button
                         void
                         size={ButtonSize.TINY}
-                        text={
-                          replayCursor === null ? "🕑 Rewind" : "Back to game"
-                        }
+                        text={replayCursor === null ? "🕑 Rewind" : "Back to game"}
                         onClick={() => {
                           if (replayCursor === null) {
                             onReplay();
@@ -557,10 +516,7 @@ export default function Play() {
 
             {interturn && (
               <div className="flex-grow-1 flex flex-column items-center justify-center">
-                <Txt
-                  size={TxtSize.MEDIUM}
-                  value={`It's ${currentPlayer.name}'s turn!`}
-                />
+                <Txt size={TxtSize.MEDIUM} value={`It's ${currentPlayer.name}'s turn!`} />
                 <Button
                   primary
                   className="mt4"
@@ -589,20 +545,14 @@ export default function Play() {
 
             {game.status === IGameStatus.ONGOING && replayCursor !== null && (
               <div className="flex flex-column bg-black-50 bt b--yellow pv3 pv4-l ph6.5-m">
-                <ReplayViewer
-                  onReplayCursorChange={onReplayCursorChange}
-                  onStopReplay={onStopReplay}
-                />
+                <ReplayViewer onReplayCursorChange={onReplayCursorChange} onStopReplay={onStopReplay} />
               </div>
             )}
 
             {game.status === IGameStatus.OVER && (
               <div className="flex flex-column bg-black-50 bt b--yellow pv3 pv4-l ph6.5-m">
                 {replayCursor !== null && (
-                  <ReplayViewer
-                    onReplayCursorChange={onReplayCursorChange}
-                    onStopReplay={onStopReplay}
-                  />
+                  <ReplayViewer onReplayCursorChange={onReplayCursorChange} onStopReplay={onStopReplay} />
                 )}
 
                 {replayCursor === null && (
@@ -619,9 +569,7 @@ export default function Play() {
                           className="db mt1 lavender"
                           size={TxtSize.SMALL}
                           value={`Estimated max score for this shuffle: ${reachableScore}. ${
-                            reachableScore > game.playedCards.length
-                              ? "Keep practicing"
-                              : "You did great!"
+                            reachableScore > game.playedCards.length ? "Keep practicing" : "You did great!"
                           }`}
                         />
                       )}
@@ -661,11 +609,7 @@ export default function Play() {
             )}
           </div>
 
-          <div
-            ref={fireworksRef}
-            className="fixed absolute--fill z-999"
-            style={{ pointerEvents: "none" }}
-          />
+          <div ref={fireworksRef} className="fixed absolute--fill z-999" style={{ pointerEvents: "none" }} />
         </ReplayContext.Provider>
       </GameContext.Provider>
     </TutorialProvider>

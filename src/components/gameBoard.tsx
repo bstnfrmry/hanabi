@@ -6,9 +6,9 @@ import PlayedCards from "~/components/playedCards";
 import TokenSpace from "~/components/tokenSpace";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { getMaximumPossibleScore, getMaximumScore, getScore } from "~/game/actions";
-import { IGameStatus } from "~/game/state";
 import { useGame, useSelfPlayer } from "~/hooks/game";
+import { getMaximumPossibleScore, getMaximumScore, getScore } from "~/lib/actions";
+import { IGameStatus } from "~/lib/state";
 
 interface Props {
   onMenuClick: Function;

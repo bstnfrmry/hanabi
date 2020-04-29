@@ -4,8 +4,8 @@ import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Hint from "~/components/hint";
 import PlayerName from "~/components/playerName";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { IHintLevel, ITurn } from "~/game/state";
 import { useGame } from "~/hooks/game";
+import { IHintLevel, ITurn } from "~/lib/state";
 
 interface Props {
   turn: ITurn;

@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
 
-import { getStateAtTurn } from "~/game/actions";
-import IGameState, { fillEmptyValues, GameMode, IReplay } from "~/game/state";
 import useLocalStorage from "~/hooks/localStorage";
+import { getStateAtTurn } from "~/lib/actions";
+import IGameState, { fillEmptyValues, GameMode, IReplay } from "~/lib/state";
 
 export const GameContext = React.createContext(null);
 

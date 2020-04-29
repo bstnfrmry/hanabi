@@ -5,9 +5,9 @@ import React, { useEffect, useState } from "react";
 import HomeButton from "~/components/homeButton";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import IGameState from "~/game/state";
 import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
 import useNetwork from "~/hooks/network";
+import IGameState from "~/lib/state";
 
 interface Props {
   games: IGameState[];
@@ -19,8 +19,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
 
   return {
     props: {
-      games
-    }
+      games,
+    },
   };
 };
 
@@ -45,11 +45,7 @@ export default function JoinGame(props: Props) {
         {!games.length && (
           <>
             <div>
-              <Txt
-                className="nowrap"
-                size={TxtSize.MEDIUM}
-                value="No available room"
-              />
+              <Txt className="nowrap" size={TxtSize.MEDIUM} value="No available room" />
             </div>
             <Button
               className="ma2"
@@ -61,24 +57,11 @@ export default function JoinGame(props: Props) {
         )}
         {games.length > 0 && (
           <div>
-            <Txt
-              className="nowrap mb6"
-              size={TxtSize.LARGE}
-              value="Available rooms"
-            />
+            <Txt className="nowrap mb6" size={TxtSize.LARGE} value="Available rooms" />
             {games.map(game => (
-              <div
-                key={game.id}
-                className="flex justify-between items-center mb3 w-100 mt3"
-              >
-                <Txt
-                  className="mr4 silver"
-                  value={`${game.players.length} / ${game.options.playersCount}`}
-                />
-                <Txt
-                  className="flex-grow-1"
-                  value={`${game.players.map(p => p.name).join(", ")}`}
-                />
+              <div key={game.id} className="flex justify-between items-center mb3 w-100 mt3">
+                <Txt className="mr4 silver" value={`${game.players.length} / ${game.options.playersCount}`} />
+                <Txt className="flex-grow-1" value={`${game.players.map(p => p.name).join(", ")}`} />
                 <Button
                   className="ml2 flex justify-center"
                   size={ButtonSize.SMALL}

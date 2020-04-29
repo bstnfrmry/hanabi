@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 
 import HomeButton from "~/components/homeButton";
 import LoadingScreen from "~/components/loadingScreen";
-import { getMaximumScore, getScore } from "~/game/actions";
-import IGameState, { IGameStatus } from "~/game/state";
 import useNetwork from "~/hooks/network";
+import { getMaximumScore, getScore } from "~/lib/actions";
+import IGameState, { IGameStatus } from "~/lib/state";
 
 const GamesOrder = [IGameStatus.ONGOING, IGameStatus.OVER, IGameStatus.LOBBY];
 

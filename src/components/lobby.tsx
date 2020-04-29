@@ -6,8 +6,8 @@ import React, { FormEvent, useEffect, useState } from "react";
 import Button from "~/components/ui/button";
 import { Checkbox, Field, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { GameMode, IPlayer } from "~/game/state";
 import { useGame, useSelfPlayer } from "~/hooks/game";
+import { GameMode, IPlayer } from "~/lib/state";
 
 function listPlayerNames(players: IPlayer[]) {
   if (!players.length) {

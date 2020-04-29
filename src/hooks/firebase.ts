@@ -1,8 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/database";
 
-import IGameState, { fillEmptyValues, GameMode, IGameStatus, IPlayer } from "~/game/state";
 import { GameHandler, GamesHandler, Network } from "~/hooks/network";
+import IGameState, { fillEmptyValues, GameMode, IGameStatus, IPlayer } from "~/lib/state";
 
 export function setupFirebase() {
   if (!firebase.apps.length) {

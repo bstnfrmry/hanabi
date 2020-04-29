@@ -4,8 +4,8 @@ import React, { useContext, useState } from "react";
 import Rules from "~/components/rules";
 import { TutorialContext } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
-import { IGameStatus } from "~/game/state";
 import { useGame } from "~/hooks/game";
+import { IGameStatus } from "~/lib/state";
 
 interface Props {
   onCloseArea: Function;

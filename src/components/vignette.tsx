@@ -2,7 +2,7 @@ import classnames from "classnames";
 import React from "react";
 
 import Txt from "~/components/ui/txt";
-import { IHintType } from "~/game/state";
+import { IHintType } from "~/lib/state";
 
 interface Props {
   type: IHintType;

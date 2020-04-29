@@ -2,8 +2,8 @@ import classnames from "classnames";
 import React from "react";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { IPlayer } from "~/game/state";
 import { useSelfPlayer } from "~/hooks/game";
+import { IPlayer } from "~/lib/state";
 
 export enum PlayerNameSize {
   SMALL = "small",

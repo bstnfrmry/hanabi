@@ -11,10 +11,10 @@ import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import Vignettes from "~/components/vignettes";
-import { matchColor, MaxHints } from "~/game/actions";
-import { playSound } from "~/game/sound";
-import { ICard, IColor, IGameStatus, IHintAction, IPlayer } from "~/game/state";
 import { useCurrentPlayer, useGame, useReplay, useSelfPlayer } from "~/hooks/game";
+import { matchColor, MaxHints } from "~/lib/actions";
+import { playSound } from "~/lib/sound";
+import { ICard, IColor, IGameStatus, IHintAction, IPlayer } from "~/lib/state";
 
 function isCardHintable(hint: IHintAction, card: ICard) {
   return hint.type === "color" ? matchColor(card.color, hint.value as IColor) : card.number === hint.value;

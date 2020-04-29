@@ -3,9 +3,9 @@ import React from "react";
 
 import Card, { CardSize, CardWrapper, ICardContext } from "~/components/card";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
-import { getColors } from "~/game/actions";
-import { ICard } from "~/game/state";
 import { useGame } from "~/hooks/game";
+import { getColors } from "~/lib/actions";
+import { ICard } from "~/lib/state";
 
 interface Props {
   cards: ICard[];

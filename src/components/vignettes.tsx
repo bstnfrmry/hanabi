@@ -1,9 +1,9 @@
 import React from "react";
 
 import Vignette from "~/components/vignette";
-import { getHintableColors, numbers } from "~/game/actions";
-import { IHintAction } from "~/game/state";
 import { useGame } from "~/hooks/game";
+import { getHintableColors, numbers } from "~/lib/actions";
+import { IHintAction } from "~/lib/state";
 
 interface Props {
   onSelect: (action: IHintAction) => void;

@@ -4,9 +4,9 @@ import React from "react";
 
 import Card, { CardSize, ICardContext } from "~/components/card";
 import Txt from "~/components/ui/txt";
-import { getColors } from "~/game/actions";
-import { ICard, IColor } from "~/game/state";
 import { useGame } from "~/hooks/game";
+import { getColors } from "~/lib/actions";
+import { ICard, IColor } from "~/lib/state";
 
 interface CardPileProps {
   cards: ICard[];

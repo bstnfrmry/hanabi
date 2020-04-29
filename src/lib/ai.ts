@@ -376,7 +376,7 @@ function isLastDiscardableCard(hand: IHiddenCard[], cardIndex: number, state: IG
 /** that recursion is bounded by a max lookahead forwards and backwards. We should check the compute load but it should be alright?
  */
 
-export default function play(state: IGameState): IGameState {
+export function play(state: IGameState): IGameState {
   // play an AI action as the current player
   // @todo this gameview should be persisted from action to action,
   // we commit

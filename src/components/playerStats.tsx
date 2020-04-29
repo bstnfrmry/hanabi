@@ -2,8 +2,8 @@ import { groupBy } from "lodash";
 import React, { useEffect, useState } from "react";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { IPlayer } from "~/game/state";
 import { useGame } from "~/hooks/game";
+import { IPlayer } from "~/lib/state";
 
 interface Props {
   player: IPlayer;

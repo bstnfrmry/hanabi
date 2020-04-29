@@ -1,4 +1,4 @@
-import { IPlayer } from "~/game/state";
+import { IPlayer } from "~/lib/state";
 
 interface IOtherPlayerSelectedArea {
   id: string;

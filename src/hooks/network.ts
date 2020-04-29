@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import IGameState, { IPlayer } from "~/game/state";
+import IGameState, { IPlayer } from "~/lib/state";
 
 export const NetworkContext = React.createContext<Network>(null);
 

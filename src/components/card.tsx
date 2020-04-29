@@ -5,10 +5,10 @@ import Popover from "react-popover";
 import Hint from "~/components/hint";
 import Turn from "~/components/turn";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { getColors, numbers } from "~/game/actions";
-import { ICard, IColor, IGameHintsLevel, IHintLevel } from "~/game/state";
 import { useGame } from "~/hooks/game";
 import useLongPress from "~/hooks/longPress";
+import { getColors, numbers } from "~/lib/actions";
+import { ICard, IColor, IGameHintsLevel, IHintLevel } from "~/lib/state";
 
 export enum CardSize {
   TINY = "tiny",
