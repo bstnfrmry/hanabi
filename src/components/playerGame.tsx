@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import React, { HTMLAttributes, useState } from "react";
+import React, { HTMLAttributes, useEffect, useState } from "react";
 import Popover from "react-popover";
 import posed, { PoseGroup } from "react-pose";
 
@@ -8,7 +8,7 @@ import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import PlayerStats from "~/components/playerStats";
 import ReactionsPopover from "~/components/reactionsPopover";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
-import Button from "~/components/ui/button";
+import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import Vignettes from "~/components/vignettes";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
@@ -49,7 +49,6 @@ interface Props extends HTMLAttributes<HTMLElement> {
   self?: boolean;
   cardIndex?: number;
   displayStats: boolean;
-  revealCards: boolean;
   onSelectPlayer: Function;
   onNotifyPlayer?: Function;
   onReaction?: Function;
@@ -70,7 +69,6 @@ export default function PlayerGame(props: Props) {
     onReaction,
     active,
     displayStats,
-    revealCards,
     ...attributes
   } = props;
 
@@ -78,6 +76,7 @@ export default function PlayerGame(props: Props) {
   const replay = useReplay();
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const [selectedCard, selectCard] = useState<number>(cardIndex);
+  const [revealCards, setRevealCards] = useState(false);
   const [pendingHint, setPendingHint] = useState<IHintAction>({
     type: null,
     value: null,
@@ -85,6 +84,10 @@ export default function PlayerGame(props: Props) {
 
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
+
+  useEffect(() => {
+    setRevealCards(false);
+  }, [game.id]);
 
   let hideCards = true;
   // Show cards when spectating game
@@ -201,7 +204,7 @@ export default function PlayerGame(props: Props) {
             </div>
           )}
           {!displayStats && (
-            <div className="relative flex justify-end flex-grow-1 dib">
+            <div className="relative flex items-center justify-end flex-grow-1 dib">
               {selected && (
                 <Txt
                   className="lavender absolute top--1 right-2 dib"
@@ -210,6 +213,22 @@ export default function PlayerGame(props: Props) {
                   value="⟶"
                 />
               )}
+
+              {game.status === IGameStatus.OVER && player === selfPlayer && (
+                <Button
+                  void
+                  className={classnames({
+                    revealCardButton: selected,
+                  })}
+                  size={ButtonSize.TINY}
+                  text={revealCards ? "Hide" : "Reveal"}
+                  onClick={e => {
+                    e.stopPropagation();
+                    setRevealCards(!revealCards);
+                  }}
+                />
+              )}
+
               <PoseGroup>
                 {player.hand.map((card, i) => (
                   <AnimatedCard key={card.id}>
@@ -332,6 +351,21 @@ export default function PlayerGame(props: Props) {
           </div>
         )}
       </div>
+      <style global jsx>{`
+        .revealCardButton {
+          position: absolute;
+          top: -1.3rem;
+          right: 3.5rem;
+        }
+
+        @media screen and (min-width: 60em) {
+          .revealCardButton {
+            position: relative;
+            top: 0;
+            right: 0;
+          }
+        }
+      `}</style>
     </>
   );
 }

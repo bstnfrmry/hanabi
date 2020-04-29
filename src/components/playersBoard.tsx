@@ -8,7 +8,6 @@ import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
   displayStats: boolean;
-  revealCards: boolean;
   selectedArea: ISelectedArea;
   onSelectPlayer: Function;
   onNotifyPlayer: Function;
@@ -23,16 +22,7 @@ const Item = posed.div({
 });
 
 export default function PlayersBoard(props: Props) {
-  const {
-    displayStats,
-    revealCards,
-    selectedArea,
-    onSelectPlayer,
-    onNotifyPlayer,
-    onReaction,
-    onCloseArea,
-    onCommitAction,
-  } = props;
+  const { displayStats, selectedArea, onSelectPlayer, onNotifyPlayer, onReaction, onCloseArea, onCommitAction } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -65,7 +55,6 @@ export default function PlayersBoard(props: Props) {
               displayStats={displayStats}
               id={`player-game-${i + 1}`}
               player={otherPlayer}
-              revealCards={revealCards}
               selected={selectedPlayer && selectedPlayer === otherPlayer}
               onCloseArea={onCloseArea}
               onCommitAction={onCommitAction}
@@ -84,7 +73,6 @@ export default function PlayersBoard(props: Props) {
               displayStats={displayStats}
               id="player-game-self"
               player={selfPlayer}
-              revealCards={revealCards}
               selected={selectedPlayer && selectedPlayer === selfPlayer}
               self={true}
               onCloseArea={onCloseArea}

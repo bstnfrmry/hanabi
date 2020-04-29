@@ -37,7 +37,6 @@ export function Game(props: Props) {
   const network = useNetwork();
   const router = useRouter();
   const [displayStats, setDisplayStats] = useState(false);
-  const [revealCards, setRevealCards] = useState(false);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
   const [, setGameId] = useLocalStorage("gameId", null);
@@ -168,7 +167,6 @@ export function Game(props: Props) {
     if (!game.nextGameId) return;
     if (!previousNextGameId) return;
 
-    setRevealCards(false);
     setDisplayStats(false);
     router.push(`/play?gameId=${game.nextGameId}`);
   }, [game && game.nextGameId]);
@@ -280,10 +278,6 @@ export function Game(props: Props) {
   function onReplay() {
     setDisplayStats(false);
     replay.moveCursor(game.turnsHistory.length);
-
-    if (game.status === IGameStatus.OVER) {
-      setRevealCards(true);
-    }
   }
 
   function onReplayCursorChange(replayCursor: number) {
@@ -378,7 +372,6 @@ export function Game(props: Props) {
             <div className="h-100">
               <PlayersBoard
                 displayStats={displayStats}
-                revealCards={revealCards}
                 selectedArea={selectedArea}
                 onCloseArea={onCloseArea}
                 onCommitAction={onCommitAction}
@@ -438,15 +431,6 @@ export function Game(props: Props) {
                       size={ButtonSize.TINY}
                       text={displayStats ? "Hide stats" : "Show stats"}
                       onClick={() => onToggleStats()}
-                    />
-                    <Button
-                      outlined
-                      className="nowrap ma1 flex-1"
-                      size={ButtonSize.TINY}
-                      text={revealCards ? "Hide cards" : "Reveal cards"}
-                      onClick={() => {
-                        setRevealCards(!revealCards);
-                      }}
                     />
                   </div>
                 </div>
