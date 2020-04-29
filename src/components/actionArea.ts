@@ -33,7 +33,6 @@ export enum ActionAreaType {
   LOGS,
   OTHER_PLAYER,
   SELF_PLAYER,
-  DISCARD,
   MENU,
   ROLLBACK,
 }

@@ -1,5 +1,6 @@
 import Fireworks from "fireworks-canvas";
-import { last, shuffle } from "lodash";
+import { shuffle } from "lodash";
+import next from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import shortid from "shortid";
@@ -21,8 +22,10 @@ import useConnectivity from "~/hooks/connectivity";
 import { GameContext, ReplayContext, useCurrentPlayer, useSelfPlayer } from "~/hooks/game";
 import useLocalStorage from "~/hooks/localStorage";
 import useNetwork from "~/hooks/network";
+import { useNotifications } from "~/hooks/notifications";
 import usePrevious from "~/hooks/previous";
-import { commitAction, getMaximumPossibleScore, getScore, joinGame, newGame } from "~/lib/actions";
+import { useSoundEffects } from "~/hooks/sounds";
+import { commitAction, getMaximumPossibleScore, getScore, joinGame, newGame, recreateGame } from "~/lib/actions";
 import { play } from "~/lib/ai";
 import cheat from "~/lib/ai-cheater";
 import { playSound } from "~/lib/sound";
@@ -51,18 +54,8 @@ export default function Play() {
 
   const { gameId } = router.query;
 
-  /**
-   * Request notification permissions when game starts
-   */
-  useEffect(() => {
-    if (typeof Notification === "undefined") return;
-    if (!game) return;
-    if (game.status !== IGameStatus.ONGOING) return;
-
-    if (Notification.permission !== "granted") {
-      Notification.requestPermission();
-    }
-  }, [game && game.status === IGameStatus.ONGOING]);
+  useNotifications();
+  useSoundEffects();
 
   /**
    * Load game from database
@@ -97,120 +90,6 @@ export default function Play() {
 
     setInterturn(true);
   }, [game && game.turnsHistory.length, game && game.players.length, game && game.status]);
-
-  /**
-   * Notify player it's time to play when document isn't focused.
-   */
-  useEffect(() => {
-    if (typeof Notification === "undefined") return;
-    if (!currentPlayer) return;
-    if (currentPlayer !== selfPlayer) return;
-    if (document.hasFocus()) return;
-
-    const title = "Your turn!";
-    const options = {
-      icon: "/static/hanabi-192.png",
-    };
-
-    try {
-      // Attempt sending the notification through the Web API.
-      const notification = new Notification(title, options);
-
-      const onNotificationClick = () => {
-        window.focus();
-        notification.close();
-      };
-
-      let closeTimeout;
-      notification.onshow = () => {
-        closeTimeout = setTimeout(() => {
-          notification.close.bind(notification);
-        }, 20000);
-      };
-
-      notification.addEventListener("click", onNotificationClick);
-
-      return () => {
-        notification.removeEventListener("click", onNotificationClick);
-
-        if (closeTimeout) {
-          clearTimeout(closeTimeout);
-        }
-      };
-    } catch (e) {
-      // Not handled for many mobile browsers.
-    }
-  }, [currentPlayer === selfPlayer]);
-
-  /**
-   * Handle notification sounds.
-   */
-  useEffect(() => {
-    if (!selfPlayer) return;
-    if (!selfPlayer.notified) return;
-
-    playSound(`/static/sounds.bell.mp3`);
-    const timeout = setTimeout(() => network.setNotification(game, selfPlayer, false), 10000);
-
-    return () => clearTimeout(timeout);
-  }, [selfPlayer && selfPlayer.notified]);
-
-  /**
-   * Play sound when gaining a hint token
-   */
-  const hintsCount = game ? game.tokens.hints : 0;
-  const previousHintsCount = usePrevious(hintsCount);
-  useEffect(() => {
-    if (previousHintsCount === undefined) return;
-
-    const timeout = setTimeout(() => {
-      playSound(`/static/sounds/coin.mp3`);
-    }, 500);
-
-    return () => clearTimeout(timeout);
-  }, [hintsCount === previousHintsCount + 1]);
-
-  useEffect(() => {
-    if (previousHintsCount === undefined) return;
-
-    const timeout = setTimeout(() => {
-      playSound(`/static/sounds/swoosh.wav`);
-    }, 200);
-
-    return () => clearTimeout(timeout);
-  }, [hintsCount === previousHintsCount - 1]);
-
-  const turnsCount = game ? game.turnsHistory.length : 0;
-  const previousTurnsCount = usePrevious(turnsCount);
-  useEffect(() => {
-    if (previousTurnsCount === undefined) return;
-
-    playSound(`/static/sounds/rewind.mp3`);
-  }, [turnsCount < previousTurnsCount]);
-
-  /**
-   * Play sound when discarding a card
-   */
-  useEffect(() => {
-    if (!game) return;
-    if (!game.discardPile.length) return;
-
-    playSound(`/static/sounds/card-scrape.mp3`);
-  }, [game && game.discardPile.length]);
-
-  /**
-   * Play sound when successfully playing a card
-   */
-  useEffect(() => {
-    if (!game) return;
-
-    const latestCard = last(game.playedCards);
-    if (!latestCard) return;
-
-    const path = latestCard.number === 5 ? `/static/sounds/play-5.mp3` : `/static/sounds/play.mp3`;
-
-    playSound(path);
-  }, [game && game.playedCards.length]);
 
   /**
    * Play for bots.
@@ -380,10 +259,6 @@ export default function Play() {
     network.setReaction(game, selfPlayer, reaction);
   }
 
-  /*
-   * Area management functions
-   */
-
   function onSelectArea(area: ISelectedArea) {
     if (area.id === selectedArea.id) {
       return selectArea({
@@ -444,21 +319,14 @@ export default function Play() {
   }
 
   async function onRestartGame() {
-    const nextGameId = shortid();
-
-    let nextGame = newGame({
-      ...game.options,
-      id: nextGameId,
-      seed: `${Math.round(Math.random() * 10000)}`,
-    });
-
-    shuffle(game.players).forEach(player => {
-      nextGame = joinGame(nextGame, player);
-    });
+    const nextGame = recreateGame(game);
 
     await network.updateGame(nextGame);
 
-    network.updateGame({ ...game, nextGameId });
+    network.updateGame({
+      ...game,
+      nextGameId: nextGame.id,
+    });
   }
 
   if (!game) {

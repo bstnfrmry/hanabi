@@ -1,7 +1,8 @@
 import assert from "assert";
-import { cloneDeep, findIndex, flatMap, last, range, zipObject } from "lodash";
+import { cloneDeep, findIndex, flatMap, last, range, shuffle, zipObject } from "lodash";
 import mem from "mem";
-import { shuffle } from "shuffle-seed";
+import shortid from "shortid";
+import { shuffle as shuffleSeed } from "shuffle-seed";
 
 import IGameState, {
   GameVariant,
@@ -362,9 +363,9 @@ export function newGame(options: IGameOptions): IGameState {
     };
   });
 
-  const deck = shuffle(cards, options.seed);
+  const deck = shuffleSeed(cards, options.seed);
 
-  const currentPlayer = shuffle(range(options.playersCount), options.seed)[0];
+  const currentPlayer = shuffleSeed(range(options.playersCount), options.seed)[0];
 
   return {
     id: options.id,
@@ -384,4 +385,20 @@ export function newGame(options: IGameOptions): IGameState {
     createdAt: Date.now(),
     synced: false,
   };
+}
+
+export function recreateGame(game: IGameState) {
+  const nextGameId = shortid();
+
+  let nextGame = newGame({
+    ...game.options,
+    id: nextGameId,
+    seed: `${Math.round(Math.random() * 10000)}`,
+  });
+
+  shuffle(game.players).forEach(player => {
+    nextGame = joinGame(nextGame, player);
+  });
+
+  return nextGame;
 }
