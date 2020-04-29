@@ -50,12 +50,12 @@ export interface IGameOptions {
 export enum GameVariant {
   CLASSIC = "classic",
   MULTICOLOR = "multicolor",
-  RAINBOW = "rainbow"
+  RAINBOW = "rainbow",
 }
 
 export enum GameMode {
   NETWORK = "network",
-  PASS_AND_PLAY = "pass_and_play"
+  PASS_AND_PLAY = "pass_and_play",
 }
 
 export enum IGameHintsLevel {
@@ -64,13 +64,13 @@ export enum IGameHintsLevel {
   // Direct hints are displayed
   DIRECT = "direct",
   // No hints displayd
-  NONE = "none"
+  NONE = "none",
 }
 
 export enum IGameStatus {
   LOBBY = "lobby",
   ONGOING = "ongoing",
-  OVER = "over"
+  OVER = "over",
 }
 
 export enum IColor {
@@ -80,7 +80,7 @@ export enum IColor {
   WHITE = "white",
   YELLOW = "yellow",
   MULTICOLOR = "multicolor",
-  RAINBOW = "rainbow"
+  RAINBOW = "rainbow",
 }
 
 export type INumber = 1 | 2 | 3 | 4 | 5;
@@ -88,7 +88,7 @@ export type INumber = 1 | 2 | 3 | 4 | 5;
 export enum IHintLevel {
   IMPOSSIBLE = 0,
   POSSIBLE = 1,
-  SURE = 2
+  SURE = 2,
 }
 
 // an array of 2 (direct hint), 1 (still possible), or 0 (impossible)
@@ -172,9 +172,9 @@ export function fillEmptyValues(state: IGameState): IGameState {
     discardPile: [],
     players: (state.players || []).map(player =>
       defaults(player, {
-        hand: []
+        hand: [],
       })
     ),
-    turnsHistory: []
+    turnsHistory: [],
   });
 }

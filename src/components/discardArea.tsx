@@ -45,21 +45,12 @@ export default function DiscardArea() {
 
   return (
     <div className="relative pl1">
-      <Txt
-        className="flex justify-end gray mr1"
-        value={`discard (${game.discardPile.length})`}
-      />
+      <Txt className="flex justify-end gray mr1" value={`discard (${game.discardPile.length})`} />
       {rows.map((colors, i) => {
         return (
           <div key={i} className={"flex justify-end mt1"}>
             {colors.map(color => {
-              return (
-                <CardPile
-                  key={color}
-                  cards={byColor[color] || []}
-                  color={color}
-                />
-              );
+              return <CardPile key={color} cards={byColor[color] || []} color={color} />;
             })}
           </div>
         );

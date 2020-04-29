@@ -35,7 +35,7 @@ export enum ActionAreaType {
   SELF_PLAYER,
   DISCARD,
   MENU,
-  ROLLBACK
+  ROLLBACK,
 }
 
 export type ISelectedArea =

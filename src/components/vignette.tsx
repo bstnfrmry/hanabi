@@ -16,7 +16,7 @@ export default function Vignette(props: Props) {
   const { type, value, onClick, className, selected = false } = props;
 
   const style = {
-    ...(selected && { transform: "scale(1.2)" })
+    ...(selected && { transform: "scale(1.2)" }),
   };
 
   return (

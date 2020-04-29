@@ -1,11 +1,5 @@
 import classnames from "classnames";
-import React, {
-  CSSProperties,
-  HTMLAttributes,
-  MouseEventHandler,
-  ReactNode,
-  useState
-} from "react";
+import React, { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode, useState } from "react";
 import Popover from "react-popover";
 
 import Hint from "~/components/hint";
@@ -21,7 +15,7 @@ export enum CardSize {
   SMALL = "small",
   MEDIUM = "medium",
   LARGE = "large",
-  FLEX = "flex"
+  FLEX = "flex",
 }
 
 const CardClasses = {
@@ -29,14 +23,14 @@ const CardClasses = {
   [CardSize.SMALL]: "h1.5 w1.5",
   [CardSize.MEDIUM]: "h2 w2 h2.5-l w2.5-l",
   [CardSize.LARGE]: "h3 w3 h3.5-l w3.5-l",
-  [CardSize.FLEX]: "flex-square"
+  [CardSize.FLEX]: "flex-square",
 };
 
 const CardTextSizes = {
   [CardSize.TINY]: TxtSize.TINY,
   [CardSize.SMALL]: TxtSize.SMALL,
   [CardSize.MEDIUM]: TxtSize.MEDIUM,
-  [CardSize.LARGE]: TxtSize.MEDIUM
+  [CardSize.LARGE]: TxtSize.MEDIUM,
 };
 
 export const PositionMap = {
@@ -44,7 +38,7 @@ export const PositionMap = {
   1: "B",
   2: "C",
   3: "D",
-  4: "E"
+  4: "E",
 };
 
 export enum ICardContext {
@@ -54,7 +48,7 @@ export enum ICardContext {
   PLAYED,
   DISCARDED,
   DRAWN,
-  OTHER
+  OTHER,
 }
 
 interface CardWrapperProps extends HTMLAttributes<HTMLElement> {
@@ -130,32 +124,21 @@ function CardPartialHint(props: CardPartialHintProps) {
 
   // when they are only 2 possible cards and one of them is rainbow,
   // apply a rainbow background and a thick border using the other possible color
-  const possibleColors = Object.keys(card.hint.color).filter(
-    color => card.hint.color[color] === IHintLevel.POSSIBLE
-  );
-  if (
-    card.hint.color.rainbow === IHintLevel.POSSIBLE &&
-    possibleColors.length === 2
-  ) {
-    const possibleColor = possibleColors.find(
-      color => color !== IColor.RAINBOW
-    );
+  const possibleColors = Object.keys(card.hint.color).filter(color => card.hint.color[color] === IHintLevel.POSSIBLE);
+  if (card.hint.color.rainbow === IHintLevel.POSSIBLE && possibleColors.length === 2) {
+    const possibleColor = possibleColors.find(color => color !== IColor.RAINBOW);
 
     className = classnames(`bg-rainbow-circle ba b--${possibleColor}-clear`, {
       "bw1.5": size !== CardSize.LARGE,
-      bw2: size === CardSize.LARGE
+      "bw2": size === CardSize.LARGE,
     });
   }
 
   return (
     <div
-      className={classnames(
-        "top-0 br-100 w-50 h-50 flex justify-center items-center",
-        className,
-        {
-          [`txt-white-dark`]: card.hint.color[card.color] !== 2
-        }
-      )}
+      className={classnames("top-0 br-100 w-50 h-50 flex justify-center items-center", className, {
+        [`txt-white-dark`]: card.hint.color[card.color] !== 2,
+      })}
     >
       {card.hint.number[card.number] === 2 && <Txt value={card.number} />}
     </div>
@@ -186,7 +169,7 @@ export default function Card(props: Props) {
     className = "",
     style = {},
     position = null,
-    selected = false
+    selected = false,
   } = props;
 
   const game = useGame();
@@ -202,11 +185,7 @@ export default function Card(props: Props) {
 
   const displayHints =
     game.options.hintsLevel !== IGameHintsLevel.NONE &&
-    [
-      ICardContext.OTHER_PLAYER,
-      ICardContext.TARGETED_PLAYER,
-      ICardContext.SELF_PLAYER
-    ].includes(context);
+    [ICardContext.OTHER_PLAYER, ICardContext.TARGETED_PLAYER, ICardContext.SELF_PLAYER].includes(context);
 
   if (selected) {
     try {
@@ -227,7 +206,7 @@ export default function Card(props: Props) {
       size={size}
       style={{
         ...style,
-        userSelect: "none"
+        userSelect: "none",
       }}
       onClick={onClick}
       {...longPressProps}
@@ -235,7 +214,7 @@ export default function Card(props: Props) {
       {/* Card value */}
       <Txt
         className={classnames(`b txt-${color}-dark`, {
-          mb3: displayHints && size === CardSize.LARGE
+          mb3: displayHints && size === CardSize.LARGE,
         })}
         size={CardTextSizes[size]}
         value={number}
@@ -243,10 +222,7 @@ export default function Card(props: Props) {
 
       {/* Card position */}
       {position !== null && size === CardSize.LARGE && (
-        <Txt
-          className="absolute left-0 top-0 ma1 black-40"
-          value={PositionMap[position]}
-        />
+        <Txt className="absolute left-0 top-0 ma1 black-40" value={PositionMap[position]} />
       )}
 
       {/* Whether the card has received hints */}
@@ -258,12 +234,7 @@ export default function Card(props: Props) {
                 {card?.receivedHints?.map((turn, i) => {
                   return (
                     <div key={i} className="nb1">
-                      <Turn
-                        includePlayer={true}
-                        showDrawn={false}
-                        showPosition={false}
-                        turn={turn}
-                      />
+                      <Turn includePlayer={true} showDrawn={false} showPosition={false} turn={turn} />
                     </div>
                   );
                 })}
@@ -291,12 +262,7 @@ export default function Card(props: Props) {
         <div className="flex absolute w-100 right-0 bottom-0 pv1 flex-l items-center flex-column bg-black-50">
           <div className="flex justify-around w-100">
             {colors.map(color => (
-              <Hint
-                key={color}
-                hint={card.hint.color[color]}
-                type="color"
-                value={color}
-              />
+              <Hint key={color} hint={card.hint.color[color]} type="color" value={color} />
             ))}
           </div>
           <div
@@ -304,12 +270,7 @@ export default function Card(props: Props) {
             style={{ width: `${(numbers.length / colors.length) * 100}%` }}
           >
             {numbers.map(number => (
-              <Hint
-                key={number}
-                hint={card.hint.number[number]}
-                type="number"
-                value={number}
-              />
+              <Hint key={number} hint={card.hint.number[number]} type="number" value={number} />
             ))}
           </div>
         </div>

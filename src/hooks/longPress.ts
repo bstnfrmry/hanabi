@@ -21,6 +21,6 @@ export default function useLongPress(callback: Function, ms = 300) {
     onMouseUp: () => setStartLongPress(false),
     onMouseLeave: () => setStartLongPress(false),
     onTouchStart: () => setStartLongPress(true),
-    onTouchEnd: () => setStartLongPress(false)
+    onTouchEnd: () => setStartLongPress(false),
   };
 }

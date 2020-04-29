@@ -15,7 +15,7 @@ import IGameState, {
   IHintAction,
   IHintLevel,
   INumber,
-  IPlayer
+  IPlayer,
 } from "./state";
 
 export const numbers: INumber[] = [1, 2, 3, 4, 5];
@@ -25,17 +25,9 @@ export const MaxHints = 8;
 
 export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
   const isPreviousHere =
-    card.number === 1 || // first card on the pile
-    findIndex(
-      playedCards,
-      c => card.number === c.number + 1 && card.color === c.color
-    ) > -1; // previous card belongs to the playedCards
+    card.number === 1 || findIndex(playedCards, c => card.number === c.number + 1 && card.color === c.color) > -1; // first card on the pile // previous card belongs to the playedCards
 
-  const isSameNotHere =
-    findIndex(
-      playedCards,
-      c => c.number === card.number && c.color === card.color
-    ) === -1;
+  const isSameNotHere = findIndex(playedCards, c => c.number === card.number && c.color === card.color) === -1;
 
   return isPreviousHere && isSameNotHere;
 }
@@ -58,9 +50,7 @@ function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
       // positive hint on card - mark all other values as impossible (except rainbow)
       Object.keys(card.hint[hint.type])
         .filter(value => {
-          return GameVariant.RAINBOW === game.options.variant
-            ? value !== IColor.RAINBOW
-            : true;
+          return GameVariant.RAINBOW === game.options.variant ? value !== IColor.RAINBOW : true;
         })
         .filter(value => value != hint.value)
         .forEach(value => {
@@ -103,22 +93,18 @@ export function emptyHint(options: IGameOptions): ICardHint {
       [IColor.YELLOW]: 1,
       [IColor.WHITE]: 1,
       [IColor.MULTICOLOR]: options.variant === GameVariant.MULTICOLOR ? 1 : 0,
-      [IColor.RAINBOW]: 1 // Should never be used directly
+      [IColor.RAINBOW]: 1, // Should never be used directly
     },
-    number: { 0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
+    number: { 0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 },
   };
 }
 
 export function matchColor(colorA: IColor, colorB: IColor) {
-  return (
-    colorA === colorB || colorA === IColor.RAINBOW || colorB === IColor.RAINBOW
-  );
+  return colorA === colorB || colorA === IColor.RAINBOW || colorB === IColor.RAINBOW;
 }
 
 export function matchHint(hint: IHintAction, card: ICard) {
-  return hint.type === "color"
-    ? matchColor(card.color, hint.value as IColor)
-    : hint.value === card.number;
+  return hint.type === "color" ? matchColor(card.color, hint.value as IColor) : hint.value === card.number;
 }
 
 export function isGameOver(state: IGameState) {
@@ -132,8 +118,7 @@ export function isGameOver(state: IGameState) {
 export function commitAction(state: IGameState, action: IAction): IGameState {
   const actionIsntFromCurrentPlayer = action.from !== state.currentPlayer;
   const isSelfHinting = action.action === "hint" && action.from == action.to;
-  const isHintingWithoutTokens =
-    action.action === "hint" && state.tokens.hints === 0;
+  const isHintingWithoutTokens = action.action === "hint" && state.tokens.hints === 0;
 
   if (actionIsntFromCurrentPlayer || isHintingWithoutTokens || isSelfHinting) {
     return state;
@@ -168,9 +153,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
         s.discardPile.push(card);
         s.tokens.hints += 1;
       } else {
-        throw new Error(
-          "Invalid action, cannot discard when the hints are maxed out!"
-        );
+        throw new Error("Invalid action, cannot discard when the hints are maxed out!");
       }
     }
 
@@ -231,7 +214,7 @@ export const getStateAtTurn = mem<[IGameState, number], IGameState, string>(
     return newState;
   },
   {
-    cacheKey: ([state, turn]) => `${state.id}-${turn}`
+    cacheKey: ([state, turn]) => `${state.id}-${turn}`,
   }
 );
 
@@ -240,39 +223,19 @@ export function emptyPlayer(id: string, name: string): IPlayer {
     hand: [],
     name,
     id,
-    bot: false
+    bot: false,
   };
 }
 
 export function getColors(state: IGameState) {
   switch (state.options.variant) {
     case GameVariant.MULTICOLOR:
-      return [
-        IColor.BLUE,
-        IColor.GREEN,
-        IColor.RED,
-        IColor.WHITE,
-        IColor.YELLOW,
-        IColor.MULTICOLOR
-      ];
+      return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW, IColor.MULTICOLOR];
     case GameVariant.RAINBOW:
-      return [
-        IColor.BLUE,
-        IColor.GREEN,
-        IColor.RED,
-        IColor.WHITE,
-        IColor.YELLOW,
-        IColor.RAINBOW
-      ];
+      return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW, IColor.RAINBOW];
     case GameVariant.CLASSIC:
     default:
-      return [
-        IColor.BLUE,
-        IColor.GREEN,
-        IColor.RED,
-        IColor.WHITE,
-        IColor.YELLOW
-      ];
+      return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW];
   }
 }
 
@@ -295,17 +258,13 @@ export function getMaximumScore(state: IGameState) {
   }
 }
 
-export function getPlayedCardsPile(
-  state: IGameState
-): { [key in IColor]: INumber } {
+export function getPlayedCardsPile(state: IGameState): { [key in IColor]: INumber } {
   const colors = getColors(state);
 
   return zipObject(
     colors,
     colors.map(color => {
-      const topCard = last(
-        state.playedCards.filter(card => card.color === color)
-      );
+      const topCard = last(state.playedCards.filter(card => card.color === color));
 
       return topCard ? topCard.number : 0;
     })
@@ -317,10 +276,7 @@ export function getPlayedCardsPile(
  * Doesn't take in account remaining turns
  */
 export function getMaximumPossibleScore(state: IGameState): number {
-  const playableCards = [
-    ...state.drawPile,
-    ...flatMap(state.players, p => p.hand)
-  ];
+  const playableCards = [...state.drawPile, ...flatMap(state.players, p => p.hand)];
   const playedCardsPile = getPlayedCardsPile(state);
 
   let maxScore = getMaximumScore(state);
@@ -329,9 +285,7 @@ export function getMaximumPossibleScore(state: IGameState): number {
     let value = playedCardsPile[color];
 
     while (value < 5) {
-      const nextCard = playableCards.find(
-        card => card.color === color && card.number === value + 1
-      );
+      const nextCard = playableCards.find(card => card.color === color && card.number === value + 1);
 
       if (!nextCard) {
         maxScore -= 5 - value;
@@ -346,10 +300,7 @@ export function getMaximumPossibleScore(state: IGameState): number {
 
 export function joinGame(state: IGameState, player: IPlayer): IGameState {
   const game = cloneDeep(state) as IGameState;
-  const hand = game.drawPile.splice(
-    0,
-    startingHandSize[game.options.playersCount]
-  );
+  const hand = game.drawPile.splice(0, startingHandSize[game.options.playersCount]);
 
   game.players = game.players || [];
   game.players.push({ ...player, hand, index: game.players.length });
@@ -362,13 +313,7 @@ export function joinGame(state: IGameState, player: IPlayer): IGameState {
 export function newGame(options: IGameOptions): IGameState {
   assert(options.playersCount > 1 && options.playersCount < 6);
 
-  const baseColors = [
-    IColor.WHITE,
-    IColor.BLUE,
-    IColor.RED,
-    IColor.GREEN,
-    IColor.YELLOW
-  ];
+  const baseColors = [IColor.WHITE, IColor.BLUE, IColor.RED, IColor.GREEN, IColor.YELLOW];
   // all cards but multicolors
   let cards = flatMap(baseColors, color => [
     { number: 1, color },
@@ -380,7 +325,7 @@ export function newGame(options: IGameOptions): IGameState {
     { number: 3, color },
     { number: 4, color },
     { number: 4, color },
-    { number: 5, color }
+    { number: 5, color },
   ]);
 
   // Add multicolor cards when applicable
@@ -413,7 +358,7 @@ export function newGame(options: IGameOptions): IGameState {
   cards = cards.map((c, i) => {
     return {
       ...c,
-      id: i
+      id: i,
     };
   });
 
@@ -430,13 +375,13 @@ export function newGame(options: IGameOptions): IGameState {
     players: [],
     tokens: {
       hints: MaxHints,
-      strikes: 0
+      strikes: 0,
     },
     currentPlayer,
     options,
     actionsLeft: options.playersCount + 1, // this will be decreased when the draw pile is empty
     turnsHistory: [],
     createdAt: Date.now(),
-    synced: false
+    synced: false,
   };
 }

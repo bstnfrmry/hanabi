@@ -15,8 +15,7 @@ function getLastRollbackableTurn(game: IGameState) {
   let lastNonAI = 1;
 
   while (lastNonAI <= game.turnsHistory.length) {
-    const playerIndex =
-      game.turnsHistory[game.turnsHistory.length - lastNonAI].action.from;
+    const playerIndex = game.turnsHistory[game.turnsHistory.length - lastNonAI].action.from;
 
     if (!game.players[playerIndex].bot) {
       break;
@@ -45,21 +44,11 @@ export default function RollbackArea(props: Props) {
       <Txt
         className="w-75 tc"
         size={TxtSize.MEDIUM}
-        value={
-          canRollback
-            ? "You're about to roll back the last action!"
-            : "You cannot rollback the game yet"
-        }
+        value={canRollback ? "You're about to roll back the last action!" : "You cannot rollback the game yet"}
       />
       <div className="mt2">
         <Button text="Abort" onClick={() => onCloseArea()} />
-        <Button
-          primary
-          className="ml4"
-          disabled={!canRollback}
-          text="Roll back"
-          onClick={() => onRollback()}
-        />
+        <Button primary className="ml4" disabled={!canRollback} text="Roll back" onClick={() => onRollback()} />
       </div>
     </div>
   );

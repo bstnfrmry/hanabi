@@ -22,25 +22,18 @@ export default function Vignettes(props: Props) {
         {colors.map((color, i) => (
           <Vignette
             key={i}
-            selected={
-              pendingHint.type === "color" && pendingHint.value === color
-            }
+            selected={pendingHint.type === "color" && pendingHint.value === color}
             type="color"
             value={color}
             onClick={onSelect}
           />
         ))}
       </div>
-      <div
-        className="flex flex-row justify-around"
-        style={{ width: `${(numbers.length / colors.length) * 100}%` }}
-      >
+      <div className="flex flex-row justify-around" style={{ width: `${(numbers.length / colors.length) * 100}%` }}>
         {numbers.map(number => (
           <Vignette
             key={number}
-            selected={
-              pendingHint.type === "number" && pendingHint.value === number
-            }
+            selected={pendingHint.type === "number" && pendingHint.value === number}
             type="number"
             value={number}
             onClick={onSelect}

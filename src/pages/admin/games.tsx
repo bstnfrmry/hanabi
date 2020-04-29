@@ -48,11 +48,7 @@ export default function Games() {
         </thead>
         <tbody>
           {GamesOrder.map(status => {
-            const sortedGames = orderBy(
-              games[status],
-              game => game.createdAt,
-              "desc"
-            );
+            const sortedGames = orderBy(games[status], game => game.createdAt, "desc");
 
             return (
               <>
@@ -69,9 +65,7 @@ export default function Games() {
                       <td>{moment(game.createdAt).fromNow()}</td>
                       <td>{game.options.gameMode}</td>
                       <td>{game.status}</td>
-                      <td>
-                        {game.players.map(player => player.name).join(", ")}
-                      </td>
+                      <td>{game.players.map(player => player.name).join(", ")}</td>
                       <td>{game.options.variant}</td>
                       <td>
                         {getScore(game)} / {getMaximumScore(game)}

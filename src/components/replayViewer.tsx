@@ -10,16 +10,16 @@ const SliderStyle = {
     backgroundColor: "var(--color-yellow)",
     borderColor: "var(--color-yellow)",
     height: "18px",
-    width: "18px"
+    width: "18px",
   },
   RAIL: {
     height: "8px",
-    backgroundColor: "var(--color-lavender)"
+    backgroundColor: "var(--color-lavender)",
   },
   TRACK: {
     backgroundColor: "var(--color-main)",
-    height: "8px"
-  }
+    height: "8px",
+  },
 };
 
 interface Props {
@@ -39,11 +39,7 @@ export default function ReplayViewver(props: Props) {
     <div className="bg-black-50 flex justify-between items-center pa2">
       <div className="flex flex-column">
         <Txt className="db" size={TxtSize.SMALL} value={`Replay`} />
-        <Txt
-          className="mt1 light-silver nowrap"
-          size={TxtSize.SMALL}
-          value={`${replay.cursor} / ${maxTurns}`}
-        />
+        <Txt className="mt1 light-silver nowrap" size={TxtSize.SMALL} value={`${replay.cursor} / ${maxTurns}`} />
       </div>
       <Button
         void
@@ -72,13 +68,7 @@ export default function ReplayViewver(props: Props) {
         text=">"
         onClick={() => onReplayCursorChange(replay.cursor + 1)}
       />
-      <Button
-        void
-        className="ml3"
-        size={ButtonSize.TINY}
-        text="&times;"
-        onClick={onStopReplay}
-      />
+      <Button void className="ml3" size={ButtonSize.TINY} text="&times;" onClick={onStopReplay} />
     </div>
   );
 }

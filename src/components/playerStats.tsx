@@ -9,7 +9,7 @@ interface Props {
   player: IPlayer;
 }
 
-function percentage(num, den) {
+function percentage(num: number, den: number) {
   if (!den) {
     return "-";
   }
@@ -20,7 +20,7 @@ function percentage(num, den) {
 const Colors = {
   Play: "#B7E1BC",
   Discard: "#E9AFC7",
-  Hint: "#989FC1"
+  Hint: "#989FC1",
 };
 
 export default function PlayerStats(props: Props) {
@@ -32,9 +32,7 @@ export default function PlayerStats(props: Props) {
   const [discardsCount, setDiscardsCount] = useState(0);
   const [hintsCount, setHintsCount] = useState(0);
 
-  const playerTurns = game.turnsHistory.filter(
-    turn => turn.action.from === player.index
-  );
+  const playerTurns = game.turnsHistory.filter(turn => turn.action.from === player.index);
 
   const groupedTurns = groupBy(playerTurns, turn => turn.action.action);
 
@@ -59,7 +57,7 @@ export default function PlayerStats(props: Props) {
             style={{
               transition: "all ease-in-out 200ms",
               width: `${(hintsCount * 100) / totalCount}%`,
-              backgroundColor: Colors.Hint
+              backgroundColor: Colors.Hint,
             }}
           />
           <div
@@ -67,7 +65,7 @@ export default function PlayerStats(props: Props) {
             style={{
               transition: "all ease-in-out 200ms",
               width: `${(discardsCount * 100) / totalCount}%`,
-              backgroundColor: Colors.Discard
+              backgroundColor: Colors.Discard,
             }}
           />
           <div
@@ -75,33 +73,19 @@ export default function PlayerStats(props: Props) {
             style={{
               transition: "all ease-in-out 200ms",
               width: `${(playsCount * 100) / totalCount}%`,
-              backgroundColor: Colors.Play
+              backgroundColor: Colors.Play,
             }}
           />
         </div>
       )}
 
       <div className="flex items-center">
-        <Txt
-          className="flex-grow-1"
-          size={TxtSize.SMALL}
-          style={{ color: Colors.Hint }}
-          value={`Hinted`}
-        />
+        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Hint }} value={`Hinted`} />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${hintsCount}`} />
-        <Txt
-          className="ml1 lavender w2 nowrap"
-          size={TxtSize.TINY}
-          value={`· ${percentage(hintsCount, totalCount)}`}
-        />
+        <Txt className="ml1 lavender w2 nowrap" size={TxtSize.TINY} value={`· ${percentage(hintsCount, totalCount)}`} />
       </div>
       <div className="flex items-center">
-        <Txt
-          className="flex-grow-1"
-          size={TxtSize.SMALL}
-          style={{ color: Colors.Discard }}
-          value={`Discarded`}
-        />
+        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Discard }} value={`Discarded`} />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${discardsCount}`} />
         <Txt
           className="ml1 lavender w2 nowrap"
@@ -110,18 +94,9 @@ export default function PlayerStats(props: Props) {
         />
       </div>
       <div className="flex items-center">
-        <Txt
-          className="flex-grow-1"
-          size={TxtSize.SMALL}
-          style={{ color: Colors.Play }}
-          value={`Played`}
-        />
+        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Play }} value={`Played`} />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${playsCount}`} />
-        <Txt
-          className="ml1 lavender w2 nowrap"
-          size={TxtSize.TINY}
-          value={`· ${percentage(playsCount, totalCount)}`}
-        />
+        <Txt className="ml1 lavender w2 nowrap" size={TxtSize.TINY} value={`· ${percentage(playsCount, totalCount)}`} />
       </div>
     </div>
   );

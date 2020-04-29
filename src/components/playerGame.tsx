@@ -14,17 +14,10 @@ import Vignettes from "~/components/vignettes";
 import { matchColor, MaxHints } from "~/game/actions";
 import { playSound } from "~/game/sound";
 import { ICard, IColor, IGameStatus, IHintAction, IPlayer } from "~/game/state";
-import {
-  useCurrentPlayer,
-  useGame,
-  useReplay,
-  useSelfPlayer
-} from "~/hooks/game";
+import { useCurrentPlayer, useGame, useReplay, useSelfPlayer } from "~/hooks/game";
 
 function isCardHintable(hint: IHintAction, card: ICard) {
-  return hint.type === "color"
-    ? matchColor(card.color, hint.value as IColor)
-    : card.number === hint.value;
+  return hint.type === "color" ? matchColor(card.color, hint.value as IColor) : card.number === hint.value;
 }
 
 function textualHint(hint: IHintAction, cards: ICard[]) {
@@ -39,13 +32,11 @@ function textualHint(hint: IHintAction, cards: ICard[]) {
   }
 
   if (hintableCards.length === 1) {
-    if (hint.type === "color")
-      return `Your card ${hintableCards[0]} is ${hint.value}`;
+    if (hint.type === "color") return `Your card ${hintableCards[0]} is ${hint.value}`;
     else return `Your card ${hintableCards[0]} is a ${hint.value}`;
   }
 
-  if (hint.type === "color")
-    return `Your cards ${hintableCards.join(", ")} are ${hint.value}`;
+  if (hint.type === "color") return `Your cards ${hintableCards.join(", ")} are ${hint.value}`;
 
   return `Your cards ${hintableCards.join(", ")} are ${hint.value}s`;
 }
@@ -88,7 +79,7 @@ export default function PlayerGame(props: Props) {
   const [selectedCard, selectCard] = useState<number>(cardIndex);
   const [pendingHint, setPendingHint] = useState<IHintAction>({
     type: null,
-    value: null
+    value: null,
   } as IHintAction);
 
   const selfPlayer = useSelfPlayer();
@@ -108,9 +99,7 @@ export default function PlayerGame(props: Props) {
     hideCards = false;
   }
 
-  const canPlay =
-    [IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status) &&
-    !replay.cursor;
+  const canPlay = [IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status) && !replay.cursor;
 
   const hasSelectedCard = selectedCard !== null;
   const cardContext = selected
@@ -122,10 +111,9 @@ export default function PlayerGame(props: Props) {
   return (
     <>
       <div
-        className={classnames(
-          "cards flex justify-between bg-main-dark pa2 pv2-l ph6.5-m relative",
-          { "flex-column": selected }
-        )}
+        className={classnames("cards flex justify-between bg-main-dark pa2 pv2-l ph6.5-m relative", {
+          "flex-column": selected,
+        })}
         onClick={() => {
           if (!selected) onSelectPlayer(player, 0);
         }}
@@ -139,31 +127,20 @@ export default function PlayerGame(props: Props) {
                   className="yellow nt1"
                   id="your-turn"
                   size={TxtSize.TINY}
-                  value={
-                    game.status === IGameStatus.LOBBY
-                      ? "You'll start first"
-                      : "Your turn"
-                  }
+                  value={game.status === IGameStatus.LOBBY ? "You'll start first" : "Your turn"}
                 />
               </Tutorial>
             )}
             <div className={classnames("flex items-center")}>
-              {player === currentPlayer && (
-                <Txt className="yellow mr2" size={TxtSize.SMALL} value="➤" />
-              )}
-              <PlayerName
-                className="mr2"
-                explicit={true}
-                player={player}
-                size={PlayerNameSize.MEDIUM}
-              />
+              {player === currentPlayer && <Txt className="yellow mr2" size={TxtSize.SMALL} value="➤" />}
+              <PlayerName className="mr2" explicit={true} player={player} size={PlayerNameSize.MEDIUM} />
             </div>
           </div>
 
           {!self && player.reaction && (
             <Txt
               style={{
-                animation: "FontPulse 600ms 5"
+                animation: "FontPulse 600ms 5",
               }}
               value={player.reaction}
             />
@@ -171,12 +148,7 @@ export default function PlayerGame(props: Props) {
 
           {self && !replay.cursor && (
             <Popover
-              body={
-                <ReactionsPopover
-                  onClose={() => setReactionsOpen(false)}
-                  onReaction={onReaction}
-                />
-              }
+              body={<ReactionsPopover onClose={() => setReactionsOpen(false)} onReaction={onReaction} />}
               className="z-999"
               isOpen={reactionsOpen}
               onOuterAction={() => setReactionsOpen(false)}
@@ -191,14 +163,12 @@ export default function PlayerGame(props: Props) {
                 {player.reaction && (
                   <Txt
                     style={{
-                      animation: "FontPulse 600ms 5"
+                      animation: "FontPulse 600ms 5",
                     }}
                     value={player.reaction}
                   />
                 )}
-                {!player.reaction && (
-                  <Txt style={{ filter: "grayscale(100%)" }} value="︎︎︎︎😊" />
-                )}
+                {!player.reaction && <Txt style={{ filter: "grayscale(100%)" }} value="︎︎︎︎😊" />}
               </a>
             </Popover>
           )}
@@ -217,18 +187,13 @@ export default function PlayerGame(props: Props) {
           )}
 
           {selected && (
-            <a
-              className="absolute top-0 right-0 mt2 mr3 pr6.5-m"
-              onClick={() => onCloseArea()}
-            >
+            <a className="absolute top-0 right-0 mt2 mr3 pr6.5-m" onClick={() => onCloseArea()}>
               <Txt value="×" />
             </a>
           )}
         </div>
 
-        <div
-          className={classnames("flex justify-end self-end flex-grow-1 dib")}
-        >
+        <div className={classnames("flex justify-end self-end flex-grow-1 dib")}>
           {displayStats && (
             <div className="ml3">
               <PlayerStats player={player} />
@@ -250,21 +215,18 @@ export default function PlayerGame(props: Props) {
                     <Card
                       card={card}
                       className={classnames({
-                        ma1: selected,
-                        "mr1 mr2-l": i < player.hand.length - 1
+                        "ma1": selected,
+                        "mr1 mr2-l": i < player.hand.length - 1,
                       })}
                       context={cardContext}
                       hidden={hideCards}
                       position={i}
                       selected={
-                        selected &&
-                        (player === selfPlayer
-                          ? selectedCard === i
-                          : isCardHintable(pendingHint, card))
+                        selected && (player === selfPlayer ? selectedCard === i : isCardHintable(pendingHint, card))
                       }
                       size={selected ? CardSize.LARGE : CardSize.MEDIUM}
                       style={{
-                        ...(selected && { transition: "all 50ms ease-in-out" })
+                        ...(selected && { transition: "all 50ms ease-in-out" }),
                       }}
                       onClick={e => {
                         e.stopPropagation();
@@ -288,53 +250,45 @@ export default function PlayerGame(props: Props) {
         style={{
           transform: "translateY(0)",
           transition: "transform 150ms ease-in-out",
-          ...(!selected && { opacity: 0, transform: "translateY(-100px)" })
+          ...(!selected && { opacity: 0, transform: "translateY(-100px)" }),
         }}
       >
-        {canPlay &&
-          selected &&
-          player === selfPlayer &&
-          selfPlayer === currentPlayer && (
-            <div className="flex flex-column items-end mb2">
-              <div className="flex justify-end items-center h-100-l">
-                {hasSelectedCard && (
-                  <Txt
-                    className="pb1 pb2-l ml1 mb2 mr3 ml2-l"
-                    value={`Card ${PositionMap[selectedCard]} selected`}
-                  />
-                )}
+        {canPlay && selected && player === selfPlayer && selfPlayer === currentPlayer && (
+          <div className="flex flex-column items-end mb2">
+            <div className="flex justify-end items-center h-100-l">
+              {hasSelectedCard && (
+                <Txt className="pb1 pb2-l ml1 mb2 mr3 ml2-l" value={`Card ${PositionMap[selectedCard]} selected`} />
+              )}
 
-                {hasSelectedCard && (
-                  <div className="flex flex pb2">
-                    {["discard", "play"].map(action => (
-                      <Button
-                        key={action}
-                        className="mr2"
-                        disabled={
-                          action === "discard" && game.tokens.hints === 8
-                        }
-                        id={action}
-                        text={action}
-                        onClick={() =>
-                          onCommitAction({
-                            action,
-                            from: selfPlayer.index,
-                            cardIndex: selectedCard
-                          })
-                        }
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-              {hasSelectedCard && game.tokens.hints === MaxHints && (
-                <Txt className="orange mr2 flex flex-column items-end">
-                  <span>8 tokens</span>
-                  <span>You cannot discard</span>
-                </Txt>
+              {hasSelectedCard && (
+                <div className="flex flex pb2">
+                  {["discard", "play"].map(action => (
+                    <Button
+                      key={action}
+                      className="mr2"
+                      disabled={action === "discard" && game.tokens.hints === 8}
+                      id={action}
+                      text={action}
+                      onClick={() =>
+                        onCommitAction({
+                          action,
+                          from: selfPlayer.index,
+                          cardIndex: selectedCard,
+                        })
+                      }
+                    />
+                  ))}
+                </div>
               )}
             </div>
-          )}
+            {hasSelectedCard && game.tokens.hints === MaxHints && (
+              <Txt className="orange mr2 flex flex-column items-end">
+                <span>8 tokens</span>
+                <span>You cannot discard</span>
+              </Txt>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Other player actions */}
@@ -344,53 +298,38 @@ export default function PlayerGame(props: Props) {
           opacity: 1,
           transform: "translateY(0)",
           transition: "all 150ms ease-in-out",
-          ...(!selected && { opacity: 0, transform: "translateY(-100px)" })
+          ...(!selected && { opacity: 0, transform: "translateY(-100px)" }),
         }}
       >
-        {canPlay &&
-          selected &&
-          player !== selfPlayer &&
-          selfPlayer === currentPlayer && (
-            <div className="flex flex-column items-end pb2 mr2">
-              <Vignettes
-                pendingHint={pendingHint}
-                onSelect={action => setPendingHint(action)}
+        {canPlay && selected && player !== selfPlayer && selfPlayer === currentPlayer && (
+          <div className="flex flex-column items-end pb2 mr2">
+            <Vignettes pendingHint={pendingHint} onSelect={action => setPendingHint(action)} />
+
+            <div className="mt2 flex items-center">
+              {pendingHint.value && game.tokens.hints !== 0 && (
+                <Txt italic className="mr3" value={textualHint(pendingHint, player.hand)} />
+              )}
+              {game.tokens.hints === 0 && <Txt className="mr3 orange" value="No tokens left to hint" />}
+              {!pendingHint.value && game.tokens.hints > 0 && (
+                <Txt className="mr3" value="Select either a color or number to hint" />
+              )}
+
+              <Button
+                disabled={!pendingHint.type || game.tokens.hints === 0}
+                id="give-hint"
+                text="Hint"
+                onClick={() =>
+                  onCommitAction({
+                    action: "hint",
+                    from: currentPlayer.index,
+                    to: player.index,
+                    ...pendingHint,
+                  })
+                }
               />
-
-              <div className="mt2 flex items-center">
-                {pendingHint.value && game.tokens.hints !== 0 && (
-                  <Txt
-                    italic
-                    className="mr3"
-                    value={textualHint(pendingHint, player.hand)}
-                  />
-                )}
-                {game.tokens.hints === 0 && (
-                  <Txt className="mr3 orange" value="No tokens left to hint" />
-                )}
-                {!pendingHint.value && game.tokens.hints > 0 && (
-                  <Txt
-                    className="mr3"
-                    value="Select either a color or number to hint"
-                  />
-                )}
-
-                <Button
-                  disabled={!pendingHint.type || game.tokens.hints === 0}
-                  id="give-hint"
-                  text="Hint"
-                  onClick={() =>
-                    onCommitAction({
-                      action: "hint",
-                      from: currentPlayer.index,
-                      to: player.index,
-                      ...pendingHint
-                    })
-                  }
-                />
-              </div>
             </div>
-          )}
+          </div>
+        )}
       </div>
     </>
   );
@@ -401,13 +340,13 @@ const AnimatedCard = posed.div({
     opacity: 1,
     transition: {
       delay: 200,
-      duration: 100
-    }
+      duration: 100,
+    },
   },
   exit: {
     opacity: 0.1,
     transition: {
-      duration: 100
-    }
-  }
+      duration: 100,
+    },
+  },
 });

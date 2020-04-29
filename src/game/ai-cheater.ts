@@ -4,9 +4,7 @@ import { commitAction, MaxHints } from "~/game/actions";
 import IGameState, { ICard, IColor } from "~/game/state";
 
 function canPlay(game: IGameState, card: ICard) {
-  const topCard = last(
-    game.playedCards.filter(playedCard => playedCard.color === card.color)
-  );
+  const topCard = last(game.playedCards.filter(playedCard => playedCard.color === card.color));
 
   if (topCard) {
     return topCard.number + 1 === card.number;
@@ -38,9 +36,7 @@ function canDiscard(game: IGameState, card: ICard) {
     return true;
   }
 
-  const identicalDiscardedCards = game.discardPile.filter(discardedCard =>
-    cardIdentity(card, discardedCard)
-  );
+  const identicalDiscardedCards = game.discardPile.filter(discardedCard => cardIdentity(card, discardedCard));
 
   return identicalDiscardedCards.length < AmountPerColor[card.number] - 1;
 }
@@ -59,32 +55,28 @@ export default function play(game: IGameState): IGameState {
       action: "play",
       card: playableCard,
       cardIndex: currentPlayer.hand.indexOf(playableCard),
-      from: game.currentPlayer
+      from: game.currentPlayer,
     });
   }
 
-  const [safelyDiscardableCard] = currentPlayer.hand.filter(card =>
-    canSafelyDiscard(game, card)
-  );
+  const [safelyDiscardableCard] = currentPlayer.hand.filter(card => canSafelyDiscard(game, card));
   if (safelyDiscardableCard && canDiscardCards) {
     return commitAction(game, {
       action: "discard",
       card: safelyDiscardableCard,
       cardIndex: currentPlayer.hand.indexOf(safelyDiscardableCard),
-      from: game.currentPlayer
+      from: game.currentPlayer,
     });
   }
 
-  const discardableCards = currentPlayer.hand.filter(card =>
-    canDiscard(game, card)
-  );
+  const discardableCards = currentPlayer.hand.filter(card => canDiscard(game, card));
   const [discardableCard] = sortBy(discardableCards, card => -card.number);
   if (discardableCard && canDiscardCards) {
     return commitAction(game, {
       action: "discard",
       card: discardableCard,
       cardIndex: currentPlayer.hand.indexOf(discardableCard),
-      from: game.currentPlayer
+      from: game.currentPlayer,
     });
   }
 
@@ -94,7 +86,7 @@ export default function play(game: IGameState): IGameState {
       from: game.currentPlayer,
       to: (game.currentPlayer + 1) % game.players.length,
       type: "number",
-      value: 1
+      value: 1,
     });
   }
 
@@ -103,7 +95,7 @@ export default function play(game: IGameState): IGameState {
     card => -card.number,
     // if multiple, the color where pile is lowest
     // not perfect since usually you look at played cards and others game
-    card => game.playedCards.filter(c => c.color === card.color).length
+    card => game.playedCards.filter(c => c.color === card.color).length,
   ]);
 
   // TODO one day, optimize game end
@@ -112,6 +104,6 @@ export default function play(game: IGameState): IGameState {
     action: "discard",
     card: despairDiscardedCard,
     cardIndex: currentPlayer.hand.indexOf(despairDiscardedCard),
-    from: game.currentPlayer
+    from: game.currentPlayer,
   });
 }

@@ -5,14 +5,14 @@ export enum TxtSize {
   TINY = "tiny",
   SMALL = "small",
   MEDIUM = "medium",
-  LARGE = "large"
+  LARGE = "large",
 }
 
 const TxtSizes = {
   [TxtSize.TINY]: "f7 f6-l",
   [TxtSize.SMALL]: "f6 f5-l",
   [TxtSize.MEDIUM]: "f5 f4-l",
-  [TxtSize.LARGE]: "ttu f2 f1-l tracked"
+  [TxtSize.LARGE]: "ttu f2 f1-l tracked",
 };
 
 interface Props extends HTMLAttributes<HTMLSpanElement> {
@@ -39,9 +39,11 @@ export default function Txt(props: Props) {
     <span
       className={classnames(
         TxtSizes[size],
-        { ttu: uppercase },
-        { i: italic },
-        { "pre-line": multiline },
+        {
+          "ttu": uppercase,
+          "i": italic,
+          "pre-line": multiline,
+        },
         className
       )}
       {...attributes}

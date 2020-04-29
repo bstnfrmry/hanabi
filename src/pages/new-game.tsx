@@ -16,24 +16,24 @@ const PlayerCounts = [2, 3, 4, 5];
 const Variants = {
   [GameVariant.CLASSIC]: "Classic",
   [GameVariant.MULTICOLOR]: "Multicolor",
-  [GameVariant.RAINBOW]: "Rainbow"
+  [GameVariant.RAINBOW]: "Rainbow",
 };
 
 const VariantDescriptions = {
   [GameVariant.CLASSIC]: "A classic game of Hanabi with 5 colors",
   [GameVariant.MULTICOLOR]: "A 6th suite is added with only one card of each",
-  [GameVariant.RAINBOW]: "A 6th suite is added that matches every color"
+  [GameVariant.RAINBOW]: "A 6th suite is added that matches every color",
 };
 
 const HintsLevels = {
   [IGameHintsLevel.DIRECT]: "Show direct hints",
-  [IGameHintsLevel.NONE]: "Do not show hints"
+  [IGameHintsLevel.NONE]: "Do not show hints",
 };
 
 const BotsSpeeds = {
   0: "Faster",
   1000: "Fast",
-  3000: "Slow"
+  3000: "Slow",
 };
 
 export default function NewGame() {
@@ -50,9 +50,7 @@ export default function NewGame() {
   const [private_, setPrivate] = useState(false);
   const [hintsLevel, setHintsLevel] = useState(IGameHintsLevel.DIRECT);
   const [turnsHistory, setTurnsHistory] = useState(true);
-  const [botsWait, setBotsWait] = useState(
-    process.env.NODE_ENV === "production" ? 1000 : 0
-  );
+  const [botsWait, setBotsWait] = useState(process.env.NODE_ENV === "production" ? 1000 : 0);
 
   /**
    * Initialise seed on first render
@@ -76,7 +74,7 @@ export default function NewGame() {
         hintsLevel,
         turnsHistory,
         botsWait,
-        gameMode: offline ? GameMode.PASS_AND_PLAY : GameMode.NETWORK
+        gameMode: offline ? GameMode.PASS_AND_PLAY : GameMode.NETWORK,
       })
     );
 
@@ -86,10 +84,7 @@ export default function NewGame() {
   return (
     <div className="w-100 h-100 overflow-y-scroll pv4 flex items-center pv6-l relative bg-main-dark ph2 ph3-l shadow-5 br3">
       <HomeButton className="absolute top-1 right-1" />
-      <div
-        className="flex flex-column w-75-m w-50-l w-80"
-        style={{ margin: "auto" }}
-      >
+      <div className="flex flex-column w-75-m w-50-l w-80" style={{ margin: "auto" }}>
         <div className="flex justify-between ph1 items-center pb4 mb4 bb b--yellow-light">
           <Txt size={TxtSize.MEDIUM} value="Players" />
           <div className="flex">
@@ -99,13 +94,13 @@ export default function NewGame() {
                   key={count}
                   className={classnames("ph3 ph4-l pv2", {
                     "bg-lavender": playersCount !== count,
-                    "z-5": playersCount === count
+                    "z-5": playersCount === count,
                   })}
                   size={ButtonSize.SMALL}
                   style={{
                     ...(playersCount === count && {
-                      transform: "scale(1.20)"
-                    })
+                      transform: "scale(1.20)",
+                    }),
                   }}
                   text={`${count}`}
                   onClick={() => setPlayersCount(count)}
@@ -125,13 +120,13 @@ export default function NewGame() {
                     key={gameVariant}
                     className={classnames("ph1 ph3-l pv2 mt2 mt0-l", {
                       "bg-lavender": variant !== gameVariant,
-                      "z-5": variant === gameVariant
+                      "z-5": variant === gameVariant,
                     })}
                     size={ButtonSize.SMALL}
                     style={{
                       ...(variant === gameVariant && {
-                        transform: "scale(1.20)"
-                      })
+                        transform: "scale(1.20)",
+                      }),
                     }}
                     text={`${label}`}
                     onClick={() => setVariant(gameVariant as GameVariant)}
@@ -140,11 +135,7 @@ export default function NewGame() {
               })}
             </div>
           </div>
-          <Txt
-            className="lavender mt4 self-end"
-            size={TxtSize.SMALL}
-            value={VariantDescriptions[variant]}
-          />
+          <Txt className="lavender mt4 self-end" size={TxtSize.SMALL} value={VariantDescriptions[variant]} />
         </div>
 
         <a
@@ -162,11 +153,7 @@ export default function NewGame() {
               label="Pass & Play"
               subText="Physically pass the device to each player on their turn"
             >
-              <Checkbox
-                checked={offline}
-                id="offline"
-                onChange={e => setOffline(e.target.checked)}
-              />
+              <Checkbox checked={offline} id="offline" onChange={e => setOffline(e.target.checked)} />
             </Field>
 
             <Field
@@ -174,36 +161,19 @@ export default function NewGame() {
               label="Private"
               subText="Your game won't be visible in the 'Join Room' section"
             >
-              <Checkbox
-                checked={private_}
-                onChange={e => setPrivate(e.target.checked)}
-              />
+              <Checkbox checked={private_} onChange={e => setPrivate(e.target.checked)} />
             </Field>
 
             <Field className="pb2 mb2 bb b--yellow-light" label="Seed">
-              <TextInput
-                className="w3 tr"
-                id="seed"
-                value={seed}
-                onChange={e => setSeed(e.target.value)}
-              />
+              <TextInput className="w3 tr" id="seed" value={seed} onChange={e => setSeed(e.target.value)} />
             </Field>
 
-            <Field
-              className="pb2 mb2 bb b--yellow-light"
-              label="Allow rollback"
-            >
-              <Checkbox
-                checked={allowRollback}
-                onChange={e => setAllowRollback(e.target.checked)}
-              />
+            <Field className="pb2 mb2 bb b--yellow-light" label="Allow rollback">
+              <Checkbox checked={allowRollback} onChange={e => setAllowRollback(e.target.checked)} />
             </Field>
 
             <Field className="pb2 mb2 bb b--yellow-light" label="Prevent loss">
-              <Checkbox
-                checked={preventLoss}
-                onChange={e => setPreventLoss(e.target.checked)}
-              />
+              <Checkbox checked={preventLoss} onChange={e => setPreventLoss(e.target.checked)} />
             </Field>
 
             <Field className="pb2 mb2 bb b--yellow-light" label="Hints">
@@ -216,10 +186,7 @@ export default function NewGame() {
             </Field>
 
             <Field className="pb2 mb2 bb b--yellow-light" label="Turns history">
-              <Checkbox
-                checked={turnsHistory}
-                onChange={e => setTurnsHistory(e.target.checked)}
-              />
+              <Checkbox checked={turnsHistory} onChange={e => setTurnsHistory(e.target.checked)} />
             </Field>
 
             <Field label="Bots speed">

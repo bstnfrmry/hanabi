@@ -4,7 +4,6 @@ import posed, { PoseGroup } from "react-pose";
 import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { GameMode } from "~/game/state";
 import { useGame, useReplay, useSelfPlayer } from "~/hooks/game";
 
 interface Props {
@@ -34,10 +33,7 @@ export default function Logs(props: Props) {
                   <Turn
                     key={key}
                     includePlayer={true}
-                    showDrawn={
-                      !interturn &&
-                      game.players[turn.action.from].id !== selfPlayer?.id
-                    }
+                    showDrawn={!interturn && game.players[turn.action.from].id !== selfPlayer?.id}
                     turn={turn}
                   />
                 </PoseItem>
@@ -45,11 +41,7 @@ export default function Logs(props: Props) {
             })}
           </PoseGroup>
           <Tutorial placement="below" step={ITutorialStep.WELCOME}>
-            <Txt
-              className="lavender"
-              size={TxtSize.SMALL}
-              value={history.length ? "Game started!" : "Game starts!"}
-            />
+            <Txt className="lavender" size={TxtSize.SMALL} value={history.length ? "Game started!" : "Game starts!"} />
           </Tutorial>
         </div>
       )}

@@ -23,17 +23,9 @@ export interface Network {
 
   updateGame(game: IGameState): Promise<void>;
 
-  setReaction(
-    game: IGameState,
-    player: IPlayer,
-    reaction: string
-  ): Promise<void>;
+  setReaction(game: IGameState, player: IPlayer, reaction: string): Promise<void>;
 
-  setNotification(
-    game: IGameState,
-    player: IPlayer,
-    notified: boolean
-  ): Promise<void>;
+  setNotification(game: IGameState, player: IPlayer, notified: boolean): Promise<void>;
 }
 
 export default function useNetwork() {

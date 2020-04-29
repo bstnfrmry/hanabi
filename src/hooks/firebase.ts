@@ -1,12 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/database";
 
-import IGameState, {
-  fillEmptyValues,
-  GameMode,
-  IGameStatus,
-  IPlayer
-} from "~/game/state";
+import IGameState, { fillEmptyValues, GameMode, IGameStatus, IPlayer } from "~/game/state";
 import { GameHandler, GamesHandler, Network } from "~/hooks/network";
 
 export function setupFirebase() {
@@ -14,7 +9,7 @@ export function setupFirebase() {
     firebase.initializeApp({
       // Local database configuration using firebase-server
       ...(process.env.FIREBASE_DATABASE_URL && {
-        databaseURL: process.env.FIREBASE_DATABASE_URL
+        databaseURL: process.env.FIREBASE_DATABASE_URL,
       }),
       // Online database configuration
       ...(process.env.FIREBASE_API_KEY && {
@@ -24,8 +19,8 @@ export function setupFirebase() {
         projectId: process.env.FIREBASE_PROJECT_ID,
         storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
         messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-        appId: process.env.FIREBASE_APP_ID
-      })
+        appId: process.env.FIREBASE_APP_ID,
+      }),
     });
   }
 
@@ -128,14 +123,10 @@ export default class FirebaseNetwork implements Network {
   }
 
   async setReaction(game: IGameState, player: IPlayer, reaction: string) {
-    await this.db
-      .ref(`/games/${game.id}/players/${player.index}/reaction`)
-      .set(reaction);
+    await this.db.ref(`/games/${game.id}/players/${player.index}/reaction`).set(reaction);
   }
 
   async setNotification(game: IGameState, player: IPlayer, notified: boolean) {
-    await this.db
-      .ref(`/games/${game.id}/players/${player.index}/notified`)
-      .set(notified);
+    await this.db.ref(`/games/${game.id}/players/${player.index}/notified`).set(notified);
   }
 }

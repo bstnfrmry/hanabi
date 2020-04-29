@@ -18,7 +18,7 @@ const FS_ORG_ID = "T0W6G";
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
-  environment: process.env.NODE_ENV
+  environment: process.env.NODE_ENV,
 });
 
 Router.events.on("routeChangeComplete", () => logPageView());
@@ -71,11 +71,7 @@ function Hanabi(props: AppProps) {
   return (
     <>
       <Head>
-        <link
-          href="/static/favicon.ico"
-          rel="shortcut icon"
-          type="image/x-icon"
-        />
+        <link href="/static/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <link href="/static/hanabi-192.png" rel="apple-touch-icon" />
 
         <link href="/static/manifest.json" rel="manifest" />
@@ -92,10 +88,7 @@ function Hanabi(props: AppProps) {
           {!online && showOffline && (
             <div className="relative flex items-center justify-center bg-red shadow-4 b--red ba pa2 z-99">
               <Txt uppercase size={TxtSize.MEDIUM} value="You are offline" />
-              <a
-                className="absolute right-1"
-                onClick={() => setShowOffline(false)}
-              >
+              <a className="absolute right-1" onClick={() => setShowOffline(false)}>
                 <Txt value="×" />
               </a>
             </div>

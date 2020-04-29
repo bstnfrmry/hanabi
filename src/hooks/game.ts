@@ -20,7 +20,7 @@ export function useGame() {
   if (replay.cursor !== null) {
     return {
       ...fillEmptyValues(getStateAtTurn(game, replay.cursor)),
-      originalGame: game
+      originalGame: game,
     };
   }
 

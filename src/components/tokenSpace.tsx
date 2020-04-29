@@ -39,7 +39,7 @@ function Token(props: TokenProps) {
           )}
           size={TxtSize.SMALL}
           style={{
-            top: `-${i * 3}px`
+            top: `-${i * 3}px`,
           }}
           value={i + 1}
         />

@@ -10,9 +10,9 @@ const Animation = posed.div({
     transition: {
       type: "spring",
       stiffness: 10,
-      damping: 0
-    }
-  }
+      damping: 0,
+    },
+  },
 });
 
 export default function LoadingScreen() {

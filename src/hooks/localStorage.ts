@@ -1,17 +1,14 @@
 import { isString } from "lodash";
 import { useState } from "react";
 
-export default function useLocalStorage<T>(
-  key: string,
-  initialValue: T
-): [T, (value: T) => void] {
+export default function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T) => void] {
   // No-op hook for SSR.
   if (typeof window === "undefined") {
     return [
       initialValue,
       () => {
         /* No op */
-      }
+      },
     ];
   }
 

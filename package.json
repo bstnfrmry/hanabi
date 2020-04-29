@@ -6,10 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "server": "firebase-server -p 3001",
-    "lint": "eslint '**/*.{ts,tsx}'",
-    "test": "cypress run",
-    "deploy-database": "firebase deploy --only database"
+    "lint": "eslint '**/*.{ts,tsx}'"
   },
   "dependencies": {
     "@sentry/browser": "^5.12.4",
@@ -46,7 +43,6 @@
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "babel-plugin-root-import": "^6.4.1",
-    "cypress": "^4.0",
     "eslint": "^6.3.0",
     "eslint-config-prettier": "^6.1.0",
     "eslint-plugin-prettier": "^3.1.0",

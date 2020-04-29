@@ -19,7 +19,7 @@ interface Props {
 
 const Item = posed.div({
   selected: { height: "auto" },
-  notSelected: { height: "auto" }
+  notSelected: { height: "auto" },
 });
 
 export default function PlayersBoard(props: Props) {
@@ -31,7 +31,7 @@ export default function PlayersBoard(props: Props) {
     onNotifyPlayer,
     onReaction,
     onCloseArea,
-    onCommitAction
+    onCommitAction,
   } = props;
 
   const game = useGame();
@@ -39,10 +39,7 @@ export default function PlayersBoard(props: Props) {
   const currentPlayer = useCurrentPlayer();
 
   const position = selfPlayer ? selfPlayer.index : game.players.length;
-  const otherPlayers = [
-    ...game.players.slice(position + 1),
-    ...game.players.slice(0, position)
-  ];
+  const otherPlayers = [...game.players.slice(position + 1), ...game.players.slice(0, position)];
 
   let selectedPlayer = null;
   let cardIndex = null;
