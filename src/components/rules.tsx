@@ -20,24 +20,30 @@ const Paragraph = (props: TxtProps) => <Txt className="mv2">{props.children}</Tx
 const GrayTxt = (props: TxtProps) => <span className="gray">{props.children}</span>;
 
 interface Props {
-  setShowRules: (showRules: boolean) => void;
+  setShowRules?: (showRules: boolean) => void;
 }
 
 export default function Rules(props: Props) {
   const { setShowRules } = props;
 
   return (
-    <div className="absolute bg-main-dark z-9999 aspect-ratio--object overflow-y-scroll flex justify-center pa4 relative tj lh-copy">
+    <div className="bg-main-dark flex justify-center pa4 relative tj lh-copy">
       <div className="w-75-l">
-        <Button
-          className="absolute left-2 top-1"
-          size={ButtonSize.MEDIUM}
-          text="<"
-          onClick={() => setShowRules(false)}
+        {setShowRules && (
+          <Button
+            className="absolute left-2 top-1"
+            size={ButtonSize.MEDIUM}
+            text="<"
+            onClick={() => setShowRules(false)}
+          />
+        )}
+
+        <img
+          alt="Hanabi cards game online"
+          className="absolute top-0 right-0 mw4 ma4 o-50 dn db-l"
+          src="/static/hanabi.png"
         />
-        <img alt="Hanabi cards game online" className="absolute top-0 right-0 mw4 ma4 o-50" src="/static/hanabi.png" />
         <div className="flex flex-column mb5">
-          <Txt className="w-100 tc mt2 dib" size={TxtSize.LARGE} value="Hanabi" />
           <Title>Objective</Title>
           <Paragraph>
             Hanabi is a card game created by Antoine Bauza. It's cooperative, which means that players are not against
