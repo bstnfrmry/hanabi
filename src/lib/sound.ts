@@ -7,6 +7,11 @@ export async function playSound(path: string) {
       return;
     }
 
+    // Some browsers can't play sounds
+    if (e.name === "NotSupportedError") {
+      return;
+    }
+
     throw e;
   });
 }
