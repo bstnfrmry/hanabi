@@ -26,7 +26,6 @@ export default function Play() {
     if (!online) return;
 
     if (!gameId) {
-      router.push("/");
       return;
     }
 
