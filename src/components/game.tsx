@@ -329,30 +329,32 @@ export function Game(props: Props) {
             </div>
           )}
 
-          {selectedArea.type === ActionAreaType.LOGS && game.status !== IGameStatus.LOBBY && (
-            <div className="h4 pt0-l overflow-y-scroll">
-              <div className="flex justify-between h-100 pa1 pa2-l">
-                <Logs interturn={interturn} />
-                <div className="flex flex-column justify-between items-end">
-                  <Tutorial placement="above" step={ITutorialStep.DISCARD_PILE}>
-                    <DiscardArea />
-                  </Tutorial>
-                  <Button
-                    void
-                    size={ButtonSize.TINY}
-                    text={replay.cursor === null ? "🕑 Rewind" : "Back to game"}
-                    onClick={() => {
-                      if (replay.cursor === null) {
-                        onReplay();
-                      } else {
-                        onStopReplay();
-                      }
-                    }}
-                  />
+          {game.status !== IGameStatus.LOBBY &&
+            selectedArea.type !== ActionAreaType.MENU &&
+            selectedArea.type !== ActionAreaType.ROLLBACK && (
+              <div className="h4 pt0-l overflow-y-scroll">
+                <div className="flex justify-between h-100 pa1 pa2-l">
+                  <Logs interturn={interturn} />
+                  <div className="flex flex-column justify-between items-end">
+                    <Tutorial placement="above" step={ITutorialStep.DISCARD_PILE}>
+                      <DiscardArea />
+                    </Tutorial>
+                    <Button
+                      void
+                      size={ButtonSize.TINY}
+                      text={replay.cursor === null ? "🕑 Rewind" : "Back to game"}
+                      onClick={() => {
+                        if (replay.cursor === null) {
+                          onReplay();
+                        } else {
+                          onStopReplay();
+                        }
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
 
         {interturn && (
