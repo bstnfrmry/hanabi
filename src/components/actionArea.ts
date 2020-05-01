@@ -1,4 +1,4 @@
-import { IPlayer } from "~/game/state";
+import { IPlayer } from "~/lib/state";
 
 interface IOtherPlayerSelectedArea {
   id: string;
@@ -14,14 +14,9 @@ interface ISelfPlayerSelectedArea {
   cardIndex?: number;
 }
 
-interface IInstructionsSelectedArea {
-  id: "instructions";
-  type: ActionAreaType.INSTRUCTIONS;
-}
-
-interface IDiscardSelectedArea {
-  id: "discard";
-  type: ActionAreaType.DISCARD;
+interface ILogsSelectedArea {
+  id: "logs";
+  type: ActionAreaType.LOGS;
 }
 
 interface IMenuArea {
@@ -35,18 +30,16 @@ interface IRollbackArea {
 }
 
 export enum ActionAreaType {
-  INSTRUCTIONS,
+  LOGS,
   OTHER_PLAYER,
   SELF_PLAYER,
-  DISCARD,
   MENU,
-  ROLLBACK
+  ROLLBACK,
 }
 
 export type ISelectedArea =
-  | IInstructionsSelectedArea
+  | ILogsSelectedArea
   | IOtherPlayerSelectedArea
   | ISelfPlayerSelectedArea
-  | IDiscardSelectedArea
   | IMenuArea
   | IRollbackArea;

@@ -1,26 +1,38 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 require("dotenv").config();
 
+const webpack = require("webpack");
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
-const withSourceMaps = require("@zeit/next-source-maps");
+const nextSourceMaps = require("@zeit/next-source-maps")();
 
-const config = {
+module.exports = nextSourceMaps({
   target: "serverless",
-  webpack: config => {
-    config.plugins = config.plugins || [];
-
-    config.plugins = [
-      ...config.plugins,
-
-      // Read the .env file
+  env: {
+    SENTRY_DSN: process.env.SENTRY_DSN,
+  },
+  webpack: (config, { isServer, buildId }) => {
+    config.plugins.push(
       new Dotenv({
         path: path.join(__dirname, ".env"),
-        systemvars: true
+        systemvars: true,
       })
-    ];
+    );
+
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        "process.env.SENTRY_RELEASE": JSON.stringify(buildId),
+      })
+    );
+
+    if (!isServer) {
+      config.resolve.alias["@sentry/node"] = "@sentry/browser";
+    }
 
     return config;
-  }
-};
-
-module.exports = withSourceMaps(config);
+  },
+  experimental: {
+    reactRefresh: true,
+  },
+});

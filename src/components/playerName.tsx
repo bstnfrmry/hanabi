@@ -2,17 +2,17 @@ import classnames from "classnames";
 import React from "react";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { IPlayer } from "~/game/state";
 import { useSelfPlayer } from "~/hooks/game";
+import { IPlayer } from "~/lib/state";
 
 export enum PlayerNameSize {
   SMALL = "small",
-  MEDIUM = "medium"
+  MEDIUM = "medium",
 }
 
 const PlayerNameTextSizes = {
   [PlayerNameSize.SMALL]: TxtSize.SMALL,
-  [PlayerNameSize.MEDIUM]: TxtSize.MEDIUM
+  [PlayerNameSize.MEDIUM]: TxtSize.MEDIUM,
 };
 
 interface Props {
@@ -24,23 +24,16 @@ interface Props {
 }
 
 export default function PlayerName(props: Props) {
-  const {
-    player,
-    size = PlayerNameSize.SMALL,
-    explicit = false,
-    className
-  } = props;
+  const { player, size = PlayerNameSize.SMALL, explicit = false, className } = props;
 
   const selfPlayer = useSelfPlayer();
-  const you = !explicit && player.id === selfPlayer.id;
+  const you = !explicit && player.id === selfPlayer?.id;
 
   return (
-    <div className={classnames("relative inline-flex items-center", className)}>
-      <Txt
-        className="truncate"
-        size={PlayerNameTextSizes[size]}
-        value={you ? "You" : player.name}
-      />
-    </div>
+    <Txt
+      className={classnames("relative inline-flex items-center truncate", className)}
+      size={PlayerNameTextSizes[size]}
+      value={you ? "You" : player.name}
+    />
   );
 }

@@ -1,24 +1,24 @@
 import classnames from "classnames";
-import React, { HTMLAttributes, useState } from "react";
+import React, { HTMLAttributes, useEffect, useState } from "react";
 import Popover from "react-popover";
+import posed, { PoseGroup } from "react-pose";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import PlayerStats from "~/components/playerStats";
 import ReactionsPopover from "~/components/reactionsPopover";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
-import Button from "~/components/ui/button";
+import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import Vignettes from "~/components/vignettes";
-import { isReplayMode, MaxHints } from "~/game/actions";
-import { playSound } from "~/game/sound";
-import { ICard, IGameStatus, IHintAction, IPlayer } from "~/game/state";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
+import { useReplay } from "~/hooks/replay";
+import { matchColor, MaxHints } from "~/lib/actions";
+import { playSound } from "~/lib/sound";
+import { ICard, IColor, IGameStatus, IHintAction, IPlayer } from "~/lib/state";
 
 function isCardHintable(hint: IHintAction, card: ICard) {
-  return hint.type === "color"
-    ? card.color === hint.value
-    : card.number === hint.value;
+  return hint.type === "color" ? matchColor(card.color, hint.value as IColor) : card.number === hint.value;
 }
 
 function textualHint(hint: IHintAction, cards: ICard[]) {
@@ -33,13 +33,11 @@ function textualHint(hint: IHintAction, cards: ICard[]) {
   }
 
   if (hintableCards.length === 1) {
-    if (hint.type === "color")
-      return `Your card ${hintableCards[0]} is ${hint.value}`;
+    if (hint.type === "color") return `Your card ${hintableCards[0]} is ${hint.value}`;
     else return `Your card ${hintableCards[0]} is a ${hint.value}`;
   }
 
-  if (hint.type === "color")
-    return `Your cards ${hintableCards.join(", ")} are ${hint.value}`;
+  if (hint.type === "color") return `Your cards ${hintableCards.join(", ")} are ${hint.value}`;
 
   return `Your cards ${hintableCards.join(", ")} are ${hint.value}s`;
 }
@@ -75,34 +73,51 @@ export default function PlayerGame(props: Props) {
   } = props;
 
   const game = useGame();
+  const replay = useReplay();
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const [selectedCard, selectCard] = useState<number>(cardIndex);
+  const [revealCards, setRevealCards] = useState(false);
   const [pendingHint, setPendingHint] = useState<IHintAction>({
     type: null,
-    value: null
+    value: null,
   } as IHintAction);
 
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
-  const hideCards =
-    (self || !selfPlayer) &&
-    (isReplayMode(game) || game.status !== IGameStatus.OVER);
-  const canPlay = [IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status);
+
+  useEffect(() => {
+    setRevealCards(false);
+  }, [game.id]);
+
+  let hideCards = true;
+  // Show cards when spectating game
+  if (!selfPlayer) {
+    hideCards = false;
+  }
+  // Show cards to other players
+  if (!self && selfPlayer) {
+    hideCards = false;
+  }
+  // Show cards in replay mode (when toggled)
+  if (revealCards) {
+    hideCards = false;
+  }
+
+  const canPlay = [IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status) && !replay.cursor;
 
   const hasSelectedCard = selectedCard !== null;
   const cardContext = selected
     ? ICardContext.TARGETED_PLAYER
     : self
-      ? ICardContext.SELF_PLAYER
-      : ICardContext.OTHER_PLAYER;
+    ? ICardContext.SELF_PLAYER
+    : ICardContext.OTHER_PLAYER;
 
   return (
     <>
       <div
-        className={classnames(
-          "cards flex justify-between bg-main-dark pa2 pv2-l ph3-l relative",
-          { "flex-column": selected }
-        )}
+        className={classnames("cards flex justify-between bg-main-dark pa2 pv2-l ph6.5-m relative", {
+          "flex-column": selected,
+        })}
         onClick={() => {
           if (!selected) onSelectPlayer(player, 0);
         }}
@@ -116,46 +131,28 @@ export default function PlayerGame(props: Props) {
                   className="yellow nt1"
                   id="your-turn"
                   size={TxtSize.TINY}
-                  value={
-                    game.status === IGameStatus.ONGOING
-                      ? "Your turn"
-                      : game.status === IGameStatus.OVER
-                        ? ""
-                        : "You'll start first"
-                  }
+                  value={game.status === IGameStatus.LOBBY ? "You'll start first" : "Your turn"}
                 />
               </Tutorial>
             )}
             <div className={classnames("flex items-center")}>
-              {player === currentPlayer && (
-                <Txt className="yellow mr2" size={TxtSize.SMALL} value="➤" />
-              )}
-              <PlayerName
-                className="mr2"
-                explicit={true}
-                player={player}
-                size={PlayerNameSize.MEDIUM}
-              />
+              {player === currentPlayer && <Txt className="yellow mr2" size={TxtSize.SMALL} value="➤" />}
+              <PlayerName className="mr2" explicit={true} player={player} size={PlayerNameSize.MEDIUM} />
             </div>
           </div>
 
           {!self && player.reaction && (
             <Txt
               style={{
-                animation: "FontPulse 600ms 5"
+                animation: "FontPulse 600ms 5",
               }}
               value={player.reaction}
             />
           )}
 
-          {self && !isReplayMode(game) && (
+          {self && !replay.cursor && (
             <Popover
-              body={
-                <ReactionsPopover
-                  onClose={() => setReactionsOpen(false)}
-                  onReaction={onReaction}
-                />
-              }
+              body={<ReactionsPopover onClose={() => setReactionsOpen(false)} onReaction={onReaction} />}
               className="z-999"
               isOpen={reactionsOpen}
               onOuterAction={() => setReactionsOpen(false)}
@@ -170,19 +167,17 @@ export default function PlayerGame(props: Props) {
                 {player.reaction && (
                   <Txt
                     style={{
-                      animation: "FontPulse 600ms 5"
+                      animation: "FontPulse 600ms 5",
                     }}
                     value={player.reaction}
                   />
                 )}
-                {!player.reaction && (
-                  <Txt style={{ filter: "grayscale(100%)" }} value="︎︎︎︎😊" />
-                )}
+                {!player.reaction && <Txt style={{ filter: "grayscale(100%)" }} value="︎︎︎︎😊" />}
               </a>
             </Popover>
           )}
 
-          {active && !self && !player.notified && !player.bot && (
+          {active && selfPlayer && !self && !player.notified && !player.bot && (
             <a
               className="ml1 ml4-l"
               onClick={e => {
@@ -196,165 +191,197 @@ export default function PlayerGame(props: Props) {
           )}
 
           {selected && (
-            <a
-              className="absolute top-0 right-0 mt2 mr3"
-              // className={classnames({ ml2: player.reaction || self })}
-              onClick={() => onCloseArea()}
-            >
+            <a className="absolute top-0 right-0 mt2 mr3 pr6.5-m" onClick={() => onCloseArea()}>
               <Txt value="×" />
             </a>
           )}
         </div>
 
-        <div className={classnames("flex justify-end flex-grow-1 dib")}>
+        <div className={classnames("flex justify-end self-end flex-grow-1 dib")}>
           {displayStats && (
             <div className="ml3">
               <PlayerStats className="w4.5" player={player} />
             </div>
           )}
+          {!displayStats && (
+            <div className="relative flex items-center justify-end flex-grow-1 dib">
+              {selected && (
+                <Txt
+                  className="lavender absolute top--1 right-2 dib"
+                  size={TxtSize.TINY}
+                  style={{ marginTop: "-1px" }}
+                  value="⟶"
+                />
+              )}
 
-          {!displayStats &&
-            player.hand.map((card, i) => (
-              <Card
-                key={i}
-                card={card}
-                className={classnames({
-                  ma1: selected,
-                  "mr1 mr2-l": i < player.hand.length - 1
-                })}
-                context={cardContext}
-                hidden={hideCards}
-                position={i}
-                selected={
-                  selected &&
-                  (player === selfPlayer
-                    ? selectedCard === i
-                    : isCardHintable(pendingHint, card))
-                }
-                size={selected ? CardSize.LARGE : CardSize.MEDIUM}
-                style={{
-                  ...(selected && { transition: "all 50ms ease-in-out" })
-                }}
-                onClick={e => {
-                  e.stopPropagation();
-                  onSelectPlayer(player, i);
-                  if (player === selfPlayer) {
-                    selectCard(i);
-                  }
-                }}
-              />
-            ))}
+              {game.status === IGameStatus.OVER && player === selfPlayer && (
+                <Button
+                  void
+                  className={classnames({
+                    revealCardButton: selected,
+                  })}
+                  size={ButtonSize.TINY}
+                  text={revealCards ? "Hide" : "Reveal"}
+                  onClick={e => {
+                    e.stopPropagation();
+                    setRevealCards(!revealCards);
+                  }}
+                />
+              )}
+
+              <PoseGroup>
+                {player.hand.map((card, i) => (
+                  <AnimatedCard key={card.id}>
+                    <Card
+                      card={card}
+                      className={classnames({
+                        "ma1": selected,
+                        "mr1 mr2-l": i < player.hand.length - 1,
+                      })}
+                      context={cardContext}
+                      hidden={hideCards}
+                      position={i}
+                      selected={
+                        selected && (player === selfPlayer ? selectedCard === i : isCardHintable(pendingHint, card))
+                      }
+                      size={selected ? CardSize.LARGE : CardSize.MEDIUM}
+                      style={{
+                        ...(selected && { transition: "all 50ms ease-in-out" }),
+                      }}
+                      onClick={e => {
+                        e.stopPropagation();
+                        onSelectPlayer(player, i);
+                        if (player === selfPlayer) {
+                          selectCard(i);
+                        }
+                      }}
+                    />
+                  </AnimatedCard>
+                ))}
+              </PoseGroup>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Self player actions */}
       <div
+        className="ph6.5-m"
         style={{
           transform: "translateY(0)",
           transition: "transform 150ms ease-in-out",
-          ...(!selected && { opacity: 0, transform: "translateY(-100px)" })
+          ...(!selected && { opacity: 0, transform: "translateY(-100px)" }),
         }}
       >
-        {canPlay &&
-          selected &&
-          player === selfPlayer &&
-          selfPlayer === currentPlayer && (
-            <div className="flex flex-column items-end mb2">
-              <div className="flex justify-end items-center h-100-l">
-                {hasSelectedCard && (
-                  <Txt
-                    className="pb1 pb2-l ml1 mb2 mr3 ml2-l"
-                    value={`Card ${PositionMap[selectedCard]} selected`}
-                  />
-                )}
+        {canPlay && selected && player === selfPlayer && selfPlayer === currentPlayer && (
+          <div className="flex flex-column items-end mb2">
+            <div className="flex justify-end items-center h-100-l">
+              {hasSelectedCard && (
+                <Txt className="pb1 pb2-l ml1 mb2 mr3 ml2-l" value={`Card ${PositionMap[selectedCard]} selected`} />
+              )}
 
-                {hasSelectedCard && (
-                  <div className="flex flex pb2">
-                    {["discard", "play"].map(action => (
-                      <Button
-                        key={action}
-                        className="mr2"
-                        disabled={
-                          action === "discard" && game.tokens.hints === 8
-                        }
-                        id={action}
-                        text={action}
-                        onClick={() =>
-                          onCommitAction({
-                            action,
-                            from: selfPlayer.index,
-                            cardIndex: selectedCard
-                          })
-                        }
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-              {hasSelectedCard && game.tokens.hints === MaxHints && (
-                <Txt className="orange mr2 flex flex-column items-end">
-                  <span>8 tokens</span>
-                  <span>You cannot discard</span>
-                </Txt>
+              {hasSelectedCard && (
+                <div className="flex flex pb2">
+                  {["discard", "play"].map(action => (
+                    <Button
+                      key={action}
+                      className="mr2"
+                      disabled={action === "discard" && game.tokens.hints === 8}
+                      id={action}
+                      text={action}
+                      onClick={() =>
+                        onCommitAction({
+                          action,
+                          from: selfPlayer.index,
+                          cardIndex: selectedCard,
+                        })
+                      }
+                    />
+                  ))}
+                </div>
               )}
             </div>
-          )}
+            {hasSelectedCard && game.tokens.hints === MaxHints && (
+              <Txt className="orange mr2 flex flex-column items-end">
+                <span>8 tokens</span>
+                <span>You cannot discard</span>
+              </Txt>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Other player actions */}
       <div
+        className="ph6.5-m"
         style={{
           opacity: 1,
           transform: "translateY(0)",
           transition: "all 150ms ease-in-out",
-          ...(!selected && { opacity: 0, transform: "translateY(-100px)" })
+          ...(!selected && { opacity: 0, transform: "translateY(-100px)" }),
         }}
       >
-        {canPlay &&
-          selected &&
-          player !== selfPlayer &&
-          selfPlayer === currentPlayer && (
-            <div className="flex flex-column items-end pb2 mr2">
-              <Vignettes
-                pendingHint={pendingHint}
-                onSelect={action => setPendingHint(action)}
+        {canPlay && selected && player !== selfPlayer && selfPlayer === currentPlayer && (
+          <div className="flex flex-column items-end pb2 mr2">
+            <Vignettes pendingHint={pendingHint} onSelect={action => setPendingHint(action)} />
+
+            <div className="mt2 flex items-center">
+              {pendingHint.value && game.tokens.hints !== 0 && (
+                <Txt italic className="mr3" value={textualHint(pendingHint, player.hand)} />
+              )}
+              {game.tokens.hints === 0 && <Txt className="mr3 orange" value="No tokens left to hint" />}
+              {!pendingHint.value && game.tokens.hints > 0 && (
+                <Txt className="mr3" value="Select either a color or number to hint" />
+              )}
+
+              <Button
+                disabled={!pendingHint.type || game.tokens.hints === 0}
+                id="give-hint"
+                text="Hint"
+                onClick={() =>
+                  onCommitAction({
+                    action: "hint",
+                    from: currentPlayer.index,
+                    to: player.index,
+                    ...pendingHint,
+                  })
+                }
               />
-
-              <div className="mt2 flex items-center">
-                {pendingHint.value && game.tokens.hints !== 0 && (
-                  <Txt
-                    italic
-                    className="mr3"
-                    value={textualHint(pendingHint, player.hand)}
-                  />
-                )}
-                {game.tokens.hints === 0 && (
-                  <Txt className="mr3 orange" value="No tokens left to hint" />
-                )}
-                {!pendingHint.value && game.tokens.hints > 0 && (
-                  <Txt
-                    className="mr3"
-                    value="Select either a color or number to hint"
-                  />
-                )}
-
-                <Button
-                  disabled={!pendingHint.type || game.tokens.hints === 0}
-                  id="give-hint"
-                  text="Hint"
-                  onClick={() =>
-                    onCommitAction({
-                      action: "hint",
-                      from: currentPlayer.index,
-                      to: player.index,
-                      ...pendingHint
-                    })
-                  }
-                />
-              </div>
             </div>
-          )}
+          </div>
+        )}
       </div>
+      <style global jsx>{`
+        .revealCardButton {
+          position: absolute;
+          top: -1.3rem;
+          right: 3.5rem;
+        }
+
+        @media screen and (min-width: 60em) {
+          .revealCardButton {
+            position: relative;
+            top: 0;
+            right: 0;
+          }
+        }
+      `}</style>
     </>
   );
 }
+
+const AnimatedCard = posed.div({
+  enter: {
+    opacity: 1,
+    transition: {
+      delay: 200,
+      duration: 100,
+    },
+  },
+  exit: {
+    opacity: 0.1,
+    transition: {
+      duration: 100,
+    },
+  },
+});

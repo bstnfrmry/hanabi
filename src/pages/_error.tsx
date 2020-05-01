@@ -33,12 +33,7 @@ export default class Error extends React.Component<Props> {
           <br />
           <br />
           We also have a{" "}
-          <a
-            className="lavender"
-            href="https://github.com/bstnfrmry/hanabi/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
+          <a className="lavender" href="https://github.com/bstnfrmry/hanabi/" rel="noopener noreferrer" target="_blank">
             public Github repository
           </a>{" "}
           if you'd like to contribute or report a bug.

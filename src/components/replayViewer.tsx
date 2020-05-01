@@ -1,25 +1,26 @@
 import Slider from "rc-slider";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
+import { useReplay } from "~/hooks/replay";
 
 const SliderStyle = {
   HANDLE: {
-    backgroundColor: "var(--color-main)",
+    backgroundColor: "var(--color-yellow)",
     borderColor: "var(--color-yellow)",
     height: "18px",
-    width: "18px"
+    width: "18px",
   },
   RAIL: {
     height: "8px",
-    backgroundColor: "var(--color-lavender)"
+    backgroundColor: "var(--color-lavender)",
   },
   TRACK: {
     backgroundColor: "var(--color-main)",
-    height: "8px"
-  }
+    height: "8px",
+  },
 };
 
 interface Props {
@@ -27,35 +28,27 @@ interface Props {
   onStopReplay: () => void;
 }
 
-export default function ReplayViewver(props: Props) {
+export default function ReplayViewer(props: Props) {
   const { onReplayCursorChange, onStopReplay } = props;
 
   const game = useGame();
-  const [replayCursor, setReplayCursor] = useState(game.replayCursor);
+  const replay = useReplay();
 
-  const maxTurns = game.originalGame.turnsHistory.length - 1;
-
-  useEffect(() => {
-    setReplayCursor(game.replayCursor);
-  }, [game.replayCursor]);
+  const maxTurns = game.originalGame.turnsHistory.length;
 
   return (
-    <div className="bg-black-50 flex justify-between items-center pa2 bt bb b--yellow">
+    <div className="bg-black-50 flex justify-between items-center pa2">
       <div className="flex flex-column">
         <Txt className="db" size={TxtSize.SMALL} value={`Replay`} />
-        <Txt
-          className="mt1 light-silver nowrap"
-          size={TxtSize.SMALL}
-          value={`${replayCursor} / ${maxTurns}`}
-        />
+        <Txt className="mt1 light-silver nowrap" size={TxtSize.SMALL} value={`${replay.cursor} / ${maxTurns}`} />
       </div>
       <Button
         void
         className="ml3"
-        disabled={game.replayCursor === 0}
+        disabled={replay.cursor === 0}
         size={ButtonSize.TINY}
         text="<"
-        onClick={() => onReplayCursorChange(game.replayCursor - 1)}
+        onClick={() => onReplayCursorChange(replay.cursor - 1)}
       />
       <Slider
         className="ml3 nt1"
@@ -64,25 +57,19 @@ export default function ReplayViewver(props: Props) {
         min={0}
         railStyle={SliderStyle.RAIL}
         trackStyle={SliderStyle.TRACK}
-        value={replayCursor}
+        value={replay.cursor}
         onAfterChange={onReplayCursorChange}
-        onChange={setReplayCursor}
+        onChange={onReplayCursorChange}
       />
       <Button
         void
         className="ml3"
-        disabled={game.replayCursor === maxTurns}
+        disabled={replay.cursor === maxTurns}
         size={ButtonSize.TINY}
         text=">"
-        onClick={() => onReplayCursorChange(game.replayCursor + 1)}
+        onClick={() => onReplayCursorChange(replay.cursor + 1)}
       />
-      <Button
-        void
-        className="ml3"
-        size={ButtonSize.TINY}
-        text="&times;"
-        onClick={onStopReplay}
-      />
+      <Button void className="ml3" size={ButtonSize.TINY} text="&times;" onClick={onStopReplay} />
     </div>
   );
 }

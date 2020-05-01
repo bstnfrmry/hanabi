@@ -18,12 +18,11 @@ export default interface IGameState {
   // the last round of game when the draw is empty
   actionsLeft: number;
   turnsHistory: ITurn[];
-  history: IGameState[];
   createdAt: number;
   synced: boolean;
   // Replay mode
-  replayCursor?: number;
   originalGame?: IGameState;
+  nextGameId?: string;
 }
 
 /**
@@ -32,8 +31,8 @@ export default interface IGameState {
 
 export interface IGameOptions {
   id: string;
+  variant?: GameVariant;
   playersCount: number;
-  multicolor: boolean;
   allowRollback: boolean;
   preventLoss: boolean;
   seed: string;
@@ -44,9 +43,15 @@ export interface IGameOptions {
   gameMode: GameMode;
 }
 
+export enum GameVariant {
+  CLASSIC = "classic",
+  MULTICOLOR = "multicolor",
+  RAINBOW = "rainbow",
+}
+
 export enum GameMode {
   NETWORK = "network",
-  PASS_AND_PLAY = "pass_and_play"
+  PASS_AND_PLAY = "pass_and_play",
 }
 
 export enum IGameHintsLevel {
@@ -55,13 +60,13 @@ export enum IGameHintsLevel {
   // Direct hints are displayed
   DIRECT = "direct",
   // No hints displayd
-  NONE = "none"
+  NONE = "none",
 }
 
 export enum IGameStatus {
   LOBBY = "lobby",
   ONGOING = "ongoing",
-  OVER = "over"
+  OVER = "over",
 }
 
 export enum IColor {
@@ -70,7 +75,8 @@ export enum IColor {
   BLUE = "blue",
   WHITE = "white",
   YELLOW = "yellow",
-  MULTICOLOR = "multicolor"
+  MULTICOLOR = "multicolor",
+  RAINBOW = "rainbow",
 }
 
 export type INumber = 1 | 2 | 3 | 4 | 5;
@@ -78,7 +84,7 @@ export type INumber = 1 | 2 | 3 | 4 | 5;
 export enum IHintLevel {
   IMPOSSIBLE = 0,
   POSSIBLE = 1,
-  SURE = 2
+  SURE = 2,
 }
 
 // an array of 2 (direct hint), 1 (still possible), or 0 (impossible)
@@ -98,6 +104,7 @@ export interface ICard {
   number: INumber;
   hint?: ICardHint;
   id?: number;
+  receivedHints?: ITurn[];
 }
 
 export type IActionType = "discard" | "play" | "hint";
@@ -124,6 +131,7 @@ export interface IHintAction {
   to: number;
   type: IHintType;
   value: IColor | INumber;
+  cardsIndex?: number[];
 }
 
 export type IAction = IDiscardAction | IPlayAction | IHintAction;
@@ -154,17 +162,17 @@ export interface ITokens {
 // empty arrays are returned as null in Firebase, so we fill
 // them back to avoid having to type check everywhere
 export function fillEmptyValues(state: IGameState): IGameState {
+  if (!state) return null;
+
   return defaults(state, {
     playedCards: [],
     drawPile: [],
     discardPile: [],
     players: (state.players || []).map(player =>
       defaults(player, {
-        hand: []
+        hand: [],
       })
     ),
     turnsHistory: [],
-    history: [],
-    reactions: []
   });
 }

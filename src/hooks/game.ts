@@ -1,24 +1,21 @@
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
 
-import { isReplayMode } from "~/game/actions";
-import IGameState, {
-  fillEmptyValues,
-  GameMode,
-  IGameStatus
-} from "~/game/state";
+import useLocalStorage from "~/hooks/localStorage";
+import { useReplay } from "~/hooks/replay";
+import { getStateAtTurn } from "~/lib/actions";
+import IGameState, { fillEmptyValues, GameMode } from "~/lib/state";
 
-export const GameContext = React.createContext(null);
+export const GameContext = React.createContext<IGameState>(null);
 
 export function useGame() {
   const game = useContext<IGameState>(GameContext);
+  const replay = useReplay();
 
-  if (isReplayMode(game)) {
+  if (replay.cursor !== null) {
     return {
-      ...fillEmptyValues(game.history[game.replayCursor]),
+      ...fillEmptyValues(getStateAtTurn(game, replay.cursor)),
       originalGame: game,
-      status: IGameStatus.OVER,
-      replayCursor: game.replayCursor
     };
   }
 
@@ -37,8 +34,10 @@ export function useSelfPlayer(game: IGameState = useGame()) {
   const router = useRouter();
   const currentPlayer = useCurrentPlayer(game);
 
-  const { playerId } = router.query;
+  const [storedPlayerId] = useLocalStorage("playerId", null);
 
+  // Allows overwriting the playerId using the page URL for backwards compatibility
+  const playerId = router.query.playerId || storedPlayerId;
   if (!game) {
     return null;
   }

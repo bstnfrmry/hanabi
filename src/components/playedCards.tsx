@@ -3,9 +3,9 @@ import React from "react";
 
 import Card, { CardSize, CardWrapper, ICardContext } from "~/components/card";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
-import { getColors } from "~/game/actions";
-import { ICard } from "~/game/state";
 import { useGame } from "~/hooks/game";
+import { getColors } from "~/lib/actions";
+import { ICard } from "~/lib/state";
 
 interface Props {
   cards: ICard[];
@@ -25,22 +25,10 @@ export default function PlayedCards(props: Props) {
           const topCard = last(groupedCards[color]);
 
           if (!topCard) {
-            return (
-              <CardWrapper
-                key={i}
-                className="mr1"
-                color={color}
-                size={CardSize.MEDIUM}
-              />
-            );
+            return <CardWrapper key={i} className="mr1" color={color} size={CardSize.MEDIUM} />;
           }
           return (
-            <CardWrapper
-              key={i}
-              className="mr1 relative"
-              color={color}
-              size={CardSize.MEDIUM}
-            >
+            <CardWrapper key={i} className="mr1 relative" color={color} size={CardSize.MEDIUM}>
               {groupedCards[color].map((card, i) => (
                 <Card
                   key={i}
@@ -49,7 +37,7 @@ export default function PlayedCards(props: Props) {
                   context={ICardContext.PLAYED}
                   size={CardSize.MEDIUM}
                   style={{
-                    top: `-${i * 2}px`
+                    top: `-${i * 2}px`,
                   }}
                 />
               ))}

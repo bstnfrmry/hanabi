@@ -1,13 +1,13 @@
 import { isGameOver, joinGame, newGame } from "./actions";
-import play from "./ai";
-import { GameMode, IGameHintsLevel, IGameOptions, IPlayer } from "./state";
+import { play } from "./ai";
+import { GameMode, GameVariant, IGameHintsLevel, IGameOptions, IPlayer } from "./state";
 
 const scoresDistribution = {};
 
 const options: IGameOptions = {
   id: "benchmark",
   playersCount: 3,
-  multicolor: false,
+  variant: GameVariant.CLASSIC,
   allowRollback: false,
   private: false,
   preventLoss: false,
@@ -15,13 +15,13 @@ const options: IGameOptions = {
   hintsLevel: IGameHintsLevel.ALL,
   botsWait: 0,
   gameMode: GameMode.NETWORK,
-  turnsHistory: false
+  turnsHistory: false,
 };
 
 const defaultPlayer: IPlayer = {
   id: Math.random.toString(),
   name: "name",
-  bot: true
+  bot: true,
 };
 
 for (let i = 0; i < 1000; i++) {

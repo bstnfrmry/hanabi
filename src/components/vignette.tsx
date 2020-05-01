@@ -2,7 +2,7 @@ import classnames from "classnames";
 import React from "react";
 
 import Txt from "~/components/ui/txt";
-import { IHintType } from "~/game/state";
+import { IHintType } from "~/lib/state";
 
 interface Props {
   type: IHintType;
@@ -16,7 +16,7 @@ export default function Vignette(props: Props) {
   const { type, value, onClick, className, selected = false } = props;
 
   const style = {
-    ...(selected && { transform: "scale(1.2)" })
+    ...(selected && { transform: "scale(1.2)" }),
   };
 
   return (

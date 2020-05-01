@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/browser";
-import NextDocument, { Head, Html, Main, NextScript } from "next/document";
+import NextDocument, { DocumentContext, Head, Html, Main, NextScript } from "next/document";
 import React from "react";
 
 process.on("unhandledRejection", err => {
@@ -11,14 +11,14 @@ process.on("uncaughtException", err => {
 });
 
 class Document extends NextDocument {
-  static async getInitialProps(ctx) {
+  static async getInitialProps(ctx: DocumentContext) {
     const initialProps = await NextDocument.getInitialProps(ctx);
     return { ...initialProps };
   }
 
   render() {
     return (
-      <Html>
+      <Html lang="en">
         <Head />
         <body>
           <Main />

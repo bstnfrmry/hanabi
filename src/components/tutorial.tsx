@@ -15,9 +15,9 @@ const HighlightedArea = posed.div({
     transition: {
       type: "spring",
       stiffness: 10,
-      damping: 0
-    }
-  }
+      damping: 0,
+    },
+  },
 });
 
 export enum ITutorialStep {
@@ -28,49 +28,47 @@ export enum ITutorialStep {
   OTHER_PLAYERS = 4,
   HINT_TOKENS = 5,
   STRIKE_TOKENS = 6,
-  YOUR_TURN = 7
+  YOUR_TURN = 7,
 }
 
 const steps = {
   [ITutorialStep.WELCOME]: {
-    title: "Welcome!",
-    body: "Let's learn how to play"
+    title: "Tutorial",
+    body: "Let's learn how to play!",
   },
   [ITutorialStep.PLAYED_CARDS]: {
     title: "Played cards",
-    body:
-      "This will nest the cards that have been played.\nReach 5 on each color to win the game."
+    body: "This will nest the cards that have been played.\nCollectively, reach 5 on each color to win the game.",
   },
   [ITutorialStep.DISCARD_PILE]: {
     title: "Discard",
     body:
-      "This pile contains all the cards you discarded.\nWatch out and avoid discarding the cards you need to finish the game."
+      "Here you will see the cards\nyou and your team discarded.\nAvoid discarding the ones\nyou need to finish the game.",
   },
   [ITutorialStep.SELF_PLAYER]: {
     title: "Your game",
-    body:
-      "These are your cards.\nYou can't see them, but other players can and will give you hints about them."
+    body: "These are your cards.\nYou can't see them, but other players can and will give you hints about them.",
   },
   [ITutorialStep.OTHER_PLAYERS]: {
     title: "Teammates",
     body:
-      "These are your teammates.\nLike you, they can't see their cards.\nGive them hints to help them play or discard cards"
+      "These are your teammates.\nLike you, they can't see their cards.\nGive them hints to help them play or discard cards",
   },
   [ITutorialStep.HINT_TOKENS]: {
     title: "Hint tokens",
     body:
-      "Some actions have a cost.\n\n- Giving a hint costs 1 hint token.\n- Discarding a card grants 1 hint token.\n- Playing a 5 gives 1 hint token as a bonus"
+      "Some actions have a cost.\n\n- Giving a hint costs 1 hint token.\n- Discarding a card grants 1 hint token.\n- Playing a 5 gives 1 hint token as a bonus",
   },
   [ITutorialStep.STRIKE_TOKENS]: {
     title: "Strike tokens",
     body:
-      "Playing a wrong card will discard it and cost you 1 strike token.\nReaching 3 strike tokens will instantly lose the game."
+      "Playing a wrong card will discard it and cost you 1 strike token.\nReaching 3 strike tokens will instantly lose the game.",
   },
   [ITutorialStep.YOUR_TURN]: {
     title: "It's your turn",
     body:
-      "You have 3 options:\n\n- Tap your game to play a card...\n- ... or discard it\n- Tap one of your teammates games to give them a hint"
-  }
+      "You have 3 options:\n\n- Tap your game to play a card...\n- ... or discard it\n- Tap one of your teammates games to give them a hint",
+  },
 };
 
 interface TutorialProviderProps {
@@ -80,9 +78,11 @@ interface TutorialProviderProps {
 export function TutorialProvider(props: TutorialProviderProps) {
   const { children } = props;
 
-  const [currentStep, setCurrentStep] = useState(
-    +localStorage.getItem(LocalStorageKey) || ITutorialStep.WELCOME
-  );
+  const [currentStep, setCurrentStep] = useState(ITutorialStep.WELCOME);
+
+  useEffect(() => {
+    setCurrentStep(+localStorage.getItem(LocalStorageKey));
+  }, []);
 
   function setStep(step: number) {
     setCurrentStep(step);
@@ -100,7 +100,7 @@ export function TutorialProvider(props: TutorialProviderProps) {
         previousStep: () => setStep(currentStep - 1),
         nextStep: () => setStep(currentStep + 1),
         skip: () => setStep(-1),
-        reset: () => setStep(1)
+        reset: () => setStep(1),
       }}
     >
       {children}
@@ -118,8 +118,7 @@ export default function Tutorial(props: Props) {
   const { step, placement, children } = props;
 
   const [pose, setPose] = useState(null);
-  const { currentStep, previousStep, nextStep, lastStep, skip, totalSteps } =
-    useContext(TutorialContext) || {};
+  const { currentStep, previousStep, nextStep, lastStep, skip, totalSteps } = useContext(TutorialContext);
 
   useEffect(() => {
     if (step !== currentStep) return;
@@ -141,36 +140,21 @@ export default function Tutorial(props: Props) {
         <div className="flex flex-column b--yellow ba bw1 bg-white pa2 pa3-l br2 main-dark">
           <span className="flex items-center justify-between">
             <Txt size={TxtSize.MEDIUM} value={title} />
-            {step > 0 && (
-              <Txt className="gray mr2" value={`${step} / ${totalSteps - 1}`} />
-            )}
+            {step > 0 && <Txt className="gray mr2" value={`${step} / ${totalSteps - 1}`} />}
           </span>
-          <div className="flex items-center mt2 mt4-l">
+          <div className="flex flex-column mt1 mt2-l">
             <Txt multiline className="mr4" value={body} />
 
             {step === ITutorialStep.WELCOME && (
-              <>
-                <Button
-                  className="mr1 mr2-l"
-                  id="skip-tutorial"
-                  size={ButtonSize.TINY}
-                  text="Skip"
-                  onClick={skip}
-                />
+              <div className="flex self-end mt1 ph1">
+                <Button className="mr1 mr2-l" id="skip-tutorial" size={ButtonSize.TINY} text="✕ Skip" onClick={skip} />
                 <Button size={ButtonSize.TINY} text="Go !" onClick={nextStep} />
-              </>
+              </div>
             )}
 
             {step !== ITutorialStep.WELCOME && (
-              <>
-                {step > 1 && (
-                  <Button
-                    className="mr1 mr2-l"
-                    size={ButtonSize.TINY}
-                    text="<"
-                    onClick={previousStep}
-                  />
-                )}
+              <div className="flex self-end mt1 ph1">
+                {step > 1 && <Button className="mr1 mr2-l" size={ButtonSize.TINY} text="<" onClick={previousStep} />}
                 <Button
                   size={ButtonSize.TINY}
                   text={lastStep ? "✓" : ">"}
@@ -180,7 +164,7 @@ export default function Tutorial(props: Props) {
                     nextStep();
                   }}
                 />
-              </>
+              </div>
             )}
           </div>
         </div>

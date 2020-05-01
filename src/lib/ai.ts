@@ -1,26 +1,13 @@
 import { cloneDeep, filter, findLastIndex } from "lodash";
 
-import {
-  colors,
-  commitAction,
-  getPlayedCardsPile,
-  isPlayable,
-  numbers
-} from "./actions";
-import IGameState, {
-  IAction,
-  ICard,
-  ICardHint,
-  IHintAction,
-  INumber,
-  IPlayer
-} from "./state";
+import { commitAction, getColors, getPlayedCardsPile, getStateAtTurn, isPlayable, numbers } from "./actions";
+import IGameState, { IAction, ICard, ICardHint, IHintAction, INumber, IPlayer } from "./state";
 
 export enum IDeductionStatus {
   PLAYABLE = 0, // the card value is such that it can be played right now
   HAPPYDISCARD, // the card can never be useful, free money
   DISCARD, // the card can be discarded, there's another one like this in the draw pile
-  SADDISCARD // if discarded, the card leads to a lost point (incomplete pile)
+  SADDISCARD, // if discarded, the card leads to a lost point (incomplete pile)
 }
 
 export interface IPlayerView {
@@ -45,11 +32,7 @@ export interface IHiddenCard {
  * Check whether the current card can be in hand
  */
 function isCardPossible(card: ICard, possibleCards: ICard[]): boolean {
-  return (
-    possibleCards.findIndex(
-      c => c.number === card.number && c.color === card.color
-    ) > -1
-  );
+  return possibleCards.findIndex(c => c.number === card.number && c.color === card.color) > -1;
 }
 
 export function isCardDangerous(card: ICard, state: IGameState): boolean {
@@ -59,11 +42,7 @@ export function isCardDangerous(card: ICard, state: IGameState): boolean {
   if (card.color === "multicolor" || card.number === 5) {
     return true;
   }
-  if (
-    state.discardPile.find(
-      c => c.color === card.color && c.number === card.number
-    )
-  ) {
+  if (state.discardPile.find(c => c.color === card.color && c.number === card.number)) {
     return true;
   }
 
@@ -79,10 +58,7 @@ function isCardEverPlayable(card: ICard, state: IGameState): boolean {
     // let's check whether the cards in between have been discarded
     // e.g. the game pile is a 3 Red, the 2 4s in the discard, and I have a 5 Red
     for (let i = playedCardsPile[card.color] + 1; i < card.number; i++) {
-      const discarded = filter(
-        state.discardPile,
-        e => e.color === card.color && e.number === i
-      );
+      const discarded = filter(state.discardPile, e => e.color === card.color && e.number === i);
       const cardCount = card.color === "multicolor" ? 1 : 2;
       if (discarded.length === cardCount) {
         return false;
@@ -96,14 +72,9 @@ function isCardEverPlayable(card: ICard, state: IGameState): boolean {
 /**
  * Check whether the current card can be discarded
  */
-export function isCardDiscardable(
-  card: IHiddenCard,
-  state: IGameState
-): boolean {
+export function isCardDiscardable(card: IHiddenCard, state: IGameState): boolean {
   // AI can discard a card that can never be played (already played or because of discards)
-  if (
-    card.deductions.every(deduction => !isCardEverPlayable(deduction, state))
-  ) {
+  if (card.deductions.every(deduction => !isCardEverPlayable(deduction, state))) {
     return true;
   }
 
@@ -115,11 +86,10 @@ export function isCardDiscardable(
   return true;
 }
 
-export function getHintDeductions(
-  hint: ICardHint,
-  possibleCards: ICard[]
-): IDeduction[] {
+export function getHintDeductions(hint: ICardHint, possibleCards: ICard[], game: IGameState): IDeduction[] {
   const deductions: IDeduction[] = [];
+  const colors = getColors(game);
+
   colors.forEach(color => {
     numbers.forEach(number => {
       if (
@@ -130,7 +100,7 @@ export function getHintDeductions(
         deductions.push({
           number: number as INumber,
           color,
-          deductionLevel: 0
+          deductionLevel: 0,
         } as IDeduction);
       }
     });
@@ -139,12 +109,10 @@ export function getHintDeductions(
 }
 
 function getPossibleCards(state: IGameState, player: number): ICard[] {
-  return [...state.drawPile, ...Object.values(state.players)[player].hand].map(
-    c => ({
-      color: c.color,
-      number: c.number
-    })
-  );
+  return [...state.drawPile, ...Object.values(state.players)[player].hand].map(c => ({
+    color: c.color,
+    number: c.number,
+  }));
 }
 
 /**
@@ -167,32 +135,20 @@ export interface IDeduction extends ICard {
 
 export type IGameView = IGameState & { gameViews: IPlayerView[] };
 
-export function getLastOptimistCardOfPlayer(
-  state: IGameState,
-  player: number
-): ICard | null {
-  const lastTimeHinted = findLastIndex(
-    state.turnsHistory,
-    g => g.action.action === "hint" && g.action.to === player
-  );
+export function getLastOptimistCardOfPlayer(state: IGameState, player: number): ICard | null {
+  const lastTimeHinted = findLastIndex(state.turnsHistory, g => g.action.action === "hint" && g.action.to === player);
 
-  const lastTimePlayed = findLastIndex(
-    state.turnsHistory,
-    g => g.action.action === "play" && g.action.from === player
-  );
+  const lastTimePlayed = findLastIndex(state.turnsHistory, g => g.action.action === "play" && g.action.from === player);
 
   if (lastTimeHinted === -1 || lastTimePlayed > lastTimeHinted) {
     return null;
   }
 
-  const lastHintReceived = state.turnsHistory[lastTimeHinted]
-    .action as IHintAction;
+  const lastHintReceived = state.turnsHistory[lastTimeHinted].action as IHintAction;
 
-  const gameWhenLastHinted = state.history[lastTimeHinted].players[player].hand;
+  const gameWhenLastHinted = getStateAtTurn(state, lastTimeHinted).players[player].hand;
 
-  const firstHintedCard = gameWhenLastHinted.find(
-    card => card[lastHintReceived.type] === lastHintReceived.value
-  );
+  const firstHintedCard = gameWhenLastHinted.find(card => card[lastHintReceived.type] === lastHintReceived.value);
 
   return firstHintedCard || null;
 }
@@ -211,8 +167,8 @@ export function gameStateToGameView(gameState: IGameState): IGameView {
     player.hand.forEach((card: ICard) => {
       gameView.hand.push({
         hint: card.hint,
-        deductions: getHintDeductions(card.hint, possibleCards),
-        optimist: lastOptimistCard && card.id === lastOptimistCard.id
+        deductions: getHintDeductions(card.hint, possibleCards, state),
+        optimist: lastOptimistCard && card.id === lastOptimistCard.id,
       } as IHiddenCard);
     });
     state.gameViews.push(gameView);
@@ -234,11 +190,7 @@ export function commitViewAction(state: IGameView, action: IAction): IGameView {
   return newState;
 }
 
-function findGivableHint(
-  hand: ICard[],
-  pIndex: number,
-  state: IGameState
-): IAction | undefined {
+function findGivableHint(hand: ICard[], pIndex: number, state: IGameState): IAction | undefined {
   // find the first playable card and give a hint on it.
   // if possible, give an optimist hint.
 
@@ -269,7 +221,7 @@ function findGivableHint(
           from: state.currentPlayer,
           to: pIndex,
           type,
-          value: card[type]
+          value: card[type],
         };
       }
     }
@@ -284,8 +236,8 @@ function findGivableHint(
   const lastCard = hand[hand.length - 1];
   if (
     isCardDangerous(lastCard, state) &&
-    (lastCard.hint.color[lastCard.color] < 2 &&
-      lastCard.hint.number[lastCard.number] < 2) &&
+    lastCard.hint.color[lastCard.color] < 2 &&
+    lastCard.hint.number[lastCard.number] < 2 &&
     !hasPlayableCard
   ) {
     const type =
@@ -293,19 +245,18 @@ function findGivableHint(
       lastCard.number === 5 && lastCard.hint.number[lastCard.number] < 2
         ? "number"
         : // if it's a multicolor and the color hint is not given
-        lastCard.color === "multicolor" &&
-          lastCard.hint.color[lastCard.color] < 2
-          ? "color"
-          : // otherwise give a non given hint
-          lastCard.hint.number[lastCard.number] < 2
-            ? "number"
-            : "color";
+        lastCard.color === "multicolor" && lastCard.hint.color[lastCard.color] < 2
+        ? "color"
+        : // otherwise give a non given hint
+        lastCard.hint.number[lastCard.number] < 2
+        ? "number"
+        : "color";
     return {
       action: "hint",
       from: state.currentPlayer,
       to: pIndex,
       type,
-      value: lastCard[type]
+      value: lastCard[type],
     };
   }
 
@@ -329,15 +280,11 @@ export function chooseAction(state: IGameView): IAction {
   // try to find a definitely playable card
   for (let i = 0; i < currentGameView.hand.length; i++) {
     const card = currentGameView.hand[i];
-    if (
-      card.deductions.every(deduction =>
-        isPlayable(deduction, state.playedCards)
-      )
-    ) {
+    if (card.deductions.every(deduction => isPlayable(deduction, state.playedCards))) {
       return {
         action: "play",
         from: state.currentPlayer,
-        cardIndex: i
+        cardIndex: i,
       };
     }
   }
@@ -347,15 +294,13 @@ export function chooseAction(state: IGameView): IAction {
     const optimistCardIndex = currentGameView.hand.findIndex(c => c.optimist);
     if (
       optimistCardIndex > -1 &&
-      currentGameView.hand[optimistCardIndex].deductions.some(c =>
-        isPlayable(c, state.playedCards)
-      ) &&
+      currentGameView.hand[optimistCardIndex].deductions.some(c => isPlayable(c, state.playedCards)) &&
       !isLastDiscardableCard(currentGameView.hand, optimistCardIndex, state)
     ) {
       return {
         action: "play",
         from: state.currentPlayer,
-        cardIndex: optimistCardIndex
+        cardIndex: optimistCardIndex,
       };
     }
   }
@@ -382,11 +327,7 @@ export function chooseAction(state: IGameView): IAction {
       const card = currentGameView.hand[i];
 
       // if the card is definitely discardable (never playable)
-      if (
-        card.deductions.every(
-          deduction => !isCardEverPlayable(deduction, state)
-        )
-      ) {
+      if (card.deductions.every(deduction => !isCardEverPlayable(deduction, state))) {
         definitelyDiscardableCard = true;
         discardableIndex = i;
       } else if (isCardDiscardable(card, state) && !definitelyDiscardableCard) {
@@ -398,7 +339,7 @@ export function chooseAction(state: IGameView): IAction {
       return {
         action: "discard",
         from: state.currentPlayer,
-        cardIndex: discardableIndex
+        cardIndex: discardableIndex,
       };
     }
   }
@@ -406,15 +347,11 @@ export function chooseAction(state: IGameView): IAction {
   return {
     action: "play",
     from: state.currentPlayer,
-    cardIndex: 0
+    cardIndex: 0,
   };
 }
 
-function isLastDiscardableCard(
-  hand: IHiddenCard[],
-  cardIndex: number,
-  state: IGameState
-) {
+function isLastDiscardableCard(hand: IHiddenCard[], cardIndex: number, state: IGameState) {
   let lastDiscardableCard = true;
   for (let i = hand.length - 1; i >= cardIndex + 1; i--) {
     if (isCardDiscardable(hand[i], state)) {
@@ -439,7 +376,7 @@ function isLastDiscardableCard(
 /** that recursion is bounded by a max lookahead forwards and backwards. We should check the compute load but it should be alright?
  */
 
-export default function play(state: IGameState): IGameState {
+export function play(state: IGameState): IGameState {
   // play an AI action as the current player
   // @todo this gameview should be persisted from action to action,
   // we commit
@@ -454,9 +391,7 @@ function playerKnowsWhatToPlay(pIndex: number, state: IGameView) {
   const playerGameViewHand = state.gameViews[pIndex].hand;
   const playerHand = Object.values(state.players)[pIndex].hand;
   const hasOptimistPlayableCard =
-    playerGameViewHand.filter(
-      (c, i) => c.optimist && isPlayable(playerHand[i], state.playedCards)
-    ).length > 0;
+    playerGameViewHand.filter((c, i) => c.optimist && isPlayable(playerHand[i], state.playedCards)).length > 0;
 
   return hasOptimistPlayableCard;
 }

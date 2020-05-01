@@ -1,21 +1,15 @@
+import firebase from "firebase/app";
 import "firebase/database";
 
-import firebase from "firebase/app";
-
-import IGameState, {
-  fillEmptyValues,
-  GameMode,
-  IGameStatus,
-  IPlayer
-} from "~/game/state";
 import { GameHandler, GamesHandler, Network } from "~/hooks/network";
+import IGameState, { fillEmptyValues, GameMode, IGameStatus, IPlayer } from "~/lib/state";
 
 export function setupFirebase() {
   if (!firebase.apps.length) {
     firebase.initializeApp({
       // Local database configuration using firebase-server
       ...(process.env.FIREBASE_DATABASE_URL && {
-        databaseURL: process.env.FIREBASE_DATABASE_URL
+        databaseURL: process.env.FIREBASE_DATABASE_URL,
       }),
       // Online database configuration
       ...(process.env.FIREBASE_API_KEY && {
@@ -25,8 +19,8 @@ export function setupFirebase() {
         projectId: process.env.FIREBASE_PROJECT_ID,
         storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
         messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-        appId: process.env.FIREBASE_APP_ID
-      })
+        appId: process.env.FIREBASE_APP_ID,
+      }),
     });
   }
 
@@ -48,6 +42,25 @@ export default class FirebaseNetwork implements Network {
 
   constructor(db?: firebase.database.Database) {
     this.db = db || setupFirebase();
+  }
+
+  loadPublicGames(): Promise<IGameState[]> {
+    const ref = this.db
+      .ref("/games")
+      // Only games created less than 10 minutes ago
+      .orderByChild("createdAt")
+      .startAt(Date.now() - 10 * 60 * 1000);
+
+    return new Promise(resolve => {
+      ref.once("value", event => {
+        const games = Object.values(event.val() || {})
+          .map(fillEmptyValues)
+          // Game is public
+          .filter(gameIsPublic);
+
+        resolve(games);
+      });
+    });
   }
 
   subscribeToPublicGames(callback: GamesHandler) {
@@ -85,6 +98,16 @@ export default class FirebaseNetwork implements Network {
     return () => ref.off();
   }
 
+  loadGame(gameId: string): Promise<IGameState> {
+    const ref = this.db.ref(`/games/${gameId}`);
+
+    return new Promise(resolve => {
+      ref.once("value", event => {
+        resolve(fillEmptyValues(event.val()));
+      });
+    });
+  }
+
   subscribeToGame(gameId: string, callback: GameHandler) {
     const ref = this.db.ref(`/games/${gameId}`);
 
@@ -100,14 +123,10 @@ export default class FirebaseNetwork implements Network {
   }
 
   async setReaction(game: IGameState, player: IPlayer, reaction: string) {
-    await this.db
-      .ref(`/games/${game.id}/players/${player.index}/reaction`)
-      .set(reaction);
+    await this.db.ref(`/games/${game.id}/players/${player.index}/reaction`).set(reaction);
   }
 
   async setNotification(game: IGameState, player: IPlayer, notified: boolean) {
-    await this.db
-      .ref(`/games/${game.id}/players/${player.index}/notified`)
-      .set(notified);
+    await this.db.ref(`/games/${game.id}/players/${player.index}/notified`).set(notified);
   }
 }

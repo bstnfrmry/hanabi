@@ -1,30 +1,42 @@
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 import HomeButton from "~/components/homeButton";
-import LoadingScreen from "~/components/loadingScreen";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import IGameState from "~/game/state";
+import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
 import useNetwork from "~/hooks/network";
+import IGameState from "~/lib/state";
 
-export default function JoinGame() {
+interface Props {
+  games: IGameState[];
+}
+
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
+  const firebase = new FirebaseNetwork(setupFirebase());
+  const games = await firebase.loadPublicGames();
+
+  return {
+    props: {
+      games,
+    },
+  };
+};
+
+export default function JoinGame(props: Props) {
+  const { games: initialGames } = props;
+
   const router = useRouter();
   const network = useNetwork();
 
-  const [loading, setLoading] = useState<boolean>(true);
-  const [games, setGames] = useState<IGameState[]>([]);
+  const [games, setGames] = useState<IGameState[]>(initialGames);
 
   useEffect(() => {
     network.subscribeToPublicGames(games => {
-      setLoading(false);
       setGames(games);
     });
   }, []);
-
-  if (loading) {
-    return <LoadingScreen />;
-  }
 
   return (
     <div className="w-100 h-100 flex justify-center items-center overflow-y-scroll relative bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
@@ -33,14 +45,10 @@ export default function JoinGame() {
         {!games.length && (
           <>
             <div>
-              <Txt
-                className="nowrap"
-                size={TxtSize.MEDIUM}
-                value="No available room"
-              />
+              <Txt className="nowrap" size={TxtSize.MEDIUM} value="No available room" />
             </div>
             <Button
-              className="ma2 flex-1"
+              className="ma2"
               size={ButtonSize.LARGE}
               text="Create a room"
               onClick={() => router.push("/new-game")}
@@ -49,24 +57,11 @@ export default function JoinGame() {
         )}
         {games.length > 0 && (
           <div>
-            <Txt
-              className="nowrap mb6"
-              size={TxtSize.LARGE}
-              value="Available rooms"
-            />
+            <Txt className="nowrap mb6" size={TxtSize.LARGE} value="Available rooms" />
             {games.map(game => (
-              <div
-                key={game.id}
-                className="flex justify-between items-center mb3 w-100 mt3"
-              >
-                <Txt
-                  className="mr4 silver"
-                  value={`${game.players.length} / ${game.options.playersCount}`}
-                />
-                <Txt
-                  className="flex-grow-1"
-                  value={`${game.players.map(p => p.name).join(", ")}`}
-                />
+              <div key={game.id} className="flex justify-between items-center mb3 w-100 mt3">
+                <Txt className="mr4 silver" value={`${game.players.length} / ${game.options.playersCount}`} />
+                <Txt className="flex-grow-1" value={`${game.players.map(p => p.name).join(", ")}`} />
                 <Button
                   className="ml2 flex justify-center"
                   size={ButtonSize.SMALL}
