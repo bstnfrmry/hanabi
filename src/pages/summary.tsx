@@ -26,11 +26,11 @@ function Section(props: SectionProps) {
 
   return (
     <div className="mt4 w-100 flex flex-column">
-      <div className="w-100 bg-black-50 pt3 pb2 bb bt b--yellow">
+      <div className="w-100 bg-black-50 pt3 pb3 bb bt b--yellow">
         <Txt className="ttu pl3 pr0 ph6.5-m ph8-l" size={TxtSize.MEDIUM} value={title} />
       </div>
       <div
-        className={classnames("mt2 mt4-l w-100 pv1 ph3 ph6.5-m ph8-l mr4 mr0-m", className)}
+        className={classnames("mt3 mt4-l w-100 pv1 ph3 ph6.5-m ph8-l mr4 mr0-m", className)}
         style={{ maxWidth: "100vw", overflowX: "scroll", overflowY: "visible" }}
       >
         {children}
@@ -79,7 +79,7 @@ export default function Summary() {
           text="< Back"
           onClick={() => onBackClick()}
         />
-        <Txt className="mt4" size={TxtSize.LARGE} value="Game summary" />
+        <Txt className="mt4" size={TxtSize.LARGE} value="Summary" />
         <div className="flex flex-column items-center mt4">
           <Txt size={TxtSize.MEDIUM} value="Our Hanabi game" />
           <Txt className="mt2" size={TxtSize.MEDIUM}>
