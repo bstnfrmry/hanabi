@@ -1,5 +1,6 @@
 import { groupBy } from "lodash";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
@@ -25,6 +26,7 @@ const Colors = {
 
 export default function PlayerStats(props: Props) {
   const { player } = props;
+  const { t } = useTranslation();
 
   const game = useGame();
 
@@ -80,12 +82,12 @@ export default function PlayerStats(props: Props) {
       )}
 
       <div className="flex items-center">
-        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Hint }} value={`Hinted`} />
+        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Hint }} value={t("hinted")} />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${hintsCount}`} />
         <Txt className="ml1 lavender w2 nowrap" size={TxtSize.TINY} value={`· ${percentage(hintsCount, totalCount)}`} />
       </div>
       <div className="flex items-center">
-        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Discard }} value={`Discarded`} />
+        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Discard }} value={t("discarded")} />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${discardsCount}`} />
         <Txt
           className="ml1 lavender w2 nowrap"
@@ -94,7 +96,7 @@ export default function PlayerStats(props: Props) {
         />
       </div>
       <div className="flex items-center">
-        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Play }} value={`Played`} />
+        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Play }} value={t("played")} />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${playsCount}`} />
         <Txt className="ml1 lavender w2 nowrap" size={TxtSize.TINY} value={`· ${percentage(playsCount, totalCount)}`} />
       </div>

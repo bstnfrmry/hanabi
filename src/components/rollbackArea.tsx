@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -30,6 +31,7 @@ function getLastRollbackableTurn(game: IGameState) {
 export default function RollbackArea(props: Props) {
   const { onCloseArea } = props;
   const network = useNetwork();
+  const { t } = useTranslation();
 
   const game = useGame();
   const lastRollbackableTurn = getLastRollbackableTurn(game);
@@ -44,11 +46,11 @@ export default function RollbackArea(props: Props) {
       <Txt
         className="w-75 tc"
         size={TxtSize.MEDIUM}
-        value={canRollback ? "You're about to roll back the last action!" : "You cannot rollback the game yet"}
+        value={canRollback ? t("rollbackDisclaimer") : t("cannotRollback")}
       />
       <div className="mt2">
-        <Button text="Abort" onClick={() => onCloseArea()} />
-        <Button primary className="ml4" disabled={!canRollback} text="Roll back" onClick={() => onRollback()} />
+        <Button text={t("abort")} onClick={() => onCloseArea()} />
+        <Button primary className="ml4" disabled={!canRollback} text={t("rollback")} onClick={() => onRollback()} />
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Hint from "~/components/hint";
@@ -16,6 +17,7 @@ interface Props {
 
 export default function Turn(props: Props) {
   const { turn, includePlayer = false, showDrawn, showPosition = true } = props;
+  const { t } = useTranslation();
 
   const game = useGame();
 
@@ -30,12 +32,11 @@ export default function Turn(props: Props) {
 
       {turn.action.action === "hint" && (
         <Txt className="inline-flex items-center">
-          {"hinted "}
+          {t("hintedTurn")}
           <PlayerName className="mh1" player={game.players[turn.action.to]} />
-          {" about "}
+          {t("aboutTurn")}
           <Hint className="mh1" hint={IHintLevel.POSSIBLE} type={turn.action.type} value={turn.action.value} />
-          {turn.action.type === "color" && " cards"}
-          {turn.action.type === "number" && "s"}
+          {t("pluralTurn")}
           {showPosition && turn.action.cardsIndex && (
             <Txt
               className="lavender ml1"
@@ -48,7 +49,7 @@ export default function Turn(props: Props) {
 
       {turn.action.action === "discard" && (
         <Txt className="inline-flex items-center">
-          {"discarded "}
+          {t("discardedTurn")}
           <Card card={turn.action.card} className="mh1" context={ICardContext.DISCARDED} size={CardSize.TINY} />
           <Txt className="lavender mr1" size={TxtSize.TINY} value={`${PositionMap[turn.action.cardIndex]}`} />
         </Txt>
@@ -56,7 +57,7 @@ export default function Turn(props: Props) {
 
       {turn.action.action === "play" && (
         <Txt className="inline-flex items-center">
-          {"played "}
+          {t("playedTurn")}
           <Card card={turn.action.card} className="mh1" context={ICardContext.PLAYED} size={CardSize.TINY} />
           <Txt className="lavender mr1" size={TxtSize.TINY} value={`${PositionMap[turn.action.cardIndex]}`} />
         </Txt>
@@ -64,7 +65,7 @@ export default function Turn(props: Props) {
 
       {showDrawn && turn.card && (
         <Txt className="inline-flex items-center">
-          {" & drew "}
+          {t("cardDranwTurn")}
           <Card card={turn.card} className="ml1" context={ICardContext.DRAWN} size={CardSize.TINY} />
         </Txt>
       )}

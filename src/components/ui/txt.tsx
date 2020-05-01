@@ -28,7 +28,7 @@ export default function Txt(props: Props) {
     size = TxtSize.SMALL,
     italic = false,
     uppercase = false,
-    multiline = false,
+    multiline = true,
     value: content,
     children,
     className,

@@ -1,5 +1,6 @@
 import classnames from "classnames";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useSelfPlayer } from "~/hooks/game";
@@ -25,6 +26,7 @@ interface Props {
 
 export default function PlayerName(props: Props) {
   const { player, size = PlayerNameSize.SMALL, explicit = false, className } = props;
+  const { t } = useTranslation();
 
   const selfPlayer = useSelfPlayer();
   const you = !explicit && player.id === selfPlayer?.id;
@@ -33,7 +35,7 @@ export default function PlayerName(props: Props) {
     <Txt
       className={classnames("relative inline-flex items-center truncate", className)}
       size={PlayerNameTextSizes[size]}
-      value={you ? "You" : player.name}
+      value={you ? t("you") : player.name}
     />
   );
 }

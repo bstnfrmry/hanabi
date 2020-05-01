@@ -1,6 +1,7 @@
 import Fireworks from "fireworks-canvas";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import shortid from "shortid";
 
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
@@ -33,6 +34,7 @@ interface Props {
 
 export function Game(props: Props) {
   const { onGameChange } = props;
+  const { t } = useTranslation();
 
   const network = useNetwork();
   const router = useRouter();
@@ -205,9 +207,10 @@ export function Game(props: Props) {
 
   async function onCommitAction(action) {
     const newState = commitAction(game, action);
+
     const misplay = getMaximumPossibleScore(game) !== getMaximumPossibleScore(newState);
     if (game.options.preventLoss && misplay) {
-      if (!window.confirm("You fucked up · Keep going?")) {
+      if (!window.confirm(t("preventLossContent"))) {
         return;
       }
     }
@@ -340,7 +343,7 @@ export function Game(props: Props) {
                   <Button
                     void
                     size={ButtonSize.TINY}
-                    text={replay.cursor === null ? "🕑 Rewind" : "Back to game"}
+                    text={replay.cursor === null ? t("rewind") : t("back")}
                     onClick={() => {
                       if (replay.cursor === null) {
                         onReplay();
@@ -357,12 +360,12 @@ export function Game(props: Props) {
 
         {interturn && (
           <div className="flex-grow-1 flex flex-column items-center justify-center">
-            <Txt size={TxtSize.MEDIUM} value={`It's ${currentPlayer.name}'s turn!`} />
+            <Txt size={TxtSize.MEDIUM} value={t("theirTurn", { currentPlayerName: currentPlayer.name })} />
             <Button
               primary
               className="mt4"
               size={ButtonSize.MEDIUM}
-              text={`Go !`}
+              text={t("go")}
               onClick={() => setInterturn(false)}
             />
           </div>
@@ -401,16 +404,17 @@ export function Game(props: Props) {
                   <Txt
                     className="db"
                     size={TxtSize.MEDIUM}
-                    value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
+                    value={t("gameOver", { playedCardsLength: game.playedCards.length })}
                   />
                   {reachableScore && (
                     <Txt
                       multiline
                       className="db mt1 lavender"
                       size={TxtSize.SMALL}
-                      value={`Estimated max score for this shuffle: ${reachableScore}. ${
-                        reachableScore > game.playedCards.length ? "Keep practicing" : "You did great!"
-                      }`}
+                      value={
+                        t("estimatedMaxScore", { reachableScore }) +
+                        (reachableScore > game.playedCards.length ? t("keepPractincing") : t("congrats"))
+                      }
                     />
                   )}
                 </div>
@@ -420,7 +424,7 @@ export function Game(props: Props) {
                       primary
                       className="nowrap ma1 flex-1"
                       size={ButtonSize.TINY}
-                      text="New game"
+                      text={t("newGame")}
                       onClick={() => onRestartGame()}
                     />
                   </div>
@@ -429,7 +433,7 @@ export function Game(props: Props) {
                       outlined
                       className="nowrap ma1 flex-1"
                       size={ButtonSize.TINY}
-                      text={displayStats ? "Hide stats" : "Show stats"}
+                      text={displayStats ? t("hideStats") : t("showStats")}
                       onClick={() => onToggleStats()}
                     />
                   </div>

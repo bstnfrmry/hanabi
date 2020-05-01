@@ -10,14 +10,14 @@ i18n
   .use(LanguageDetector)
   .init({
     resources: {
-      en: {
-        translation: en,
-      },
+      // en: {
+      //   translation: en,
+      // },
       fr: {
         translation: fr,
       },
     },
-    fallbackLng: "en",
+    fallbackLng: "fr",
     debug: process.env.NODE_ENV === "development",
     interpolation: {
       escapeValue: false,

@@ -5,7 +5,7 @@ import Router from "next/router";
 import NProgress from "nprogress";
 import React, { ErrorInfo, useState } from "react";
 import FullStory from "react-fullstory";
-import { I18nextProvider } from "react-i18next";
+import { I18nextProvider, useTranslation } from "react-i18next";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
 import useConnectivity from "~/hooks/connectivity";
@@ -65,6 +65,7 @@ export default class App extends NextApp {
 
 function Hanabi(props: AppProps) {
   const { Component, pageProps } = props;
+  const { t } = useTranslation();
 
   const [showOffline, setShowOffline] = useState(true);
   const online = useConnectivity();
@@ -82,7 +83,7 @@ function Hanabi(props: AppProps) {
 
           <title>Hanabi</title>
           <meta content="#00153f" name="theme-color" />
-          <meta content="Play the hanabi card game online." name="Description" />
+          <meta content={t("tagline")} name="Description" />
         </Head>
         <FullStory org={FS_ORG_ID} />
 
@@ -91,7 +92,7 @@ function Hanabi(props: AppProps) {
             {/* Offline indicator */}
             {!online && showOffline && (
               <div className="relative flex items-center justify-center bg-red shadow-4 b--red ba pa2 z-99">
-                <Txt uppercase size={TxtSize.MEDIUM} value="You are offline" />
+                <Txt uppercase size={TxtSize.MEDIUM} value={t("offline")} />
                 <a className="absolute right-1" onClick={() => setShowOffline(false)}>
                   <Txt value="×" />
                 </a>

@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import HomeButton from "~/components/homeButton";
 import Button, { ButtonSize } from "~/components/ui/button";
@@ -29,6 +30,7 @@ export default function JoinGame(props: Props) {
 
   const router = useRouter();
   const network = useNetwork();
+  const { t } = useTranslation();
 
   const [games, setGames] = useState<IGameState[]>(initialGames);
 
@@ -45,7 +47,7 @@ export default function JoinGame(props: Props) {
         {!games.length && (
           <>
             <div>
-              <Txt className="nowrap" size={TxtSize.MEDIUM} value="No available room" />
+              <Txt className="nowrap" size={TxtSize.MEDIUM} value={t("noRoom", "No available room")} />
             </div>
             <Button
               className="ma2"
@@ -65,7 +67,7 @@ export default function JoinGame(props: Props) {
                 <Button
                   className="ml2 flex justify-center"
                   size={ButtonSize.SMALL}
-                  text="Join"
+                  text={t("join")}
                   onClick={() => router.push(`/play?gameId=${game.id}`)}
                 />
               </div>
