@@ -9,12 +9,15 @@
     "lint": "eslint '**/*.{ts,tsx}'"
   },
   "dependencies": {
+    "@fullstory/browser": "^1.4.3",
     "@sentry/browser": "^5.12.4",
+    "@sentry/fullstory": "^1.1.2",
     "@types/classnames": "^2.2.9",
     "@types/lodash": "^4.14.137",
     "@types/react-popover": "^0.5.3",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-source-maps": "0.0.4-canary.1",
+    "add": "^2.0.6",
     "classnames": "^2.2.6",
     "dotenv-webpack": "^1.7.0",
     "firebase": "^6.3.4",
@@ -33,7 +36,8 @@
     "react-popover": "^0.5.10",
     "react-pose": "^4.0.8",
     "shortid": "^2.2.14",
-    "shuffle-seed": "^1.1.6"
+    "shuffle-seed": "^1.1.6",
+    "yarn": "^1.22.4"
   },
   "devDependencies": {
     "@types/node": "^12.6.9",
