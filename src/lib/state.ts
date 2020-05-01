@@ -79,6 +79,14 @@ export enum IColor {
   RAINBOW = "rainbow",
 }
 
+export enum IInsightColor {
+  Play = "#B7E1BC",
+  Discard = "#fdfd96",
+  Other = "#666",
+  Dangerous = "#820000",
+  Hint = "#A2D3F6",
+}
+
 export type INumber = 1 | 2 | 3 | 4 | 5;
 
 export enum IHintLevel {

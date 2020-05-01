@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
-import { IPlayer } from "~/lib/state";
+import { IInsightColor, IPlayer } from "~/lib/state";
 
 interface Props {
   player: IPlayer;
@@ -18,12 +18,6 @@ export function percentage(num: number, den: number) {
 
   return `${Math.round((num * 100) / den)}%`;
 }
-
-const Colors = {
-  Play: "#B7E1BC",
-  Discard: "#E9AFC7",
-  Hint: "#989FC1",
-};
 
 export default function PlayerStats(props: Props) {
   const { player, className } = props;
@@ -59,7 +53,7 @@ export default function PlayerStats(props: Props) {
             style={{
               transition: "all ease-in-out 200ms",
               width: `${(hintsCount * 100) / totalCount}%`,
-              backgroundColor: Colors.Hint,
+              backgroundColor: IInsightColor.Hint,
             }}
           />
           <div
@@ -67,7 +61,7 @@ export default function PlayerStats(props: Props) {
             style={{
               transition: "all ease-in-out 200ms",
               width: `${(discardsCount * 100) / totalCount}%`,
-              backgroundColor: Colors.Discard,
+              backgroundColor: IInsightColor.Discard,
             }}
           />
           <div
@@ -75,14 +69,14 @@ export default function PlayerStats(props: Props) {
             style={{
               transition: "all ease-in-out 200ms",
               width: `${(playsCount * 100) / totalCount}%`,
-              backgroundColor: Colors.Play,
+              backgroundColor: IInsightColor.Play,
             }}
           />
         </div>
       )}
 
       <div className="flex items-center">
-        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Hint }} value={`Hinted`} />
+        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: IInsightColor.Hint }} value={`Hinted`} />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${hintsCount}`} />
         <Txt
           className="ml1 lavender w2 nowrap"
@@ -91,7 +85,12 @@ export default function PlayerStats(props: Props) {
         />
       </div>
       <div className="flex items-center">
-        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Discard }} value={`Discarded`} />
+        <Txt
+          className="flex-grow-1"
+          size={TxtSize.SMALL}
+          style={{ color: IInsightColor.Discard }}
+          value={`Discarded`}
+        />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${discardsCount}`} />
         <Txt
           className="ml1 lavender w2 nowrap"
@@ -100,7 +99,7 @@ export default function PlayerStats(props: Props) {
         />
       </div>
       <div className="flex items-center">
-        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Play }} value={`Played`} />
+        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: IInsightColor.Play }} value={`Played`} />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${playsCount}`} />
         <Txt
           className="ml1 lavender w2 nowrap"

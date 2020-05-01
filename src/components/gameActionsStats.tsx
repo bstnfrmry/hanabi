@@ -7,7 +7,7 @@ import { useGame } from "~/hooks/game";
 
 const Colors = {
   Played: "#B7E1BC",
-  Discarded: "#E9AFC7",
+  Discarded: "#fdfd96",
   Hinted: "#A2D3F6",
 };
 
@@ -50,11 +50,11 @@ export default function GameActionsStats() {
                   return (
                     <div key={playerIndex} className="flex w-100 items-center">
                       <Txt className="flex-grow-1" size={TxtSize.SMALL} value={player.name} />
-                      <Txt className="ml3 ml4-m" size={TxtSize.SMALL} value={`${count}x`} />
+                      <Txt className="ml3 ml4-m" size={TxtSize.SMALL} value={count} />
                       <Txt
                         className="ml2 lavender w2 nowrap"
                         size={TxtSize.SMALL}
-                        value={percentage(count, turns.length)}
+                        value={`· ${percentage(count, turns.length)}`}
                       />
                     </div>
                   );

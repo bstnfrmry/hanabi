@@ -7,44 +7,36 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
 import { getStateAtTurn, isPlayable } from "~/lib/actions";
 import { isCardDangerous } from "~/lib/ai";
-import IGameState, { fillEmptyValues, ICard, IColor, IPlayer, ITurn } from "~/lib/state";
+import IGameState, { fillEmptyValues, ICard, IColor, IInsightColor, IPlayer, ITurn } from "~/lib/state";
 
 const CountPerNumber = { 1: 3, 2: 2, 3: 2, 4: 2, 5: 1 };
-
-const Colors = {
-  Play: "#B7E1BC",
-  Discard: "#E9AFC7",
-  Other: "#c4c4c4",
-  Dangerous: "#820000",
-  Hint: "#A2D3F6",
-};
 
 function turnToStateColor(turn: ITurn) {
   const { action } = turn.action;
 
   return {
-    discard: Colors.Discard,
-    play: Colors.Play,
-    hint: Colors.Hint,
+    discard: IInsightColor.Discard,
+    play: IInsightColor.Play,
+    hint: IInsightColor.Hint,
   }[action];
 }
 
 function cardToStateColor(game: IGameState, player: IPlayer, card: ICard) {
   if (isPlayable(card, game.playedCards) && isCardDangerous(card, game)) {
-    return [Colors.Dangerous, Colors.Play];
+    return [IInsightColor.Dangerous, IInsightColor.Play];
   }
 
   if (isPlayable(card, game.playedCards)) {
-    return [Colors.Play];
+    return [IInsightColor.Play];
   }
 
   if (isCardDangerous(card, game)) {
-    return [Colors.Dangerous];
+    return [IInsightColor.Dangerous];
   }
 
   const playedCard = game.playedCards.find(c => card.number === c.number && card.color === c.color);
   if (playedCard) {
-    return [Colors.Discard];
+    return [IInsightColor.Discard];
   }
 
   const discardedCardsOfSameColorAndInferiorValue = game.discardPile.filter(
@@ -52,17 +44,17 @@ function cardToStateColor(game: IGameState, player: IPlayer, card: ICard) {
   );
 
   if (card.color === IColor.MULTICOLOR && discardedCardsOfSameColorAndInferiorValue.length) {
-    return [Colors.Discard];
+    return [IInsightColor.Discard];
   }
   const groupedByNumber = groupBy(discardedCardsOfSameColorAndInferiorValue, card => card.number);
   const allCardsInDiscard = Object.keys(groupedByNumber).find(number => {
     return groupedByNumber[number].length === CountPerNumber[number];
   });
   if (allCardsInDiscard) {
-    return [Colors.Discard];
+    return [IInsightColor.Discard];
   }
 
-  return [Colors.Other];
+  return [IInsightColor.Other];
 }
 
 interface CardStateProps {
@@ -163,20 +155,20 @@ export default function GameStats() {
       <div className="inline-flex ba b--lavender br1 pa2 self-center">
         <div className="flex flex-column">
           <Txt className="mb1 lavender" size={TxtSize.XSMALL} value="That turn, the card was" />
-          <BarLegend backgroundColor={Colors.Play} text="playable" />
-          <BarLegend backgroundColor={Colors.Discard} text="discarable" />
-          <BarLegend backgroundColor={Colors.Dangerous} text="dangerous" />
+          <BarLegend backgroundColor={IInsightColor.Play} text="playable" />
+          <BarLegend backgroundColor={IInsightColor.Discard} text="discardable" />
+          <BarLegend backgroundColor={IInsightColor.Dangerous} text="dangerous" />
           <BarLegend
-            backgroundColor={Colors.Dangerous}
-            secondaryBackgroundColor={Colors.Play}
+            backgroundColor={IInsightColor.Dangerous}
+            secondaryBackgroundColor={IInsightColor.Play}
             text="playable & dangerous"
           />
         </div>
         <div className="flex flex-column ml5">
           <Txt className="mb1 lavender" size={TxtSize.XSMALL} value="That turn, the player" />
-          <DotLegend backgroundColor={Colors.Play} text="played" />
-          <DotLegend backgroundColor={Colors.Discard} text="discarded" />
-          <DotLegend backgroundColor={Colors.Hint} text="hinted" />
+          <DotLegend backgroundColor={IInsightColor.Play} text="played" />
+          <DotLegend backgroundColor={IInsightColor.Discard} text="discarded" />
+          <DotLegend backgroundColor={IInsightColor.Hint} text="hinted" />
         </div>
       </div>
 
