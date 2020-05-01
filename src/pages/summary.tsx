@@ -8,16 +8,16 @@ import LoadingScreen from "~/components/loadingScreen";
 import PlayerStats from "~/components/playerStats";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import IGameState from "~/game/state";
 import { GameContext } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
+import IGameState, { GameVariant } from "~/lib/state";
 
 export default function Summary() {
   const network = useNetwork();
   const router = useRouter();
   const [game, setGame] = useState<IGameState>(null);
 
-  const { gameId, playerId } = router.query;
+  const { gameId } = router.query;
 
   /**
    * Load game from database
@@ -35,14 +35,12 @@ export default function Summary() {
   }, [gameId]);
 
   function onBackClick() {
-    router.push(`/play?gameId=${gameId}&playerId=${playerId}`);
+    router.push(`/play?gameId=${gameId}`);
   }
 
   if (!game) {
     return <LoadingScreen />;
   }
-
-  const subtitle = [];
 
   return (
     <GameContext.Provider value={game}>
@@ -54,18 +52,13 @@ export default function Summary() {
           text="< Back"
           onClick={() => onBackClick()}
         />
-        <Txt
-          className="txt-yellow mt4"
-          size={TxtSize.MEDIUM}
-          value="Game summary"
-        />
+        <Txt className="txt-yellow mt4" size={TxtSize.MEDIUM} value="Game summary" />
         <div className="flex flex-column items-center mt4">
           <Txt size={TxtSize.MEDIUM} value="Our Hanabi game" />
           <Txt className="mt1" size={TxtSize.MEDIUM}>
             <span>{game.players.length} players</span>
-            {game.options.multicolor && (
-              <span className="ml1">with multicolors</span>
-            )}
+            {game.options.variant === GameVariant.MULTICOLOR && <span className="ml1">with multicolors</span>}
+            {game.options.variant === GameVariant.RAINBOW && <span className="ml1">with rainbow</span>}
             <span className="ml1">· Shuffle #{game.options.seed}</span>
           </Txt>
         </div>
@@ -88,10 +81,7 @@ export default function Summary() {
           <div className="flex flex-wrap mt3">
             {game.players.map((player, i) => {
               return (
-                <div
-                  key={i}
-                  className="flex flex-column items-center w-33 w-20-l"
-                >
+                <div key={i} className="flex flex-column items-center w-33 w-20-l">
                   <Txt value={player.name} />
                   <div className="mt2 mh4">
                     <PlayerStats player={player} />

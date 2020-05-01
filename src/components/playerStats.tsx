@@ -11,7 +11,7 @@ interface Props {
   className?: string;
 }
 
-function percentage(num: number, den: number) {
+export function percentage(num: number, den: number) {
   if (!den) {
     return "-";
   }

@@ -434,6 +434,15 @@ export function Game(props: Props) {
                       text={displayStats ? "Hide stats" : "Show stats"}
                       onClick={() => onToggleStats()}
                     />
+                    <Button
+                      outlined
+                      className="nowrap ma1 flex-1"
+                      size={ButtonSize.TINY}
+                      text="Summary"
+                      onClick={() => {
+                        router.push(`/summary?gameId=${game.id}`);
+                      }}
+                    />
                   </div>
                 </div>
               </div>

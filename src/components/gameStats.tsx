@@ -3,20 +3,10 @@ import React, { useState } from "react";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import {
-  commitAction,
-  getMaximumPossibleScore,
-  getScore,
-  isPlayable
-} from "~/game/actions";
-import { isCardDangerous, isCardDiscardable } from "~/game/ai";
-import IGameState, {
-  fillEmptyValues,
-  ICard,
-  IColor,
-  IPlayer
-} from "~/game/state";
 import { useGame } from "~/hooks/game";
+import { getStateAtTurn, isPlayable } from "~/lib/actions";
+import { isCardDangerous } from "~/lib/ai";
+import IGameState, { fillEmptyValues, ICard, IColor, IPlayer } from "~/lib/state";
 
 const CountPerNumber = { 1: 3, 2: 2, 3: 2, 4: 2, 5: 1 };
 
@@ -24,15 +14,10 @@ const Colors = {
   Play: "#B7E1BC",
   Discard: "#E9AFC7",
   Other: "#c4c4c4",
-  Dangerous: "#820000"
+  Dangerous: "#820000",
 };
 
-function cardToStateColor(
-  game: IGameState,
-  player: IPlayer,
-  card: ICard,
-  cardIndex: number
-) {
+function cardToStateColor(game: IGameState, player: IPlayer, card: ICard) {
   if (isPlayable(card, game.playedCards)) {
     return Colors.Play;
   }
@@ -41,9 +26,7 @@ function cardToStateColor(
     return Colors.Dangerous;
   }
 
-  const playedCard = game.playedCards.find(
-    c => card.number === c.number && card.color === c.color
-  );
+  const playedCard = game.playedCards.find(c => card.number === c.number && card.color === c.color);
   if (playedCard) {
     return Colors.Discard;
   }
@@ -52,16 +35,10 @@ function cardToStateColor(
     c => card.number < c.number && card.color === c.color
   );
 
-  if (
-    card.color === IColor.MULTICOLOR &&
-    discardedCardsOfSameColorAndInferiorValue.length
-  ) {
+  if (card.color === IColor.MULTICOLOR && discardedCardsOfSameColorAndInferiorValue.length) {
     return Colors.Discard;
   }
-  const groupedByNumber = groupBy(
-    discardedCardsOfSameColorAndInferiorValue,
-    card => card.number
-  );
+  const groupedByNumber = groupBy(discardedCardsOfSameColorAndInferiorValue, card => card.number);
   const allCardsInDiscard = Object.keys(groupedByNumber).find(number => {
     return groupedByNumber[number].length === CountPerNumber[number];
   });
@@ -77,18 +54,12 @@ export default function GameStats() {
   const [displayCards, setDisplayCards] = useState(false);
 
   const firstPlayerIndex = game.turnsHistory[0].action.from;
-  const orderedPlayers = [
-    ...game.players.slice(firstPlayerIndex),
-    ...game.players.slice(0, firstPlayerIndex)
-  ];
+  const orderedPlayers = [...game.players.slice(firstPlayerIndex), ...game.players.slice(0, firstPlayerIndex)];
 
   return (
-    <div
-      className="flex justify-around w-100"
-      onClick={() => setDisplayCards(!displayCards)}
-    >
+    <div className="flex justify-around w-100" onClick={() => setDisplayCards(!displayCards)}>
       {orderedPlayers.map((player, playerIndex) => {
-        const firstHand = game.history[0].players[playerIndex].hand;
+        const firstHand = getStateAtTurn(game, 0).players[playerIndex].hand;
 
         return (
           <div key={player.id} className="flex flex-column items-center">
@@ -106,12 +77,9 @@ export default function GameStats() {
                 );
               })}
             </div>
-            {game.history.map((state, i) => {
-              const playerState =
-                state.players[
-                (playerIndex + state.players.length - 1) %
-                state.players.length
-                ];
+            {game.turnsHistory.map((turn, i) => {
+              const state = getStateAtTurn(game, i);
+              const playerState = state.players[(playerIndex + state.players.length - 1) % state.players.length];
 
               return (
                 <div key={i} className="flex justify-end w-100">
@@ -132,12 +100,7 @@ export default function GameStats() {
                               margin: "1px 1px 0 0",
                               width: "12px",
                               height: "6px",
-                              backgroundColor: cardToStateColor(
-                                fillEmptyValues(state),
-                                playerState,
-                                card,
-                                cardIndex
-                              )
+                              backgroundColor: cardToStateColor(fillEmptyValues(state), playerState, card),
                             }}
                           />
                         )}
@@ -151,13 +114,11 @@ export default function GameStats() {
         );
       })}
       <div className="flex flex-column w1 nl3" style={{ paddingTop: 30 }}>
-        {game.history.map((state, i) => {
+        {game.turnsHistory.map((turn, i) => {
+          const state = getStateAtTurn(game, i);
           return (
             <div key={i} className="flex relative">
-              <div
-                className="flex"
-                style={{ height: "6px", margin: "1px 1px 0 0" }}
-              >
+              <div className="flex" style={{ height: "6px", margin: "1px 1px 0 0" }}>
                 {range(0, state.tokens.strikes).map(x => {
                   return (
                     <div
@@ -166,16 +127,13 @@ export default function GameStats() {
                       style={{
                         width: "6px",
                         height: "6px",
-                        left: `-${x * 2}px`
+                        left: `-${x * 2}px`,
                       }}
                     />
                   );
                 })}
               </div>
-              <div
-                className="flex"
-                style={{ height: "6px", margin: "1px 1px 0 0" }}
-              >
+              <div className="flex" style={{ height: "6px", margin: "1px 1px 0 0" }}>
                 {range(0, state.tokens.hints).map(x => {
                   return (
                     <div
@@ -184,7 +142,7 @@ export default function GameStats() {
                       style={{
                         width: "6px",
                         height: "6px",
-                        right: `-${8 + x * 2}px`
+                        right: `-${8 + x * 2}px`,
                       }}
                     />
                   );

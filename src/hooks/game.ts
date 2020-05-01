@@ -12,7 +12,7 @@ export function useGame() {
   const game = useContext<IGameState>(GameContext);
   const replay = useReplay();
 
-  if (replay.cursor !== null) {
+  if (replay && replay.cursor !== null) {
     return {
       ...fillEmptyValues(getStateAtTurn(game, replay.cursor)),
       originalGame: game,
