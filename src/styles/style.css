@@ -38,6 +38,7 @@ body {
   height: 100%;
   color: #f0f0f0;
   background: var(--color-main-dark);
+  -webkit-font-smoothing : antialiased;
 }
 
 body ::-webkit-scrollbar {

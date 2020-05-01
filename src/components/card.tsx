@@ -11,7 +11,7 @@ import { getColors, numbers } from "~/lib/actions";
 import { ICard, IColor, IGameHintsLevel, IHintLevel } from "~/lib/state";
 
 export enum CardSize {
-  TINY = "tiny",
+  XSMALL = "xsmall",
   SMALL = "small",
   MEDIUM = "medium",
   LARGE = "large",
@@ -19,7 +19,7 @@ export enum CardSize {
 }
 
 const CardClasses = {
-  [CardSize.TINY]: "h1.25 w1.25 h2-l w2-l",
+  [CardSize.XSMALL]: "h1.25 w1.25 h2-l w2-l",
   [CardSize.SMALL]: "h1.5 w1.5",
   [CardSize.MEDIUM]: "h2 w2 h2.5-l w2.5-l",
   [CardSize.LARGE]: "h3 w3 h3.5-l w3.5-l",
@@ -27,7 +27,7 @@ const CardClasses = {
 };
 
 const CardTextSizes = {
-  [CardSize.TINY]: TxtSize.TINY,
+  [CardSize.XSMALL]: TxtSize.XSMALL,
   [CardSize.SMALL]: TxtSize.SMALL,
   [CardSize.MEDIUM]: TxtSize.MEDIUM,
   [CardSize.LARGE]: TxtSize.MEDIUM,

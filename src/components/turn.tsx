@@ -39,7 +39,7 @@ export default function Turn(props: Props) {
           {showPosition && turn.action.cardsIndex && (
             <Txt
               className="lavender ml1"
-              size={TxtSize.TINY}
+              size={TxtSize.XSMALL}
               value={`${turn.action.cardsIndex.map(index => PositionMap[index]).join(", ")}`}
             />
           )}
@@ -49,23 +49,23 @@ export default function Turn(props: Props) {
       {turn.action.action === "discard" && (
         <Txt className="inline-flex items-center">
           {"discarded "}
-          <Card card={turn.action.card} className="mh1" context={ICardContext.DISCARDED} size={CardSize.TINY} />
-          <Txt className="lavender mr1" size={TxtSize.TINY} value={`${PositionMap[turn.action.cardIndex]}`} />
+          <Card card={turn.action.card} className="mh1" context={ICardContext.DISCARDED} size={CardSize.XSMALL} />
+          <Txt className="lavender mr1" size={TxtSize.XSMALL} value={`${PositionMap[turn.action.cardIndex]}`} />
         </Txt>
       )}
 
       {turn.action.action === "play" && (
         <Txt className="inline-flex items-center">
           {"played "}
-          <Card card={turn.action.card} className="mh1" context={ICardContext.PLAYED} size={CardSize.TINY} />
-          <Txt className="lavender mr1" size={TxtSize.TINY} value={`${PositionMap[turn.action.cardIndex]}`} />
+          <Card card={turn.action.card} className="mh1" context={ICardContext.PLAYED} size={CardSize.XSMALL} />
+          <Txt className="lavender mr1" size={TxtSize.XSMALL} value={`${PositionMap[turn.action.cardIndex]}`} />
         </Txt>
       )}
 
       {showDrawn && turn.card && (
         <Txt className="inline-flex items-center">
           {" & drew "}
-          <Card card={turn.card} className="ml1" context={ICardContext.DRAWN} size={CardSize.TINY} />
+          <Card card={turn.card} className="ml1" context={ICardContext.DRAWN} size={CardSize.XSMALL} />
         </Txt>
       )}
     </div>

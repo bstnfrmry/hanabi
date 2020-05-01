@@ -130,7 +130,7 @@ export default function PlayerGame(props: Props) {
                 <Txt
                   className="yellow nt1"
                   id="your-turn"
-                  size={TxtSize.TINY}
+                  size={TxtSize.XSMALL}
                   value={game.status === IGameStatus.LOBBY ? "You'll start first" : "Your turn"}
                 />
               </Tutorial>
@@ -208,7 +208,7 @@ export default function PlayerGame(props: Props) {
               {selected && (
                 <Txt
                   className="lavender absolute top--1 right-2 dib"
-                  size={TxtSize.TINY}
+                  size={TxtSize.XSMALL}
                   style={{ marginTop: "-1px" }}
                   value="⟶"
                 />

@@ -84,21 +84,29 @@ export default function PlayerStats(props: Props) {
       <div className="flex items-center">
         <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Hint }} value={`Hinted`} />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${hintsCount}`} />
-        <Txt className="ml1 lavender w2 nowrap" size={TxtSize.TINY} value={`· ${percentage(hintsCount, totalCount)}`} />
+        <Txt
+          className="ml1 lavender w2 nowrap"
+          size={TxtSize.XSMALL}
+          value={`· ${percentage(hintsCount, totalCount)}`}
+        />
       </div>
       <div className="flex items-center">
         <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Discard }} value={`Discarded`} />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${discardsCount}`} />
         <Txt
           className="ml1 lavender w2 nowrap"
-          size={TxtSize.TINY}
+          size={TxtSize.XSMALL}
           value={`· ${percentage(discardsCount, totalCount)}`}
         />
       </div>
       <div className="flex items-center">
         <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: Colors.Play }} value={`Played`} />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${playsCount}`} />
-        <Txt className="ml1 lavender w2 nowrap" size={TxtSize.TINY} value={`· ${percentage(playsCount, totalCount)}`} />
+        <Txt
+          className="ml1 lavender w2 nowrap"
+          size={TxtSize.XSMALL}
+          value={`· ${percentage(playsCount, totalCount)}`}
+        />
       </div>
     </div>
   );
