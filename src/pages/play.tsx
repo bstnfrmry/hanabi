@@ -25,6 +25,11 @@ export default function Play() {
   useEffect(() => {
     if (!online) return;
 
+    if (!gameId) {
+      router.push("/");
+      return;
+    }
+
     return network.subscribeToGame(gameId as string, game => {
       if (!game) {
         return router.push("/404");
