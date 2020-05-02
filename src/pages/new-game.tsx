@@ -17,12 +17,14 @@ const Variants = {
   [GameVariant.CLASSIC]: "Classic",
   [GameVariant.MULTICOLOR]: "Multicolor",
   [GameVariant.RAINBOW]: "Rainbow",
+  [GameVariant.ORANGE]: "Orange",
 };
 
 const VariantDescriptions = {
   [GameVariant.CLASSIC]: "A classic game of Hanabi with 5 colors",
   [GameVariant.MULTICOLOR]: "A 6th suite is added with only one card of each",
   [GameVariant.RAINBOW]: "A 6th suite is added that matches every color",
+  [GameVariant.ORANGE]: "A 6th classic suite is added",
 };
 
 const HintsLevels = {
@@ -84,7 +86,7 @@ export default function NewGame() {
   return (
     <div className="w-100 h-100 overflow-y-scroll pv4 flex items-center pv6-l relative bg-main-dark ph2 ph3-l shadow-5 br3">
       <HomeButton className="absolute top-1 right-1" />
-      <div className="flex flex-column w-75-m w-50-l w-80" style={{ margin: "auto" }}>
+      <div className="flex flex-column w-75-m w-60-l w-80" style={{ margin: "auto" }}>
         <div className="flex justify-between ph1 items-center pb4 mb4 bb b--yellow-light">
           <Txt size={TxtSize.MEDIUM} value="Players" />
           <div className="flex">
