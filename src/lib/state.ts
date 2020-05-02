@@ -19,6 +19,8 @@ export default interface IGameState {
   actionsLeft: number;
   turnsHistory: ITurn[];
   createdAt: number;
+  startedAt?: number;
+  endedAt?: number;
   synced: boolean;
   // Replay mode
   originalGame?: IGameState;
@@ -77,6 +79,14 @@ export enum IColor {
   YELLOW = "yellow",
   MULTICOLOR = "multicolor",
   RAINBOW = "rainbow",
+}
+
+export enum IInsightColor {
+  Play = "#B7E1BC",
+  Discard = "#fdfd96",
+  Other = "#666",
+  Dangerous = "#820000",
+  Hint = "#A2D3F6",
 }
 
 export type INumber = 1 | 2 | 3 | 4 | 5;

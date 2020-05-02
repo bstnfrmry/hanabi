@@ -26,7 +26,7 @@ function CardPile(props: CardPileProps) {
           card={card}
           className={classnames("mr1", { nl2: i > 0 })}
           context={ICardContext.DISCARDED}
-          size={CardSize.TINY}
+          size={CardSize.XSMALL}
         />
       ))}
     </div>

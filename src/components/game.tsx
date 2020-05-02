@@ -197,6 +197,7 @@ export function Game(props: Props) {
     const newState = {
       ...game,
       status: IGameStatus.ONGOING,
+      startedAt: Date.now(),
     };
 
     onGameChange({ ...newState, synced: false });
@@ -311,7 +312,9 @@ export function Game(props: Props) {
   return (
     <>
       <div className="bg-main-dark relative flex flex-column w-100 h-100">
-        <GameBoard onMenuClick={onMenuClick} onRollbackClick={onRollbackClick} />
+        <div className="bg-black-50 pa2 pv2-l ph6.5-m">
+          <GameBoard onMenuClick={onMenuClick} onRollbackClick={onRollbackClick} />
+        </div>
         <div className="flex flex-column bg-black-50 bb b--yellow ph6.5-m">
           {selectedArea.type === ActionAreaType.MENU && (
             <div className="h4 pa2 ph3-l">
@@ -433,6 +436,15 @@ export function Game(props: Props) {
                       size={ButtonSize.TINY}
                       text={displayStats ? "Hide stats" : "Show stats"}
                       onClick={() => onToggleStats()}
+                    />
+                    <Button
+                      outlined
+                      className="nowrap ma1 flex-1"
+                      size={ButtonSize.TINY}
+                      text="Summary"
+                      onClick={() => {
+                        router.push(`/summary?gameId=${game.id}`);
+                      }}
                     />
                   </div>
                 </div>
