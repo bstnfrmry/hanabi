@@ -119,10 +119,12 @@ export const fr: typeof en = {
   classicVariant: "Classique",
   multicolorVariant: "Multicolore",
   rainbowVariant: "Arc-en-ciel",
+  orangeVariant: "Orange",
   classicVariantDescription: "Le jeu traditionnel d'Hanabi sans extension",
   multicolorVariantDescription: "Une sixième pile est ajoutée avec seulement un exemplaire de chaque valeur",
   rainbowVariantDescription:
     "Une sixième pile est ajoutée dont les cartes sont touchées par tous les indices de couleur",
+  orangeVariantDescription: "Une sixième pile classique est ajoutée",
   showDirectHints: "Montrer les déductions",
   hideDirectHints: "Cacher les déductions",
   botSpeed: "Vitesse des bots",

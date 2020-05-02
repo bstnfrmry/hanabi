@@ -88,7 +88,7 @@ export default function NewGame() {
   return (
     <div className="w-100 h-100 overflow-y-scroll pv4 flex items-center pv6-l relative bg-main-dark ph2 ph3-l shadow-5 br3">
       <HomeButton className="absolute top-1 right-1" />
-      <div className="flex flex-column w-75-m w-60-l w-80" style={{ margin: "auto" }}>
+      <div className="flex flex-column w-75-m w-70-l w-80" style={{ margin: "auto" }}>
         <div className="flex justify-between ph1 items-center pb4 mb4 bb b--yellow-light">
           <Txt size={TxtSize.MEDIUM} value={t("players", "Players")} />
           <div className="flex">

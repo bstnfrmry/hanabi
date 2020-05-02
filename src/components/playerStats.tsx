@@ -82,6 +82,7 @@ export default function PlayerStats(props: Props) {
         <Txt className="ml4" size={TxtSize.SMALL} value={`${hintsCount}`} />
         <Txt
           className="ml1 lavender w2 nowrap"
+          multiline={false}
           size={TxtSize.XSMALL}
           value={`· ${percentage(hintsCount, totalCount)}`}
         />
@@ -96,6 +97,7 @@ export default function PlayerStats(props: Props) {
         <Txt className="ml4" size={TxtSize.SMALL} value={`${discardsCount}`} />
         <Txt
           className="ml1 lavender w2 nowrap"
+          multiline={false}
           size={TxtSize.XSMALL}
           value={`· ${percentage(discardsCount, totalCount)}`}
         />
@@ -105,6 +107,7 @@ export default function PlayerStats(props: Props) {
         <Txt className="ml4" size={TxtSize.SMALL} value={`${playsCount}`} />
         <Txt
           className="ml1 lavender w2 nowrap"
+          multiline={false}
           size={TxtSize.XSMALL}
           value={`· ${percentage(playsCount, totalCount)}`}
         />

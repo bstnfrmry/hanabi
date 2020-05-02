@@ -1,14 +1,21 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
+import { Select } from "~/components/ui/forms";
 import useLocalStorage from "~/hooks/localStorage";
 
-const Flags = {
-  en: "🇬🇧",
-  fr: "🇫🇷",
+const Languages = {
+  en: "🇬🇧 English",
+  fr: "🇫🇷 Français",
 };
 
-export default function LanguageSelector() {
+interface Props {
+  outlined?: boolean;
+}
+
+export default function LanguageSelector(props: Props) {
+  const { outlined = false } = props;
+
   const { i18n } = useTranslation();
   const [lang, setLang] = useLocalStorage("lang", null);
 
@@ -18,21 +25,5 @@ export default function LanguageSelector() {
     i18n.changeLanguage(lang);
   }, [lang]);
 
-  return (
-    <div className="flex">
-      {Object.entries(Flags).map(([lang, flag]) => {
-        return (
-          <a
-            key={lang}
-            className="no-underline mh2 pointer f3"
-            onClick={() => {
-              setLang(lang);
-            }}
-          >
-            {flag}
-          </a>
-        );
-      })}
-    </div>
-  );
+  return <Select options={Languages} outlined={outlined} value={lang} onChange={e => setLang(e.target.value)} />;
 }

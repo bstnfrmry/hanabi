@@ -19,8 +19,8 @@ export default function Home() {
 
   return (
     <div className="relative w-100 overflow-y-scroll flex flex-column justify-center items-center bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
-      <div className="absolute top-1 right-1">
-        <LanguageSelector />
+      <div className="absolute top-1 right-2">
+        <LanguageSelector outlined />
       </div>
       <div className="vh-100 flex flex-column items-center justify-center">
         <div className="flex flex-column items-center">

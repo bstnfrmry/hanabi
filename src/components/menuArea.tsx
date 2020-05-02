@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import LanguageSelector from "~/components/languageSelector";
 import Rules from "~/components/rules";
 import { TutorialContext } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
@@ -33,7 +34,10 @@ export default function MenuArea(props: Props) {
   return (
     <div className="flex justify-center items-center w-100 h-100 pa2">
       {!showRules && (
-        <div className="flex justify-center">
+        <div className="flex justify-center items-center">
+          <div className="mr5">
+            <LanguageSelector />
+          </div>
           <Button className="mr2" size={ButtonSize.MEDIUM} text={t("menu")} onClick={onMenuClick} />
           {game.status === IGameStatus.ONGOING && (
             <Button className="mr2" size={ButtonSize.MEDIUM} text={t("tutorial")} onClick={onTutorialClick} />
