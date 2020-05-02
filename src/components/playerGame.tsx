@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import { TFunction } from "i18next";
 import React, { HTMLAttributes, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Popover from "react-popover";
@@ -22,25 +23,29 @@ function isCardHintable(hint: IHintAction, card: ICard) {
   return hint.type === "color" ? matchColor(card.color, hint.value as IColor) : card.number === hint.value;
 }
 
-function textualHint(hint: IHintAction, cards: ICard[]) {
-  const { t } = useTranslation();
+function textualHint(hint: IHintAction, cards: ICard[], t: TFunction) {
   const hintableCards = cards
     .map((c, i) => (isCardHintable(hint, c) ? i : null))
     .filter(i => i !== null)
     .map(i => PositionMap[i]);
 
   if (hintableCards.length === 0) {
-    if (hint.type === "color") return t("negativeHintColor", { color: hint.value });
+    if (hint.type === "color") return t("negativeHintColor", { color: t(hint.value as string, { count: 5 }) });
+    // count= 5, to force plural in French
     else return t("negativeHintNumber", { number: hint.value });
   }
 
   if (hintableCards.length === 1) {
-    if (hint.type === "color") return t("positiveHintColor", { position: hintableCards[0], color: hint.value });
+    if (hint.type === "color")
+      return t("positiveHintColor", { position: hintableCards[0], color: t(hint.value as string) });
     else return t("positiveHintNumber", { position: hintableCards[0], number: hint.value });
   }
 
   if (hint.type === "color")
-    return t("positiveHintColorPlural", { positions: hintableCards.join(", "), color: hint.value });
+    return t("positiveHintColorPlural", {
+      positions: hintableCards.join(", "),
+      color: t(hint.value as string, { count: hintableCards.length }),
+    });
 
   return t("positiveHintNumberPlural", { positions: hintableCards.join(", "), number: hint.value });
 }
@@ -295,7 +300,7 @@ export default function PlayerGame(props: Props) {
                       className="mr2"
                       disabled={action === "discard" && game.tokens.hints === 8}
                       id={action}
-                      text={action}
+                      text={t(action)}
                       onClick={() =>
                         onCommitAction({
                           action,
@@ -334,7 +339,7 @@ export default function PlayerGame(props: Props) {
 
             <div className="mt2 flex items-center">
               {pendingHint.value && game.tokens.hints !== 0 && (
-                <Txt italic className="mr3" value={textualHint(pendingHint, player.hand)} />
+                <Txt italic className="mr3" value={textualHint(pendingHint, player.hand, t)} />
               )}
               {game.tokens.hints === 0 && <Txt className="mr3 orange" value={t("noTokens")} />}
               {!pendingHint.value && game.tokens.hints > 0 && <Txt className="mr3" value={t("selectVignette")} />}

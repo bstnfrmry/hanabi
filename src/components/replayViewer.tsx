@@ -40,7 +40,12 @@ export default function ReplayViewer(props: Props) {
     <div className="bg-black-50 flex justify-between items-center pa2">
       <div className="flex flex-column">
         <Txt className="db" size={TxtSize.SMALL} value={`Replay`} />
-        <Txt className="mt1 light-silver nowrap" size={TxtSize.SMALL} value={`${replay.cursor} / ${maxTurns}`} />
+        <Txt
+          className="mt1 light-silver nowrap"
+          multiline={false}
+          size={TxtSize.SMALL}
+          value={`${replay.cursor} / ${maxTurns}`}
+        />
       </div>
       <Button
         void

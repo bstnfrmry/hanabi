@@ -38,16 +38,17 @@ export function Checkbox(props: InputProps) {
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   options: { [value: string]: ReactNode };
+  formatter?: (c: string) => string;
 }
 
 export function Select(props: SelectProps) {
-  const { options, className, ...attributes } = props;
+  const { options, className, formatter, ...attributes } = props;
 
   return (
     <select className={classnames("h2 br2 ba b--yellow", className)} {...attributes}>
       {Object.keys(options).map(value => (
         <option key={value} value={value}>
-          {options[value]}
+          {formatter ? formatter(options[value] as string) : options[value]}
         </option>
       ))}
     </select>

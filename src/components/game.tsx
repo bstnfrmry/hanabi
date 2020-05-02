@@ -413,7 +413,8 @@ export function Game(props: Props) {
                       size={TxtSize.SMALL}
                       value={
                         t("estimatedMaxScore", { reachableScore }) +
-                        (reachableScore > game.playedCards.length ? t("keepPractincing") : t("congrats"))
+                        ` ` +
+                        (reachableScore > game.playedCards.length ? t("keepPracticing") : t("congrats"))
                       }
                     />
                   )}

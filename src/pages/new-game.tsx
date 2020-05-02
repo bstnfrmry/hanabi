@@ -181,6 +181,7 @@ export default function NewGame() {
             <Field className="pb2 mb2 bb b--yellow-light" label={t("hints", "Hints")}>
               <Select
                 className="pl3"
+                formatter={t}
                 options={HintsLevels}
                 value={hintsLevel}
                 onChange={e => setHintsLevel(e.target.value as IGameHintsLevel)}
@@ -195,6 +196,7 @@ export default function NewGame() {
             <Field label={t("botSpeed", "Bots speed")}>
               <Select
                 className="pl3"
+                formatter={t}
                 id="bots-speed"
                 options={BotsSpeeds}
                 value={botsWait}
