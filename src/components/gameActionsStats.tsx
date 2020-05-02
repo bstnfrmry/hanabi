@@ -57,6 +57,7 @@ export default function GameActionsStats() {
                       <Txt className="ml3 ml4-m" size={TxtSize.SMALL} value={count} />
                       <Txt
                         className="ml2 lavender w2 nowrap"
+                        multiline={false}
                         size={TxtSize.SMALL}
                         value={`· ${percentage(count, turns.length)}`}
                       />

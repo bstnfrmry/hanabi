@@ -1,6 +1,7 @@
 import classnames from "classnames";
 import { groupBy } from "lodash";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
@@ -21,6 +22,7 @@ export function percentage(num: number, den: number) {
 
 export default function PlayerStats(props: Props) {
   const { player, className } = props;
+  const { t } = useTranslation();
 
   const game = useGame();
 
@@ -76,10 +78,11 @@ export default function PlayerStats(props: Props) {
       )}
 
       <div className="flex items-center">
-        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: IInsightColor.Hint }} value={`Hinted`} />
+        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: IInsightColor.Hint }} value={t("hinted")} />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${hintsCount}`} />
         <Txt
           className="ml1 lavender w2 nowrap"
+          multiline={false}
           size={TxtSize.XSMALL}
           value={`· ${percentage(hintsCount, totalCount)}`}
         />
@@ -89,20 +92,22 @@ export default function PlayerStats(props: Props) {
           className="flex-grow-1"
           size={TxtSize.SMALL}
           style={{ color: IInsightColor.Discard }}
-          value={`Discarded`}
+          value={t("discarded")}
         />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${discardsCount}`} />
         <Txt
           className="ml1 lavender w2 nowrap"
+          multiline={false}
           size={TxtSize.XSMALL}
           value={`· ${percentage(discardsCount, totalCount)}`}
         />
       </div>
       <div className="flex items-center">
-        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: IInsightColor.Play }} value={`Played`} />
+        <Txt className="flex-grow-1" size={TxtSize.SMALL} style={{ color: IInsightColor.Play }} value={t("played")} />
         <Txt className="ml4" size={TxtSize.SMALL} value={`${playsCount}`} />
         <Txt
           className="ml1 lavender w2 nowrap"
+          multiline={false}
           size={TxtSize.XSMALL}
           value={`· ${percentage(playsCount, totalCount)}`}
         />

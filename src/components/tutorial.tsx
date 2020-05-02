@@ -1,4 +1,5 @@
 import React, { ReactNode, useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Popover, { PopoverPlace } from "react-popover";
 import posed from "react-pose";
 
@@ -33,41 +34,36 @@ export enum ITutorialStep {
 
 const steps = {
   [ITutorialStep.WELCOME]: {
-    title: "Tutorial",
-    body: "Let's learn how to play!",
+    title: "introTutorial",
+    body: "introContent",
   },
   [ITutorialStep.PLAYED_CARDS]: {
-    title: "Played cards",
-    body: "This will nest the cards that have been played.\nCollectively, reach 5 on each color to win the game.",
+    title: "playedCardsTutorial",
+    body: "playedCardsTutorialContent",
   },
   [ITutorialStep.DISCARD_PILE]: {
-    title: "Discard",
-    body:
-      "Here you will see the cards\nyou and your team discarded.\nAvoid discarding the ones\nyou need to finish the game.",
+    title: "discardTutorial",
+    body: "discardTutorialContent",
   },
   [ITutorialStep.SELF_PLAYER]: {
-    title: "Your game",
-    body: "These are your cards.\nYou can't see them, but other players can and will give you hints about them.",
+    title: "yourGameTutorial",
+    body: "yourGameTutorialContent",
   },
   [ITutorialStep.OTHER_PLAYERS]: {
-    title: "Teammates",
-    body:
-      "These are your teammates.\nLike you, they can't see their cards.\nGive them hints to help them play or discard cards",
+    title: "teammatesTutorial",
+    body: "teammatesTutorialContent",
   },
   [ITutorialStep.HINT_TOKENS]: {
-    title: "Hint tokens",
-    body:
-      "Some actions have a cost.\n\n- Giving a hint costs 1 hint token.\n- Discarding a card grants 1 hint token.\n- Playing a 5 gives 1 hint token as a bonus",
+    title: "hintTokensTutorial",
+    body: "hintTokensTutorialContent",
   },
   [ITutorialStep.STRIKE_TOKENS]: {
-    title: "Strike tokens",
-    body:
-      "Playing a wrong card will discard it and cost you 1 strike token.\nReaching 3 strike tokens will instantly lose the game.",
+    title: "strikeTokensTutorial",
+    body: "strikeTokensTutorialContent",
   },
   [ITutorialStep.YOUR_TURN]: {
-    title: "It's your turn",
-    body:
-      "You have 3 options:\n\n- Tap your game to play a card...\n- ... or discard it\n- Tap one of your teammates games to give them a hint",
+    title: "yourTurnTutorial",
+    body: "yourTurnTutorialContent",
   },
 };
 
@@ -116,6 +112,7 @@ interface Props {
 
 export default function Tutorial(props: Props) {
   const { step, placement, children } = props;
+  const { t } = useTranslation();
 
   const [pose, setPose] = useState(null);
   const context = useContext(TutorialContext);
@@ -145,16 +142,22 @@ export default function Tutorial(props: Props) {
       body={
         <div className="flex flex-column b--yellow ba bw1 bg-white pa2 pa3-l br2 main-dark">
           <span className="flex items-center justify-between">
-            <Txt size={TxtSize.MEDIUM} value={title} />
+            <Txt size={TxtSize.MEDIUM} value={t(title)} />
             {step > 0 && <Txt className="gray mr2" value={`${step} / ${totalSteps - 1}`} />}
           </span>
           <div className="flex flex-column mt1 mt2-l">
-            <Txt multiline className="mr4" value={body} />
+            <Txt multiline className="mr4" value={t(body)} />
 
             {step === ITutorialStep.WELCOME && (
               <div className="flex self-end mt1 ph1">
-                <Button className="mr1 mr2-l" id="skip-tutorial" size={ButtonSize.TINY} text="✕ Skip" onClick={skip} />
-                <Button size={ButtonSize.TINY} text="Go !" onClick={nextStep} />
+                <Button
+                  className="mr1 mr2-l"
+                  id="skip-tutorial"
+                  size={ButtonSize.TINY}
+                  text={t("skip")}
+                  onClick={skip}
+                />
+                <Button size={ButtonSize.TINY} text={t("go")} onClick={nextStep} />
               </div>
             )}
 

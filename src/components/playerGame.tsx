@@ -1,5 +1,7 @@
 import classnames from "classnames";
+import { TFunction } from "i18next";
 import React, { HTMLAttributes, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Popover from "react-popover";
 import posed, { PoseGroup } from "react-pose";
 
@@ -21,25 +23,31 @@ function isCardHintable(hint: IHintAction, card: ICard) {
   return hint.type === "color" ? matchColor(card.color, hint.value as IColor) : card.number === hint.value;
 }
 
-function textualHint(hint: IHintAction, cards: ICard[]) {
+function textualHint(hint: IHintAction, cards: ICard[], t: TFunction) {
   const hintableCards = cards
     .map((c, i) => (isCardHintable(hint, c) ? i : null))
     .filter(i => i !== null)
     .map(i => PositionMap[i]);
 
   if (hintableCards.length === 0) {
-    if (hint.type === "color") return `You have no ${hint.value} cards.`;
-    else return `You have no ${hint.value}s.`;
+    if (hint.type === "color") return t("negativeHintColor", { color: t(hint.value as string, { count: 5 }) });
+    // count= 5, to force plural in French
+    else return t("negativeHintNumber", { number: hint.value });
   }
 
   if (hintableCards.length === 1) {
-    if (hint.type === "color") return `Your card ${hintableCards[0]} is ${hint.value}`;
-    else return `Your card ${hintableCards[0]} is a ${hint.value}`;
+    if (hint.type === "color")
+      return t("positiveHintColor", { position: hintableCards[0], color: t(hint.value as string) });
+    else return t("positiveHintNumber", { position: hintableCards[0], number: hint.value });
   }
 
-  if (hint.type === "color") return `Your cards ${hintableCards.join(", ")} are ${hint.value}`;
+  if (hint.type === "color")
+    return t("positiveHintColorPlural", {
+      positions: hintableCards.join(", "),
+      color: t(hint.value as string, { count: hintableCards.length }),
+    });
 
-  return `Your cards ${hintableCards.join(", ")} are ${hint.value}s`;
+  return t("positiveHintNumberPlural", { positions: hintableCards.join(", "), number: hint.value });
 }
 
 interface Props extends HTMLAttributes<HTMLElement> {
@@ -73,6 +81,7 @@ export default function PlayerGame(props: Props) {
   } = props;
 
   const game = useGame();
+  const { t } = useTranslation();
   const replay = useReplay();
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const [selectedCard, selectCard] = useState<number>(cardIndex);
@@ -131,7 +140,7 @@ export default function PlayerGame(props: Props) {
                   className="yellow nt1"
                   id="your-turn"
                   size={TxtSize.XSMALL}
-                  value={game.status === IGameStatus.LOBBY ? "You'll start first" : "Your turn"}
+                  value={game.status === IGameStatus.LOBBY ? t("youWillStart") : t("yourTurn")}
                 />
               </Tutorial>
             )}
@@ -221,7 +230,7 @@ export default function PlayerGame(props: Props) {
                     revealCardButton: selected,
                   })}
                   size={ButtonSize.TINY}
-                  text={revealCards ? "Hide" : "Reveal"}
+                  text={revealCards ? t("hide") : t("reveal")}
                   onClick={e => {
                     e.stopPropagation();
                     setRevealCards(!revealCards);
@@ -277,7 +286,10 @@ export default function PlayerGame(props: Props) {
           <div className="flex flex-column items-end mb2">
             <div className="flex justify-end items-center h-100-l">
               {hasSelectedCard && (
-                <Txt className="pb1 pb2-l ml1 mb2 mr3 ml2-l" value={`Card ${PositionMap[selectedCard]} selected`} />
+                <Txt
+                  className="pb1 pb2-l ml1 mb2 mr3 ml2-l"
+                  value={t("cardSelected", { position: PositionMap[selectedCard] })}
+                />
               )}
 
               {hasSelectedCard && (
@@ -288,7 +300,7 @@ export default function PlayerGame(props: Props) {
                       className="mr2"
                       disabled={action === "discard" && game.tokens.hints === 8}
                       id={action}
-                      text={action}
+                      text={t(action)}
                       onClick={() =>
                         onCommitAction({
                           action,
@@ -303,8 +315,8 @@ export default function PlayerGame(props: Props) {
             </div>
             {hasSelectedCard && game.tokens.hints === MaxHints && (
               <Txt className="orange mr2 flex flex-column items-end">
-                <span>8 tokens</span>
-                <span>You cannot discard</span>
+                <span>{t("eightTokens")}</span>
+                <span>{t("cannotDiscard")}</span>
               </Txt>
             )}
           </div>
@@ -327,17 +339,15 @@ export default function PlayerGame(props: Props) {
 
             <div className="mt2 flex items-center">
               {pendingHint.value && game.tokens.hints !== 0 && (
-                <Txt italic className="mr3" value={textualHint(pendingHint, player.hand)} />
+                <Txt italic className="mr3" value={textualHint(pendingHint, player.hand, t)} />
               )}
-              {game.tokens.hints === 0 && <Txt className="mr3 orange" value="No tokens left to hint" />}
-              {!pendingHint.value && game.tokens.hints > 0 && (
-                <Txt className="mr3" value="Select either a color or number to hint" />
-              )}
+              {game.tokens.hints === 0 && <Txt className="mr3 orange" value={t("noTokens")} />}
+              {!pendingHint.value && game.tokens.hints > 0 && <Txt className="mr3" value={t("selectVignette")} />}
 
               <Button
                 disabled={!pendingHint.type || game.tokens.hints === 0}
                 id="give-hint"
-                text="Hint"
+                text={t("hint")}
                 onClick={() =>
                   onCommitAction({
                     action: "hint",

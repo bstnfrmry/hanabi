@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import posed, { PoseGroup } from "react-pose";
 
 import Turn from "~/components/turn";
@@ -13,6 +14,7 @@ interface Props {
 
 export default function Logs(props: Props) {
   const { interturn } = props;
+  const { t } = useTranslation();
 
   const game = useGame();
   const replay = useReplay();
@@ -42,7 +44,11 @@ export default function Logs(props: Props) {
             })}
           </PoseGroup>
           <Tutorial placement="below" step={ITutorialStep.WELCOME}>
-            <Txt className="lavender" size={TxtSize.SMALL} value={history.length ? "Game started!" : "Game starts!"} />
+            <Txt
+              className="lavender"
+              size={TxtSize.SMALL}
+              value={history.length ? t("gameStarted") : t("gameStarts")}
+            />
           </Tutorial>
         </div>
       )}

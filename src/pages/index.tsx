@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import React, { useRef } from "react";
+import { useTranslation } from "react-i18next";
 
+import LanguageSelector from "~/components/languageSelector";
 import Rules from "~/components/rules";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -8,6 +10,7 @@ import useLocalStorage from "~/hooks/localStorage";
 
 export default function Home() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [gameId] = useLocalStorage("gameId", null);
   const [playerId] = useLocalStorage("playerId", null);
   const rulesRef = useRef<HTMLDivElement>();
@@ -15,34 +18,41 @@ export default function Home() {
   const lastGame = gameId && playerId ? { gameId } : null;
 
   return (
-    <div className="w-100 overflow-y-scroll flex flex-column justify-center items-center bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
+    <div className="relative w-100 overflow-y-scroll flex flex-column justify-center items-center bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
+      <div className="absolute top-1 right-2">
+        <LanguageSelector outlined />
+      </div>
       <div className="vh-100 flex flex-column items-center justify-center">
         <div className="flex flex-column items-center">
-          <img alt="Hanabi cards game online logo" className="mw4 mb4" src="/static/hanabi.png" />
-          <Txt size={TxtSize.LARGE} value="Hanabi" />
+          <img
+            alt={t("landingImageAlt", "Hanabi cards game online logo")}
+            className="mw4 mb4"
+            src="/static/hanabi.png"
+          />
+          <Txt size={TxtSize.LARGE} value={t("hanabi", "Hanabi")} />
         </div>
-        <span className="tc lavender">Play the Hanabi game online with friends!</span>
+        <span className="tc lavender">{t("tagline", "Play the Hanabi game online with friends!")}</span>
         <div className="flex flex-column mt5">
           <Button
             className="mb4"
             id="create-room"
             size={ButtonSize.LARGE}
-            text="Create a room"
+            text={t("createRoom", "Create a room")}
             onClick={() => router.push("/new-game")}
           />
           <Button
             className="mb4"
             id="join-room"
             size={ButtonSize.LARGE}
-            text="Join a room"
+            text={t("joinRoom", "Join a room")}
             onClick={() => router.push("/join-game")}
           />
           {lastGame && (
             <Button
               className="mb4"
-              id="rejoin-game"
+              id="join-room"
               size={ButtonSize.LARGE}
-              text="Rejoin game"
+              text={t("rejoinGame", "Rejoin game")}
               onClick={() =>
                 router.replace({
                   pathname: "/play",
@@ -51,13 +61,14 @@ export default function Home() {
               }
             />
           )}
+
           <span
             className="flex flex-column items-center link white pointer mt4"
             onClick={() => {
               rulesRef.current.scrollIntoView({ behavior: "smooth" });
             }}
           >
-            <span>What's Hanabi?</span>
+            <span>{t("whatsHanabi", "What's Hanabi?")}</span>
             <span>⌄</span>
           </span>
         </div>
