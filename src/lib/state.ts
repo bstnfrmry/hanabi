@@ -19,6 +19,8 @@ export default interface IGameState {
   actionsLeft: number;
   turnsHistory: ITurn[];
   createdAt: number;
+  startedAt?: number;
+  endedAt?: number;
   synced: boolean;
   // Replay mode
   originalGame?: IGameState;

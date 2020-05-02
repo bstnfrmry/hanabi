@@ -1,5 +1,7 @@
 import classnames from "classnames";
+import moment from "moment";
 import { useRouter } from "next/router";
+import { format } from "path";
 import React, { ReactNode, useEffect, useState } from "react";
 import shortid from "shortid";
 
@@ -39,6 +41,10 @@ function Section(props: SectionProps) {
   );
 }
 
+function formatDuration(start: number, end: number) {
+  return moment.utc(moment(end).diff(start)).format("HH:mm:ss");
+}
+
 export default function Summary() {
   const network = useNetwork();
   const router = useRouter();
@@ -69,6 +75,8 @@ export default function Summary() {
     return <LoadingScreen />;
   }
 
+  const gameDuration = game.startedAt && game.endedAt ? formatDuration(game.startedAt - 7200000, game.endedAt) : null;
+
   return (
     <GameContext.Provider value={game}>
       <div className="flex flex-column items-center mb5">
@@ -88,6 +96,7 @@ export default function Summary() {
             {game.options.variant === GameVariant.RAINBOW && <span className="ml1">with rainbow</span>}
             <span className="ml2">· Shuffle #{game.options.seed}</span>
           </Txt>
+          {gameDuration && <Txt className="mt2" size={TxtSize.MEDIUM} value={`Game completed in ${gameDuration}`} />}
         </div>
 
         <Section title="Our result">

@@ -189,6 +189,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
 
   if (isGameOver(s)) {
     s.status = IGameStatus.OVER;
+    s.endedAt = Date.now();
   }
 
   return s;

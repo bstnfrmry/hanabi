@@ -197,6 +197,7 @@ export function Game(props: Props) {
     const newState = {
       ...game,
       status: IGameStatus.ONGOING,
+      startedAt: Date.now(),
     };
 
     onGameChange({ ...newState, synced: false });
