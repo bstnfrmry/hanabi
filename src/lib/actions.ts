@@ -256,6 +256,7 @@ export function getMaximumScore(state: IGameState) {
   switch (state.options.variant) {
     case GameVariant.MULTICOLOR:
     case GameVariant.RAINBOW:
+    case GameVariant.ORANGE:
       return 30;
     case GameVariant.CLASSIC:
     default:
