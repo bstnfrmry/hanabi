@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/camelcase */
+
 export const en = {
   hanabi: "Hanabi",
   welcome: "Welcome",
@@ -93,14 +95,14 @@ export const en = {
   yourGameTutorial: "Your game",
   yourGameTutorialContent:
     "These are your cards.\nYou can't see them, but other players can and will give you hints about them.",
-  TeammatesTutorial: "Teammates",
-  TeammatesTutorialContent:
+  teammatesTutorial: "Teammates",
+  teammatesTutorialContent:
     "These are your teammates.\nLike you, they can't see their cards.\nGive them hints to help them play or discard cards.",
-  HintTokensTutorial: "Hint tokens",
-  HintTokensTutorialContent:
+  hintTokensTutorial: "Hint tokens",
+  hintTokensTutorialContent:
     "Some actions have a cost.\n\n- Giving a hint costs 1 hint token.\n- Discarding a card grants 1 hint token.\n- Playing a 5 gives 1 hint token as a bonus.",
-  StrikeTokensTutorial: "Strike tokens",
-  StrikeTokensTutorialContent:
+  strikeTokensTutorial: "Strike tokens",
+  strikeTokensTutorialContent:
     "Playing a wrong card will discard it and cost you 1 strike token.\nReaching 3 strike tokens will instantly lose the game.",
   yourTurnTutorial: "It's your turn",
   yourTurnTutorialContent:

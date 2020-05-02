@@ -50,16 +50,16 @@ const steps = {
     body: "yourGameTutorialContent",
   },
   [ITutorialStep.OTHER_PLAYERS]: {
-    title: "TeammatesTutorial",
-    body: "TeammatesTutorialContent",
+    title: "teammatesTutorial",
+    body: "teammatesTutorialContent",
   },
   [ITutorialStep.HINT_TOKENS]: {
-    title: "HintTokensTutorial",
-    body: "HintTokensTutorialContent",
+    title: "hintTokensTutorial",
+    body: "hintTokensTutorialContent",
   },
   [ITutorialStep.STRIKE_TOKENS]: {
-    title: "StrikeTokensTutorial",
-    body: "StrikeTokensTutorialContent",
+    title: "strikeTokensTutorial",
+    body: "strikeTokensTutorialContent",
   },
   [ITutorialStep.YOUR_TURN]: {
     title: "yourTurnTutorial",

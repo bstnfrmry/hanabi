@@ -39,7 +39,7 @@ export function Checkbox(props: InputProps) {
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   options: { [value: string]: ReactNode };
   outlined?: boolean;
-  formatter?: (c: string) => string;
+  formatter?: (value: string) => string;
 }
 
 export function Select(props: SelectProps) {

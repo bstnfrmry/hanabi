@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/camelcase */
+
 import { en } from "./en";
 
 export const fr: typeof en = {
@@ -11,7 +13,7 @@ export const fr: typeof en = {
   whatsHanabi: "Hanabi, c'est quoi ?",
   invitationByPlayers: "{{playersNames}} vous invitent à jouer à Hanabi 🎉",
   invitationByPlayer: "{{playerName}} vous invite à jouer à Hanabi 🎉",
-  invitationNoPlayers: "You've been invited to a game of Hanabi 🎉",
+  invitationNoPlayers: "Vous avez été invités à jouer à Hanabi 🎉",
   gameFull: "Tout le monde est là !",
   gameNotFull: "{{joined}} joueur sur {{playersCount}} a rejoint.",
   gameNotFullPlural: "{{joined}} joueurs sur {{playersCount}} ont rejoint.",
@@ -34,7 +36,7 @@ export const fr: typeof en = {
   go: "Go !",
   estimatedMaxScore: "Score max estimé pour cette série : {{reachableScore}}.",
   keepPracticing: "Pas mal !",
-  congrats: "Incroyable s!",
+  congrats: "Incroyable !",
   hideStats: "Voir les cartes",
   showStats: "Voir les stats",
   gameOver: "Game over ! • Votre score est de {{playedCardsLength}} 🎉",
@@ -64,7 +66,7 @@ export const fr: typeof en = {
   positiveHintNumber: "Votre carte {{ position }} est un {{ number }}",
   positiveHintColorPlural: "Vos cartes {{ positions }} sont {{ color }}",
   positiveHintNumberPlural: "Vos cartes {{ positions }} sont des {{ number }}",
-  you: "Vous", // TODO check
+  you: "Vous",
   hinted: "Indices",
   played: "Cartes jouées",
   discarded: "Défausses",
@@ -95,14 +97,14 @@ export const fr: typeof en = {
   yourGameTutorial: "Votre jeu",
   yourGameTutorialContent:
     "Voilà vos cartes.\nVous ne les voyez pas mais les autres joueurs oui.\nIls vous donneront des indices sur ces cartes.",
-  TeammatesTutorial: "Partenaires",
-  TeammatesTutorialContent:
+  teammatesTutorial: "Partenaires",
+  teammatesTutorialContent:
     "Vos partenaires, comme vous, ne voient pas leur jeu.\nDonnez-leur des indices pour les aider\nà savoir s'ils peuvent jouer ou défausser.",
-  HintTokensTutorial: "Jetons bleus",
-  HintTokensTutorialContent:
+  hintTokensTutorial: "Jetons bleus",
+  hintTokensTutorialContent:
     "Certaines actions ont un coût.\n- Donner un indice coûte 1 jeton bleu\n- Défausser une carte récupère 1 jeton bleu\n- Jouer un 5 donne un jeton bleu bonus",
-  StrikeTokensTutorial: "Jetons rouges",
-  StrikeTokensTutorialContent:
+  strikeTokensTutorial: "Jetons rouges",
+  strikeTokensTutorialContent:
     "Jouer une mauvaise carte la défaussera et vous coûtera un jeton rouge de pénalité.\nAu troisième jeton rouge, vous perdez instantanément la partie.",
   yourTurnTutorial: "C'est votre tour !",
   yourTurnTutorialContent:
