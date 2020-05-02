@@ -44,8 +44,17 @@ export default function Rules(props: Props) {
           className="absolute top-0 right-0 mw4 ma4 o-50 dn db-l"
           src="/static/hanabi.png"
         />
+
+        <div className="flex justify-center mb4 mb5-l">
+          <div className="w-75 w-50-l ba b--yellow br3">
+            <img alt="Game screenshot" className="dn db-l br3" src="/static/images/screenshot-desktop.png" />
+            <img alt="Game screenshot" className="db dn-l br3" src="/static/images/screenshot-mobile.png" />
+          </div>
+        </div>
+
         <div className="flex flex-column mb5">
           <Title>Objective</Title>
+
           <Paragraph>
             Hanabi is a card game created by Antoine Bauza. It's cooperative, which means that players are not against
             each other but assemble to reach a common goal. They incarn here distracted pyrotechnists who - by
