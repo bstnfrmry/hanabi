@@ -49,6 +49,7 @@ export enum GameVariant {
   CLASSIC = "classic",
   MULTICOLOR = "multicolor",
   RAINBOW = "rainbow",
+  ORANGE = "orange",
 }
 
 export enum GameMode {
@@ -79,6 +80,7 @@ export enum IColor {
   YELLOW = "yellow",
   MULTICOLOR = "multicolor",
   RAINBOW = "rainbow",
+  ORANGE = "orange",
 }
 
 export enum IInsightColor {
