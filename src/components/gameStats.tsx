@@ -5,6 +5,7 @@ import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
+import useLongPress from "~/hooks/longPress";
 import { getStateAtTurn, isPlayable } from "~/lib/actions";
 import { isCardDangerous } from "~/lib/ai";
 import IGameState, { fillEmptyValues, ICard, IColor, IInsightColor, IPlayer, ITurn } from "~/lib/state";
@@ -146,6 +147,9 @@ function Dot(props: DotProps) {
 export default function GameStats() {
   const game = useGame();
   const [displayCards, setDisplayCards] = useState(false);
+  const longPressProps = useLongPress(() => {
+    setDisplayCards(!displayCards);
+  });
 
   if (!game.turnsHistory.length) {
     return null;
@@ -184,7 +188,7 @@ export default function GameStats() {
         onClick={() => setDisplayCards(!displayCards)}
       />
 
-      <div className="flex justify-center-l mt3" style={{ overflowX: "scroll" }}>
+      <div className="flex justify-center-l mt3" style={{ overflowX: "scroll" }} {...longPressProps}>
         <div className="flex flex-column w1 nl3" style={{ width: "40px", paddingTop: 48 }}>
           {game.turnsHistory.map((turn, i) => {
             return (
