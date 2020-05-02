@@ -15,14 +15,16 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Container(
-      color: Color.fromRGBO(0, 16, 48, 1),
-      child: SafeArea(
+      home: Container(
+        color: Color.fromRGBO(0, 16, 48, 1),
+        child: SafeArea(
           child: WebView(
-        initialUrl: 'https://hanabi.cards',
-        javascriptMode: JavascriptMode.unrestricted,
-        gestureNavigationEnabled: true,
-      )),
-    ));
+            initialUrl: 'https://hanabi.cards',
+            javascriptMode: JavascriptMode.unrestricted,
+            gestureNavigationEnabled: true,
+          ),
+        ),
+      ),
+    );
   }
 }
