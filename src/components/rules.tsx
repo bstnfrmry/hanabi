@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 
+import DiscordButton from "~/components/discordButton";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 
@@ -168,6 +169,9 @@ export default function Rules(props: Props) {
             </a>{" "}
             if you'd like to contribute.
           </Paragraph>
+          <div className="mt4">
+            <DiscordButton />
+          </div>
         </div>
       </div>
     </div>
