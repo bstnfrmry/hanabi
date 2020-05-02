@@ -20,6 +20,10 @@ const Order = {
 export default function GameActionsStats() {
   const game = useGame();
 
+  if (!game.turnsHistory.length) {
+    return null;
+  }
+
   const groupedTurns = groupBy(game.turnsHistory, turn => turn.action.action);
   const hintsCount = game.turnsHistory.filter(turn => turn.action.action === "hint").length;
   const playsCount = game.turnsHistory.filter(turn => turn.action.action === "play").length || 1;
@@ -35,7 +39,7 @@ export default function GameActionsStats() {
 
       <div className="flex justify-center-l w-100 mt4">
         {Object.keys(Order).map(column => {
-          const turns = groupedTurns[column];
+          const turns = groupedTurns[column] || [];
           const groupedPlayers = groupBy(turns, turn => turn.action.from);
 
           return (

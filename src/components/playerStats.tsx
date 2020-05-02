@@ -46,7 +46,7 @@ export default function PlayerStats(props: Props) {
 
   return (
     <div className={classnames("flex flex-column", className)}>
-      {totalCount && (
+      {totalCount > 0 && (
         <div className="flex mb2" style={{ height: 10, width: "100%" }}>
           <div
             className="h-100"

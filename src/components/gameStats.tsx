@@ -147,6 +147,10 @@ export default function GameStats() {
   const game = useGame();
   const [displayCards, setDisplayCards] = useState(false);
 
+  if (!game.turnsHistory.length) {
+    return null;
+  }
+
   const firstPlayerIndex = game.turnsHistory[0].action.from;
   const orderedPlayers = [...game.players.slice(firstPlayerIndex), ...game.players.slice(0, firstPlayerIndex)];
 
