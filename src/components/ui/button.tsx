@@ -65,7 +65,7 @@ export default function Button(props: Props) {
       onClick={onClick}
       {...attributes}
     >
-      {text && <Txt size={ButtonTxtSizes[size]} value={text} />}
+      {text && <Txt className="nowrap" multiline={false} size={ButtonTxtSizes[size]} value={text} />}
       {!text && children}
     </button>
   );

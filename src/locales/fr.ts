@@ -98,15 +98,15 @@ export const fr: typeof en = {
   TeammatesTutorial: "Partenaires",
   TeammatesTutorialContent:
     "Vos partenaires, comme vous, ne voient pas leur jeu.\nDonnez-leur des indices pour les aider\nà savoir s'ils peuvent jouer ou défausser.",
-  HintTokensTutorial: "Jetons bleu",
+  HintTokensTutorial: "Jetons bleus",
   HintTokensTutorialContent:
     "Certaines actions ont un coût.\n- Donner un indice coûte 1 jeton bleu\n- Défausser une carte récupère 1 jeton bleu\n- Jouer un 5 donne un jeton bleu bonus",
-  StrikeTokensTutorial: "Jetons rouge",
+  StrikeTokensTutorial: "Jetons rouges",
   StrikeTokensTutorialContent:
-    "Jouer une mauvaise carte la défaussera et vous coûtera un jeton rouge de pénalité.\nAu troisième jeton rouge, vous perdez instantanément le jeu.",
+    "Jouer une mauvaise carte la défaussera et vous coûtera un jeton rouge de pénalité.\nAu troisième jeton rouge, vous perdez instantanément la partie.",
   yourTurnTutorial: "C'est votre tour !",
   yourTurnTutorialContent:
-    "Vous avez 3 Options\n\n- Sélectionnez une votre jeu pour jouer une carte\n- ... ou la défausser\n- Cliquer sur un partenaire pour lui donner un indice",
+    "Vous avez 3 options\n- Sélectionnez une votre jeu pour jouer une carte\n- ... ou la défausser\n- Cliquer sur un partenaire pour lui donner un indice",
   skip: "✕ Passer",
   offline: "Vous êtes hors ligne",
   apologies: "Désolés, il y a eu un souci 😕",
@@ -142,12 +142,12 @@ export const fr: typeof en = {
   seed: "Seed",
   objective: "Objectif",
   rulesIntro:
-    "Hanabi est un jeu de cartes créé par Antoine BAuza. C'est un jeu coopératif : les participants ne jouent pas les uns contre les autres mais coopère pour gagner le jeu.\nIls incarnent dans Hanabi des pyrotechniciens qui ont, par inattention, mélangé leurs poudres, mèches et fusées et tubes avant le grand feu d'artifice tant attendu. Le spectacle s'apprête à commencer et la situation est quelque peu cahotique. Ils doivent donc s'aider pour éviter que le spectacle ne tourne au désastre.",
+    "Hanabi est un jeu de cartes créé par Antoine Bauza. C'est un jeu coopératif : les participants ne jouent pas les uns contre les autres mais coopère pour gagner le jeu.\nIls incarnent dans Hanabi des pyrotechniciens qui ont, par inattention, mélangé leurs poudres, mèches et fusées et tubes avant le grand feu d'artifice tant attendu. Le spectacle s'apprête à commencer et la situation est quelque peu cahotique. Ils doivent donc s'aider pour éviter que le spectacle ne tourne au désastre.",
   rulesGoal:
     "L'objectif des pyrotechniciens est de construire 5 piles de feux d'artifice, une de chaque couleur (blanc, rouge, bleu, jaune, vert) en empilant, de façon croissante, les chiffres des cartes (1, 2, 3, 4, 5).",
   rulesSetupTitle: "Mise en place",
   rulesSetup:
-    "L'application hanabi.cards vous installe le jeu, ce qui est assez pratique 😉. Au début du jeu, vous disposez de 8 jetons bleu - vos indices - et de 3 jetons rouges - vos pénalités.\nLa pioche est composée de 50 cartes, 10 de chaque couleur (dont les nombres associés sont 1, 1, 1, 2, 2, 3, 3, 4, 4, 5).\n\nDans une partie à 2 ou 3 joueurs, 5 cartes sont distribuées à chaque joueur.\nDans une partie à 4 ou 5 joueurs, 4 cartes sont distribuées.\n\nComme vous allez le voir, la particularité du jeu réside dans le fait que vous ne voyez pas votre propre jeu, mais seulement celui des autres.",
+    "L'application hanabi.cards vous installe le jeu, ce qui est assez pratique 😉. Au début du jeu, vous disposez de 8 jetons bleus - vos indices - et de 3 jetons rouges - vos pénalités.\nLa pioche est composée de 50 cartes, 10 de chaque couleur (dont les nombres associés sont 1, 1, 1, 2, 2, 3, 3, 4, 4, 5).\n\nDans une partie à 2 ou 3 joueurs, 5 cartes sont distribuées à chaque joueur.\nDans une partie à 4 ou 5 joueurs, 4 cartes sont distribuées.\n\nComme vous allez le voir, la particularité du jeu réside dans le fait que vous ne voyez pas votre propre jeu, mais seulement celui des autres.",
   rulesGameTitle: "Jouer",
   rulesGame:
     "À son tour, un joueur peut effectuer une (et seulement une) des trois actions suivantes. Les joueurs ne sont pas autorisés à passer.\n1. Donner des indices à un autre joueur sur son jeu\n2. Défausser une carte\n3. Jouer une de ses cartes.\n\nLes joueurs ne sont pas autorisés à donner des indices ou des suggestions pendant le tour des autres joueurs.",
@@ -156,7 +156,7 @@ export const fr: typeof en = {
     "Donner un indice consomme un jeton bleu. Ainsi, si vous n'avez plus de jeton bleu, vous ne pouvez pas donner d'informations et vous devez choisir une autre des deux actions possibles.\nVous pouvez donner un indice soit sur la valeur, soit sur les couleurs du jeu d'un joueur.\nPar exemple, en cliquant sur la vignette bleue, le joueur recevra l'indice : tes cartes A et B sont bleues.",
   rulesDiscardTitle: "2. Défausser une carte",
   rulesDiscard:
-    "Défausser une carte permet de regagner un jeton bleu. Pour défausser, cliquez sur votre jeu puis sélectionnez une de vos cartes et cliquez sur défausser. Vous allez alors repiocher une carte qui sera ajoutée, par la gauche, à votre main.\n\nNote : si vous êtes au maximum de 8 jetons bleu, vous ne pouvez pas défausser et il vous faudra choisir une autre action.\nVous pouvez consulter les cartes de la défausse dans la section sur le plateau.",
+    "Défausser une carte permet de regagner un jeton bleu. Pour défausser, cliquez sur votre jeu puis sélectionnez une de vos cartes et cliquez sur défausser. Vous allez alors repiocher une carte qui sera ajoutée, par la gauche, à votre main.\n\nNote : si vous êtes au maximum de 8 jetons bleus, vous ne pouvez pas défausser et il vous faudra choisir une autre action.\nVous pouvez consulter les cartes de la défausse dans la section sur le plateau.",
   rulesPlayTitle: "3. Jouer une carte",
   rulesPlay:
     "À votre tour, pour jouer une carte, sélectionnez une carte de votre jeu et cliquez sur Jouer.\nDeux possibilités\n- la carte démarre ou complète une pile : elle sera ajoutée à la pile du feu d'artifice correspondant\n- la carte ne complète aucune pile : elle sera ajoutée à la défausse et vous récupérez un jeton rouge de pénalité\nDans les deux cas, vous repiochez une carte.\nVous n'avez pas à désigner une pile de couleur pour jouer une carte : vous la jouez sur l'ensemble des piles.\nQuand un joueur termine un feu d'artifice en déposant le 5 de la pile, les joueurs récupèrent un jeton bleu bonus. Si vous êtes déjà au maximum, vous ne récupérez pas de jeton bleu.",
