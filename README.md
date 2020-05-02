@@ -22,3 +22,13 @@ $ cp .env.sample && open .env
 # Launch development environment
 $ yarn dev
 ```
+
+## Mobile setup
+
+The mobile version uses [Flutter](https://flutter.dev) as a wrapper around the web application.
+
+- [Install flutter](https://flutter.dev/docs/get-started/install) on your machine
+
+```bash
+yarn dev:mobile
+```

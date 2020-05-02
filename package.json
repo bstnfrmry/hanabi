@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:mobile": "cd mobile && flutter run",
     "build": "next build",
     "start": "next start",
     "lint": "eslint '**/*.{ts,tsx}'"
