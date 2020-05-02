@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import LanguageSelector from "~/components/languageSelector";
@@ -11,9 +11,9 @@ import useLocalStorage from "~/hooks/localStorage";
 export default function Home() {
   const router = useRouter();
   const { t } = useTranslation();
-  const [showRules, setShowRules] = useState(false);
   const [gameId] = useLocalStorage("gameId", null);
   const [playerId] = useLocalStorage("playerId", null);
+  const rulesRef = useRef<HTMLDivElement>();
 
   const lastGame = gameId && playerId ? { gameId } : null;
 
@@ -45,7 +45,7 @@ export default function Home() {
         {lastGame && (
           <Button
             className="mb4"
-            id="rejoin-game"
+            id="join-room"
             size={ButtonSize.LARGE}
             text={t("rejoinGame", "Rejoin game")}
             onClick={() =>
@@ -59,7 +59,9 @@ export default function Home() {
         <span className="tc pointer" onClick={() => setShowRules(true)}>
           {t("whatsHanabi", "What's Hanabi?")}
         </span>
-        {showRules && <Rules setShowRules={setShowRules} />}
+      </div>
+      <div ref={rulesRef}>
+        <Rules />
       </div>
     </div>
   );

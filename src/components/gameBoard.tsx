@@ -12,8 +12,8 @@ import { getMaximumPossibleScore, getMaximumScore, getScore } from "~/lib/action
 import { IGameStatus } from "~/lib/state";
 
 interface Props {
-  onMenuClick: Function;
-  onRollbackClick: Function;
+  onMenuClick?: Function;
+  onRollbackClick?: Function;
 }
 
 export { CardWrapper } from "~/components/card";
@@ -29,7 +29,7 @@ export default function GameBoard(props: Props) {
   const maxPossibleScore = getMaximumPossibleScore(game);
 
   return (
-    <div className="pa2 pv2-l ph6.5-m bg-black-50">
+    <div>
       <div className="flex justify-between items-center">
         <div>
           <Txt uppercase id="score" value={t("score", { score, maxPossibleScore })} />
@@ -49,7 +49,7 @@ export default function GameBoard(props: Props) {
           )}
         </div>
         <div className="flex">
-          {game.options.allowRollback && selfPlayer && (
+          {game.options.allowRollback && selfPlayer && onRollbackClick && (
             <Button
               void
               disabled={game.status === IGameStatus.LOBBY}
@@ -58,7 +58,7 @@ export default function GameBoard(props: Props) {
               onClick={() => onRollbackClick()}
             />
           )}
-          <HomeButton void className="ml1" onClick={onMenuClick} />
+          {onMenuClick && <HomeButton void className="ml1" onClick={onMenuClick} />}
         </div>
       </div>
 

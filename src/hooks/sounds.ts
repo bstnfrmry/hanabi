@@ -4,12 +4,16 @@ import { useEffect } from "react";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
 import usePrevious from "~/hooks/previous";
+import { useReplay } from "~/hooks/replay";
 import { playSound } from "~/lib/sound";
 
 export function useSoundEffects() {
   const game = useGame();
+  const replay = useReplay();
   const selfPlayer = useSelfPlayer();
   const network = useNetwork();
+
+  const isReplaying = replay.cursor !== null;
 
   /**
    * Handle notification sounds.
@@ -30,6 +34,7 @@ export function useSoundEffects() {
   const hintsCount = game ? game.tokens.hints : 0;
   const previousHintsCount = usePrevious(hintsCount);
   useEffect(() => {
+    if (isReplaying) return;
     if (previousHintsCount === undefined) return;
 
     const timeout = setTimeout(() => {
@@ -40,6 +45,7 @@ export function useSoundEffects() {
   }, [hintsCount === previousHintsCount + 1]);
 
   useEffect(() => {
+    if (isReplaying) return;
     if (previousHintsCount === undefined) return;
 
     const timeout = setTimeout(() => {
@@ -52,6 +58,7 @@ export function useSoundEffects() {
   const turnsCount = game ? game.turnsHistory.length : 0;
   const previousTurnsCount = usePrevious(turnsCount);
   useEffect(() => {
+    if (isReplaying) return;
     if (previousTurnsCount === undefined) return;
 
     playSound(`/static/sounds/rewind.mp3`);
@@ -63,6 +70,7 @@ export function useSoundEffects() {
   useEffect(() => {
     if (!game) return;
     if (!game.discardPile.length) return;
+    if (isReplaying) return;
 
     playSound(`/static/sounds/card-scrape.mp3`);
   }, [game && game.discardPile.length]);
@@ -72,6 +80,7 @@ export function useSoundEffects() {
    */
   useEffect(() => {
     if (!game) return;
+    if (isReplaying) return;
 
     const latestCard = last(game.playedCards);
     if (!latestCard) return;

@@ -8,6 +8,7 @@
   --color-blue: #5dade2;
   --color-yellow: #f4d03f;
   --color-green: #52be80;
+  --color-orange: #ed8936;
 
   --color-white-dark: #4a4a4a;
   --color-red-dark: #701c13;
@@ -38,6 +39,7 @@ body {
   height: 100%;
   color: #f0f0f0;
   background: var(--color-main-dark);
+  -webkit-font-smoothing : antialiased;
 }
 
 body ::-webkit-scrollbar {
@@ -100,6 +102,11 @@ button {
 .txt-green-dark {
   color: color-mod(var(--color-green) lightness(15%));
   text-shadow: 0 0 2px color-mod(var(--color-green) lightness(90%));
+}
+
+.txt-orange-dark {
+  color: color-mod(var(--color-orange) lightness(15%));
+  text-shadow: 0 0 2px color-mod(var(--color-orange) lightness(90%));
 }
 
 .txt-multicolor-dark {
@@ -174,6 +181,15 @@ button {
     color-mod(var(--color-green) lightness(70%)),
     var(--color-green),
     color-mod(var(--color-green) shade(20%))
+  );
+}
+
+.bg-orange {
+  background: linear-gradient(
+    to bottom right,
+    color-mod(var(--color-orange) lightness(70%)),
+    var(--color-orange),
+    color-mod(var(--color-orange) shade(30%))
   );
 }
 

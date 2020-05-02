@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/browser";
+import SentryFullStory from "@sentry/fullstory";
 import NextApp, { AppProps } from "next/app";
 import Head from "next/head";
 import Router from "next/router";
@@ -21,6 +22,7 @@ const FS_ORG_ID = "T0W6G";
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   environment: process.env.NODE_ENV,
+  integrations: [new SentryFullStory("https://sentry.io/organizations/bstnfrmry")],
 });
 
 Router.events.on("routeChangeComplete", () => logPageView());

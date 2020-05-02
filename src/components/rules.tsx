@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
+import DiscordButton from "~/components/discordButton";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 
@@ -19,7 +20,7 @@ const Subtitle = (props: TxtProps) => <Txt size={TxtSize.MEDIUM}>{props.children
 const Paragraph = (props: TxtProps) => <Txt className="mv2">{props.children}</Txt>;
 
 interface Props {
-  setShowRules: (showRules: boolean) => void;
+  setShowRules?: (showRules: boolean) => void;
 }
 
 export default function Rules(props: Props) {
@@ -27,15 +28,30 @@ export default function Rules(props: Props) {
   const { t } = useTranslation();
 
   return (
-    <div className="absolute bg-main-dark z-9999 aspect-ratio--object overflow-y-scroll flex justify-center pa4 relative tj lh-copy">
+    <div className="bg-main-dark flex justify-center pa4 relative tj lh-copy">
       <div className="w-75-l">
-        <Button
-          className="absolute left-2 top-1"
-          size={ButtonSize.MEDIUM}
-          text="<"
-          onClick={() => setShowRules(false)}
+        {setShowRules && (
+          <Button
+            className="absolute left-2 top-1"
+            size={ButtonSize.MEDIUM}
+            text="<"
+            onClick={() => setShowRules(false)}
+          />
+        )}
+
+        <img
+          alt="Hanabi cards game online"
+          className="absolute top-0 right-0 mw4 ma4 o-50 dn db-l"
+          src="/static/hanabi.png"
         />
-        <img alt="Hanabi cards game online" className="absolute top-0 right-0 mw4 ma4 o-50" src="/static/hanabi.png" />
+
+        <div className="flex justify-center mb4 mb5-l">
+          <div className="w-75 w-50-l ba b--yellow br3">
+            <img alt="Game screenshot" className="dn db-l br3" src="/static/images/screenshot-desktop.png" />
+            <img alt="Game screenshot" className="db dn-l br3" src="/static/images/screenshot-mobile.png" />
+          </div>
+        </div>
+
         <div className="flex flex-column mb5">
           <Txt className="w-100 tc mt2 dib" size={TxtSize.LARGE} value={t("hanabi", "Hanabi")} />
           <Title>{t("objective", "Objective")}</Title>
@@ -101,6 +117,9 @@ export default function Rules(props: Props) {
               if you'd like to contribute.
             </Trans>
           </Paragraph>
+          <div className="mt4">
+            <DiscordButton />
+          </div>
         </div>
       </div>
     </div>

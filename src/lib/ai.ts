@@ -35,7 +35,7 @@ function isCardPossible(card: ICard, possibleCards: ICard[]): boolean {
   return possibleCards.findIndex(c => c.number === card.number && c.color === card.color) > -1;
 }
 
-function isCardDangerous(card: ICard, state: IGameState): boolean {
+export function isCardDangerous(card: ICard, state: IGameState): boolean {
   if (!isCardEverPlayable(card, state)) {
     return false;
   }
@@ -72,7 +72,7 @@ function isCardEverPlayable(card: ICard, state: IGameState): boolean {
 /**
  * Check whether the current card can be discarded
  */
-function isCardDiscardable(card: IHiddenCard, state: IGameState): boolean {
+export function isCardDiscardable(card: IHiddenCard, state: IGameState): boolean {
   // AI can discard a card that can never be played (already played or because of discards)
   if (card.deductions.every(deduction => !isCardEverPlayable(deduction, state))) {
     return true;

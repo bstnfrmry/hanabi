@@ -42,7 +42,11 @@ export default function MenuArea(props: Props) {
         </div>
       )}
 
-      {showRules && <Rules setShowRules={setShowRules} />}
+      {showRules && (
+        <div className="aspect-ratio--object z-9999 overflow-y-scroll">
+          <Rules setShowRules={setShowRules} />
+        </div>
+      )}
     </div>
   );
 }

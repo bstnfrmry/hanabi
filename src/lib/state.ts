@@ -19,6 +19,8 @@ export default interface IGameState {
   actionsLeft: number;
   turnsHistory: ITurn[];
   createdAt: number;
+  startedAt?: number;
+  endedAt?: number;
   synced: boolean;
   // Replay mode
   originalGame?: IGameState;
@@ -47,6 +49,7 @@ export enum GameVariant {
   CLASSIC = "classic",
   MULTICOLOR = "multicolor",
   RAINBOW = "rainbow",
+  ORANGE = "orange",
 }
 
 export enum GameMode {
@@ -77,6 +80,15 @@ export enum IColor {
   YELLOW = "yellow",
   MULTICOLOR = "multicolor",
   RAINBOW = "rainbow",
+  ORANGE = "orange",
+}
+
+export enum IInsightColor {
+  Play = "#B7E1BC",
+  Discard = "#fdfd96",
+  Other = "#666",
+  Dangerous = "#820000",
+  Hint = "#A2D3F6",
 }
 
 export type INumber = 1 | 2 | 3 | 4 | 5;
@@ -162,6 +174,8 @@ export interface ITokens {
 // empty arrays are returned as null in Firebase, so we fill
 // them back to avoid having to type check everywhere
 export function fillEmptyValues(state: IGameState): IGameState {
+  if (!state) return null;
+
   return defaults(state, {
     playedCards: [],
     drawPile: [],

@@ -139,7 +139,7 @@ export default function PlayerGame(props: Props) {
                 <Txt
                   className="yellow nt1"
                   id="your-turn"
-                  size={TxtSize.TINY}
+                  size={TxtSize.XSMALL}
                   value={game.status === IGameStatus.LOBBY ? t("youWillStart") : t("yourTurn")}
                 />
               </Tutorial>
@@ -209,7 +209,7 @@ export default function PlayerGame(props: Props) {
         <div className={classnames("flex justify-end self-end flex-grow-1 dib")}>
           {displayStats && (
             <div className="ml3">
-              <PlayerStats player={player} />
+              <PlayerStats className="w4.5" player={player} />
             </div>
           )}
           {!displayStats && (
@@ -217,7 +217,7 @@ export default function PlayerGame(props: Props) {
               {selected && (
                 <Txt
                   className="lavender absolute top--1 right-2 dib"
-                  size={TxtSize.TINY}
+                  size={TxtSize.XSMALL}
                   style={{ marginTop: "-1px" }}
                   value="⟶"
                 />

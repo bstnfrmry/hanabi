@@ -1,5 +1,5 @@
 import { isGameOver, joinGame, newGame } from "./actions";
-import play from "./ai";
+import { play } from "./ai";
 import { GameMode, GameVariant, IGameHintsLevel, IGameOptions, IPlayer } from "./state";
 
 const scoresDistribution = {};

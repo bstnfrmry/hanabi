@@ -95,6 +95,7 @@ export function emptyHint(options: IGameOptions): ICardHint {
       [IColor.WHITE]: 1,
       [IColor.MULTICOLOR]: options.variant === GameVariant.MULTICOLOR ? 1 : 0,
       [IColor.RAINBOW]: 1, // Should never be used directly
+      [IColor.ORANGE]: options.variant === GameVariant.ORANGE ? 1 : 0,
     },
     number: { 0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 },
   };
@@ -189,6 +190,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
 
   if (isGameOver(s)) {
     s.status = IGameStatus.OVER;
+    s.endedAt = Date.now();
   }
 
   return s;
@@ -234,6 +236,8 @@ export function getColors(state: IGameState) {
       return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW, IColor.MULTICOLOR];
     case GameVariant.RAINBOW:
       return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW, IColor.RAINBOW];
+    case GameVariant.ORANGE:
+      return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW, IColor.ORANGE];
     case GameVariant.CLASSIC:
     default:
       return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW];
@@ -252,6 +256,7 @@ export function getMaximumScore(state: IGameState) {
   switch (state.options.variant) {
     case GameVariant.MULTICOLOR:
     case GameVariant.RAINBOW:
+    case GameVariant.ORANGE:
       return 30;
     case GameVariant.CLASSIC:
     default:
@@ -337,6 +342,22 @@ export function newGame(options: IGameOptions): IGameState {
       { number: 3, color: IColor.MULTICOLOR },
       { number: 4, color: IColor.MULTICOLOR },
       { number: 5, color: IColor.MULTICOLOR }
+    );
+  }
+
+  // Add orange cards when applicable
+  if (options.variant === GameVariant.ORANGE) {
+    cards.push(
+      { number: 1, color: IColor.ORANGE },
+      { number: 1, color: IColor.ORANGE },
+      { number: 1, color: IColor.ORANGE },
+      { number: 2, color: IColor.ORANGE },
+      { number: 2, color: IColor.ORANGE },
+      { number: 3, color: IColor.ORANGE },
+      { number: 3, color: IColor.ORANGE },
+      { number: 4, color: IColor.ORANGE },
+      { number: 4, color: IColor.ORANGE },
+      { number: 5, color: IColor.ORANGE }
     );
   }
 
