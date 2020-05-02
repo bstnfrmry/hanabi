@@ -17,7 +17,7 @@ export default function LanguageSelector(props: Props) {
   const { outlined = false } = props;
 
   const { i18n } = useTranslation();
-  const [lang, setLang] = useLocalStorage("lang", null);
+  const [lang, setLang] = useLocalStorage("lang", i18n.language);
 
   useEffect(() => {
     if (!lang) return;
