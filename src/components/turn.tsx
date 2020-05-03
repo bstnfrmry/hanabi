@@ -47,7 +47,7 @@ export default function Turn(props: Props) {
             <>
               {isViewingOwnActions ? t("hintedTurnYourself") : t("hintedTurn")}
               <PlayerName className="mh1" player={game.players[turn.action.to]} />
-              {isViewingOwnActions ? t("aboutTurnYourself") : t("aboutTurn")}
+              {t("aboutTurn")}
               <Hint className="mh1" hint={IHintLevel.POSSIBLE} type={turn.action.type} value={turn.action.value} />
               {t("pluralTurn")}
             </>
