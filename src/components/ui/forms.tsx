@@ -48,7 +48,7 @@ export function Select(props: SelectProps) {
   return (
     <select
       className={classnames("h2 br2 ba b--white", className, {
-        "bg-transparent bw0 white outline-0": outlined,
+        "bg-main-dark bw0 white outline-0": outlined,
       })}
       style={{
         ...(outlined && {
@@ -61,7 +61,16 @@ export function Select(props: SelectProps) {
       {...attributes}
     >
       {Object.keys(options).map(value => (
-        <option key={value} value={value}>
+        <option
+          key={value}
+          style={{
+            ...(outlined && {
+              "-webkitAppearance": "none",
+              "MozAppearance": "none",
+            }),
+          }}
+          value={value}
+        >
           {formatter ? formatter(options[value] as string) : options[value]}
         </option>
       ))}
