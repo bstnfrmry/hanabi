@@ -55,7 +55,7 @@ export const fr: typeof en = {
   hide: "Cacher",
   reveal: "Révéler",
   cardSelected: "Carte {{position}} sélectionnée",
-  eighTokens: "8 jetons",
+  eightTokens: "8 jetons",
   cannotDiscard: "Vous ne pouvez pas défausser",
   noTokens: "Plus de jeton pour donner un indice",
   selectVignette: "Sélectionnez une couleur ou une valeur pour donner un indice",
