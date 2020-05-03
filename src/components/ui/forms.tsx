@@ -61,16 +61,7 @@ export function Select(props: SelectProps) {
       {...attributes}
     >
       {Object.keys(options).map(value => (
-        <option
-          key={value}
-          style={{
-            ...(outlined && {
-              "-webkitAppearance": "none",
-              "MozAppearance": "none",
-            }),
-          }}
-          value={value}
-        >
+        <option key={value} value={value}>
           {formatter ? formatter(options[value] as string) : options[value]}
         </option>
       ))}
