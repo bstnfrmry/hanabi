@@ -53,7 +53,7 @@ export const en = {
   hide: "Hide",
   reveal: "Reveal",
   cardSelected: "Card {{position}} selected",
-  eighTokens: "8 tokens",
+  eightTokens: "8 tokens",
   cannotDiscard: "You cannot discard",
   noTokens: "No tokens left to hint",
   selectVignette: "Select either a color or number to hint",
