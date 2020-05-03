@@ -53,7 +53,7 @@ export const nl = {
   hide: "Verbergen",
   reveal: "Onthullen",
   cardSelected: "Kaart {{position}} geselecteerd",
-  eighTokens: "8 tokens",
+  eightTokens: "8 tokens",
   cannotDiscard: "Je kunt niet weggooien",
   noTokens: "Geen tokens resterend om een hint te geven",
   selectVignette: "Selecteer een kleur of nummer om een hint te geven",
