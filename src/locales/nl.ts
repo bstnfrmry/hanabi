@@ -172,9 +172,9 @@ export const nl = {
     "🌈 De regenbooguitbreiding voegt ook een 6e stapel toe met dezelfde aantallen als de 5 andere stapels (drie 1-en, 2 kaarten 2/3/4 en een 5). De bijzonderheid is dat regenboogkaarten alle kleuren hebben. Elke keer dat je een hint geeft over kleuren, worden ze in rekening gebracht.",
   rulesUsTitle: "Wie zijn we?",
   rulesUs:
-    "Wij zijn een groep bordspelverslaafden. Tijdens de lockdown in 2020, waren we bereid om een ​​alternatief te vinden om op afstand samen te spelen.\nOmdat we allebei plezier hebben in het coderen en spelen van Hanabi, hebben we besloten om een ​​online mobielvriendelijke versie van de game te maken.\n\n👉 Koop - net als wij - de <1>fysieke versie</1> om de maker te steunen als je dit spel leuk vindt!",
+    "Wij zijn een groep bordspelverslaafden. Tijdens de lockdown in 2020, waren we bereid om een ​​alternatief te vinden om op afstand samen te spelen.\nOmdat we allebei plezier hebben in het coderen en spelen van Hanabi, hebben we besloten om een ​​online mobielvriendelijke versie van de game te maken.\n\n👉 Koop - net als wij - de <2>fysieke versie</2> om de maker te steunen als je dit spel leuk vindt!",
   rulesBuy:
-    "Aarzel niet om <1>contact met ons op te nemen</1> als je vragen of suggesties hebt. We hebben ook een <2>openbare Github-repository</2> als je een bijdrage wilt leveren.",
+    "Aarzel niet om <1>contact met ons op te nemen</1> als je vragen of suggesties hebt. We hebben ook een <3>openbare Github-repository</3> als je een bijdrage wilt leveren.",
   noRoom: "Geen kamers beschikbaar",
   faster: "Sneller",
   fast: "Snel",
