@@ -2,7 +2,6 @@ import Fireworks from "fireworks-canvas";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import shortid from "shortid";
 
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import DiscardArea from "~/components/discardArea";
@@ -26,6 +25,7 @@ import { useSoundEffects } from "~/hooks/sounds";
 import { commitAction, getMaximumPossibleScore, getScore, joinGame, newGame, recreateGame } from "~/lib/actions";
 import { play } from "~/lib/ai";
 import { cheat } from "~/lib/ai-cheater";
+import { uniqueId } from "~/lib/id";
 import IGameState, { GameMode, IGameHintsLevel, IGameStatus } from "~/lib/state";
 
 interface Props {
@@ -42,7 +42,7 @@ export function Game(props: Props) {
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
   const [, setGameId] = useLocalStorage("gameId", null);
-  const [playerId] = useLocalStorage("playerId", shortid());
+  const [playerId] = useLocalStorage("playerId", uniqueId());
   const [selectedArea, selectArea] = useState<ISelectedArea>({
     id: "logs",
     type: ActionAreaType.LOGS,
@@ -170,7 +170,7 @@ export function Game(props: Props) {
     if (!previousNextGameId) return;
 
     setDisplayStats(false);
-    router.push(`/play?gameId=${game.nextGameId}`);
+    router.push(`/${game.nextGameId}`);
   }, [game && game.nextGameId]);
 
   function onJoinGame(player) {
@@ -183,7 +183,7 @@ export function Game(props: Props) {
   }
 
   function onAddBot() {
-    const playerId = shortid();
+    const playerId = uniqueId();
     const botsCount = game.players.filter(p => p.bot).length;
 
     const bot = {
@@ -448,7 +448,7 @@ export function Game(props: Props) {
                       size={ButtonSize.TINY}
                       text="Summary"
                       onClick={() => {
-                        router.push(`/summary?gameId=${game.id}`);
+                        router.push(`/${game.id}/summary`);
                       }}
                     />
                   </div>

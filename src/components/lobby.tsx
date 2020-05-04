@@ -70,7 +70,7 @@ export default function Lobby(props: Props) {
   const canJoin = (game.options.gameMode === GameMode.PASS_AND_PLAY || !selfPlayer) && !gameFull;
   const canStart = gameFull;
 
-  const shareLink = `${window.location.origin}/play?gameId=${router.query.gameId}`;
+  const shareLink = `${window.location.origin}/${router.query.gameId}`;
   const inputRef = React.createRef<HTMLInputElement>();
   function copy() {
     inputRef.current.select();

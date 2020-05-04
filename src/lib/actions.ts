@@ -1,8 +1,9 @@
 import assert from "assert";
 import { cloneDeep, findIndex, flatMap, last, range, shuffle, zipObject } from "lodash";
 import mem from "mem";
-import shortid from "shortid";
 import { shuffle as shuffleSeed } from "shuffle-seed";
+
+import { readableUniqueId } from "~/lib/id";
 
 import IGameState, {
   GameVariant,
@@ -409,7 +410,7 @@ export function newGame(options: IGameOptions): IGameState {
 }
 
 export function recreateGame(game: IGameState) {
-  const nextGameId = shortid();
+  const nextGameId = readableUniqueId();
 
   let nextGame = newGame({
     ...game.options,

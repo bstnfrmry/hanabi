@@ -2,7 +2,6 @@ import classnames from "classnames";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import shortid from "shortid";
 
 import HomeButton from "~/components/homeButton";
 import Button, { ButtonSize } from "~/components/ui/button";
@@ -10,6 +9,7 @@ import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import useNetwork from "~/hooks/network";
 import { newGame } from "~/lib/actions";
+import { readableUniqueId } from "~/lib/id";
 import { GameMode, GameVariant, IGameHintsLevel } from "~/lib/state";
 
 const PlayerCounts = [2, 3, 4, 5];
@@ -64,7 +64,7 @@ export default function NewGame() {
   }, []);
 
   async function onCreateGame() {
-    const gameId = shortid();
+    const gameId = readableUniqueId();
 
     network.updateGame(
       newGame({
@@ -82,7 +82,7 @@ export default function NewGame() {
       })
     );
 
-    router.push(`/play?gameId=${gameId}`);
+    router.push(`/${gameId}`);
   }
 
   return (
