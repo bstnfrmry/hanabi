@@ -48,7 +48,7 @@ export function Select(props: SelectProps) {
   return (
     <select
       className={classnames("h2 br2 ba b--white", className, {
-        "bg-transparent bw0 white outline-0": outlined,
+        "bg-main-dark bw0 white outline-0": outlined,
       })}
       style={{
         ...(outlined && {

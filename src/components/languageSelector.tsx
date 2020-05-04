@@ -7,6 +7,7 @@ import useLocalStorage from "~/hooks/localStorage";
 const Languages = {
   en: "🇬🇧 English",
   fr: "🇫🇷 Français",
+  nl: "🇳🇱 Dutch",
 };
 
 interface Props {
