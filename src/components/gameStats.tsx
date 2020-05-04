@@ -1,5 +1,6 @@
 import { groupBy, range } from "lodash";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Button, { ButtonSize } from "~/components/ui/button";
@@ -150,6 +151,7 @@ export default function GameStats() {
   const longPressProps = useLongPress(() => {
     setDisplayCards(!displayCards);
   });
+  const { t } = useTranslation();
 
   if (!game.turnsHistory.length) {
     return null;
@@ -162,21 +164,21 @@ export default function GameStats() {
     <div className="flex flex-column">
       <div className="inline-flex ba b--lavender br1 pa2 self-center">
         <div className="flex flex-column">
-          <Txt className="mb1 lavender" size={TxtSize.XSMALL} value="That turn, the card was" />
-          <BarLegend backgroundColor={IInsightColor.Play} text="playable" />
-          <BarLegend backgroundColor={IInsightColor.Discard} text="discardable" />
-          <BarLegend backgroundColor={IInsightColor.Dangerous} text="dangerous" />
+          <Txt className="mb1 lavender" size={TxtSize.XSMALL} value={t("statsTurnCard")} />
+          <BarLegend backgroundColor={IInsightColor.Play} text={t("statsPlayable")} />
+          <BarLegend backgroundColor={IInsightColor.Discard} text={t("statsDiscardable")} />
+          <BarLegend backgroundColor={IInsightColor.Dangerous} text={t("statsDangerous")} />
           <BarLegend
             backgroundColor={IInsightColor.Dangerous}
             secondaryBackgroundColor={IInsightColor.Play}
-            text="playable & dangerous"
+            text={`${t("statsPlayable")} & ${t("statsDangerous")}`}
           />
         </div>
         <div className="flex flex-column ml5">
-          <Txt className="mb1 lavender" size={TxtSize.XSMALL} value="That turn, the player" />
-          <DotLegend backgroundColor={IInsightColor.Play} text="played" />
-          <DotLegend backgroundColor={IInsightColor.Discard} text="discarded" />
-          <DotLegend backgroundColor={IInsightColor.Hint} text="hinted" />
+          <Txt className="mb1 lavender" size={TxtSize.XSMALL} value={t("statsTurnAction")} />
+          <DotLegend backgroundColor={IInsightColor.Play} text={t("play")} />
+          <DotLegend backgroundColor={IInsightColor.Discard} text={t("discard")} />
+          <DotLegend backgroundColor={IInsightColor.Hint} text={t("hint")} />
         </div>
       </div>
 
@@ -184,7 +186,7 @@ export default function GameStats() {
         outlined
         className="mt3 self-end"
         size={ButtonSize.SMALL}
-        text={displayCards ? "Show insights" : "Show cards"}
+        text={displayCards ? t("showInsights") : t("showCards")}
         onClick={() => setDisplayCards(!displayCards)}
       />
 
@@ -206,7 +208,7 @@ export default function GameStats() {
             <div key={player.id} className="flex flex-column items-center mr4">
               <Txt size={TxtSize.XSMALL} value={player.name} />
               <div className="h1 flex items-center">
-                {!playerIndex && <Txt className="txt-yellow" size={TxtSize.XXSMALL} value="➤ started" />}
+                {!playerIndex && <Txt className="txt-yellow" size={TxtSize.XXSMALL} value={`➤ ${t("started")}`} />}
               </div>
               <div className="flex justify-between w-100 pl3 mr1">
                 {firstHand.map((card, cardIndex) => {

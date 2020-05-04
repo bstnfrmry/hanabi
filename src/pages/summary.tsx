@@ -72,6 +72,25 @@ export default function Summary() {
     router.push(`/play?gameId=${gameId}`);
   }
 
+  function gameVariantToText(gameVariant) {
+    switch (gameVariant) {
+      case GameVariant.CLASSIC:
+        return t("classicVariant");
+        break;
+      case GameVariant.MULTICOLOR:
+        return t("multicolorVariant");
+        break;
+      case GameVariant.RAINBOW:
+        return t("rainbowVariant");
+        break;
+      case GameVariant.ORANGE:
+        return t("orangeVariant");
+        break;
+      default:
+        return "UNKNOWN";
+    }
+  }
+
   if (!game) {
     return <LoadingScreen />;
   }
@@ -88,19 +107,14 @@ export default function Summary() {
           text={`< ${t("back")}`}
           onClick={() => onBackClick()}
         />
-        <Txt className="mt4" size={TxtSize.LARGE} value={t("summaryTitle")} />
+        <Txt className="mt4" size={TxtSize.LARGE} value={t("summary")} />
         <div className="flex flex-column items-center mt4">
           <Txt size={TxtSize.MEDIUM} value={t("summarySubtitle")} />
           <Txt className="mt2" size={TxtSize.MEDIUM}>
-            <span>
-              {game.players.length}
-              {t("players")}
+            <span>{`${t("players")}: ${game.players.length}`}</span>
+            <span className="ml1">
+              · {t("mode")}: {gameVariantToText(game.options.variant)}
             </span>
-            {game.options.variant === GameVariant.MULTICOLOR && (
-              <span className="ml1">with {t("multicolorVariant")}</span>
-            )}
-            {game.options.variant === GameVariant.RAINBOW && <span className="ml1">with {t("rainbowVariant")}</span>}
-            {game.options.variant === GameVariant.ORANGE && <span className="ml1">with {t("orangeVariant")}</span>}
             <span className="ml2">
               · {t("shuffle")} #{game.options.seed}
             </span>
@@ -136,7 +150,11 @@ export default function Summary() {
 
         <Section className="tc" title={t("tryOutTitle")}>
           <div>
-            <Txt value={`${t("players")}: ${game.players.length} - ${t("mode")}: ${game.options.variant}`} />
+            <Txt
+              value={`${t("players")}: ${game.players.length} - ${t("mode")}: ${gameVariantToText(
+                game.options.variant
+              )}`}
+            />
             <Button
               primary
               className="ml3"

@@ -446,7 +446,7 @@ export function Game(props: Props) {
                       outlined
                       className="nowrap ma1 flex-1"
                       size={ButtonSize.TINY}
-                      text="Summary"
+                      text={t("summary")}
                       onClick={() => {
                         router.push(`/summary?gameId=${game.id}`);
                       }}
