@@ -5,13 +5,7 @@ import { useTranslation } from "react-i18next";
 import { percentage } from "~/components/playerStats";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
-/*
-const Colors = {
-  Played: "#B7E1BC",
-  Discarded: "#fdfd96",
-  Hinted: ,
-};
-*/
+
 export default function GameActionsStats() {
   const game = useGame();
   const { t } = useTranslation();
