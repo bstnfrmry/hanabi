@@ -348,7 +348,7 @@ export function Game(props: Props) {
                     <Button
                       void
                       size={ButtonSize.TINY}
-                      text={replay.cursor === null ? t("rewind") : t("back")}
+                      text={replay.cursor === null ? t("rewind") : t("backToGame")}
                       onClick={() => {
                         if (replay.cursor === null) {
                           onReplay();
