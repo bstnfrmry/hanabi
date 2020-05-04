@@ -35,7 +35,7 @@ export default function MenuArea(props: Props) {
     <div className="flex justify-center items-center w-100 h-100 pa2">
       {!showRules && (
         <div className="flex justify-center items-center">
-          <div className="mr5">
+          <div className="mr2 mr4-m mr5-l">
             <LanguageSelector />
           </div>
           <Button className="mr2" size={ButtonSize.MEDIUM} text={t("menu")} onClick={onMenuClick} />
