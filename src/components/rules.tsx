@@ -87,33 +87,31 @@ export default function Rules(props: Props) {
               together remotely.\n Since we both have fun coding and playing Hanabi, we decided to create an online
               mobile-friendly version of the game.\n\n 👉 Like us, please buy the{" "}
               <a
-                className="lavender"
+                className="lavender mr1"
                 href="https://fr.asmodee.com/fr/games/hanabi/products/hanabi/"
                 rel="noopener noreferrer"
                 target="_blank"
               >
                 physical version
-              </a>{" "}
+              </a>
               to support its creator if you like this game!
             </Trans>
           </Paragraph>
           <Paragraph>
             <Trans i18nKey="rulesBuy">
-              Don't hesitate to{" "}
-              <a className="lavender" href="mailto:bastien.formery@gmail.com">
+              Don't hesitate to
+              <a className="lavender mr1" href="mailto:bastien.formery@gmail.com">
                 contact us
-              </a>{" "}
-              if you have any question or suggestion.
-              <br />
-              We also have a{" "}
+              </a>
+              if you have any question or suggestion. We also have a
               <a
-                className="lavender"
+                className="lavender mr1"
                 href="https://github.com/bstnfrmry/hanabi/"
                 rel="noopener noreferrer"
                 target="_blank"
               >
                 public Github repository
-              </a>{" "}
+              </a>
               if you'd like to contribute.
             </Trans>
           </Paragraph>
