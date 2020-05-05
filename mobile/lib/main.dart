@@ -14,14 +14,29 @@ void main() {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    WebViewController webView;
+
     return MaterialApp(
-      home: Container(
-        color: Color.fromRGBO(0, 16, 48, 1),
-        child: SafeArea(
-          child: WebView(
-            initialUrl: 'https://hanabi.cards',
-            javascriptMode: JavascriptMode.unrestricted,
-            gestureNavigationEnabled: true,
+      home: WillPopScope(
+        onWillPop: () async {
+          if (await webView.canGoBack()) {
+            webView.goBack();
+            return false;
+          }
+
+          return true;
+        },
+        child: Container(
+          color: Color.fromRGBO(0, 16, 48, 1),
+          child: SafeArea(
+            child: WebView(
+              initialUrl: 'https://hanabi.cards',
+              javascriptMode: JavascriptMode.unrestricted,
+              gestureNavigationEnabled: true,
+              onWebViewCreated: (WebViewController controller) {
+                webView = controller;
+              },
+            ),
           ),
         ),
       ),
