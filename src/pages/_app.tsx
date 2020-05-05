@@ -76,17 +76,8 @@ function Hanabi(props: AppProps) {
   return (
     <>
       <I18nextProvider i18n={i18n}>
-        <Head>
-          <link href="/static/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-          <link href="/static/hanabi-192.png" rel="apple-touch-icon" />
+        <Meta />
 
-          <link href="/static/manifest.json" rel="manifest" />
-          <link href="/static/hanabi-192.png" rel="apple-touch-icon" />
-
-          <title>Hanabi</title>
-          <meta content="#00153f" name="theme-color" />
-          <meta content={t("tagline")} name="Description" />
-        </Head>
         <FullStory org={FS_ORG_ID} />
 
         <NetworkContext.Provider value={network}>
@@ -106,5 +97,33 @@ function Hanabi(props: AppProps) {
         </NetworkContext.Provider>
       </I18nextProvider>
     </>
+  );
+}
+
+function Meta() {
+  const { t } = useTranslation();
+
+  return (
+    <Head>
+      <title>Hanabi - Play Online</title>
+
+      <link href="/static/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+      <link href="/static/hanabi-192.png" rel="apple-touch-icon" />
+      <link href="/static/manifest.json" rel="manifest" />
+
+      <meta content={t("tagline")} name="Description" />
+
+      <meta content="hanabi.cards" property="og:title" />
+      <meta content={t("tagline")} property="og:description" />
+      <meta content="https://hanabi.cards/static/hanabi-192.png" property="og:image" />
+      <meta content="https://hanabi.cards" property="og:url" />
+
+      <meta content="hanabi.cards" name="twitter:title" />
+      <meta content={t("tagline")} name="twitter:description" />
+      <meta content="https://hanabi.cards/static/hanabi-192.png" name="twitter:image" />
+      <meta content="summary_large_image" name="twitter:card" />
+
+      <meta content="#00153f" name="theme-color" />
+    </Head>
   );
 }

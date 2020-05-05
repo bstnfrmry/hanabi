@@ -68,7 +68,7 @@ export default function JoinGame(props: Props) {
                   className="ml2 flex justify-center"
                   size={ButtonSize.SMALL}
                   text={t("join")}
-                  onClick={() => router.push(`/play?gameId=${game.id}`)}
+                  onClick={() => router.push(`/${game.id}`)}
                 />
               </div>
             ))}

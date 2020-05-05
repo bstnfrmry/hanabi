@@ -41,6 +41,7 @@
     "react-pose": "^4.0.8",
     "shortid": "^2.2.14",
     "shuffle-seed": "^1.1.6",
+    "unique-names-generator": "^4.2.0",
     "yarn": "^1.22.4"
   },
   "devDependencies": {
