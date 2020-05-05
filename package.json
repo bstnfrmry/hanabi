@@ -9,9 +9,7 @@
     "lint": "eslint '**/*.{ts,tsx}'"
   },
   "dependencies": {
-    "@fullstory/browser": "^1.4.3",
     "@sentry/browser": "^5.12.4",
-    "@sentry/fullstory": "^1.1.2",
     "@types/classnames": "^2.2.9",
     "@types/lodash": "^4.14.137",
     "@types/react-popover": "^0.5.3",
@@ -35,6 +33,7 @@
     "react-dom": "^16.8.6",
     "react-fullstory": "^1.4.0",
     "react-ga": "^2.7.0",
+    "react-hotjar": "^2.2.0",
     "react-i18next": "^11.4.0",
     "react-modal": "^3.9.1",
     "react-popover": "^0.5.10",

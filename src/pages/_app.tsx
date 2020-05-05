@@ -1,11 +1,9 @@
 import * as Sentry from "@sentry/browser";
-import SentryFullStory from "@sentry/fullstory";
 import NextApp, { AppProps } from "next/app";
 import Head from "next/head";
 import Router from "next/router";
 import NProgress from "nprogress";
 import React, { ErrorInfo, useState } from "react";
-import FullStory from "react-fullstory";
 import { I18nextProvider, useTranslation } from "react-i18next";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -17,12 +15,9 @@ import { i18n } from "~/lib/i18n";
 import { initGA, logPageView } from "../lib/analytics";
 import "../styles/style.css";
 
-const FS_ORG_ID = "T0W6G";
-
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   environment: process.env.NODE_ENV,
-  integrations: [new SentryFullStory("https://sentry.io/organizations/bstnfrmry")],
 });
 
 Router.events.on("routeChangeComplete", () => logPageView());
@@ -77,8 +72,6 @@ function Hanabi(props: AppProps) {
     <>
       <I18nextProvider i18n={i18n}>
         <Meta />
-
-        <FullStory org={FS_ORG_ID} />
 
         <NetworkContext.Provider value={network}>
           <div className="aspect-ratio--object">
