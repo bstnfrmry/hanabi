@@ -1190,11 +1190,6 @@
   version "0.2.26"
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.2.26.tgz#4fe0e0a878d26af98901b29f051deed8017d6237"
 
-"@fullstory/browser@^1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@fullstory/browser/-/browser-1.4.3.tgz#c5bc46ec430ede8e6dfb2e640a2deda244e4bc25"
-  integrity sha512-Az4zH6GlELI2T9b0CJ7nL5vc+7v2lBg/C5CacX6/1sq5nKC8SxylsGKqVM9SdddiUfZTXjs+LkrUQ6MT/R86VQ==
-
 "@grpc/proto-loader@^0.5.0":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@grpc/proto-loader/-/proto-loader-0.5.2.tgz#c84f83be962f518bc303ca2d5e6ef2239439786c"
@@ -1305,11 +1300,6 @@
     "@sentry/types" "5.12.4"
     "@sentry/utils" "5.12.4"
     tslib "^1.9.3"
-
-"@sentry/fullstory@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@sentry/fullstory/-/fullstory-1.1.2.tgz#003aaad1e3702f8941a591a7afcca81f753a8409"
-  integrity sha512-zh1ClUebF+pgQGSzzwDShkSIefpIBHAzfnSvtaNW7sb0M8WRoOYZBzDwS1WRUqej6v9fNYcn1FJfieXf7F3e2g==
 
 "@sentry/hub@5.12.4":
   version "5.12.4"
@@ -6690,6 +6680,11 @@ react-ga@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-2.7.0.tgz#24328f157f31e8cffbf4de74a3396536679d8d7c"
   integrity sha512-AjC7UOZMvygrWTc2hKxTDvlMXEtbmA0IgJjmkhgmQQ3RkXrWR11xEagLGFGaNyaPnmg24oaIiaNPnEoftUhfXA==
+
+react-hotjar@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-hotjar/-/react-hotjar-2.2.0.tgz#c520b3ab8dc7f0c9ba468a8232ac326924a07331"
+  integrity sha512-HNJ9G5DT3o0jxNQrR4wyL/oVeWd6Rt+oATvxlfk6I1pFVYumNeXu3FoOud9uiblJJyiqXL5bKyKn6SjLvPczQw==
 
 react-i18next@^11.4.0:
   version "11.4.0"
