@@ -2,6 +2,7 @@ import { last } from "lodash";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import Button from "~/components/ui/button";
 import { Checkbox, Field, TextInput } from "~/components/ui/forms";
@@ -21,7 +22,7 @@ function listPlayerNames(players: IPlayer[]) {
   const firstNames = players
     .slice(0, -1)
     .map(player => player.name)
-    .join(", ");
+    .join("& ");
   const lastName = last(players).name;
 
   return `${firstNames} & ${lastName}`;
@@ -29,12 +30,16 @@ function listPlayerNames(players: IPlayer[]) {
 
 function Meta() {
   const game = useGame();
+  const { t } = useTranslation();
+  const inviters = game.players.filter(player => !player.bot);
 
-  const playersNames = listPlayerNames(game.players.filter(player => !player.bot));
+  const playersNames = listPlayerNames(inviters);
 
   const description = playersNames
-    ? `${playersNames} invited you to a game of Hanabi 🎉`
-    : `You've been invited to a game of Hanabi 🎉`;
+    ? inviters.length === 1
+      ? t("invitationByPlayer", { playerName: playersNames })
+      : t("invitationByPlayers", { playersNames })
+    : t("invitationNoPlayers");
 
   return (
     <Head>
@@ -53,6 +58,7 @@ const NAME_KEY = "name";
 
 export default function Lobby(props: Props) {
   const { onJoinGame, onAddBot, onStartGame } = props;
+  const { t } = useTranslation();
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -64,7 +70,7 @@ export default function Lobby(props: Props) {
   const canJoin = (game.options.gameMode === GameMode.PASS_AND_PLAY || !selfPlayer) && !gameFull;
   const canStart = gameFull;
 
-  const shareLink = `${window.location.origin}/play?gameId=${router.query.gameId}`;
+  const shareLink = `${window.location.origin}/${router.query.gameId}`;
   const inputRef = React.createRef<HTMLInputElement>();
   function copy() {
     inputRef.current.select();
@@ -93,7 +99,7 @@ export default function Lobby(props: Props) {
       <Meta />
       <div className="flex flex-column pa2 w-100 h-100">
         <div className="mb3 ttu flex items-center">
-          <Txt size={TxtSize.MEDIUM} value="Lobby" />
+          <Txt size={TxtSize.MEDIUM} value={t("lobby")} />
         </div>
         {game.players.length > 0 && (
           <div className="flex justify-between items-start flex-grow-1 align-start w-100 mb2">
@@ -103,8 +109,13 @@ export default function Lobby(props: Props) {
                   <Txt
                     value={
                       gameFull
-                        ? "Everybody's here!"
-                        : `${game.players.length} / ${game.options.playersCount} joined already`
+                        ? t("gameFull")
+                        : game.players.length === 1
+                        ? t("gameNotFull", { joined: game.players.length, playersCount: game.options.playersCount })
+                        : t("gameNotFullPlural", {
+                            joined: game.players.length,
+                            playersCount: game.options.playersCount,
+                          })
                     }
                   />
                   {canStart && (
@@ -113,16 +124,16 @@ export default function Lobby(props: Props) {
                       className="ml3"
                       disabled={!gameFull}
                       id="start-game"
-                      text="Start game"
+                      text={t("startGame")}
                       onClick={() => onStartGame()}
                     />
                   )}
                 </div>
                 {selfPlayer && !gameFull && (
                   <div>
-                    <Txt className="gray">Wait for others, or </Txt>
-                    <a className="underline gray pointer ml1" id="add-ai" onClick={() => onAddBot()}>
-                      <Txt value="+ add AI" />
+                    <Txt className="lavender" value={t("waitForOthers")} />
+                    <a className="underline lavender pointer ml1" id="add-ai" onClick={() => onAddBot()}>
+                      <Txt value={t("addAi")} />
                     </a>
                   </div>
                 )}
@@ -134,7 +145,7 @@ export default function Lobby(props: Props) {
         {canJoin && (
           <form className="flex items-start mt5 w-100 flex-grow-1" onSubmit={onJoinGameSubmit}>
             <div className="flex flex-column justify-left">
-              <Txt>Choose your player name</Txt>
+              <Txt value={t("choosePlayerName")} />
               <div className="flex justify-center items-center mr2">
                 <TextInput
                   autoFocus={true}
@@ -144,10 +155,13 @@ export default function Lobby(props: Props) {
                   value={name}
                   onChange={e => setName(e.target.value)}
                 />
-                <Button primary disabled={name.length === 0} id="join-game" text="Join" />
+                <Button primary disabled={name.length === 0} id="join-game" text={t("join")} />
               </div>
               {process.env.NODE_ENV !== "production" && (
-                <Field label={<Txt className="gray" size={TxtSize.SMALL} value="Autoplay" />} style={{ width: "80px" }}>
+                <Field
+                  label={<Txt className="gray" size={TxtSize.SMALL} value={t("autoplay")} />}
+                  style={{ width: "80px" }}
+                >
                   <Checkbox checked={bot} className="ml2" id="autoplay" onChange={e => setBot(e.target.checked)} />
                 </Field>
               )}
@@ -157,13 +171,13 @@ export default function Lobby(props: Props) {
         {!gameFull && (
           <div className="flex mt4">
             <div className="flex flex-column mr2">
-              <Txt className="mb1" value="Share this game" />
+              <Txt className="mb1" value={t("shareGame")} />
               <a className="lavender flex-1" href={shareLink} rel="noopener noreferrer" target="_blank">
                 <Txt value={shareLink} />
               </a>
             </div>
             <input ref={inputRef} readOnly className="fixed top--2 left--2" type="text" value={shareLink} />
-            <Button text="Copy" onClick={copy} />
+            <Button text={t("copy")} onClick={copy} />
           </div>
         )}
       </div>

@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import shortid from "shortid";
+import { useTranslation } from "react-i18next";
 
 import HomeButton from "~/components/homeButton";
 import Button, { ButtonSize } from "~/components/ui/button";
@@ -9,38 +9,41 @@ import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import useNetwork from "~/hooks/network";
 import { newGame } from "~/lib/actions";
+import { logEvent } from "~/lib/analytics";
+import { readableUniqueId } from "~/lib/id";
 import { GameMode, GameVariant, IGameHintsLevel } from "~/lib/state";
 
 const PlayerCounts = [2, 3, 4, 5];
 
 const Variants = {
-  [GameVariant.CLASSIC]: "Classic",
-  [GameVariant.MULTICOLOR]: "Multicolor",
-  [GameVariant.RAINBOW]: "Rainbow",
-  [GameVariant.ORANGE]: "Orange",
+  [GameVariant.CLASSIC]: "classicVariant",
+  [GameVariant.MULTICOLOR]: "multicolorVariant",
+  [GameVariant.RAINBOW]: "rainbowVariant",
+  [GameVariant.ORANGE]: "orangeVariant",
 };
 
 const VariantDescriptions = {
-  [GameVariant.CLASSIC]: "A classic game of Hanabi with 5 colors",
-  [GameVariant.MULTICOLOR]: "A 6th suite is added with only one card of each",
-  [GameVariant.RAINBOW]: "A 6th suite is added that matches every color",
-  [GameVariant.ORANGE]: "A 6th classic suite is added",
+  [GameVariant.CLASSIC]: "classicVariantDescription",
+  [GameVariant.MULTICOLOR]: "multicolorVariantDescription",
+  [GameVariant.RAINBOW]: "rainbowVariantDescription",
+  [GameVariant.ORANGE]: "orangeVariantDescription",
 };
 
 const HintsLevels = {
-  [IGameHintsLevel.DIRECT]: "Show direct hints",
-  [IGameHintsLevel.NONE]: "Do not show hints",
+  [IGameHintsLevel.DIRECT]: "showDirectHints",
+  [IGameHintsLevel.NONE]: "hideDirectHints",
 };
 
 const BotsSpeeds = {
-  0: "Faster",
-  1000: "Fast",
-  3000: "Slow",
+  0: "faster",
+  1000: "fast",
+  3000: "slow",
 };
 
 export default function NewGame() {
   const router = useRouter();
   const network = useNetwork();
+  const { t } = useTranslation();
 
   const [offline, setOffline] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -51,7 +54,7 @@ export default function NewGame() {
   const [preventLoss, setPreventLoss] = useState(false);
   const [private_, setPrivate] = useState(false);
   const [hintsLevel, setHintsLevel] = useState(IGameHintsLevel.DIRECT);
-  const [turnsHistory, setTurnsHistory] = useState(true);
+  const [turnsHistory] = useState(true);
   const [botsWait, setBotsWait] = useState(process.env.NODE_ENV === "production" ? 1000 : 0);
 
   /**
@@ -62,7 +65,7 @@ export default function NewGame() {
   }, []);
 
   async function onCreateGame() {
-    const gameId = shortid();
+    const gameId = readableUniqueId();
 
     network.updateGame(
       newGame({
@@ -80,15 +83,17 @@ export default function NewGame() {
       })
     );
 
-    router.push(`/play?gameId=${gameId}`);
+    logEvent("Game", "Game created");
+
+    router.push(`/${gameId}`);
   }
 
   return (
     <div className="w-100 h-100 overflow-y-scroll pv4 flex items-center pv6-l relative bg-main-dark ph2 ph3-l shadow-5 br3">
       <HomeButton className="absolute top-1 right-1" />
-      <div className="flex flex-column w-75-m w-60-l w-80" style={{ margin: "auto" }}>
+      <div className="flex flex-column w-75-m w-70-l w-80" style={{ margin: "auto" }}>
         <div className="flex justify-between ph1 items-center pb4 mb4 bb b--yellow-light">
-          <Txt size={TxtSize.MEDIUM} value="Players" />
+          <Txt size={TxtSize.MEDIUM} value={t("players", "Players")} />
           <div className="flex">
             {PlayerCounts.map(count => {
               return (
@@ -114,7 +119,7 @@ export default function NewGame() {
 
         <div className="flex flex-column pb2 mb2 bb b--yellow-light ph1">
           <div className="flex justify-between items-center">
-            <Txt size={TxtSize.MEDIUM} value="Mode" />
+            <Txt size={TxtSize.MEDIUM} value={t("mode", "Mode")} />
             <div className="flex flex-column flex-row-l justify-end">
               {Object.entries(Variants).map(([gameVariant, label]) => {
                 return (
@@ -130,14 +135,14 @@ export default function NewGame() {
                         transform: "scale(1.20)",
                       }),
                     }}
-                    text={`${label}`}
+                    text={t(label)}
                     onClick={() => setVariant(gameVariant as GameVariant)}
                   />
                 );
               })}
             </div>
           </div>
-          <Txt className="lavender mt4 self-end" size={TxtSize.SMALL} value={VariantDescriptions[variant]} />
+          <Txt className="lavender mt4 self-end" size={TxtSize.SMALL} value={t(VariantDescriptions[variant])} />
         </div>
 
         <a
@@ -145,55 +150,58 @@ export default function NewGame() {
           id="advanced-options"
           onClick={() => setShowAdvanced(!showAdvanced)}
         >
-          <Txt value="Advanced options" />
+          <Txt className="lavender" value={t("advancedOptions", "Advanced options")} />
         </a>
 
         {showAdvanced && (
           <>
             <Field
               className="pb2 mb2  bb b--yellow-light"
-              label="Pass & Play"
-              subText="Physically pass the device to each player on their turn"
+              label={t("passandplay", "Pass & Play")}
+              subText={t("passandplaySubtext", "Physically pass the device to each player on their turn")}
             >
               <Checkbox checked={offline} id="offline" onChange={e => setOffline(e.target.checked)} />
             </Field>
 
             <Field
               className="pb2 mb2 bb b--yellow-light"
-              label="Private"
-              subText="Your game won't be visible in the 'Join Room' section"
+              label={t("private", "Private")}
+              subText={t("privateSubtext", "Your game won't be visible in the 'Join Room' section")}
             >
               <Checkbox checked={private_} onChange={e => setPrivate(e.target.checked)} />
             </Field>
 
-            <Field className="pb2 mb2 bb b--yellow-light" label="Seed">
+            <Field className="pb2 mb2 bb b--yellow-light" label={t("seed", "Seed")}>
               <TextInput className="w3 tr" id="seed" value={seed} onChange={e => setSeed(e.target.value)} />
             </Field>
 
-            <Field className="pb2 mb2 bb b--yellow-light" label="Allow rollback">
+            <Field className="pb2 mb2 bb b--yellow-light" label={t("allowRollback", "Allow rollback")}>
               <Checkbox checked={allowRollback} onChange={e => setAllowRollback(e.target.checked)} />
             </Field>
 
-            <Field className="pb2 mb2 bb b--yellow-light" label="Prevent loss">
+            <Field className="pb2 mb2 bb b--yellow-light" label={t("preventLoss", "Prevent loss")}>
               <Checkbox checked={preventLoss} onChange={e => setPreventLoss(e.target.checked)} />
             </Field>
 
-            <Field className="pb2 mb2 bb b--yellow-light" label="Hints">
+            <Field className="pb2 mb2 bb b--yellow-light" label={t("hints", "Hints")}>
               <Select
                 className="pl3"
+                formatter={t}
                 options={HintsLevels}
                 value={hintsLevel}
                 onChange={e => setHintsLevel(e.target.value as IGameHintsLevel)}
               />
             </Field>
 
+            {/* TODO remove dead code
             <Field className="pb2 mb2 bb b--yellow-light" label="Turns history">
               <Checkbox checked={turnsHistory} onChange={e => setTurnsHistory(e.target.checked)} />
-            </Field>
+            </Field> */}
 
-            <Field label="Bots speed">
+            <Field label={t("botSpeed", "Bots speed")}>
               <Select
                 className="pl3"
+                formatter={t}
                 id="bots-speed"
                 options={BotsSpeeds}
                 value={botsWait}
@@ -202,19 +210,23 @@ export default function NewGame() {
             </Field>
           </>
         )}
-        <Txt className="f4 mt4 mb4 tc lavender">
-          {offline
-            ? `In this pass-and-play mode, you can play offline with multiple
-              players that are physically in the same room by passing the device to each player on their turn`
-            : `You will be able to play online by sharing the game link to your
-            friends.`}
-        </Txt>
+        <Txt
+          className="f4 mt4 mb4 tc lavender"
+          value={
+            offline
+              ? t(
+                  "passandplayExplanation",
+                  "In this pass-and-play mode, you can play offline with multiple players that are physically in the same room by passing the device to each player on their turn"
+                )
+              : t("normalGameExplanation", "You will be able to play online by sharing the game link to your friends.")
+          }
+        />
         <div className="flex justify-center">
           <Button
             className="justify-end mt2"
             id="new-game"
             size={ButtonSize.LARGE}
-            text="New game"
+            text={t("newGame")}
             onClick={onCreateGame}
           />
         </div>

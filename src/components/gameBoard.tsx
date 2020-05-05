@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import { CardWrapper } from "~/components/card";
 import HomeButton from "~/components/homeButton";
@@ -19,6 +20,7 @@ export { CardWrapper } from "~/components/card";
 
 export default function GameBoard(props: Props) {
   const { onMenuClick, onRollbackClick } = props;
+  const { t } = useTranslation();
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -30,7 +32,7 @@ export default function GameBoard(props: Props) {
     <div>
       <div className="flex justify-between items-center">
         <div>
-          <Txt uppercase id="score" value={`Hanabi • Score: ${score} / ${maxPossibleScore}`} />
+          <Txt uppercase id="score" value={t("score", { score, maxPossibleScore })} />
 
           {maxScore !== maxPossibleScore && <Txt uppercase className="strike ml1 gray" value={maxScore} />}
 
@@ -38,7 +40,11 @@ export default function GameBoard(props: Props) {
             <Txt
               uppercase
               className="red ml2"
-              value={`· ${game.actionsLeft} turn${game.actionsLeft > 1 ? "s" : ""} left`}
+              value={
+                game.actionsLeft > 1
+                  ? t("turnsLeftDisclaimer", { actionsLeft: game.actionsLeft }) // plural
+                  : t("turnLeftDisclaimer") // sing
+              }
             />
           )}
         </div>
@@ -72,14 +78,14 @@ export default function GameBoard(props: Props) {
               ))}
             </CardWrapper>
             {game.drawPile.length <= 5 ? (
-              <Txt className="red mt1" value={`${game.drawPile.length} left`} />
+              <Txt className="red mt1" value={t("cardLeft", { pileLength: game.drawPile.length })} />
             ) : (
-              <Txt className="gray mt1" value="deck" />
+              <Txt className="gray mt1" value={t("deck")} />
             )}
           </div>
           <div className="tc">
             <TokenSpace hints={game.tokens.hints} strikes={game.tokens.strikes} />
-            <Txt className="gray mt1" value="tokens" />
+            <Txt className="gray mt1" value={t("tokens")} />
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import Fireworks from "fireworks-canvas";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
-import shortid from "shortid";
+import { useTranslation } from "react-i18next";
 
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import DiscardArea from "~/components/discardArea";
@@ -25,6 +25,8 @@ import { useSoundEffects } from "~/hooks/sounds";
 import { commitAction, getMaximumPossibleScore, getScore, joinGame, newGame, recreateGame } from "~/lib/actions";
 import { play } from "~/lib/ai";
 import { cheat } from "~/lib/ai-cheater";
+import { logEvent } from "~/lib/analytics";
+import { uniqueId } from "~/lib/id";
 import IGameState, { GameMode, IGameHintsLevel, IGameStatus } from "~/lib/state";
 
 interface Props {
@@ -33,6 +35,7 @@ interface Props {
 
 export function Game(props: Props) {
   const { onGameChange } = props;
+  const { t } = useTranslation();
 
   const network = useNetwork();
   const router = useRouter();
@@ -40,7 +43,7 @@ export function Game(props: Props) {
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
   const [, setGameId] = useLocalStorage("gameId", null);
-  const [playerId] = useLocalStorage("playerId", shortid());
+  const [playerId] = useLocalStorage("playerId", uniqueId());
   const [selectedArea, selectArea] = useState<ISelectedArea>({
     id: "logs",
     type: ActionAreaType.LOGS,
@@ -136,6 +139,16 @@ export function Game(props: Props) {
   }, [game && game.status]);
 
   /**
+   * Track when the game ends
+   */
+  useEffect(() => {
+    if (!game) return;
+    if (game.status !== IGameStatus.OVER) return;
+
+    logEvent("Game", "Game over");
+  }, [game && game.status]);
+
+  /**
    * Display fireworks animation when game ends
    */
   useEffect(() => {
@@ -168,7 +181,7 @@ export function Game(props: Props) {
     if (!previousNextGameId) return;
 
     setDisplayStats(false);
-    router.push(`/play?gameId=${game.nextGameId}`);
+    router.push(`/${game.nextGameId}`);
   }, [game && game.nextGameId]);
 
   function onJoinGame(player) {
@@ -177,11 +190,13 @@ export function Game(props: Props) {
     onGameChange({ ...newState, synced: false });
     network.updateGame(newState);
 
+    logEvent("Game", "Player joined");
+
     setGameId(game.id);
   }
 
   function onAddBot() {
-    const playerId = shortid();
+    const playerId = uniqueId();
     const botsCount = game.players.filter(p => p.bot).length;
 
     const bot = {
@@ -191,6 +206,8 @@ export function Game(props: Props) {
 
     onGameChange({ ...newState, synced: false });
     network.updateGame(newState);
+
+    logEvent("Game", "Bot added");
   }
 
   async function onStartGame() {
@@ -202,13 +219,16 @@ export function Game(props: Props) {
 
     onGameChange({ ...newState, synced: false });
     network.updateGame(newState);
+
+    logEvent("Game", "Game started");
   }
 
   async function onCommitAction(action) {
     const newState = commitAction(game, action);
+
     const misplay = getMaximumPossibleScore(game) !== getMaximumPossibleScore(newState);
     if (game.options.preventLoss && misplay) {
-      if (!window.confirm("You fucked up · Keep going?")) {
+      if (!window.confirm(t("preventLossContent"))) {
         return;
       }
     }
@@ -219,6 +239,8 @@ export function Game(props: Props) {
 
     onGameChange({ ...newState, synced: false });
     network.updateGame(newState);
+
+    logEvent("Game", "Turn played");
   }
 
   function onCloseArea() {
@@ -233,6 +255,8 @@ export function Game(props: Props) {
       id: "rollback",
       type: ActionAreaType.ROLLBACK,
     });
+
+    logEvent("Game", "Game rolled back");
   }
 
   async function onNotifyPlayer(player) {
@@ -279,6 +303,8 @@ export function Game(props: Props) {
   function onReplay() {
     setDisplayStats(false);
     replay.moveCursor(game.turnsHistory.length);
+
+    logEvent("Game", "Replay opened");
   }
 
   function onReplayCursorChange(replayCursor: number) {
@@ -307,6 +333,8 @@ export function Game(props: Props) {
       ...game,
       nextGameId: nextGame.id,
     });
+
+    logEvent("Game", "Game recreated");
   }
 
   return (
@@ -345,7 +373,7 @@ export function Game(props: Props) {
                     <Button
                       void
                       size={ButtonSize.TINY}
-                      text={replay.cursor === null ? "🕑 Rewind" : "Back to game"}
+                      text={replay.cursor === null ? t("rewind") : t("backToGame")}
                       onClick={() => {
                         if (replay.cursor === null) {
                           onReplay();
@@ -362,12 +390,12 @@ export function Game(props: Props) {
 
         {interturn && (
           <div className="flex-grow-1 flex flex-column items-center justify-center">
-            <Txt size={TxtSize.MEDIUM} value={`It's ${currentPlayer.name}'s turn!`} />
+            <Txt size={TxtSize.MEDIUM} value={t("theirTurn", { currentPlayerName: currentPlayer.name })} />
             <Button
               primary
               className="mt4"
               size={ButtonSize.MEDIUM}
-              text={`Go !`}
+              text={t("go")}
               onClick={() => setInterturn(false)}
             />
           </div>
@@ -406,16 +434,18 @@ export function Game(props: Props) {
                   <Txt
                     className="db"
                     size={TxtSize.MEDIUM}
-                    value={`The game is over! • Your score is ${game.playedCards.length} 🎉`}
+                    value={t("gameOver", { playedCardsLength: game.playedCards.length })}
                   />
                   {reachableScore && (
                     <Txt
                       multiline
                       className="db mt1 lavender"
                       size={TxtSize.SMALL}
-                      value={`Estimated max score for this shuffle: ${reachableScore}. ${
-                        reachableScore > game.playedCards.length ? "Keep practicing" : "You did great!"
-                      }`}
+                      value={
+                        t("estimatedMaxScore", { reachableScore }) +
+                        ` ` +
+                        (reachableScore > game.playedCards.length ? t("keepPracticing") : t("congrats"))
+                      }
                     />
                   )}
                 </div>
@@ -425,7 +455,7 @@ export function Game(props: Props) {
                       primary
                       className="nowrap ma1 flex-1"
                       size={ButtonSize.TINY}
-                      text="New game"
+                      text={t("newGame")}
                       onClick={() => onRestartGame()}
                     />
                   </div>
@@ -434,16 +464,16 @@ export function Game(props: Props) {
                       outlined
                       className="nowrap ma1 flex-1"
                       size={ButtonSize.TINY}
-                      text={displayStats ? "Hide stats" : "Show stats"}
+                      text={displayStats ? t("hideStats") : t("showStats")}
                       onClick={() => onToggleStats()}
                     />
                     <Button
                       outlined
                       className="nowrap ma1 flex-1"
                       size={ButtonSize.TINY}
-                      text="Summary"
+                      text={t("summary")}
                       onClick={() => {
-                        router.push(`/summary?gameId=${game.id}`);
+                        router.push(`/${game.id}/summary`);
                       }}
                     />
                   </div>

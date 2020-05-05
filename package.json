@@ -10,9 +10,7 @@
     "lint": "eslint '**/*.{ts,tsx}'"
   },
   "dependencies": {
-    "@fullstory/browser": "^1.4.3",
     "@sentry/browser": "^5.12.4",
-    "@sentry/fullstory": "^1.1.2",
     "@types/classnames": "^2.2.9",
     "@types/lodash": "^4.14.137",
     "@types/react-popover": "^0.5.3",
@@ -24,6 +22,8 @@
     "firebase": "^6.3.4",
     "fireworks-canvas": "^2.4.0",
     "husky": "^4.2.3",
+    "i18next": "^19.4.4",
+    "i18next-browser-languagedetector": "^4.1.1",
     "lodash": "^4.17.15",
     "mem": "^6.1.0",
     "moment": "^2.25.1",
@@ -34,11 +34,14 @@
     "react-dom": "^16.8.6",
     "react-fullstory": "^1.4.0",
     "react-ga": "^2.7.0",
+    "react-hotjar": "^2.2.0",
+    "react-i18next": "^11.4.0",
     "react-modal": "^3.9.1",
     "react-popover": "^0.5.10",
     "react-pose": "^4.0.8",
     "shortid": "^2.2.14",
     "shuffle-seed": "^1.1.6",
+    "unique-names-generator": "^4.2.0",
     "yarn": "^1.22.4"
   },
   "devDependencies": {
