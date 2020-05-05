@@ -9,6 +9,7 @@ import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import useNetwork from "~/hooks/network";
 import { newGame } from "~/lib/actions";
+import { logEvent } from "~/lib/analytics";
 import { readableUniqueId } from "~/lib/id";
 import { GameMode, GameVariant, IGameHintsLevel } from "~/lib/state";
 
@@ -81,6 +82,8 @@ export default function NewGame() {
         gameMode: offline ? GameMode.PASS_AND_PLAY : GameMode.NETWORK,
       })
     );
+
+    logEvent("Game", "Game created");
 
     router.push(`/${gameId}`);
   }

@@ -15,6 +15,7 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 import { GameContext } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
 import { newGame } from "~/lib/actions";
+import { logEvent } from "~/lib/analytics";
 import IGameState, { GameVariant } from "~/lib/state";
 
 interface SectionProps {
@@ -167,6 +168,8 @@ export default function Summary() {
                 });
 
                 await network.updateGame(nextGame);
+
+                logEvent("Game", "Game created");
 
                 router.push(`/play?gameId=${nextGame.id}`);
               }}

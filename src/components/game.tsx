@@ -25,6 +25,7 @@ import { useSoundEffects } from "~/hooks/sounds";
 import { commitAction, getMaximumPossibleScore, getScore, joinGame, newGame, recreateGame } from "~/lib/actions";
 import { play } from "~/lib/ai";
 import { cheat } from "~/lib/ai-cheater";
+import { logEvent } from "~/lib/analytics";
 import { uniqueId } from "~/lib/id";
 import IGameState, { GameMode, IGameHintsLevel, IGameStatus } from "~/lib/state";
 
@@ -138,6 +139,16 @@ export function Game(props: Props) {
   }, [game && game.status]);
 
   /**
+   * Track when the game ends
+   */
+  useEffect(() => {
+    if (!game) return;
+    if (game.status !== IGameStatus.OVER) return;
+
+    logEvent("Game", "Game over");
+  }, [game && game.status]);
+
+  /**
    * Display fireworks animation when game ends
    */
   useEffect(() => {
@@ -179,6 +190,8 @@ export function Game(props: Props) {
     onGameChange({ ...newState, synced: false });
     network.updateGame(newState);
 
+    logEvent("Game", "Player joined");
+
     setGameId(game.id);
   }
 
@@ -193,6 +206,8 @@ export function Game(props: Props) {
 
     onGameChange({ ...newState, synced: false });
     network.updateGame(newState);
+
+    logEvent("Game", "Bot added");
   }
 
   async function onStartGame() {
@@ -204,6 +219,8 @@ export function Game(props: Props) {
 
     onGameChange({ ...newState, synced: false });
     network.updateGame(newState);
+
+    logEvent("Game", "Game started");
   }
 
   async function onCommitAction(action) {
@@ -222,6 +239,8 @@ export function Game(props: Props) {
 
     onGameChange({ ...newState, synced: false });
     network.updateGame(newState);
+
+    logEvent("Game", "Turn played");
   }
 
   function onCloseArea() {
@@ -236,6 +255,8 @@ export function Game(props: Props) {
       id: "rollback",
       type: ActionAreaType.ROLLBACK,
     });
+
+    logEvent("Game", "Game rolled back");
   }
 
   async function onNotifyPlayer(player) {
@@ -282,6 +303,8 @@ export function Game(props: Props) {
   function onReplay() {
     setDisplayStats(false);
     replay.moveCursor(game.turnsHistory.length);
+
+    logEvent("Game", "Replay opened");
   }
 
   function onReplayCursorChange(replayCursor: number) {
@@ -310,6 +333,8 @@ export function Game(props: Props) {
       ...game,
       nextGameId: nextGame.id,
     });
+
+    logEvent("Game", "Game recreated");
   }
 
   return (
