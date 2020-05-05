@@ -1,4 +1,4 @@
-package com.example.hanabi_test
+package cards.hanabi.hanabi
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

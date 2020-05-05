@@ -1,0 +1,4 @@
+flutter_icons:
+  image_path: "../public/static/hanabi-192.png"
+  android: true
+  ios: true
