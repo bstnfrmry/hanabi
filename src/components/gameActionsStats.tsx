@@ -1,28 +1,33 @@
 import { groupBy } from "lodash";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import { percentage } from "~/components/playerStats";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
 
-const Colors = {
-  Played: "#B7E1BC",
-  Discarded: "#fdfd96",
-  Hinted: "#A2D3F6",
-};
-
-const Order = {
-  hint: "Hinted",
-  discard: "Discarded",
-  play: "Played",
-};
-
 export default function GameActionsStats() {
   const game = useGame();
+  const { t } = useTranslation();
 
   if (!game.turnsHistory.length) {
     return null;
   }
+
+  const Order = {
+    hint: {
+      text: t("hinted"),
+      color: "#A2D3F6",
+    },
+    discard: {
+      text: t("discarded"),
+      color: "#fdfd96",
+    },
+    play: {
+      text: t("played"),
+      color: "#B7E1BC",
+    },
+  };
 
   const groupedTurns = groupBy(game.turnsHistory, turn => turn.action.action);
   const hintsCount = game.turnsHistory.filter(turn => turn.action.action === "hint").length;
@@ -33,7 +38,7 @@ export default function GameActionsStats() {
     <div className="flex flex-column items-center">
       {playsCount > 0 && (
         <Txt size={TxtSize.MEDIUM}>
-          Average plays per hint: <span className="txt-yellow">{playsPerHint}</span>
+          {t("playHints")}: <span className="txt-yellow">{playsPerHint}</span>
         </Txt>
       )}
 
@@ -44,7 +49,7 @@ export default function GameActionsStats() {
 
           return (
             <div key={column} className="flex flex-grow-1 flex-column items-center mw4 mh4 mh5-l">
-              <Txt size={TxtSize.SMALL} style={{ color: Colors[Order[column]] }} value={Order[column]} />
+              <Txt size={TxtSize.SMALL} style={{ color: Order[column].color }} value={Order[column].text} />
               <Txt className="lavender" size={TxtSize.SMALL} value={`${turns.length}x`} />
               <div className="mt1">
                 {Object.values(groupedPlayers).map((actionTurns, playerIndex) => {

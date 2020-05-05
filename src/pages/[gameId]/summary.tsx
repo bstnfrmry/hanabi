@@ -2,6 +2,8 @@ import classnames from "classnames";
 import moment from "moment";
 import { useRouter } from "next/router";
 import React, { ReactNode, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import shortid from "shortid";
 
 import GameActionsStats from "~/components/gameActionsStats";
 import GameBoard from "~/components/gameBoard";
@@ -13,7 +15,6 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 import { GameContext } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
 import { newGame } from "~/lib/actions";
-import { readableUniqueId } from "~/lib/id";
 import IGameState, { GameVariant } from "~/lib/state";
 
 interface SectionProps {
@@ -48,6 +49,7 @@ export default function Summary() {
   const network = useNetwork();
   const router = useRouter();
   const [game, setGame] = useState<IGameState>(null);
+  const { t } = useTranslation();
 
   const { gameId } = router.query;
 
@@ -67,7 +69,26 @@ export default function Summary() {
   }, [gameId]);
 
   function onBackClick() {
-    router.push(`/${gameId}`);
+    router.push(`/play?gameId=${gameId}`);
+  }
+
+  function gameVariantToText(gameVariant) {
+    switch (gameVariant) {
+      case GameVariant.CLASSIC:
+        return t("classicVariant");
+        break;
+      case GameVariant.MULTICOLOR:
+        return t("multicolorVariant");
+        break;
+      case GameVariant.RAINBOW:
+        return t("rainbowVariant");
+        break;
+      case GameVariant.ORANGE:
+        return t("orangeVariant");
+        break;
+      default:
+        return "UNKNOWN";
+    }
   }
 
   if (!game) {
@@ -83,35 +104,34 @@ export default function Summary() {
           void
           className="absolute left-0 top-1"
           size={ButtonSize.MEDIUM}
-          text="< Back"
+          text={`< ${t("back")}`}
           onClick={() => onBackClick()}
         />
-        <Txt className="mt4" size={TxtSize.LARGE} value="Summary" />
+        <Txt className="mt4" size={TxtSize.LARGE} value={t("summary")} />
         <div className="flex flex-column items-center mt4">
-          <Txt size={TxtSize.MEDIUM} value="Our Hanabi game" />
+          <Txt size={TxtSize.MEDIUM} value={t("summarySubtitle")} />
           <Txt className="mt2" size={TxtSize.MEDIUM}>
-            <span>{game.players.length} players</span>
-            {game.options.variant === GameVariant.MULTICOLOR && <span className="ml1">with multicolors</span>}
-            {game.options.variant === GameVariant.RAINBOW && <span className="ml1">with rainbow</span>}
-            <span className="ml2">· Shuffle #{game.options.seed}</span>
+            <span>{`${t("players")}: ${game.players.length}`}</span>
+            <span className="ml1">
+              · {t("mode")}: {gameVariantToText(game.options.variant)}
+            </span>
+            <span className="ml2">
+              · {t("shuffle")} #{game.options.seed}
+            </span>
           </Txt>
-          {gameDuration && <Txt className="mt2" size={TxtSize.MEDIUM} value={`Game completed in ${gameDuration}`} />}
+          {gameDuration && <Txt className="mt2" size={TxtSize.MEDIUM} value={t("gameCompleted", { gameDuration })} />}
         </div>
 
-        <Section title="Our result">
+        <Section title={t("result")}>
           <GameBoard />
         </Section>
 
-        <Section title="Evolution">
-          <Txt
-            className="db mb3"
-            size={TxtSize.SMALL}
-            value="Follow the game history! Each players’s card are displayed whether they were playable, discardable or dangerous (a card that will lower your max possible score if you discard it, for ex a multicolor or a 5)."
-          />
+        <Section title={t("evolution")}>
+          <Txt className="db mb3" size={TxtSize.SMALL} value={t("evolutionSubtext")} />
           <GameStats />
         </Section>
 
-        <Section className="flex justify-center-l" title="Average actions per player">
+        <Section className="flex justify-center-l" title={t("playerActions")}>
           {game.players.map((player, i) => {
             return (
               <div key={i} className="flex flex-column items-center mh3 mh4-m">
@@ -124,19 +144,23 @@ export default function Summary() {
           })}
         </Section>
 
-        <Section title="Who gave the most hints?">
+        <Section title={t("playerHints")}>
           <GameActionsStats />
         </Section>
 
-        <Section className="tc" title="Try it out!">
+        <Section className="tc" title={t("tryOutTitle")}>
           <div>
-            <Txt value={`${game.players.length} players - ${game.options.variant} mode`} />
+            <Txt
+              value={`${t("players")}: ${game.players.length} - ${t("mode")}: ${gameVariantToText(
+                game.options.variant
+              )}`}
+            />
             <Button
               primary
               className="ml3"
-              text="Try this shuffle"
+              text={t("tryOutButton")}
               onClick={async () => {
-                const nextGameId = readableUniqueId();
+                const nextGameId = shortid();
                 const nextGame = newGame({
                   ...game.options,
                   id: nextGameId,
@@ -144,13 +168,13 @@ export default function Summary() {
 
                 await network.updateGame(nextGame);
 
-                router.push(`/${nextGame.id}`);
+                router.push(`/play?gameId=${nextGame.id}`);
               }}
             />
           </div>
           <div className="mt4">
             <Txt>
-              <span>You can also play with other setups and meet our AI on</span>
+              <span>{t("tryOutAlternative")}</span>
               <a className="ml2 lavender" href="https://hanabi.cards">
                 hanabi.cards
               </a>

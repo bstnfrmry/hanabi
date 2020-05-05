@@ -348,7 +348,7 @@ export function Game(props: Props) {
                     <Button
                       void
                       size={ButtonSize.TINY}
-                      text={replay.cursor === null ? t("rewind") : t("back")}
+                      text={replay.cursor === null ? t("rewind") : t("backToGame")}
                       onClick={() => {
                         if (replay.cursor === null) {
                           onReplay();
@@ -446,7 +446,7 @@ export function Game(props: Props) {
                       outlined
                       className="nowrap ma1 flex-1"
                       size={ButtonSize.TINY}
-                      text="Summary"
+                      text={t("summary")}
                       onClick={() => {
                         router.push(`/${game.id}/summary`);
                       }}
