@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import LanguageSelector from "~/components/languageSelector";
@@ -14,8 +14,12 @@ export default function Home() {
   const [gameId] = useLocalStorage("gameId", null);
   const [playerId] = useLocalStorage("playerId", null);
   const rulesRef = useRef<HTMLDivElement>();
-
   const lastGame = gameId && playerId ? { gameId } : null;
+
+  useEffect(() => {
+    router.prefetch("/new-game");
+    router.prefetch("/join-game");
+  }, []);
 
   return (
     <div className="relative w-100 overflow-y-scroll flex flex-column justify-center items-center bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
