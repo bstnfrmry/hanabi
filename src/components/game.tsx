@@ -16,11 +16,11 @@ import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
-import useLocalStorage from "~/hooks/localStorage";
 import useNetwork from "~/hooks/network";
 import { useNotifications } from "~/hooks/notifications";
 import usePrevious from "~/hooks/previous";
 import { useReplay } from "~/hooks/replay";
+import { useSession } from "~/hooks/session";
 import { useSoundEffects } from "~/hooks/sounds";
 import { commitAction, getMaximumPossibleScore, getScore, joinGame, newGame, recreateGame } from "~/lib/actions";
 import { play } from "~/lib/ai";
@@ -30,11 +30,12 @@ import { uniqueId } from "~/lib/id";
 import IGameState, { GameMode, IGameHintsLevel, IGameStatus } from "~/lib/state";
 
 interface Props {
+  host: string;
   onGameChange: (game: IGameState) => void;
 }
 
 export function Game(props: Props) {
-  const { onGameChange } = props;
+  const { host, onGameChange } = props;
   const { t } = useTranslation();
 
   const network = useNetwork();
@@ -42,8 +43,7 @@ export function Game(props: Props) {
   const [displayStats, setDisplayStats] = useState(false);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
-  const [, setGameId] = useLocalStorage("gameId", null);
-  const [playerId] = useLocalStorage("playerId", uniqueId());
+  const { playerId } = useSession();
   const [selectedArea, selectArea] = useState<ISelectedArea>({
     id: "logs",
     type: ActionAreaType.LOGS,
@@ -63,7 +63,7 @@ export function Game(props: Props) {
    */
   useEffect(() => {
     selectArea({ id: "logs", type: ActionAreaType.LOGS });
-  }, [game && game.turnsHistory.length]);
+  }, [game.turnsHistory.length]);
 
   /**
    * Toggle interturn state on new turn for pass & play
@@ -75,7 +75,7 @@ export function Game(props: Props) {
     if (game.status !== IGameStatus.ONGOING) return;
 
     setInterturn(true);
-  }, [game && game.turnsHistory.length, game && game.players.length, game && game.status]);
+  }, [game.turnsHistory.length, game.players.length, game.status]);
 
   /**
    * Play for bots.
@@ -99,7 +99,7 @@ export function Game(props: Props) {
     }, game.options.botsWait);
 
     return () => clearTimeout(timeout);
-  }, [game && game.currentPlayer, game && game.status, game && game.synced]);
+  }, [game.currentPlayer, game.status, game.synced]);
 
   /**
    * At the start of the game, compute and store the maximum score
@@ -136,7 +136,7 @@ export function Game(props: Props) {
     }
 
     setReachableScore(getScore(sameGame));
-  }, [game && game.status]);
+  }, [game.status]);
 
   /**
    * Track when the game ends
@@ -146,7 +146,7 @@ export function Game(props: Props) {
     if (game.status !== IGameStatus.OVER) return;
 
     logEvent("Game", "Game over");
-  }, [game && game.status]);
+  }, [game.status]);
 
   /**
    * Display fireworks animation when game ends
@@ -169,7 +169,7 @@ export function Game(props: Props) {
     }, game.playedCards.length * 200); // stop rockets from spawning
 
     return () => clearTimeout(timeout);
-  }, [game && game.status]);
+  }, [game.status]);
 
   /**
    * Redirect players to next game
@@ -182,7 +182,7 @@ export function Game(props: Props) {
 
     setDisplayStats(false);
     router.push(`/${game.nextGameId}`);
-  }, [game && game.nextGameId]);
+  }, [game.nextGameId]);
 
   function onJoinGame(player) {
     const newState = joinGame(game, { id: playerId, ...player });
@@ -191,8 +191,6 @@ export function Game(props: Props) {
     network.updateGame(newState);
 
     logEvent("Game", "Player joined");
-
-    setGameId(game.id);
   }
 
   function onAddBot() {
@@ -351,7 +349,7 @@ export function Game(props: Props) {
           )}
 
           {game.status === IGameStatus.LOBBY && (
-            <Lobby onAddBot={onAddBot} onJoinGame={onJoinGame} onStartGame={onStartGame} />
+            <Lobby host={host} onAddBot={onAddBot} onJoinGame={onJoinGame} onStartGame={onStartGame} />
           )}
 
           {selectedArea.type === ActionAreaType.ROLLBACK && (

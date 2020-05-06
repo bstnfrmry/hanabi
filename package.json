@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 4000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint '**/*.{ts,tsx}'"
@@ -27,6 +27,7 @@
     "mem": "^6.1.0",
     "moment": "^2.25.1",
     "next": "^9.3",
+    "next-iron-session": "^4.0.0",
     "nprogress": "^0.2.0",
     "rc-slider": "^9.2.1",
     "react": "^16.8.6",

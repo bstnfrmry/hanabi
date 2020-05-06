@@ -8,12 +8,13 @@ import shortid from "shortid";
 import GameActionsStats from "~/components/gameActionsStats";
 import GameBoard from "~/components/gameBoard";
 import GameStats from "~/components/gameStats";
-import LoadingScreen from "~/components/loadingScreen";
 import PlayerStats from "~/components/playerStats";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
+import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
 import { GameContext } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
+import { Session } from "~/hooks/session";
 import { newGame } from "~/lib/actions";
 import { logEvent } from "~/lib/analytics";
 import IGameState, { GameVariant } from "~/lib/state";
@@ -46,31 +47,45 @@ function formatDuration(start: number, end: number) {
   return moment.utc(moment(end).diff(start)).format("HH:mm:ss");
 }
 
-export default function Summary() {
+export const getServerSideProps = async function({ params }) {
+  const firebase = new FirebaseNetwork(setupFirebase());
+  const game = await firebase.loadGame(params.gameId);
+
+  return {
+    props: {
+      game,
+    },
+  };
+};
+
+interface Props {
+  game: IGameState;
+  session: Session;
+}
+
+export default function Summary(props: Props) {
+  const { game: initialGame } = props;
+
   const network = useNetwork();
   const router = useRouter();
-  const [game, setGame] = useState<IGameState>(null);
+  const [game, setGame] = useState<IGameState>(initialGame);
   const { t } = useTranslation();
-
-  const { gameId } = router.query;
 
   /**
    * Load game from database
    */
   useEffect(() => {
-    if (!gameId) return;
-
-    return network.subscribeToGame(gameId as string, game => {
+    return network.subscribeToGame(game.id, game => {
       if (!game) {
         return router.push("/404");
       }
 
       setGame(game);
     });
-  }, [gameId]);
+  }, [game.id]);
 
   function onBackClick() {
-    router.push(`/play?gameId=${gameId}`);
+    router.push(`/${game.id}`);
   }
 
   function gameVariantToText(gameVariant) {
@@ -92,11 +107,7 @@ export default function Summary() {
     }
   }
 
-  if (!game) {
-    return <LoadingScreen />;
-  }
-
-  const gameDuration = game.startedAt && game.endedAt ? formatDuration(game.startedAt - 7200000, game.endedAt) : null;
+  const gameDuration = game.startedAt && game.endedAt ? formatDuration(game.startedAt, game.endedAt) : null;
 
   return (
     <GameContext.Provider value={game}>

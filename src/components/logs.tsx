@@ -20,38 +20,34 @@ export default function Logs(props: Props) {
   const replay = useReplay();
   const selfPlayer = useSelfPlayer();
 
-  const showHistory = replay.cursor ? true : history;
-
   return (
     <div className="flex-grow-1 overflow-y-scroll">
-      {showHistory && (
-        <div className="relative">
-          <PoseGroup>
-            {[...game.turnsHistory].reverse().map((turn, i) => {
-              const key = history.length - i;
-              const PoseItem = replay.cursor ? posed.div() : Item;
+      <div className="relative">
+        <PoseGroup>
+          {[...game.turnsHistory].reverse().map((turn, i) => {
+            const key = game.turnsHistory.length - i;
+            const PoseItem = replay.cursor ? posed.div() : Item;
 
-              return (
-                <PoseItem key={key}>
-                  <Turn
-                    key={key}
-                    includePlayer={true}
-                    showDrawn={!interturn && game.players[turn.action.from].id !== selfPlayer?.id}
-                    turn={turn}
-                  />
-                </PoseItem>
-              );
-            })}
-          </PoseGroup>
-          <Tutorial placement="below" step={ITutorialStep.WELCOME}>
-            <Txt
-              className="lavender"
-              size={TxtSize.SMALL}
-              value={history.length ? t("gameStarted") : t("gameStarts")}
-            />
-          </Tutorial>
-        </div>
-      )}
+            return (
+              <PoseItem key={key}>
+                <Turn
+                  key={key}
+                  includePlayer={true}
+                  showDrawn={!interturn && game.players[turn.action.from].id !== selfPlayer?.id}
+                  turn={turn}
+                />
+              </PoseItem>
+            );
+          })}
+        </PoseGroup>
+        <Tutorial placement="below" step={ITutorialStep.WELCOME}>
+          <Txt
+            className="lavender"
+            size={TxtSize.SMALL}
+            value={game.turnsHistory.length ? t("gameStarted") : t("gameStarts")}
+          />
+        </Tutorial>
+      </div>
     </div>
   );
 }
