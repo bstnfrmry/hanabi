@@ -24,13 +24,16 @@ export const getServerSideProps = withSession(async function({ req, params }) {
 
   await req.session.save();
 
+  const protocol = process.env.NODE_ENV === "development" ? "http:" : "https:";
+  const { host } = req.headers;
+
   return {
     props: {
       session: {
         playerId: req.session.get("playerId"),
       },
       game,
-      host: "http://localhost:4000",
+      host: `${protocol}//${host}`,
     },
   };
 });
