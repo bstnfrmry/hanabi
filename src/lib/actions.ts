@@ -41,7 +41,7 @@ function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
   hint.cardsIndex = [];
 
   hand.forEach((card, index) => {
-    if (matchHint(hint, card)) {
+    if (matchHint(game, hint, card)) {
       hint.cardsIndex.push(index);
 
       if (!card.receivedHints) {
@@ -54,7 +54,12 @@ function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
         .filter(value => {
           return GameVariant.RAINBOW === game.options.variant ? value !== IColor.RAINBOW : true;
         })
-        .filter(value => value != hint.value)
+        .filter(value => {
+          if (hint.type === "number" && game.options.variant === GameVariant.SEQUENCE) {
+            return value < hint.value;
+          }
+          return value != hint.value;
+        })
         .forEach(value => {
           card.hint[hint.type][value] = IHintLevel.IMPOSSIBLE;
         });
@@ -62,11 +67,19 @@ function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
       // negative hint on card - mark as impossible
       card.hint[hint.type][hint.value] = IHintLevel.IMPOSSIBLE;
 
+      if (hint.type === "number" && game.options.variant === GameVariant.SEQUENCE) {
+        range(hint.value as INumber, 6).forEach(n => {
+          card.hint.number[n] = IHintLevel.IMPOSSIBLE;
+        });
+      }
+
       // for color hints, also mark rainbow as impossible
       if (hint.type === "color") {
         card.hint.color.rainbow = IHintLevel.IMPOSSIBLE;
       }
     }
+
+    debugger;
 
     // if there's only one possible color, make it sure
     const onlyPossibleColors = Object.keys(card.hint.color).filter(
@@ -106,8 +119,18 @@ export function matchColor(colorA: IColor, colorB: IColor) {
   return colorA === colorB || colorA === IColor.RAINBOW || colorB === IColor.RAINBOW;
 }
 
-export function matchHint(hint: IHintAction, card: ICard) {
-  return hint.type === "color" ? matchColor(card.color, hint.value as IColor) : hint.value === card.number;
+export function matchNumber(game: IGameState, numberA: INumber, numberB: INumber) {
+  if (game.options.variant === GameVariant.SEQUENCE) {
+    return numberA >= numberB;
+  }
+
+  return numberA === numberB;
+}
+
+export function matchHint(game: IGameState, hint: IHintAction, card: ICard) {
+  return hint.type === "color"
+    ? matchColor(card.color, hint.value as IColor)
+    : matchNumber(game, card.number, hint.value as INumber);
 }
 
 export function isGameOver(state: IGameState) {
@@ -320,8 +343,8 @@ export function joinGame(state: IGameState, player: IPlayer): IGameState {
 export function newGame(options: IGameOptions): IGameState {
   assert(options.playersCount > 1 && options.playersCount < 6);
 
+  // All base cards
   const baseColors = [IColor.WHITE, IColor.BLUE, IColor.RED, IColor.GREEN, IColor.YELLOW];
-  // all cards but multicolors
   let cards = flatMap(baseColors, color => [
     { number: 1, color },
     { number: 1, color },

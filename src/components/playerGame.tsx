@@ -15,17 +15,19 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 import Vignettes from "~/components/vignettes";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 import { useReplay } from "~/hooks/replay";
-import { matchColor, MaxHints } from "~/lib/actions";
+import { matchColor, matchNumber, MaxHints } from "~/lib/actions";
 import { playSound } from "~/lib/sound";
-import { ICard, IColor, IGameStatus, IHintAction, IPlayer } from "~/lib/state";
+import IGameState, { GameVariant, ICard, IColor, IGameStatus, IHintAction, INumber, IPlayer } from "~/lib/state";
 
-function isCardHintable(hint: IHintAction, card: ICard) {
-  return hint.type === "color" ? matchColor(card.color, hint.value as IColor) : card.number === hint.value;
+function isCardHintable(game: IGameState, hint: IHintAction, card: ICard) {
+  return hint.type === "color"
+    ? matchColor(card.color, hint.value as IColor)
+    : matchNumber(game, card.number, hint.value as INumber);
 }
 
-function textualHint(hint: IHintAction, cards: ICard[], t: TFunction) {
+function textualHint(game: IGameState, hint: IHintAction, cards: ICard[], t: TFunction) {
   const hintableCards = cards
-    .map((c, i) => (isCardHintable(hint, c) ? i : null))
+    .map((c, i) => (isCardHintable(game, hint, c) ? i : null))
     .filter(i => i !== null)
     .map(i => PositionMap[i]);
 
@@ -36,9 +38,15 @@ function textualHint(hint: IHintAction, cards: ICard[], t: TFunction) {
   }
 
   if (hintableCards.length === 1) {
-    if (hint.type === "color")
+    if (hint.type === "color") {
       return t("positiveHintColor", { position: hintableCards[0], color: t(hint.value as string) });
-    else return t("positiveHintNumber", { position: hintableCards[0], number: hint.value });
+    } else {
+      if (game.options.variant === GameVariant.SEQUENCE) {
+        return t("positiveHintNumberSequence", { position: hintableCards[0], number: hint.value });
+      }
+
+      return t("positiveHintNumber", { position: hintableCards[0], number: hint.value });
+    }
   }
 
   if (hint.type === "color")
@@ -46,6 +54,10 @@ function textualHint(hint: IHintAction, cards: ICard[], t: TFunction) {
       positions: hintableCards.join(", "),
       color: t(hint.value as string, { count: hintableCards.length }),
     });
+
+  if (game.options.variant === GameVariant.SEQUENCE) {
+    return t("positiveHintNumberSequencePlural", { positions: hintableCards.join(", "), number: hint.value });
+  }
 
   return t("positiveHintNumberPlural", { positions: hintableCards.join(", "), number: hint.value });
 }
@@ -251,7 +263,8 @@ export default function PlayerGame(props: Props) {
                       hidden={hideCards}
                       position={i}
                       selected={
-                        selected && (player === selfPlayer ? selectedCard === i : isCardHintable(pendingHint, card))
+                        selected &&
+                        (player === selfPlayer ? selectedCard === i : isCardHintable(game, pendingHint, card))
                       }
                       size={selected ? CardSize.LARGE : CardSize.MEDIUM}
                       style={{
@@ -339,7 +352,7 @@ export default function PlayerGame(props: Props) {
 
             <div className="mt2 flex items-center">
               {pendingHint.value && game.tokens.hints !== 0 && (
-                <Txt italic className="mr3" value={textualHint(pendingHint, player.hand, t)} />
+                <Txt italic className="mr3" value={textualHint(game, pendingHint, player.hand, t)} />
               )}
               {game.tokens.hints === 0 && <Txt className="mr3 orange" value={t("noTokens")} />}
               {!pendingHint.value && game.tokens.hints > 0 && <Txt className="mr3" value={t("selectVignette")} />}
