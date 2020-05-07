@@ -3,7 +3,7 @@ import React from "react";
 import Vignette from "~/components/vignette";
 import { useGame } from "~/hooks/game";
 import { getHintableColors, numbers } from "~/lib/actions";
-import { IHintAction } from "~/lib/state";
+import { GameVariant, IHintAction } from "~/lib/state";
 
 interface Props {
   onSelect: (action: IHintAction) => void;
@@ -15,6 +15,8 @@ export default function Vignettes(props: Props) {
 
   const game = useGame();
   const colors = getHintableColors(game);
+
+  const hintableNumbers = game.options.variant === GameVariant.SEQUENCE ? numbers.slice(1) : numbers;
 
   return (
     <div className="flex flex-column items-center ml6-l">
@@ -29,8 +31,11 @@ export default function Vignettes(props: Props) {
           />
         ))}
       </div>
-      <div className="flex flex-row justify-around" style={{ width: `${(numbers.length / colors.length) * 100}%` }}>
-        {numbers.map(number => (
+      <div
+        className="flex flex-row justify-around"
+        style={{ width: `${(hintableNumbers.length / colors.length) * 100}%` }}
+      >
+        {hintableNumbers.map(number => (
           <Vignette
             key={number}
             selected={pendingHint.type === "number" && pendingHint.value === number}
