@@ -220,4 +220,13 @@ export const fr: typeof en = {
   showInsights: "Voir les informations",
   showCards: "Voir les cartes",
   started: "commencé",
+  youGaveHintTurn: "- Tu as donné un indice à <1></1> sur ses <3></3>",
+  youDiscardedTurn: "- Tu as défaussé ton <1></1>",
+  youPlayedTurn: "- Tu as joué ton <1></1>",
+  somebodyHintedYouTurn: "- <1>PlayerName</1> t'a montré tes <3></3>",
+  somebodyHintedSomebodyTurn: "- <1>PlayerName</1> a montré à <3></3> ses <5></5>",
+  somebodyDiscardedTurn: "- <1>PlayerName</1> a défaussé son <3></3>",
+  somebodyPlayedTurn: "- <1>PlayerName</1> a joué son <3></3>",
+  whatYouDrewTurn: "et as pioché le <1></1>",
+  whatTheyDrewTurn: "et a pioché le <1></1>",
 };

@@ -1,24 +1,22 @@
 import { homedir } from "os";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Hint from "~/components/hint";
 import PlayerName from "~/components/playerName";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
-import { IHintLevel, ITurn } from "~/lib/state";
+import { ICard, IDiscardAction, IHintAction, IHintLevel, IPlayAction, ITurn } from "~/lib/state";
 
 interface Props {
   turn: ITurn;
-  includePlayer: boolean;
   showDrawn: boolean;
   showPosition?: boolean;
 }
 
 export default function Turn(props: Props) {
-  const { turn, includePlayer = false, showDrawn, showPosition = true } = props;
-  const { t } = useTranslation();
+  const { turn, showDrawn, showPosition = true } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -26,64 +24,125 @@ export default function Turn(props: Props) {
   const isViewingOwnActions = turn.action.from === selfPlayer.index;
   const isViewingOwnReceivedHint = turn.action.action === "hint" && turn.action.to === selfPlayer.index;
 
+  const playerNameFrom = <PlayerName player={game.players[turn.action.from]} />;
+
+  let textualTurn;
+  let drawnTurn;
+
+  if (turn.action.action === "hint") {
+    const playerNameTo = <PlayerName player={game.players[turn.action.to]} />;
+
+    if (isViewingOwnActions) {
+      textualTurn = (
+        <Trans i18nKey="youGaveHintTurn">
+          - You hinted {playerNameTo} about their <HintValue action={turn.action} />s
+        </Trans>
+      );
+    } else if (isViewingOwnReceivedHint) {
+      textualTurn = (
+        <Trans i18nKey="somebodyHintedYouTurn">
+          - {playerNameFrom} hinted you about <HintValue action={turn.action} />s
+        </Trans>
+      );
+    } else {
+      textualTurn = (
+        <Trans i18nKey="somebodyHintedSomebodyTurn">
+          - {playerNameFrom} hinted {playerNameTo} about <HintValue action={turn.action} />s
+        </Trans>
+      );
+    }
+
+    if (showPosition) {
+      textualTurn = (
+        <>
+          {textualTurn}
+          <Txt
+            className="lavender mr1"
+            size={TxtSize.XSMALL}
+            value={`${turn.action.cardsIndex.map(index => PositionMap[index]).join(", ")}`}
+          />
+        </>
+      );
+    }
+  } else if (turn.action.action === "discard") {
+    textualTurn = isViewingOwnActions ? (
+      <Trans i18nKey="youDiscardedTurn">
+        - You discarded your <TurnCard card={turn.action.card} context={ICardContext.DISCARDED} />
+      </Trans>
+    ) : (
+      <Trans i18nKey="somebodyDiscardedTurn">
+        - {playerNameFrom} discarded their <TurnCard card={turn.action.card} context={ICardContext.DISCARDED} />
+      </Trans>
+    );
+
+    if (showPosition) {
+      textualTurn = (
+        <>
+          {textualTurn}
+          <CardPosition action={turn.action} />
+        </>
+      );
+    }
+  } else {
+    // played cards
+
+    textualTurn = isViewingOwnActions ? (
+      <Trans i18nKey="youPlayedTurn">
+        - You discarded your <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
+      </Trans>
+    ) : (
+      <Trans i18nKey="somebodyPlayedTurn">
+        - {playerNameFrom} discarded their <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
+      </Trans>
+    );
+
+    if (showPosition) {
+      textualTurn = (
+        <>
+          {textualTurn}
+          <CardPosition action={turn.action} />
+        </>
+      );
+    }
+  }
+
+  if (showDrawn && turn.card) {
+    drawnTurn = (
+      <Trans i18nKey={isViewingOwnActions ? "whatYouDrewTurn" : "whatTheyDrewTurn"}>
+        and drew <DrawnCard card={turn.card} />
+      </Trans>
+    );
+  }
+
   return (
     <div className="dib">
-      {includePlayer && (
-        <>
-          <Txt className="inline-flex items-center gray" value="-" />
-          <PlayerName className="mh1" player={game.players[turn.action.from]} />
-        </>
-      )}
-
-      {turn.action.action === "hint" && (
-        <Txt className="inline-flex items-center">
-          {isViewingOwnReceivedHint ? (
-            <>
-              {t("receivedHintTurnYourself")}
-              <Hint className="mh1" hint={IHintLevel.POSSIBLE} type={turn.action.type} value={turn.action.value} />
-              {t("pluralTurn")}
-            </>
-          ) : (
-            <>
-              {isViewingOwnActions ? t("hintedTurnYourself") : t("hintedTurn")}
-              <PlayerName className="mh1" player={game.players[turn.action.to]} />
-              {t("aboutTurn")}
-              <Hint className="mh1" hint={IHintLevel.POSSIBLE} type={turn.action.type} value={turn.action.value} />
-              {t("pluralTurn")}
-            </>
-          )}
-          {showPosition && turn.action.cardsIndex && (
-            <Txt
-              className="lavender ml1"
-              size={TxtSize.XSMALL}
-              value={`${turn.action.cardsIndex.map(index => PositionMap[index]).join(", ")}`}
-            />
-          )}
-        </Txt>
-      )}
-
-      {turn.action.action === "discard" && (
-        <Txt className="inline-flex items-center">
-          {isViewingOwnActions ? t("discardedTurnYourself") : t("discardedTurn")}
-          <Card card={turn.action.card} className="mh1" context={ICardContext.DISCARDED} size={CardSize.XSMALL} />
-          <Txt className="lavender mr1" size={TxtSize.XSMALL} value={`${PositionMap[turn.action.cardIndex]}`} />
-        </Txt>
-      )}
-
-      {turn.action.action === "play" && (
-        <Txt className="inline-flex items-center">
-          {isViewingOwnActions ? t("playedTurnYourself") : t("playedTurn")}
-          <Card card={turn.action.card} className="mh1" context={ICardContext.PLAYED} size={CardSize.XSMALL} />
-          <Txt className="lavender mr1" size={TxtSize.XSMALL} value={`${PositionMap[turn.action.cardIndex]}`} />
-        </Txt>
-      )}
-
-      {showDrawn && turn.card && (
-        <Txt className="inline-flex items-center">
-          {isViewingOwnActions ? t("cardDrawnTurnYourself") : t("cardDrawnTurn")}
-          <Card card={turn.card} className="ml1" context={ICardContext.DRAWN} size={CardSize.XSMALL} />
-        </Txt>
-      )}
+      <Txt className="di">
+        {/* The player action and the card they drawn, if applicable */}
+        {textualTurn}
+        {drawnTurn}
+      </Txt>
     </div>
   );
 }
+
+const TurnCard = ({ card, context }: { card: ICard; context: ICardContext }) => (
+  <span className="dib">
+    <Card card={card} className="mr1" context={context} size={CardSize.XSMALL} />
+  </span>
+);
+
+const HintValue = ({ action }: { action: IHintAction }) => (
+  <span className="dib">
+    <Hint className="mr1" hint={IHintLevel.POSSIBLE} type={action.type} value={action.value} />
+  </span>
+);
+
+const CardPosition = ({ action }: { action: IDiscardAction | IPlayAction }) => (
+  <Txt className="lavender mr1" size={TxtSize.XSMALL} value={`${PositionMap[action.cardIndex]}`} />
+);
+
+const DrawnCard = ({ card }: { card: ICard }) => (
+  <span className="dib">
+    <Card card={card} className="mr1" context={ICardContext.DRAWN} size={CardSize.XSMALL} />
+  </span>
+);

@@ -218,4 +218,13 @@ export const nl = {
   showInsights: "Inzichten tonen",
   showCards: "Toon kaarten",
   started: "startte",
+  youGaveHintTurn: "- Jij gaf een hint aan <1></1> over <3></3>",
+  youDiscardedTurn: "- Jij gooide weg <1></1>",
+  youPlayedTurn: "- Jij speelde <1></1>",
+  somebodyHintedYouTurn: "- <1>PlayerName</1> heeft jou een hint gegeven over <3></3>",
+  somebodyHintedSomebodyTurn: "- <1>PlayerName</1> gaf een hint aan <3></3> over <5></5>",
+  somebodyDiscardedTurn: "- <1>PlayerName</1> gooide weg <3></3>",
+  somebodyPlayedTurn: "- <1>PlayerName</1> speelde <3></3>",
+  whatYouDrewTurn: "& trok <1></1>",
+  whatTheyDrewTurn: "& trok <1></1>",
 };

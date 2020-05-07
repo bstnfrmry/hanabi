@@ -217,4 +217,13 @@ export const en = {
   showInsights: "Show insights",
   showCards: "Show cards",
   started: "started",
+  youGaveHintTurn: "- You hinted <1></1> about their <3></3>s",
+  youDiscardedTurn: "- You discarded <1></1>",
+  youPlayedTurn: "- You played <1></1>",
+  somebodyHintedYouTurn: "- <1>PlayerName</1> hinted you about <3></3>",
+  somebodyHintedSomebodyTurn: "- <1>PlayerName</1> hinted <3></3> about <5></5>",
+  somebodyDiscardedTurn: "- <1>PlayerName</1> discarded <3></3>",
+  somebodyPlayedTurn: "- <1>PlayerName</1> played <3></3>",
+  whatYouDrewTurn: "and drew <1></1>",
+  whatTheyDrewTurn: "and drew <1></1>",
 };
