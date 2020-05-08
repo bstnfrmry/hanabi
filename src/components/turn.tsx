@@ -20,7 +20,7 @@ export default function Turn(props: Props) {
   const game = useGame();
   const selfPlayer = useSelfPlayer();
 
-  const isViewingOwnActions = turn.action.from === selfPlayer.index;
+  const isViewingOwnActions = turn.action.from === selfPlayer?.index;
   const isViewingOwnReceivedHint = turn.action.action === "hint" && turn.action.to === selfPlayer.index;
 
   const playerNameFrom = <PlayerName player={game.players[turn.action.from]} />;
