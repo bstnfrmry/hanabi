@@ -1,4 +1,3 @@
-import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,7 +12,7 @@ interface Props {
   games: IGameState[];
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
+export const getServerSideProps = async () => {
   const games = await loadPublicGames();
 
   return {
