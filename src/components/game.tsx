@@ -23,7 +23,7 @@ import { useSoundEffects } from "~/hooks/sounds";
 import { getScore, joinGame, newGame } from "~/lib/actions";
 import { cheat } from "~/lib/ai-cheater";
 import { logEvent } from "~/lib/analytics";
-import { api } from "~/lib/api";
+import { sendRequest } from "~/lib/api";
 import IGameState, { GameMode, IAction, IGameHintsLevel, IGameStatus } from "~/lib/state";
 
 interface Props {
@@ -151,7 +151,7 @@ export function Game(props: Props) {
   }, [game.nextGameId]);
 
   async function onJoinGame(player) {
-    const newState = await api("/api/join-game", {
+    const newState = await sendRequest("/api/join-game", {
       gameId: game.id,
       player,
     });
@@ -164,7 +164,7 @@ export function Game(props: Props) {
   async function onAddBot() {
     const botsCount = game.players.filter(p => p.bot).length;
 
-    const newState = await api("/api/add-bot", {
+    const newState = await sendRequest("/api/add-bot", {
       gameId: game.id,
       bot: {
         name: `AI #${botsCount + 1}`,
@@ -177,7 +177,7 @@ export function Game(props: Props) {
   }
 
   async function onStartGame() {
-    const newState = await api("/api/start-game", {
+    const newState = await sendRequest("/api/start-game", {
       gameId: game.id,
     });
 
@@ -187,7 +187,7 @@ export function Game(props: Props) {
   }
 
   async function onCommitAction(action: IAction) {
-    const newState = await api("/api/commit-action", {
+    const newState = await sendRequest("/api/commit-action", {
       gameId: game.id,
       action,
     });
@@ -222,14 +222,14 @@ export function Game(props: Props) {
   }
 
   async function onNotifyPlayer(player) {
-    await api("/api/notify-player", {
+    await sendRequest("/api/notify-player", {
       gameId: game.id,
       playerId: player.id,
     });
   }
 
   async function onReaction(reaction) {
-    await api("/api/set-reaction", {
+    await sendRequest("/api/set-reaction", {
       gameId: game.id,
       reaction,
     });
@@ -293,7 +293,7 @@ export function Game(props: Props) {
   }
 
   async function onRestartGame() {
-    await api("/api/create-game", {
+    await sendRequest("/api/create-game", {
       previousGameId: game.id,
     });
 

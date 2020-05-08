@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
-import { api } from "~/lib/api";
+import { sendRequest } from "~/lib/api";
 import IGameState from "~/lib/state";
 
 interface Props {
@@ -36,7 +36,7 @@ export default function RollbackArea(props: Props) {
   const canRollback = lastRollbackableTurn >= 0;
 
   async function onRollback() {
-    await api("/api/rollback-game", {
+    await sendRequest("/api/rollback-game", {
       gameId: game.id,
       turn: lastRollbackableTurn,
     });

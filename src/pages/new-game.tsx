@@ -8,7 +8,7 @@ import Button, { ButtonSize } from "~/components/ui/button";
 import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { logEvent } from "~/lib/analytics";
-import { api } from "~/lib/api";
+import { sendRequest } from "~/lib/api";
 import { GameMode, GameVariant, IGameHintsLevel } from "~/lib/state";
 
 const PlayerCounts = [2, 3, 4, 5];
@@ -64,7 +64,7 @@ export default function NewGame() {
   }, []);
 
   async function onCreateGame() {
-    const game = await api("/api/create-game", {
+    const game = await sendRequest("/api/create-game", {
       options: {
         variant,
         playersCount,

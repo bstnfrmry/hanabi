@@ -7,7 +7,7 @@ type GamesHandler = (games: IGameState[]) => void;
 
 type GameHandler = (game: IGameState) => void;
 
-export function database() {
+function database() {
   if (!firebase.apps.length) {
     firebase.initializeApp({
       // Local database configuration using firebase-server

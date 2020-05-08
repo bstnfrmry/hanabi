@@ -1,8 +1,10 @@
 import { commitAction, getMaximumPossibleScore } from "~/lib/actions";
-import { getPlayerFromGame, getPlayerIdFromSession, playForBots } from "~/lib/api";
+import { play } from "~/lib/ai";
+import { getPlayerFromGame, getPlayerIdFromSession } from "~/lib/api";
 import { loadGame, updateGame } from "~/lib/firebase";
+import { sleep } from "~/lib/promise";
 import withSession from "~/lib/session";
-import { IAction } from "~/lib/state";
+import IGameState, { IAction, IGameStatus } from "~/lib/state";
 
 interface Payload {
   gameId: string;
@@ -39,3 +41,27 @@ export default withSession(async (req, res) => {
 
   return res.json(game);
 });
+
+export async function playForBots(game: IGameState) {
+  while (true) {
+    const nextPlayer = game.players[game.currentPlayer];
+    if (!nextPlayer.bot) {
+      break;
+    }
+    if (game.status === IGameStatus.OVER) {
+      break;
+    }
+
+    if (game.options.botsWait) {
+      nextPlayer.reaction = "🧠";
+      await updateGame(game);
+    }
+
+    await sleep(game.options.botsWait);
+
+    game = play(game);
+    game.players.find(player => player.id === nextPlayer.id).reaction = null;
+
+    await updateGame(game);
+  }
+}

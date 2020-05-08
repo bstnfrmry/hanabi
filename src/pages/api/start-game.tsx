@@ -1,7 +1,8 @@
-import { getPlayerFromGame, getPlayerIdFromSession, playForBots } from "~/lib/api";
+import { getPlayerFromGame, getPlayerIdFromSession } from "~/lib/api";
 import { loadGame, updateGame } from "~/lib/firebase";
 import withSession from "~/lib/session";
 import { IGameStatus } from "~/lib/state";
+import { playForBots } from "~/pages/api/commit-action";
 
 interface Payload {
   gameId: string;

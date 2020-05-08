@@ -13,7 +13,7 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 import { GameContext } from "~/hooks/game";
 import { Session } from "~/hooks/session";
 import { logEvent } from "~/lib/analytics";
-import { api } from "~/lib/api";
+import { sendRequest } from "~/lib/api";
 import { loadGame, subscribeToGame } from "~/lib/firebase";
 import IGameState, { GameVariant } from "~/lib/state";
 
@@ -168,7 +168,7 @@ export default function Summary(props: Props) {
               className="ml3"
               text={t("tryOutButton")}
               onClick={async () => {
-                const nextGame = await api("/api/create-game", {
+                const nextGame = await sendRequest("/api/create-game", {
                   options: game.options,
                 });
 
