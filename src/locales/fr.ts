@@ -164,7 +164,7 @@ export const fr: typeof en = {
   rulesUs:
     "Nous sommes un groupe d'amateurs de jeux de société. Pendant le confinement en 2020, nous cherchions une alternative pour jouer ensemble en ligne. Et comme on apprécie non seulement de jouer mais également de développer des sites, nous avons créé une version en ligne accessible sur téléphone du jeu.\n\n\n\n👉 Like us, please buy the <2>physical version</2> to support its creator if you like this game!",
   rulesBuy:
-    "N'hésitez pas à <1>nous contacter</1> si vous avez une question ou suggestion !\nNous avons aussi un <3>repo public sur Github</3> si vous souhaitez contribuer au site.",
+    "N'hésitez pas à <1>nous contacter</1> si vous avez une question ou suggestion !\nNous avons aussi un <2>repo public sur Github</2> si vous souhaitez contribuer au site.",
   noRoom: "Aucune partie n'est accessible",
   faster: "Très rapide",
   fast: "Rapide",
