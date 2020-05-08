@@ -25,10 +25,7 @@ export default function ReactionsPopover(props: Props) {
           onClick={e => {
             e.stopPropagation();
             onClose();
-            onReaction(null);
-            setTimeout(() => {
-              onReaction(reaction);
-            });
+            onReaction(reaction);
           }}
         >
           <Txt size={TxtSize.MEDIUM} value={reaction} />

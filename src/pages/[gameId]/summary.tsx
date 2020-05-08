@@ -3,7 +3,6 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import React, { ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import shortid from "shortid";
 
 import GameActionsStats from "~/components/gameActionsStats";
 import GameBoard from "~/components/gameBoard";
@@ -11,12 +10,11 @@ import GameStats from "~/components/gameStats";
 import PlayerStats from "~/components/playerStats";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
 import { GameContext } from "~/hooks/game";
-import useNetwork from "~/hooks/network";
 import { Session } from "~/hooks/session";
-import { newGame } from "~/lib/actions";
 import { logEvent } from "~/lib/analytics";
+import { api } from "~/lib/api";
+import { loadGame, subscribeToGame } from "~/lib/firebase";
 import IGameState, { GameVariant } from "~/lib/state";
 
 interface SectionProps {
@@ -48,8 +46,7 @@ function formatDuration(start: number, end: number) {
 }
 
 export const getServerSideProps = async function({ params }) {
-  const firebase = new FirebaseNetwork(setupFirebase());
-  const game = await firebase.loadGame(params.gameId);
+  const game = await loadGame(params.gameId);
 
   return {
     props: {
@@ -66,7 +63,6 @@ interface Props {
 export default function Summary(props: Props) {
   const { game: initialGame } = props;
 
-  const network = useNetwork();
   const router = useRouter();
   const [game, setGame] = useState<IGameState>(initialGame);
   const { t } = useTranslation();
@@ -75,7 +71,7 @@ export default function Summary(props: Props) {
    * Load game from database
    */
   useEffect(() => {
-    return network.subscribeToGame(game.id, game => {
+    return subscribeToGame(game.id, game => {
       if (!game) {
         return router.push("/404");
       }
@@ -172,13 +168,9 @@ export default function Summary(props: Props) {
               className="ml3"
               text={t("tryOutButton")}
               onClick={async () => {
-                const nextGameId = shortid();
-                const nextGame = newGame({
-                  ...game.options,
-                  id: nextGameId,
+                const nextGame = await api("/api/create-game", {
+                  options: game.options,
                 });
-
-                await network.updateGame(nextGame);
 
                 logEvent("Game", "Game created");
 

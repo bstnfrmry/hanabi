@@ -1,6 +1,6 @@
 import { withIronSession } from "next-iron-session";
 
-export default function withSession(handler) {
+export default function withSession<Handler = any>(handler: Handler) {
   return withIronSession(handler, {
     password: process.env.COOKIE_PASSWORD,
     cookieName: "hanabi.cards",

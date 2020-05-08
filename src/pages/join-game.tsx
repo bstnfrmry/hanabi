@@ -6,8 +6,7 @@ import { useTranslation } from "react-i18next";
 import HomeButton from "~/components/homeButton";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
-import useNetwork from "~/hooks/network";
+import { loadPublicGames, subscribeToPublicGames } from "~/lib/firebase";
 import IGameState from "~/lib/state";
 
 interface Props {
@@ -15,8 +14,7 @@ interface Props {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  const firebase = new FirebaseNetwork(setupFirebase());
-  const games = await firebase.loadPublicGames();
+  const games = await loadPublicGames();
 
   return {
     props: {
@@ -29,13 +27,12 @@ export default function JoinGame(props: Props) {
   const { games: initialGames } = props;
 
   const router = useRouter();
-  const network = useNetwork();
   const { t } = useTranslation();
 
   const [games, setGames] = useState<IGameState[]>(initialGames);
 
   useEffect(() => {
-    network.subscribeToPublicGames(games => {
+    return subscribeToPublicGames(games => {
       setGames(games);
     });
   }, []);

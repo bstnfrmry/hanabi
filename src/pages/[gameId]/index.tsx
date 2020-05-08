@@ -4,18 +4,16 @@ import React, { useEffect, useState } from "react";
 import { Game } from "~/components/game";
 import { TutorialProvider } from "~/components/tutorial";
 import useConnectivity from "~/hooks/connectivity";
-import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
 import { GameContext } from "~/hooks/game";
-import useNetwork from "~/hooks/network";
 import { ReplayContext } from "~/hooks/replay";
 import { Session, SessionContext } from "~/hooks/session";
+import { loadGame, subscribeToGame } from "~/lib/firebase";
 import { uniqueId } from "~/lib/id";
 import withSession from "~/lib/session";
 import IGameState from "~/lib/state";
 
 export const getServerSideProps = withSession(async function({ req, params }) {
-  const firebase = new FirebaseNetwork(setupFirebase());
-  const game = await firebase.loadGame(params.gameId);
+  const game = await loadGame(params.gameId);
 
   const playerId = req.session.get("playerId");
   if (playerId === undefined) {
@@ -47,7 +45,6 @@ interface Props {
 export default function Play(props: Props) {
   const { game: initialGame, session, host } = props;
 
-  const network = useNetwork();
   const online = useConnectivity();
   const router = useRouter();
   const [game, setGame] = useState<IGameState>(initialGame);
@@ -59,7 +56,7 @@ export default function Play(props: Props) {
   useEffect(() => {
     if (!online) return;
 
-    return network.subscribeToGame(game.id, game => {
+    return subscribeToGame(game.id, game => {
       if (!game) {
         return router.push("/404");
       }

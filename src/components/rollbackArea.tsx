@@ -4,8 +4,7 @@ import { useTranslation } from "react-i18next";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
-import useNetwork from "~/hooks/network";
-import { getStateAtTurn } from "~/lib/actions";
+import { api } from "~/lib/api";
 import IGameState from "~/lib/state";
 
 interface Props {
@@ -30,15 +29,17 @@ function getLastRollbackableTurn(game: IGameState) {
 
 export default function RollbackArea(props: Props) {
   const { onCloseArea } = props;
-  const network = useNetwork();
   const { t } = useTranslation();
 
   const game = useGame();
   const lastRollbackableTurn = getLastRollbackableTurn(game);
   const canRollback = lastRollbackableTurn >= 0;
 
-  function onRollback() {
-    network.updateGame(getStateAtTurn(game, lastRollbackableTurn));
+  async function onRollback() {
+    await api("/api/rollback-game", {
+      gameId: game.id,
+      turn: lastRollbackableTurn,
+    });
   }
 
   return (
