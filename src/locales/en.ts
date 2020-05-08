@@ -161,7 +161,7 @@ export const en = {
   rulesUs:
     "We are a group of board-game addicts. Locked down in 2020, we were willing to find an alternative to play together remotely. \nSince we both have fun coding and playing Hanabi, we decided to create an online mobile-friendly version of the game.\n\n👉 Like us, please buy the <2>physical version</2> to support its creator if you like this game!",
   rulesBuy:
-    "Don't hesitate to <1>contact us</1>if you have any question or suggestion. We also have a <3>public Github repository</3> if you'd like to contribute.",
+    "Don't hesitate to <1>contact us</1> if you have any question or suggestion. We also have a <2>public Github repository</2> if you'd like to contribute.",
   noRoom: "No available room",
   faster: "Faster",
   fast: "Fast",

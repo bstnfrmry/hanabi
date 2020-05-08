@@ -100,12 +100,12 @@ export default function Rules(props: Props) {
           <Paragraph>
             <Trans i18nKey="rulesBuy">
               Don't hesitate to
-              <a className="lavender mr1" href="mailto:bastien.formery@gmail.com">
+              <a className="lavender" href="mailto:bastien.formery@gmail.com">
                 contact us
               </a>
               if you have any question or suggestion. We also have a
               <a
-                className="lavender mr1"
+                className="lavender"
                 href="https://github.com/bstnfrmry/hanabi/"
                 rel="noopener noreferrer"
                 target="_blank"
