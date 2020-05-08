@@ -31,7 +31,7 @@ export default class Error extends React.Component<Props> {
                   We'll investigate as soon as possible. Don't hesitate to{" "}
                   <a className="lavender" href="mailto:bastien.formery@gmail.com">
                     reach out
-                  </a>{" "}
+                  </a>
                   to let us know what happened.
                 </Trans>
 
@@ -39,7 +39,7 @@ export default class Error extends React.Component<Props> {
                 <br />
                 <br />
                 <Trans i18nKey="publicRepo">
-                  We also have{" "}
+                  We also have
                   <a
                     className="lavender"
                     href="https://github.com/bstnfrmry/hanabi/"
@@ -47,7 +47,7 @@ export default class Error extends React.Component<Props> {
                     target="_blank"
                   >
                     a public Github repository
-                  </a>{" "}
+                  </a>
                   if you'd like to contribute or report a bug.
                 </Trans>
               </Txt>
