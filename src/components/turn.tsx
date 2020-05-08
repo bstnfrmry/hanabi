@@ -1,6 +1,5 @@
-import { homedir } from "os";
 import React from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Hint from "~/components/hint";
@@ -35,19 +34,19 @@ export default function Turn(props: Props) {
     if (isViewingOwnActions) {
       textualTurn = (
         <Trans i18nKey="youGaveHintTurn">
-          - You hinted {playerNameTo} about their <HintValue action={turn.action} />s
+          You hinted {playerNameTo} about their <HintValue action={turn.action} />
         </Trans>
       );
     } else if (isViewingOwnReceivedHint) {
       textualTurn = (
         <Trans i18nKey="somebodyHintedYouTurn">
-          - {playerNameFrom} hinted you about <HintValue action={turn.action} />s
+          {playerNameFrom} hinted you about <HintValue action={turn.action} />
         </Trans>
       );
     } else {
       textualTurn = (
         <Trans i18nKey="somebodyHintedSomebodyTurn">
-          - {playerNameFrom} hinted {playerNameTo} about <HintValue action={turn.action} />s
+          {playerNameFrom} hinted {playerNameTo} about <HintValue action={turn.action} />
         </Trans>
       );
     }
@@ -56,22 +55,18 @@ export default function Turn(props: Props) {
       textualTurn = (
         <>
           {textualTurn}
-          <Txt
-            className="lavender mr1"
-            size={TxtSize.XSMALL}
-            value={`${turn.action.cardsIndex.map(index => PositionMap[index]).join(", ")}`}
-          />
+          <CardPosition action={turn.action} />
         </>
       );
     }
   } else if (turn.action.action === "discard") {
     textualTurn = isViewingOwnActions ? (
       <Trans i18nKey="youDiscardedTurn">
-        - You discarded your <TurnCard card={turn.action.card} context={ICardContext.DISCARDED} />
+        You discarded your <TurnCard card={turn.action.card} context={ICardContext.DISCARDED} />
       </Trans>
     ) : (
       <Trans i18nKey="somebodyDiscardedTurn">
-        - {playerNameFrom} discarded their <TurnCard card={turn.action.card} context={ICardContext.DISCARDED} />
+        {playerNameFrom} discarded their <TurnCard card={turn.action.card} context={ICardContext.DISCARDED} />
       </Trans>
     );
 
@@ -83,16 +78,14 @@ export default function Turn(props: Props) {
         </>
       );
     }
-  } else {
-    // played cards
-
+  } else if (turn.action.action === "play") {
     textualTurn = isViewingOwnActions ? (
       <Trans i18nKey="youPlayedTurn">
-        - You discarded your <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
+        You discarded your <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
       </Trans>
     ) : (
       <Trans i18nKey="somebodyPlayedTurn">
-        - {playerNameFrom} discarded their <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
+        {playerNameFrom} discarded their <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
       </Trans>
     );
 
@@ -117,8 +110,7 @@ export default function Turn(props: Props) {
   return (
     <div className="dib">
       <Txt className="di">
-        {/* The player action and the card they drawn, if applicable */}
-        {textualTurn}
+        {/* The player action and the card they drawn, if applicable */}- {textualTurn}
         {drawnTurn}
       </Txt>
     </div>
@@ -137,9 +129,16 @@ const HintValue = ({ action }: { action: IHintAction }) => (
   </span>
 );
 
-const CardPosition = ({ action }: { action: IDiscardAction | IPlayAction }) => (
-  <Txt className="lavender mr1" size={TxtSize.XSMALL} value={`${PositionMap[action.cardIndex]}`} />
-);
+const CardPosition = ({ action }: { action: IDiscardAction | IPlayAction | IHintAction }) =>
+  action.action === "hint" ? (
+    <Txt
+      className="lavender mr1"
+      size={TxtSize.XSMALL}
+      value={`${action.cardsIndex.map(index => PositionMap[index]).join(", ")}`}
+    />
+  ) : (
+    <Txt className="lavender mr1" size={TxtSize.XSMALL} value={`${PositionMap[action.cardIndex]}`} />
+  );
 
 const DrawnCard = ({ card }: { card: ICard }) => (
   <span className="dib">
