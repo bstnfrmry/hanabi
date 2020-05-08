@@ -234,7 +234,7 @@ export default function Card(props: Props) {
                 {card?.receivedHints?.map((turn, i) => {
                   return (
                     <div key={i} className="nb1">
-                      <Turn includePlayer={true} showDrawn={false} showPosition={false} turn={turn} />
+                      <Turn showDrawn={false} showPosition={false} turn={turn} />
                     </div>
                   );
                 })}

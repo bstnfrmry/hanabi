@@ -35,7 +35,6 @@ export default function Logs(props: Props) {
                 <PoseItem key={key}>
                   <Turn
                     key={key}
-                    includePlayer={true}
                     showDrawn={!interturn && game.players[turn.action.from].id !== selfPlayer?.id}
                     turn={turn}
                   />
