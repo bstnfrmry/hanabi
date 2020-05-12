@@ -7,7 +7,7 @@ const HOTJAR_ID = process.env.HOTJAR_ID;
 
 const isDevelopment = NODE_ENV === "development";
 
-export const initGA = () => {
+export function initAnalytics() {
   if (isDevelopment) return;
 
   if (GOOGLE_ANALYTICS_ID) {
@@ -17,7 +17,7 @@ export const initGA = () => {
   if (HOTJAR_ID) {
     hotjar.initialize(+HOTJAR_ID, 6);
   }
-};
+}
 
 export function logPageView() {
   if (isDevelopment) return;
