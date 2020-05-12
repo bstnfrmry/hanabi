@@ -17,6 +17,7 @@
     "@zeit/next-source-maps": "0.0.4-canary.1",
     "add": "^2.0.6",
     "classnames": "^2.2.6",
+    "dotenv-webpack": "^1.7.0",
     "firebase": "^6.3.4",
     "fireworks-canvas": "^2.4.0",
     "husky": "^4.2.3",
