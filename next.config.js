@@ -32,7 +32,4 @@ module.exports = nextSourceMaps({
 
     return config;
   },
-  experimental: {
-    reactRefresh: true,
-  },
 });
