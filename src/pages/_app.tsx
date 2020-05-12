@@ -12,7 +12,7 @@ import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
 import { NetworkContext } from "~/hooks/network";
 import { i18n } from "~/lib/i18n";
 
-import { initGA, logEvent, logPageView } from "../lib/analytics";
+import { initAnalytics, logEvent, logPageView } from "../lib/analytics";
 import "../styles/style.css";
 
 Sentry.init({
@@ -40,7 +40,7 @@ Router.events.on("routeChangeError", () => {
 
 export default class App extends NextApp {
   componentDidMount() {
-    initGA();
+    initAnalytics();
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
