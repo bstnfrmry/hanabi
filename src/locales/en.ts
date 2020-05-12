@@ -214,4 +214,5 @@ export const en = {
   somebodyPlayedTurn: "<0></0> played <2></2>",
   whatYouDrewTurn: "and drew <1></1>",
   whatTheyDrewTurn: "and drew <1></1>",
+  cardNotePlaceholder: "Note what you know about this card",
 };

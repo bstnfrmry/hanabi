@@ -253,6 +253,7 @@ export default function PlayerGame(props: Props) {
                       selected={
                         selected && (player === selfPlayer ? selectedCard === i : isCardHintable(pendingHint, card))
                       }
+                      showNotes={true}
                       size={selected ? CardSize.LARGE : CardSize.MEDIUM}
                       style={{
                         ...(selected && { transition: "all 50ms ease-in-out" }),

@@ -1,12 +1,14 @@
 import classnames from "classnames";
-import React, { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode, useState } from "react";
+import React, { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Popover from "react-popover";
 
 import Hint from "~/components/hint";
 import Turn from "~/components/turn";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { useGame } from "~/hooks/game";
+import { useGame, useSelfPlayer } from "~/hooks/game";
 import useLongPress from "~/hooks/longPress";
+import useNetwork from "~/hooks/network";
 import { getColors, numbers } from "~/lib/actions";
 import { ICard, IColor, IGameHintsLevel, IHintLevel } from "~/lib/state";
 
@@ -149,6 +151,7 @@ interface Props {
   card: ICard;
   context: ICardContext;
   hidden?: boolean;
+  showNotes?: boolean;
   position?: number;
   selected?: boolean;
   playable?: boolean;
@@ -164,6 +167,7 @@ export default function Card(props: Props) {
     context,
     onClick,
     hidden = false,
+    showNotes = false,
     playable = true,
     size = CardSize.MEDIUM,
     className = "",
@@ -173,15 +177,24 @@ export default function Card(props: Props) {
   } = props;
 
   const game = useGame();
+  const selfPlayer = useSelfPlayer();
+  const network = useNetwork();
   const [isHintPopoverOpen, setIsHintPopoverOpen] = useState(false);
   const longPressProps = useLongPress(() => {
     setIsHintPopoverOpen(true);
   });
+  const [popoverTimeout, setPopoverTimeout] = useState(null);
 
   const colors = getColors(game);
   const color = hidden ? "gray-light" : card.color;
 
   const number = hidden ? null : card.number;
+
+  const cardReceivedHints = card.receivedHints?.length > 0;
+  const cardHasNotes = card.notes?.[selfPlayer?.id];
+
+  // Enable popover if the card received one hint or if we want to show notes
+  const displayPopover = position !== null && (cardReceivedHints || (showNotes && selfPlayer));
 
   const displayHints =
     game.options.hintsLevel !== IGameHintsLevel.NONE &&
@@ -196,6 +209,15 @@ export default function Card(props: Props) {
     }
   }
 
+  function onNoteUpdate(card: ICard, note: string) {
+    if (!card.notes) {
+      card.notes = {};
+    }
+
+    card.notes[selfPlayer.id] = note;
+    network.updateGame(game);
+  }
+
   return (
     <CardWrapper
       className={classnames({ "bw1 z-5": selected }, className)}
@@ -208,7 +230,15 @@ export default function Card(props: Props) {
         ...style,
         userSelect: "none",
       }}
-      onClick={onClick}
+      onClick={e => {
+        if (!isHintPopoverOpen) {
+          onClick(e);
+        }
+      }}
+      onContextMenu={e => {
+        e.preventDefault();
+        setIsHintPopoverOpen(true);
+      }}
       {...longPressProps}
     >
       {/* Card value */}
@@ -226,31 +256,33 @@ export default function Card(props: Props) {
       )}
 
       {/* Whether the card has received hints */}
-      {position !== null && card.receivedHints?.length > 0 && (
+      {displayPopover && (
         <Popover
-          body={
-            <div className="flex items-center justify-center b--yellow ba bw1 bg-black pa2 pr3 br2">
-              <div className="flex flex-column">
-                {card?.receivedHints?.map((turn, i) => {
-                  return (
-                    <div key={i} className="nb1">
-                      <Turn showDrawn={false} showPosition={false} turn={turn} />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          }
+          body={<CardNotes card={card} showNotes={showNotes} onNoteUpdate={onNoteUpdate} />}
           className="z-999"
           isOpen={isHintPopoverOpen}
-          onOuterAction={() => setIsHintPopoverOpen(false)}
+          onOuterAction={() => {
+            clearTimeout(popoverTimeout);
+            setIsHintPopoverOpen(false);
+          }}
         >
           <div
-            className="absolute right-0 top-0 bg-hints br--bottom br--left br-100"
+            className={classnames("absolute right-0 top-0")}
             style={{ width: "20%", height: "20%" }}
-            onMouseEnter={() => setIsHintPopoverOpen(true)}
-            onMouseLeave={() => setIsHintPopoverOpen(false)}
-          />
+            onMouseEnter={() => {
+              setPopoverTimeout(setTimeout(() => setIsHintPopoverOpen(true), 150));
+            }}
+            onMouseLeave={() => {
+              clearTimeout(popoverTimeout);
+              setTimeout(() => {
+                setIsHintPopoverOpen(false);
+              }, 300);
+            }}
+          >
+            {(cardReceivedHints || cardHasNotes) && (
+              <div className={classnames(" absolute right-0 w-100 h-100 bg-hints br--left br--bottom br-100")} />
+            )}
+          </div>
         </Popover>
       )}
 
@@ -276,5 +308,72 @@ export default function Card(props: Props) {
         </div>
       )}
     </CardWrapper>
+  );
+}
+
+interface CardNotesProps {
+  card: ICard;
+  showNotes: boolean;
+  onNoteUpdate: (card: ICard, note: string) => void;
+}
+
+function CardNotes(props: CardNotesProps) {
+  const { card, showNotes, onNoteUpdate } = props;
+  const textAreaRef = useRef<HTMLTextAreaElement>();
+
+  const { t } = useTranslation();
+  const selfPlayer = useSelfPlayer();
+
+  const [note, setNote] = useState(card.notes?.[selfPlayer?.id] ?? "");
+  const displayHints = card?.receivedHints?.length;
+  const displayNotes = showNotes && selfPlayer;
+
+  useEffect(() => {
+    if (!textAreaRef.current) return;
+
+    textAreaRef.current.focus();
+    textAreaRef.current.setSelectionRange(note.length, note.length);
+  }, []);
+
+  return (
+    <div className="flex items-center justify-center b--yellow ba bw1 bg-black br2">
+      <div className="flex flex-column">
+        {displayHints && (
+          <div className={classnames("ph2", { pb2: true })}>
+            {card?.receivedHints?.map((turn, i) => {
+              return (
+                <div key={i} className="mt2 nb1">
+                  <Turn showDrawn={false} showPosition={false} turn={turn} />
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {displayNotes && (
+          <div
+            className={classnames("flex flex-column pa1", {
+              mt4: card.receivedHints?.length,
+            })}
+          >
+            <textarea
+              ref={textAreaRef}
+              className="f6 pa1 outline-0 br2"
+              maxLength={100}
+              placeholder={t("cardNotePlaceholder")}
+              rows={3}
+              style={{ resize: "none" }}
+              value={note}
+              onBlur={() => {
+                onNoteUpdate(card, note);
+              }}
+              onChange={e => {
+                setNote(e.target.value);
+              }}
+            ></textarea>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

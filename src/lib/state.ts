@@ -117,6 +117,7 @@ export interface ICard {
   hint?: ICardHint;
   id?: number;
   receivedHints?: ITurn[];
+  notes?: { [key: string]: string };
 }
 
 export type IActionType = "discard" | "play" | "hint";

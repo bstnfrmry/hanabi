@@ -217,4 +217,5 @@ export const fr: typeof en = {
   somebodyPlayedTurn: "<0>PlayerName</0> a joué son <2></2>",
   whatYouDrewTurn: "et as pioché le <1></1>",
   whatTheyDrewTurn: "et a pioché le <1></1>",
+  cardNotePlaceholder: "Note ce que tu sais sur cette carte",
 };
