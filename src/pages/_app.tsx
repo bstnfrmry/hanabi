@@ -12,7 +12,7 @@ import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
 import { NetworkContext } from "~/hooks/network";
 import { i18n } from "~/lib/i18n";
 
-import { initGA, logPageView } from "../lib/analytics";
+import { initGA, logEvent, logPageView } from "../lib/analytics";
 import "../styles/style.css";
 
 Sentry.init({
@@ -58,6 +58,14 @@ export default class App extends NextApp {
   render() {
     return <Hanabi {...this.props} />;
   }
+}
+
+export function reportWebVitals({ id, name, label, value }) {
+  logEvent(`${label} metric`, name, {
+    eventValue: Math.round(name === "CLS" ? value * 1000 : value),
+    eventLabel: id,
+    nonInteraction: true,
+  });
 }
 
 function Hanabi(props: AppProps) {

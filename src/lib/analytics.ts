@@ -26,8 +26,8 @@ export function logPageView() {
   ReactGA.pageview(window.location.pathname);
 }
 
-export function logEvent(category: string, action: string) {
+export function logEvent(category: string, action: string, options = {}) {
   if (isDevelopment) return;
 
-  ReactGA.event({ category, action });
+  ReactGA.event({ category, action, ...options });
 }
