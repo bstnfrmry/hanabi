@@ -62,8 +62,8 @@ export default class App extends NextApp {
 
 export function reportWebVitals({ id, name, label, value }) {
   logEvent(`${label} metric`, name, {
-    eventValue: Math.round(name === "CLS" ? value * 1000 : value),
-    eventLabel: id,
+    value: Math.round(name === "CLS" ? value * 1000 : value),
+    label: id,
     nonInteraction: true,
   });
 }
