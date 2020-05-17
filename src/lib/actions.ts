@@ -17,6 +17,7 @@ import IGameState, {
   IHintAction,
   IHintLevel,
   INumber,
+  IPlayAction,
   IPlayer,
 } from "./state";
 
@@ -26,12 +27,11 @@ const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
 export const MaxHints = 8;
 
 export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
-  const targetColor = card.asColor || card.color;
-
   const isPreviousHere =
-    card.number === 1 || findIndex(playedCards, c => card.number === c.number + 1 && targetColor === c.color) > -1; // first card on the pile // previous card belongs to the playedCards
+    card.number === 1 ||
+    findIndex(playedCards, c => card.number === c.number + 1 && matchColor(card.color, c.color)) > -1; // first card on the pile // previous card belongs to the playedCards
 
-  const isSameNotHere = findIndex(playedCards, c => c.number === card.number && c.color === targetColor) === -1;
+  const isSameNotHere = findIndex(playedCards, c => c.number === card.number && card.color === c.color) === -1;
 
   return isPreviousHere && isSameNotHere;
 }
@@ -201,6 +201,9 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
     applyHint(hand, action, s);
   }
 
+  // update history
+  s.turnsHistory.push({ action, card: newCard });
+
   // there's no card in the pile (or the last card was just drawn)
   // decrease the actionsLeft counter.
   // The game ends when it reaches 0.
@@ -208,16 +211,39 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
     s.actionsLeft -= 1;
   }
 
-  // update player
-  s.currentPlayer = (s.currentPlayer + 1) % s.options.playersCount;
-
-  // update history
-  s.turnsHistory.push({ action, card: newCard });
-
   if (isGameOver(s)) {
     s.status = IGameStatus.OVER;
     s.endedAt = Date.now();
   }
+
+  const requiresColorSelection =
+    s.options.variant === GameVariant.EASY_RAINBOW &&
+    action.action === "play" &&
+    action.card.hint.color.rainbow !== IHintLevel.IMPOSSIBLE &&
+    s.playedCards.length > state.playedCards.length;
+
+  if (requiresColorSelection) {
+    player.pendingAction = action as IPlayAction;
+  } else {
+    player.pendingAction = null;
+    // update player
+    s.currentPlayer = (s.currentPlayer + 1) % s.options.playersCount;
+  }
+
+  return s;
+}
+
+export function placeCard(state: IGameState, color: IColor) {
+  const s = cloneDeep(state);
+
+  const lastAction = last(s.turnsHistory).action;
+  const player = s.players[lastAction.from];
+
+  s.playedCards.find(card => card.id === player.pendingAction.card.id).asColor = color;
+  (lastAction as IPlayAction).card.asColor = color;
+
+  // update player
+  s.currentPlayer = (s.currentPlayer + 1) % s.options.playersCount;
 
   return s;
 }
@@ -346,7 +372,7 @@ export function joinGame(state: IGameState, player: IPlayer): IGameState {
   const hand = game.drawPile.splice(0, startingHandSize[game.options.playersCount]);
 
   game.players = game.players || [];
-  game.players.push({ ...player, hand, index: game.players.length });
+  game.players.push({ ...player, hand, index: game.players.length, pendingAction: null });
 
   hand.forEach(card => (card.hint = emptyHint(state.options)));
 

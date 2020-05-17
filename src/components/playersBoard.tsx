@@ -10,14 +10,11 @@ import { IColor } from "~/lib/state";
 interface Props {
   displayStats: boolean;
   selectedArea: ISelectedArea;
-  pendingTargetColor: boolean;
   onSelectPlayer: Function;
   onNotifyPlayer: Function;
   onReaction: Function;
   onCloseArea: Function;
   onCommitAction: Function;
-  onCancelTargetColor: Function;
-  onPileClick: (color: IColor) => void;
 }
 
 const Item = posed.div({
@@ -26,18 +23,7 @@ const Item = posed.div({
 });
 
 export default function PlayersBoard(props: Props) {
-  const {
-    displayStats,
-    selectedArea,
-    pendingTargetColor,
-    onSelectPlayer,
-    onNotifyPlayer,
-    onReaction,
-    onCloseArea,
-    onCommitAction,
-    onCancelTargetColor,
-    onPileClick,
-  } = props;
+  const { displayStats, selectedArea, onSelectPlayer, onNotifyPlayer, onReaction, onCloseArea, onCommitAction } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -87,14 +73,11 @@ export default function PlayersBoard(props: Props) {
               cardIndex={cardIndex}
               displayStats={displayStats}
               id="player-game-self"
-              pendingTargetColor={pendingTargetColor}
               player={selfPlayer}
               selected={selectedPlayer && selectedPlayer === selfPlayer}
               self={true}
-              onCancelTargetColor={onCancelTargetColor}
               onCloseArea={onCloseArea}
               onCommitAction={onCommitAction}
-              onPileClick={onPileClick}
               onReaction={onReaction}
               onSelectPlayer={onSelectPlayer}
             />

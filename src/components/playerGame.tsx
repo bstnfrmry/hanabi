@@ -69,15 +69,12 @@ interface Props extends HTMLAttributes<HTMLElement> {
   active?: boolean;
   self?: boolean;
   cardIndex?: number;
-  pendingTargetColor?: boolean;
   displayStats: boolean;
   onSelectPlayer: Function;
   onNotifyPlayer?: Function;
   onReaction?: Function;
   onCommitAction: Function;
   onCloseArea: Function;
-  onCancelTargetColor?: Function;
-  onPileClick?: (color: IColor) => void;
 }
 
 export default function PlayerGame(props: Props) {
@@ -85,15 +82,12 @@ export default function PlayerGame(props: Props) {
     player,
     self = false,
     selected = false,
-    pendingTargetColor = false,
     cardIndex,
     onSelectPlayer,
     onNotifyPlayer,
     onCommitAction,
     onCloseArea,
     onReaction,
-    onCancelTargetColor,
-    onPileClick,
     active,
     displayStats,
     ...attributes
@@ -302,31 +296,17 @@ export default function PlayerGame(props: Props) {
           ...(!selected && { opacity: 0, transform: "translateY(-100px)" }),
         }}
       >
-        {canPlay && selected && player === selfPlayer && selfPlayer === currentPlayer && (
+        {canPlay && selected && player === selfPlayer && selfPlayer === currentPlayer && !selfPlayer.pendingAction && (
           <div className="flex flex-column items-end mb2">
             <div className="flex justify-end items-center h-100-l">
-              {hasSelectedCard && !pendingTargetColor && (
+              {hasSelectedCard && (
                 <Txt
                   className="pb1 pb2-l ml1 mr3 ml2-l"
                   value={t("cardSelected", { position: PositionMap[selectedCard] })}
                 />
               )}
 
-              {pendingTargetColor && (
-                <div className="flex pb2">
-                  <div className="flex flex-column">
-                    <Txt value={t("pendingTargetColor")} />
-                    <div className="flex mt2">
-                      {getPilesColors(game).map(color => {
-                        return <Vignette key={color} type="color" value={color} onClick={() => onPileClick(color)} />;
-                      })}
-                    </div>
-                  </div>
-                  <Button void className="ml3 self-start" text={t("cancel")} onClick={() => onCancelTargetColor()} />
-                </div>
-              )}
-
-              {hasSelectedCard && !pendingTargetColor && (
+              {hasSelectedCard && (
                 <div className="flex pb2">
                   {["discard", "play"].map(action => (
                     <Button
@@ -367,7 +347,7 @@ export default function PlayerGame(props: Props) {
           ...(!selected && { opacity: 0, transform: "translateY(-100px)" }),
         }}
       >
-        {canPlay && selected && player !== selfPlayer && selfPlayer === currentPlayer && (
+        {canPlay && selected && player !== selfPlayer && selfPlayer === currentPlayer && !selfPlayer.pendingAction && (
           <div className="flex flex-column items-end pb2 mr2">
             <Vignettes pendingHint={pendingHint} onSelect={action => setPendingHint(action)} />
 

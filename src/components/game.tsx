@@ -15,6 +15,7 @@ import RollbackArea from "~/components/rollbackArea";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
+import Vignette from "~/components/vignette";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 import useLocalStorage from "~/hooks/localStorage";
 import useNetwork from "~/hooks/network";
@@ -22,12 +23,30 @@ import { useNotifications } from "~/hooks/notifications";
 import usePrevious from "~/hooks/previous";
 import { useReplay } from "~/hooks/replay";
 import { useSoundEffects } from "~/hooks/sounds";
-import { commitAction, getMaximumPossibleScore, getScore, joinGame, newGame, recreateGame } from "~/lib/actions";
+import {
+  commitAction,
+  getMaximumPossibleScore,
+  getPilesColors,
+  getScore,
+  isPlayable,
+  joinGame,
+  newGame,
+  placeCard,
+  recreateGame,
+} from "~/lib/actions";
 import { play } from "~/lib/ai";
 import { cheat } from "~/lib/ai-cheater";
 import { logEvent } from "~/lib/analytics";
 import { uniqueId } from "~/lib/id";
-import IGameState, { GameMode, IAction, IColor, IGameHintsLevel, IGameStatus, IHintLevel } from "~/lib/state";
+import IGameState, {
+  GameMode,
+  GameVariant,
+  IAction,
+  IColor,
+  IGameHintsLevel,
+  IGameStatus,
+  IHintLevel,
+} from "~/lib/state";
 
 interface Props {
   onGameChange: (game: IGameState) => void;
@@ -42,7 +61,6 @@ export function Game(props: Props) {
   const [displayStats, setDisplayStats] = useState(false);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
-  const [pendingAction, setPendingAction] = useState<IAction>(null);
   const [, setGameId] = useLocalStorage("gameId", null);
   const [playerId] = useLocalStorage("playerId", uniqueId());
   const [selectedArea, selectArea] = useState<ISelectedArea>({
@@ -225,16 +243,6 @@ export function Game(props: Props) {
   }
 
   async function onCommitAction(action: IAction) {
-    if (action.action === "play") {
-      const player = game.players[action.from];
-      const card = player.hand[action.cardIndex];
-
-      if (card.hint.color.rainbow !== IHintLevel.IMPOSSIBLE && !card.asColor) {
-        setPendingAction(action);
-        return;
-      }
-    }
-
     const newState = commitAction(game, action);
 
     const misplay = getMaximumPossibleScore(game) !== getMaximumPossibleScore(newState);
@@ -254,21 +262,11 @@ export function Game(props: Props) {
     logEvent("Game", "Turn played");
   }
 
-  function onCancelTargetColor() {
-    setPendingAction(null);
-  }
+  function onPlaceCard(color: IColor) {
+    const newState = placeCard(game, color);
 
-  function onPileClick(color: IColor) {
-    if (!pendingAction || pendingAction.action !== "play") {
-      return;
-    }
-
-    const player = game.players[pendingAction.from];
-    const card = player.hand[pendingAction.cardIndex];
-    card.asColor = color;
-
-    onCommitAction(pendingAction);
-    setPendingAction(null);
+    onGameChange({ ...newState, synced: false });
+    network.updateGame(newState);
   }
 
   function onCloseArea() {
@@ -369,7 +367,7 @@ export function Game(props: Props) {
     <>
       <div className="bg-main-dark relative flex flex-column w-100 h-100">
         <div className="bg-black-50 pa2 pv2-l ph6.5-m">
-          <GameBoard onMenuClick={onMenuClick} onRollbackClick={onRollbackClick} />
+          <GameBoard onMenuClick={onMenuClick} onPlaceCard={onPlaceCard} onRollbackClick={onRollbackClick} />
         </div>
         <div className="flex flex-column bg-black-50 bb b--yellow ph6.5-m">
           {selectedArea.type === ActionAreaType.MENU && (
@@ -433,13 +431,10 @@ export function Game(props: Props) {
             <div className="h-100">
               <PlayersBoard
                 displayStats={displayStats}
-                pendingTargetColor={!!pendingAction}
                 selectedArea={selectedArea}
-                onCancelTargetColor={onCancelTargetColor}
                 onCloseArea={onCloseArea}
                 onCommitAction={onCommitAction}
                 onNotifyPlayer={onNotifyPlayer}
-                onPileClick={onPileClick}
                 onReaction={onReaction}
                 onSelectPlayer={onSelectPlayer}
               />

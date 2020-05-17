@@ -213,10 +213,10 @@ export interface IPlayer {
   name: string;
   hand?: IHand;
   reaction?: string;
-  lastAction?: IAction;
   index?: number;
   notified?: boolean;
   bot: boolean;
+  pendingAction?: IPlayAction;
 }
 
 // the *remaining* strikes and hints.
