@@ -37,7 +37,7 @@ export default withSession(async (req, res) => {
   }
 
   updateGame(game);
-  playForBots(game);
+  await playForBots(game);
 
   return res.json(game);
 });

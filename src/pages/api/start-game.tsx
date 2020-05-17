@@ -21,7 +21,7 @@ export default withSession(async (req, res) => {
   game.startedAt = Date.now();
 
   updateGame(game);
-  playForBots(game);
+  await playForBots(game);
 
   return res.json(game);
 });
