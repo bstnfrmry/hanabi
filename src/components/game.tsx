@@ -43,7 +43,6 @@ export function Game(props: Props) {
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
   const [pendingAction, setPendingAction] = useState<IAction>(null);
-  const [pendingTargetColor, setPendingTargetColor] = useState(false);
   const [, setGameId] = useLocalStorage("gameId", null);
   const [playerId] = useLocalStorage("playerId", uniqueId());
   const [selectedArea, selectArea] = useState<ISelectedArea>({
@@ -231,7 +230,6 @@ export function Game(props: Props) {
       const card = player.hand[action.cardIndex];
 
       if (card.hint.color.rainbow !== IHintLevel.IMPOSSIBLE && !card.asColor) {
-        setPendingTargetColor(true);
         setPendingAction(action);
         return;
       }
@@ -256,6 +254,10 @@ export function Game(props: Props) {
     logEvent("Game", "Turn played");
   }
 
+  function onCancelTargetColor() {
+    setPendingAction(null);
+  }
+
   function onPileClick(color: IColor) {
     if (!pendingAction || pendingAction.action !== "play") {
       return;
@@ -266,7 +268,6 @@ export function Game(props: Props) {
     card.asColor = color;
 
     onCommitAction(pendingAction);
-    setPendingTargetColor(false);
     setPendingAction(null);
   }
 
@@ -364,10 +365,6 @@ export function Game(props: Props) {
     logEvent("Game", "Game recreated");
   }
 
-  function onCancelTargetColor() {
-    setPendingTargetColor(false);
-  }
-
   return (
     <>
       <div className="bg-main-dark relative flex flex-column w-100 h-100">
@@ -436,7 +433,7 @@ export function Game(props: Props) {
             <div className="h-100">
               <PlayersBoard
                 displayStats={displayStats}
-                pendingTargetColor={!!pendingTargetColor}
+                pendingTargetColor={!!pendingAction}
                 selectedArea={selectedArea}
                 onCancelTargetColor={onCancelTargetColor}
                 onCloseArea={onCloseArea}
