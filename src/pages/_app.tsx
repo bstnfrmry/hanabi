@@ -105,22 +105,26 @@ function Hanabi(props: AppProps) {
 function Meta() {
   const { t } = useTranslation();
 
+  const tagline = `${t("tagline")} · ${t("subTagline")}`;
+
   return (
     <Head>
-      <title>Hanabi - Play Online</title>
+      <title>
+        {t("hanabi")} · {t("tagline")}
+      </title>
 
       <link href="/static/favicon.ico" rel="shortcut icon" type="image/x-icon" />
       <link href="/static/hanabi-192.png" rel="apple-touch-icon" />
       <link href="/static/manifest.json" rel="manifest" />
-      <meta content={t("tagline")} name="Description" />
+      <meta content={tagline} name="Description" />
 
       <meta content="hanabi.cards" property="og:title" />
-      <meta content={t("tagline")} property="og:description" />
+      <meta content={tagline} property="og:description" />
       <meta content="https://hanabi.cards/static/hanabi-192.png" property="og:image" />
       <meta content="https://hanabi.cards" property="og:url" />
 
       <meta content="hanabi.cards" name="twitter:title" />
-      <meta content={t("tagline")} name="twitter:description" />
+      <meta content={tagline} name="twitter:description" />
       <meta content="https://hanabi.cards/static/hanabi-192.png" name="twitter:image" />
       <meta content="summary_large_image" name="twitter:card" />
 
