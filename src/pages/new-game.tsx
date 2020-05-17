@@ -20,6 +20,7 @@ const Variants = {
   [GameVariant.MULTICOLOR]: "multicolorVariant",
   [GameVariant.RAINBOW]: "rainbowVariant",
   [GameVariant.ORANGE]: "orangeVariant",
+  [GameVariant.SEQUENCE]: "sequenceVariant",
 };
 
 const VariantDescriptions = {
@@ -27,6 +28,7 @@ const VariantDescriptions = {
   [GameVariant.MULTICOLOR]: "multicolorVariantDescription",
   [GameVariant.RAINBOW]: "rainbowVariantDescription",
   [GameVariant.ORANGE]: "orangeVariantDescription",
+  [GameVariant.SEQUENCE]: "sequenceVariantDescription",
 };
 
 const HintsLevels = {
@@ -120,12 +122,12 @@ export default function NewGame() {
         <div className="flex flex-column pb2 mb2 bb b--yellow-light ph1">
           <div className="flex justify-between items-center">
             <Txt size={TxtSize.MEDIUM} value={t("mode", "Mode")} />
-            <div className="flex flex-column flex-row-l justify-end">
+            <div className="flex flex-wrap-l flex-column flex-row-l justify-end">
               {Object.entries(Variants).map(([gameVariant, label]) => {
                 return (
                   <Button
                     key={gameVariant}
-                    className={classnames("ph1 ph3-l pv2 mt2 mt0-l", {
+                    className={classnames("ph1 ph3-l pv2 mt2 mt0-l w-30-l ml1-l mt1-l", {
                       "bg-lavender": variant !== gameVariant,
                       "z-5": variant === gameVariant,
                     })}

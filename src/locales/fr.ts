@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
-import { en } from "./en";
-
-export const fr: typeof en = {
+export const fr = {
   hanabi: "Hanabi",
   welcome: "Bienvenue",
   newGame: "Nouvelle partie",
@@ -64,8 +62,10 @@ export const fr: typeof en = {
   negativeHintNumber: "Tu n'as pas de {{ number }}",
   positiveHintColor: "Ta carte {{ position }} est {{ color }}",
   positiveHintNumber: "Ta carte {{ position }} est un {{ number }}",
+  positiveHintNumberSequence: "Ta carte {{ position }} est un {{ number }} ou plus",
   positiveHintColorPlural: "Tes cartes {{ positions }} sont {{ color }}",
   positiveHintNumberPlural: "Tes cartes {{ positions }} sont des {{ number }}",
+  positiveHintNumberSequencePlural: "Tes cartes {{ positions }} sont des {{ number }} ou plus",
   you: "Tu",
   hinted: "Indices",
   played: "Cartes jouées",
@@ -110,11 +110,13 @@ export const fr: typeof en = {
   multicolorVariant: "Multicolore",
   rainbowVariant: "Arc-en-ciel",
   orangeVariant: "Orange",
+  sequenceVariant: "Séquences",
   classicVariantDescription: "Le jeu traditionnel d'Hanabi sans extension",
   multicolorVariantDescription: "Une sixième pile est ajoutée avec seulement un exemplaire de chaque valeur",
   rainbowVariantDescription:
     "Une sixième pile est ajoutée dont les cartes sont touchées par tous les indices de couleur",
   orangeVariantDescription: "Une sixième pile classique est ajoutée",
+  sequenceVariantDescription: "Les indices de nombres ciblent aussi toutes les cartes supérieures",
   showDirectHints: "Montrer les déductions",
   hideDirectHints: "Cacher les déductions",
   botSpeed: "Vitesse des bots",

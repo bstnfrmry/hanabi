@@ -50,6 +50,7 @@ export enum GameVariant {
   MULTICOLOR = "multicolor",
   RAINBOW = "rainbow",
   ORANGE = "orange",
+  SEQUENCE = "sequence",
 }
 
 export enum GameMode {
