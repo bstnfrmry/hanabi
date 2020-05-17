@@ -221,6 +221,6 @@ export const en = {
   somebodyPlayedTurn: "<0></0> played <2></2>",
   whatYouDrewTurn: "and drew <1></1>",
   whatTheyDrewTurn: "and drew <1></1>",
-  pendingTargetColor: "This card could be rainbow. Select a pile to play it",
+  pendingTargetColor: "This card could be rainbow.\nSelect a pile to play it.",
   cancel: "Cancel",
 };

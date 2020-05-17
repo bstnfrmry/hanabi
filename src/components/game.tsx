@@ -372,12 +372,7 @@ export function Game(props: Props) {
     <>
       <div className="bg-main-dark relative flex flex-column w-100 h-100">
         <div className="bg-black-50 pa2 pv2-l ph6.5-m">
-          <GameBoard
-            pendingTargetColor={pendingTargetColor}
-            onMenuClick={onMenuClick}
-            onPileClick={onPileClick}
-            onRollbackClick={onRollbackClick}
-          />
+          <GameBoard onMenuClick={onMenuClick} onRollbackClick={onRollbackClick} />
         </div>
         <div className="flex flex-column bg-black-50 bb b--yellow ph6.5-m">
           {selectedArea.type === ActionAreaType.MENU && (
@@ -447,6 +442,7 @@ export function Game(props: Props) {
                 onCloseArea={onCloseArea}
                 onCommitAction={onCommitAction}
                 onNotifyPlayer={onNotifyPlayer}
+                onPileClick={onPileClick}
                 onReaction={onReaction}
                 onSelectPlayer={onSelectPlayer}
               />

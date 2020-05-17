@@ -5,6 +5,7 @@ import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import PlayerGame from "~/components/playerGame";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
+import { IColor } from "~/lib/state";
 
 interface Props {
   displayStats: boolean;
@@ -16,6 +17,7 @@ interface Props {
   onCloseArea: Function;
   onCommitAction: Function;
   onCancelTargetColor: Function;
+  onPileClick: (color: IColor) => void;
 }
 
 const Item = posed.div({
@@ -34,6 +36,7 @@ export default function PlayersBoard(props: Props) {
     onCloseArea,
     onCommitAction,
     onCancelTargetColor,
+    onPileClick,
   } = props;
 
   const game = useGame();
@@ -91,6 +94,7 @@ export default function PlayersBoard(props: Props) {
               onCancelTargetColor={onCancelTargetColor}
               onCloseArea={onCloseArea}
               onCommitAction={onCommitAction}
+              onPileClick={onPileClick}
               onReaction={onReaction}
               onSelectPlayer={onSelectPlayer}
             />

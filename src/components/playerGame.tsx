@@ -12,10 +12,11 @@ import ReactionsPopover from "~/components/reactionsPopover";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
+import Vignette from "~/components/vignette";
 import Vignettes from "~/components/vignettes";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 import { useReplay } from "~/hooks/replay";
-import { matchColor, matchNumber, MaxHints } from "~/lib/actions";
+import { getPilesColors, matchColor, matchNumber, MaxHints } from "~/lib/actions";
 import { playSound } from "~/lib/sound";
 import IGameState, { GameVariant, ICard, IColor, IGameStatus, IHintAction, INumber, IPlayer } from "~/lib/state";
 
@@ -76,6 +77,7 @@ interface Props extends HTMLAttributes<HTMLElement> {
   onCommitAction: Function;
   onCloseArea: Function;
   onCancelTargetColor?: Function;
+  onPileClick?: (color: IColor) => void;
 }
 
 export default function PlayerGame(props: Props) {
@@ -91,6 +93,7 @@ export default function PlayerGame(props: Props) {
     onCloseArea,
     onReaction,
     onCancelTargetColor,
+    onPileClick,
     active,
     displayStats,
     ...attributes
@@ -310,9 +313,16 @@ export default function PlayerGame(props: Props) {
               )}
 
               {pendingTargetColor && (
-                <div className="flex items-center pb2">
-                  <Txt value={t("pendingTargetColor")} />
-                  <Button className="ml3" text={t("cancel")} onClick={() => onCancelTargetColor()} />
+                <div className="flex pb2">
+                  <div className="flex flex-column">
+                    <Txt value={t("pendingTargetColor")} />
+                    <div className="flex mt2">
+                      {getPilesColors(game).map(color => {
+                        return <Vignette key={color} type="color" value={color} onClick={() => onPileClick(color)} />;
+                      })}
+                    </div>
+                  </div>
+                  <Button void className="ml3 self-start" text={t("cancel")} onClick={() => onCancelTargetColor()} />
                 </div>
               )}
 

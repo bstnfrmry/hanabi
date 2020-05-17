@@ -9,19 +9,17 @@ import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 import { getMaximumPossibleScore, getMaximumScore, getScore } from "~/lib/actions";
-import { IColor, IGameStatus } from "~/lib/state";
+import { IGameStatus } from "~/lib/state";
 
 interface Props {
-  pendingTargetColor?: boolean;
   onMenuClick?: Function;
   onRollbackClick?: Function;
-  onPileClick?: (color: IColor) => void;
 }
 
 export { CardWrapper } from "~/components/card";
 
 export default function GameBoard(props: Props) {
-  const { pendingTargetColor = false, onMenuClick, onRollbackClick, onPileClick } = props;
+  const { onMenuClick, onRollbackClick } = props;
   const { t } = useTranslation();
 
   const game = useGame();
@@ -66,7 +64,7 @@ export default function GameBoard(props: Props) {
 
       <div className="flex flex-wrap items-end justify-between">
         <div className="flex flex-column mb3">
-          <PlayedCards cards={game.playedCards} pendingTargetColor={pendingTargetColor} onPileClick={onPileClick} />
+          <PlayedCards cards={game.playedCards} />
         </div>
         <div className="flex flex-row mt2 justify-right items-end ml2">
           <div className="mr2 relative flex flex-column items-center">
