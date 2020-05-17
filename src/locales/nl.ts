@@ -5,7 +5,6 @@ export const nl = {
   welcome: "Welkom",
   newGame: "Nieuw spel",
   tagline: "Speel Hanabi online met vrienden!",
-  createRoom: "Nieuwe kamer",
   joinRoom: "Deelnemen aan kamer",
   rejoinGame: "Teruggaan naar kamer",
   whatsHanabi: "Wat is Hanabi ?",

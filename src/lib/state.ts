@@ -54,38 +54,56 @@ export enum GameVariant {
   SEQUENCE = "sequence",
 }
 
-export const GameVariants = {
-  [GameVariant.CLASSIC]: {
+export enum GameDifficulty {
+  BEGINNER = 0,
+  INTERMEDIATE = 1,
+  ADVANCED = 2,
+}
+
+export const GameVariants = [
+  {
+    variant: GameVariant.CLASSIC,
     name: "classicVariant",
     description: "classicVariantDescription",
+    difficulty: GameDifficulty.BEGINNER,
     supportsAi: true,
   },
-  [GameVariant.MULTICOLOR]: {
+  {
+    variant: GameVariant.MULTICOLOR,
     name: "multicolorVariant",
     description: "multicolorVariantDescription",
+    difficulty: GameDifficulty.ADVANCED,
     supportsAi: true,
   },
-  [GameVariant.RAINBOW]: {
+  {
+    variant: GameVariant.RAINBOW,
     name: "rainbowVariant",
     description: "rainbowVariantDescription",
+    difficulty: GameDifficulty.ADVANCED,
     supportsAi: false,
   },
-  [GameVariant.EASY_RAINBOW]: {
+  {
+    variant: GameVariant.EASY_RAINBOW,
     name: "easyRainbowVariant",
     description: "easyRainbowVariantDescription",
+    difficulty: GameDifficulty.BEGINNER,
     supportsAi: false,
   },
-  [GameVariant.ORANGE]: {
+  {
+    variant: GameVariant.ORANGE,
     name: "orangeVariant",
     description: "orangeVariantDescription",
+    difficulty: GameDifficulty.INTERMEDIATE,
     supportsAi: true,
   },
-  [GameVariant.SEQUENCE]: {
+  {
+    variant: GameVariant.SEQUENCE,
     name: "sequenceVariant",
     description: "sequenceVariantDescription",
+    difficulty: GameDifficulty.INTERMEDIATE,
     supportsAi: true,
   },
-};
+];
 
 export enum GameMode {
   NETWORK = "network",

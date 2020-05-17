@@ -73,29 +73,11 @@ export default function Summary() {
     router.push(`/play?gameId=${gameId}`);
   }
 
-  function gameVariantToText(gameVariant) {
-    switch (gameVariant) {
-      case GameVariant.CLASSIC:
-        return t("classicVariant");
-        break;
-      case GameVariant.MULTICOLOR:
-        return t("multicolorVariant");
-        break;
-      case GameVariant.RAINBOW:
-        return t("rainbowVariant");
-        break;
-      case GameVariant.ORANGE:
-        return t("orangeVariant");
-        break;
-      default:
-        return "UNKNOWN";
-    }
-  }
-
   if (!game) {
     return <LoadingScreen />;
   }
 
+  const variantText = GameVariants.find(variant => variant.variant === game.options.variant).name;
   const gameDuration = game.startedAt && game.endedAt ? formatDuration(game.startedAt - 7200000, game.endedAt) : null;
 
   return (
@@ -114,7 +96,7 @@ export default function Summary() {
           <Txt className="mt2" size={TxtSize.MEDIUM}>
             <span>{`${t("players")}: ${game.players.length}`}</span>
             <span className="ml1">
-              · {t("mode")}: {t(GameVariants[game.options.variant].name)}
+              · {t("mode")}: {t(variantText)}
             </span>
             <span className="ml2">
               · {t("shuffle")} #{game.options.seed}
@@ -151,11 +133,7 @@ export default function Summary() {
 
         <Section className="tc" title={t("tryOutTitle")}>
           <div>
-            <Txt
-              value={`${t("players")}: ${game.players.length} - ${t("mode")}: ${gameVariantToText(
-                game.options.variant
-              )}`}
-            />
+            <Txt value={`${t("players")}: ${game.players.length} - ${t("mode")}: ${variantText}`} />
             <Button
               primary
               className="ml3"

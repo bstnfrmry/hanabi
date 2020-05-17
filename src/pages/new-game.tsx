@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import { groupBy } from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,7 +12,7 @@ import useNetwork from "~/hooks/network";
 import { newGame } from "~/lib/actions";
 import { logEvent } from "~/lib/analytics";
 import { readableUniqueId } from "~/lib/id";
-import { GameMode, GameVariant, GameVariants, IGameHintsLevel } from "~/lib/state";
+import { GameDifficulty, GameMode, GameVariant, GameVariants, IGameHintsLevel } from "~/lib/state";
 
 const PlayerCounts = [2, 3, 4, 5];
 
@@ -25,6 +26,14 @@ const BotsSpeeds = {
   1000: "fast",
   3000: "slow",
 };
+
+function difficultyToText(difficulty: string) {
+  return {
+    [GameDifficulty.BEGINNER]: "beginner",
+    [GameDifficulty.INTERMEDIATE]: "intermediate",
+    [GameDifficulty.ADVANCED]: "advanced",
+  }[difficulty];
+}
 
 export default function NewGame() {
   const router = useRouter();
@@ -42,6 +51,9 @@ export default function NewGame() {
   const [hintsLevel, setHintsLevel] = useState(IGameHintsLevel.DIRECT);
   const [turnsHistory] = useState(true);
   const [botsWait, setBotsWait] = useState(process.env.NODE_ENV === "production" ? 1000 : 0);
+
+  const variants = groupBy(Object.values(GameVariants), variant => variant.difficulty);
+  const variantOptions = GameVariants.find(option => option.variant === variant);
 
   /**
    * Initialise seed on first render
@@ -104,32 +116,41 @@ export default function NewGame() {
         </div>
 
         <div className="flex flex-column pb2 mb2 bb b--yellow-light ph1">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between ">
             <Txt size={TxtSize.MEDIUM} value={t("mode", "Mode")} />
-            <div className="flex flex-wrap-l flex-column flex-row-l justify-end">
-              {Object.entries(GameVariants).map(([gameVariant, { name }]) => {
+            <div className="flex flex-column justify-end">
+              {Object.entries(variants).map(([difficulty, gameVariants]) => {
                 return (
-                  <Button
-                    key={gameVariant}
-                    className={classnames("ph1 ph3-l pv2 mt2 mt0-l w-30-l ml1-l mt1-l", {
-                      "bg-lavender": variant !== gameVariant,
-                      "z-5": variant === gameVariant,
-                    })}
-                    size={ButtonSize.SMALL}
-                    style={{
-                      ...(variant === gameVariant && {
-                        transform: "scale(1.20)",
-                      }),
-                    }}
-                    text={t(name)}
-                    onClick={() => setVariant(gameVariant as GameVariant)}
-                  />
+                  <div key={difficulty} className="flex flex-column items-start mb2">
+                    <Txt className="mb1 ml2" size={TxtSize.SMALL} value={t(difficultyToText(difficulty))} />
+                    <div className="flex w-100">
+                      {gameVariants.map(gameVariant => {
+                        return (
+                          <Button
+                            key={gameVariant.name}
+                            className={classnames("ph1 pv2 ml2 flex-1", {
+                              "bg-lavender": variant !== gameVariant.variant,
+                              "z-5": variant === gameVariant.variant,
+                            })}
+                            size={ButtonSize.SMALL}
+                            style={{
+                              ...(variant === gameVariant.variant && {
+                                transform: "scale(1.20)",
+                              }),
+                            }}
+                            text={t(gameVariant.name)}
+                            onClick={() => setVariant(gameVariant.variant as GameVariant)}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
                 );
               })}
             </div>
           </div>
-          <Txt className="lavender mt4 self-end" size={TxtSize.SMALL} value={t(GameVariants[variant].description)} />
-          {GameVariants[variant].supportsAi === false && (
+          <Txt className="lavender mt4 self-end tr" size={TxtSize.SMALL} value={t(variantOptions.description)} />
+          {variantOptions.supportsAi === false && (
             <Txt className="orange mt1 self-end" size={TxtSize.XSMALL} value={t("variantDoesNotSupportAi")} />
           )}
         </div>

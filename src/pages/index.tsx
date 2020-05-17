@@ -34,10 +34,11 @@ export default function Home() {
         <span className="tc lavender">{t("tagline", "Play the Hanabi game online with friends!")}</span>
         <div className="flex flex-column mt5">
           <Button
+            primary
             className="mb4"
             id="create-room"
             size={ButtonSize.LARGE}
-            text={t("createRoom", "Create a room")}
+            text={t("newGame", "New game")}
             onClick={() => router.push("/new-game")}
           />
           <Button
