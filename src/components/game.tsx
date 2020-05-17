@@ -166,12 +166,7 @@ export function Game(props: Props) {
   async function onAddBot() {
     const botsCount = game.players.filter(p => p.bot).length;
 
-    const bot = {
-      name: `AI #${botsCount + 1}`,
-    };
-    const newState = joinGame(game, { id: uniqueId(), ...bot, bot: true });
-
-    sendRequest("/api/add-bot", {
+    const newState = await sendRequest("/api/add-bot", {
       gameId: game.id,
       bot: {
         name: `AI #${botsCount + 1}`,
