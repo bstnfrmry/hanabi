@@ -219,4 +219,5 @@ export const fr = {
   somebodyPlayedTurn: "<0>PlayerName</0> a joué son <2></2>",
   whatYouDrewTurn: "et as pioché le <1></1>",
   whatTheyDrewTurn: "et a pioché le <1></1>",
+  selectLanguage: "Choisis une langue",
 };

@@ -17,7 +17,7 @@ interface Props {
 export default function LanguageSelector(props: Props) {
   const { outlined = false } = props;
 
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   // Will be stored as "fr-FR" after automatic language detecion
   const [defaultLanguage] = i18n.language.split("-");
 
@@ -29,5 +29,9 @@ export default function LanguageSelector(props: Props) {
     i18n.changeLanguage(lang);
   }, [lang]);
 
-  return <Select options={Languages} outlined={outlined} value={lang} onChange={e => setLang(e.target.value)} />;
+  return (
+    <label title={t("selectLanguage")}>
+      <Select options={Languages} outlined={outlined} value={lang} onChange={e => setLang(e.target.value)} />
+    </label>
+  );
 }
