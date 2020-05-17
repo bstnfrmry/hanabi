@@ -66,6 +66,7 @@ export default function Lobby(props: Props) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [bot, setBot] = useState(false);
+  const [joiningGame, setJoiningGame] = useState(false);
 
   const gameFull = game.players.length === game.options.playersCount;
   const canJoin = (game.options.gameMode === GameMode.PASS_AND_PLAY || !selfPlayer) && !gameFull;
@@ -86,9 +87,13 @@ export default function Lobby(props: Props) {
     }
   }, [game.players.length]);
 
-  function onJoinGameSubmit(e: FormEvent) {
+  async function onJoinGameSubmit(e: FormEvent) {
     e.preventDefault();
-    onJoinGame({ name, bot });
+
+    if (joiningGame) return;
+
+    setJoiningGame(true);
+    await onJoinGame({ name, bot });
 
     if (game.players.length === 0) {
       localStorage.setItem(NAME_KEY, name);
@@ -156,7 +161,7 @@ export default function Lobby(props: Props) {
                   value={name}
                   onChange={e => setName(e.target.value)}
                 />
-                <Button primary disabled={name.length === 0} id="join-game" text={t("join")} />
+                <Button disabled={name.length === 0} id="join-game" primary={!joiningGame} text={t("join")} />
               </div>
               {process.env.NODE_ENV !== "production" && (
                 <Field

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 import usePrevious from "~/hooks/previous";
 import { useReplay } from "~/hooks/replay";
-import { playSound } from "~/lib/sound";
+import { playSound, vibrate } from "~/lib/sound";
 
 export function useSoundEffects() {
   const game = useGame();
@@ -20,7 +20,8 @@ export function useSoundEffects() {
     if (!selfPlayer) return;
     if (!selfPlayer.notified) return;
 
-    playSound(`/static/sounds.bell.mp3`);
+    playSound(`/static/sounds/bell.mp3`);
+    vibrate(200);
   }, [selfPlayer && selfPlayer.notified]);
 
   /**

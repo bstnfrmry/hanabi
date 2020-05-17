@@ -1,4 +1,5 @@
 import Fireworks from "fireworks-canvas";
+import { cloneDeep } from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,10 +21,11 @@ import { useNotifications } from "~/hooks/notifications";
 import usePrevious from "~/hooks/previous";
 import { useReplay } from "~/hooks/replay";
 import { useSoundEffects } from "~/hooks/sounds";
-import { getScore, joinGame, newGame } from "~/lib/actions";
+import { commitAction, getMaximumPossibleScore, getScore, joinGame, newGame } from "~/lib/actions";
 import { cheat } from "~/lib/ai-cheater";
 import { logEvent } from "~/lib/analytics";
 import { sendRequest } from "~/lib/api";
+import { uniqueId } from "~/lib/id";
 import IGameState, { GameMode, IAction, IGameHintsLevel, IGameStatus } from "~/lib/state";
 
 interface Props {
@@ -164,7 +166,12 @@ export function Game(props: Props) {
   async function onAddBot() {
     const botsCount = game.players.filter(p => p.bot).length;
 
-    const newState = await sendRequest("/api/add-bot", {
+    const bot = {
+      name: `AI #${botsCount + 1}`,
+    };
+    const newState = joinGame(game, { id: uniqueId(), ...bot, bot: true });
+
+    sendRequest("/api/add-bot", {
       gameId: game.id,
       bot: {
         name: `AI #${botsCount + 1}`,
@@ -177,7 +184,13 @@ export function Game(props: Props) {
   }
 
   async function onStartGame() {
-    const newState = await sendRequest("/api/start-game", {
+    const newState = {
+      ...game,
+      status: IGameStatus.ONGOING,
+      startedAt: Date.now(),
+    };
+
+    sendRequest("/api/start-game", {
       gameId: game.id,
     });
 
@@ -187,14 +200,19 @@ export function Game(props: Props) {
   }
 
   async function onCommitAction(action: IAction) {
-    const newState = await sendRequest("/api/commit-action", {
+    const newState = commitAction(game, action);
+
+    const misplay = getMaximumPossibleScore(game) !== getMaximumPossibleScore(newState);
+    if (game.options.preventLoss && misplay) {
+      if (!window.confirm(t("preventLossContent"))) {
+        return;
+      }
+    }
+
+    sendRequest("/api/commit-action", {
       gameId: game.id,
       action,
     });
-
-    if (newState.misplay && !window.confirm(t("preventLossContent"))) {
-      return;
-    }
 
     if (game.options.gameMode === GameMode.PASS_AND_PLAY) {
       setInterturn(true);
@@ -222,14 +240,24 @@ export function Game(props: Props) {
   }
 
   async function onNotifyPlayer(player) {
-    await sendRequest("/api/notify-player", {
+    const newState = { ...game };
+
+    newState.players[player.index].notified = true;
+    onGameChange(newState);
+
+    sendRequest("/api/notify-player", {
       gameId: game.id,
       playerId: player.id,
     });
   }
 
   async function onReaction(reaction) {
-    await sendRequest("/api/set-reaction", {
+    const newState = { ...game };
+
+    newState.players[selfPlayer.index].reaction = reaction;
+    onGameChange(newState);
+
+    sendRequest("/api/set-reaction", {
       gameId: game.id,
       reaction,
     });
@@ -319,7 +347,7 @@ export function Game(props: Props) {
 
           {selectedArea.type === ActionAreaType.ROLLBACK && (
             <div className="h4 pa2 ph3-l">
-              <RollbackArea onCloseArea={onCloseArea} />
+              <RollbackArea onCloseArea={onCloseArea} onGameChange={onGameChange} />
             </div>
           )}
 

@@ -221,4 +221,5 @@ export const fr = {
   whatYouDrewTurn: "et as pioché le <1></1>",
   whatTheyDrewTurn: "et a pioché le <1></1>",
   selectLanguage: "Choisis une langue",
+  creatingGame: "Partie en cours de création...",
 };

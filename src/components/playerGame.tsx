@@ -200,11 +200,10 @@ export default function PlayerGame(props: Props) {
 
           {active && selfPlayer && !self && !player.notified && !player.bot && (
             <a
-              className="ml1 ml4-l"
+              className="ml1 ml4-l pointer"
               onClick={e => {
                 e.stopPropagation();
                 onNotifyPlayer(player);
-                playSound(`/static/sounds/bell.mp3`);
               }}
             >
               <Txt value="🔔" />

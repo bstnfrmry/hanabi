@@ -4,11 +4,13 @@ import { useTranslation } from "react-i18next";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
+import { getStateAtTurn } from "~/lib/actions";
 import { sendRequest } from "~/lib/api";
 import IGameState from "~/lib/state";
 
 interface Props {
   onCloseArea: Function;
+  onGameChange: Function;
 }
 
 function getLastRollbackableTurn(game: IGameState) {
@@ -28,7 +30,7 @@ function getLastRollbackableTurn(game: IGameState) {
 }
 
 export default function RollbackArea(props: Props) {
-  const { onCloseArea } = props;
+  const { onCloseArea, onGameChange } = props;
   const { t } = useTranslation();
 
   const game = useGame();
@@ -36,7 +38,10 @@ export default function RollbackArea(props: Props) {
   const canRollback = lastRollbackableTurn >= 0;
 
   async function onRollback() {
-    await sendRequest("/api/rollback-game", {
+    const newState = getStateAtTurn(game, lastRollbackableTurn);
+    onGameChange(newState);
+
+    sendRequest("/api/rollback-game", {
       gameId: game.id,
       turn: lastRollbackableTurn,
     });

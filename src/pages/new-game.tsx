@@ -56,6 +56,8 @@ export default function NewGame() {
   const [turnsHistory] = useState(true);
   const [botsWait, setBotsWait] = useState(process.env.NODE_ENV === "production" ? 1000 : 0);
 
+  const [creatingGame, setCreatingGame] = useState(false);
+
   /**
    * Initialise seed on first render
    */
@@ -64,6 +66,9 @@ export default function NewGame() {
   }, []);
 
   async function onCreateGame() {
+    if (creatingGame) return;
+
+    setCreatingGame(true);
     const game = await sendRequest("/api/create-game", {
       options: {
         variant,
@@ -221,8 +226,9 @@ export default function NewGame() {
           <Button
             className="justify-end mt2"
             id="new-game"
+            primary={!creatingGame}
             size={ButtonSize.LARGE}
-            text={t("newGame")}
+            text={creatingGame ? t("creatingGame") : t("newGame")}
             onClick={onCreateGame}
           />
         </div>

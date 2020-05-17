@@ -1,4 +1,4 @@
-import { commitAction, getMaximumPossibleScore } from "~/lib/actions";
+import { commitAction } from "~/lib/actions";
 import { play } from "~/lib/ai";
 import { getPlayerFromGame, getPlayerIdFromSession } from "~/lib/api";
 import { loadGame, updateGame } from "~/lib/firebase";
@@ -24,17 +24,10 @@ export default withSession(async (req, res) => {
     return res.status(403).json({ error: "Player is a bot", gameId, playerId });
   }
 
-  const maximumPossibleScore = getMaximumPossibleScore(game);
-
   game = commitAction(game, {
     ...action,
     from: player.index,
   });
-
-  const misplay = maximumPossibleScore !== getMaximumPossibleScore(game);
-  if (game.options.preventLoss && misplay) {
-    return res.json({ misplay: true });
-  }
 
   updateGame(game);
   await playForBots(game);
