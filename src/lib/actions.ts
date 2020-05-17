@@ -29,9 +29,10 @@ export const MaxHints = 8;
 export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
   const isPreviousHere =
     card.number === 1 ||
-    findIndex(playedCards, c => card.number === c.number + 1 && matchColor(card.color, c.color)) > -1; // first card on the pile // previous card belongs to the playedCards
+    findIndex(playedCards, c => card.number === c.number + 1 && matchColor(card.color, c.asColor || c.color)) > -1; // first card on the pile // previous card belongs to the playedCards
 
-  const isSameNotHere = findIndex(playedCards, c => c.number === card.number && card.color === c.color) === -1;
+  const isSameNotHere =
+    findIndex(playedCards, c => c.number === card.number && card.color === (c.asColor || c.color)) === -1;
 
   return isPreviousHere && isSameNotHere;
 }
@@ -219,7 +220,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   const requiresColorSelection =
     s.options.variant === GameVariant.EASY_RAINBOW &&
     action.action === "play" &&
-    action.card.hint.color.rainbow !== IHintLevel.IMPOSSIBLE &&
+    action.card.color === IColor.RAINBOW &&
     s.playedCards.length > state.playedCards.length;
 
   if (requiresColorSelection) {
@@ -241,6 +242,8 @@ export function placeCard(state: IGameState, color: IColor) {
 
   s.playedCards.find(card => card.id === player.pendingAction.card.id).asColor = color;
   (lastAction as IPlayAction).card.asColor = color;
+
+  player.pendingAction = null;
 
   // update player
   s.currentPlayer = (s.currentPlayer + 1) % s.options.playersCount;

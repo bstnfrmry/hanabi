@@ -22,7 +22,7 @@ export default function PlayedCards(props: Props) {
   const groupedCards = groupBy(cards, c => c.asColor || c.color);
   const colors = getPilesColors(game);
 
-  const lastPlayedCard = last(game.turnsHistory).card;
+  const lastPlayedCard = last(game.playedCards);
 
   return (
     <Tutorial placement="below" step={ITutorialStep.PLAYED_CARDS}>
