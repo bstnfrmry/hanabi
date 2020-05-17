@@ -140,7 +140,7 @@ export const nl = {
     "De app stelt alles voor jou in, wat erg handig is 😉. Aan het begin van een spel heb je 8 blauwe fiches - je hints - en 3 rode fiches - je strafpunten.\n\nHet spel bestaat uit 50 kaarten, 10 van elke kleur <1> met nummer 1, 1, 1, 2, 2, 3, 3, 4, 4, 5 </1>.\n · In een spel met 2 of 3 spelers krijgt elke speler 5 kaarten gedeeld\n · In een spel met 4 of 5 spelers, krijgt elke speler 4 kaarten.\n\nZoals je zult zien, kunnen spelers niet naar hun eigen kaarten kijken!",
   rulesGameTitle: "Het spel spelen",
   rulesGame:
-    "Tijdens de beurt van een speler ondernemen ze één (en slechts één) van de drie volgende acties. Je beurt overslaan is niet toegestaan.\n1. Geef informatie aan een andere speler.\n2. Gooi een kaart weg.\n3. Speel een kaart\nHet is spelers niet toegestaan ​​hints of suggesties te geven tijdens de beurt van andere spelers!",
+    "Tijdens de beurt van een speler ondernemen ze één (en slechts één) van de drie volgende acties. Je beurt overslaan is niet toegestaan.\n\n1. Geef informatie aan een andere speler.\n2. Gooi een kaart weg.\n3. Speel een kaart\n\nHet is spelers niet toegestaan ​​hints of suggesties te geven tijdens de beurt van andere spelers!",
   rulesHintTitle: "1. Informatie geven",
   rulesHint:
     "Wanneer je informatie geeft, wordt een blauw token verwijderd. Opmerking: als je geen blauwe fiches meer hebt, kun je niet kiezen om informatie te geven en moet je een andere actie kiezen.\n\nJe geeft vervolgens informatie aan een medespeler over de kaarten in de hand van die speler door erop te klikken. Je kunt de speler iets vertellen over één (en slechts één) kleur of één (en slechts één) waarde van de kaart.",

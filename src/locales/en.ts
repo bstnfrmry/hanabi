@@ -144,7 +144,7 @@ export const en = {
     "The app sets up everything for you, which is handy 😉. At the beginning of a game, you will have 8 blue tokens - your hints - and 3 red tokens - your strike tokens.\n\nThe deck is composed of 50 cards, 10 of each color <1>with numbers 1, 1, 1, 2, 2, 3, 3, 4, 4, 5</1>.\n· In a 2 or 3 player game, each player will be dealt 5 cards\n· In a 4 or 5 player game, each player will be dealt 4 cards.\n\nAs you will see, players are not allowed to look at their own cards!",
   rulesGameTitle: "Playing the game",
   rulesGame:
-    "On each player's turn, they take one (and only one) of the three following actions. You are not allowed topass.\n1. Give information to another player.\n2. Discard a card.\n3. Play a card\nPlayers are not allowed to give hints or suggestions on other player's turns!",
+    "On each player's turn, they take one (and only one) of the three following actions. You are not allowed to pass.\n\n1. Give information to another player.\n2. Discard a card.\n3. Play a card\n\nPlayers are not allowed to give hints or suggestions on other player's turns!",
   rulesHintTitle: "1. Give information",
   rulesHint:
     "When you give information, it will remove a blue token. Note: If you have no more blue tokens, you cannotchoose to give information and must pick a different action.\n\nYou then give information to a fellow player about the cards in that player's hand by clicking on it. You can tell the player either about one (and only one) color, or one (and only one) value of card.",

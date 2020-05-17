@@ -15,9 +15,13 @@ const Title = (props: TxtProps) => (
   </Txt>
 );
 
-const Subtitle = (props: TxtProps) => <Txt size={TxtSize.MEDIUM}>{props.children}</Txt>;
+const Subtitle = (props: TxtProps) => (
+  <Txt className="mt2" size={TxtSize.MEDIUM}>
+    {props.children}
+  </Txt>
+);
 
-const Paragraph = (props: TxtProps) => <Txt className="mv2">{props.children}</Txt>;
+const Paragraph = (props: TxtProps) => <Txt className="mv2 font-regular">{props.children}</Txt>;
 
 interface Props {
   setShowRules?: (showRules: boolean) => void;
