@@ -49,9 +49,43 @@ export enum GameVariant {
   CLASSIC = "classic",
   MULTICOLOR = "multicolor",
   RAINBOW = "rainbow",
+  EASY_RAINBOW = "easyRainbow",
   ORANGE = "orange",
   SEQUENCE = "sequence",
 }
+
+export const GameVariants = {
+  [GameVariant.CLASSIC]: {
+    name: "classicVariant",
+    description: "classicVariantDescription",
+    supportsAi: true,
+  },
+  [GameVariant.MULTICOLOR]: {
+    name: "multicolorVariant",
+    description: "multicolorVariantDescription",
+    supportsAi: true,
+  },
+  [GameVariant.RAINBOW]: {
+    name: "rainbowVariant",
+    description: "rainbowVariantDescription",
+    supportsAi: false,
+  },
+  [GameVariant.EASY_RAINBOW]: {
+    name: "easyRainbowVariant",
+    description: "easyRainbowVariantDescription",
+    supportsAi: false,
+  },
+  [GameVariant.ORANGE]: {
+    name: "orangeVariant",
+    description: "orangeVariantDescription",
+    supportsAi: true,
+  },
+  [GameVariant.SEQUENCE]: {
+    name: "sequenceVariant",
+    description: "sequenceVariantDescription",
+    supportsAi: true,
+  },
+};
 
 export enum GameMode {
   NETWORK = "network",
@@ -114,6 +148,7 @@ export type IHand = ICard[];
 
 export interface ICard {
   color: IColor;
+  asColor?: IColor;
   number: INumber;
   hint?: ICardHint;
   id?: number;
@@ -134,6 +169,7 @@ export interface IPlayAction {
   from: number;
   card?: ICard;
   cardIndex: number;
+  targetColor?: IColor;
 }
 
 export type IHintType = "color" | "number";

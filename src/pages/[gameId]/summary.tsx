@@ -16,7 +16,7 @@ import { GameContext } from "~/hooks/game";
 import useNetwork from "~/hooks/network";
 import { newGame } from "~/lib/actions";
 import { logEvent } from "~/lib/analytics";
-import IGameState, { GameVariant } from "~/lib/state";
+import IGameState, { GameVariant, GameVariants } from "~/lib/state";
 
 interface SectionProps {
   children: ReactNode;
@@ -114,7 +114,7 @@ export default function Summary() {
           <Txt className="mt2" size={TxtSize.MEDIUM}>
             <span>{`${t("players")}: ${game.players.length}`}</span>
             <span className="ml1">
-              · {t("mode")}: {gameVariantToText(game.options.variant)}
+              · {t("mode")}: {t(GameVariants[game.options.variant].name)}
             </span>
             <span className="ml2">
               · {t("shuffle")} #{game.options.seed}

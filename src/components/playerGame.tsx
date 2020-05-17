@@ -68,12 +68,14 @@ interface Props extends HTMLAttributes<HTMLElement> {
   active?: boolean;
   self?: boolean;
   cardIndex?: number;
+  pendingTargetColor?: boolean;
   displayStats: boolean;
   onSelectPlayer: Function;
   onNotifyPlayer?: Function;
   onReaction?: Function;
   onCommitAction: Function;
   onCloseArea: Function;
+  onCancelTargetColor?: Function;
 }
 
 export default function PlayerGame(props: Props) {
@@ -81,12 +83,14 @@ export default function PlayerGame(props: Props) {
     player,
     self = false,
     selected = false,
+    pendingTargetColor = false,
     cardIndex,
     onSelectPlayer,
     onNotifyPlayer,
     onCommitAction,
     onCloseArea,
     onReaction,
+    onCancelTargetColor,
     active,
     displayStats,
     ...attributes
@@ -298,15 +302,22 @@ export default function PlayerGame(props: Props) {
         {canPlay && selected && player === selfPlayer && selfPlayer === currentPlayer && (
           <div className="flex flex-column items-end mb2">
             <div className="flex justify-end items-center h-100-l">
-              {hasSelectedCard && (
+              {hasSelectedCard && !pendingTargetColor && (
                 <Txt
-                  className="pb1 pb2-l ml1 mb2 mr3 ml2-l"
+                  className="pb1 pb2-l ml1 mr3 ml2-l"
                   value={t("cardSelected", { position: PositionMap[selectedCard] })}
                 />
               )}
 
-              {hasSelectedCard && (
-                <div className="flex flex pb2">
+              {pendingTargetColor && (
+                <div className="flex items-center pb2">
+                  <Txt value={t("pendingTargetColor")} />
+                  <Button className="ml3" text={t("cancel")} onClick={() => onCancelTargetColor()} />
+                </div>
+              )}
+
+              {hasSelectedCard && !pendingTargetColor && (
+                <div className="flex pb2">
                   {["discard", "play"].map(action => (
                     <Button
                       key={action}

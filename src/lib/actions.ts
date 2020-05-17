@@ -26,10 +26,12 @@ const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
 export const MaxHints = 8;
 
 export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
-  const isPreviousHere =
-    card.number === 1 || findIndex(playedCards, c => card.number === c.number + 1 && card.color === c.color) > -1; // first card on the pile // previous card belongs to the playedCards
+  const targetColor = card.asColor || card.color;
 
-  const isSameNotHere = findIndex(playedCards, c => c.number === card.number && c.color === card.color) === -1;
+  const isPreviousHere =
+    card.number === 1 || findIndex(playedCards, c => card.number === c.number + 1 && targetColor === c.color) > -1; // first card on the pile // previous card belongs to the playedCards
+
+  const isSameNotHere = findIndex(playedCards, c => c.number === card.number && c.color === targetColor) === -1;
 
   return isPreviousHere && isSameNotHere;
 }
@@ -52,7 +54,9 @@ function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
       // positive hint on card - mark all other values as impossible (except rainbow)
       Object.keys(card.hint[hint.type])
         .filter(value => {
-          return GameVariant.RAINBOW === game.options.variant ? value !== IColor.RAINBOW : true;
+          return [GameVariant.RAINBOW, GameVariant.EASY_RAINBOW].includes(game.options.variant)
+            ? value !== IColor.RAINBOW
+            : true;
         })
         .filter(value => {
           if (hint.type === "number" && game.options.variant === GameVariant.SEQUENCE) {
@@ -78,8 +82,6 @@ function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
         card.hint.color.rainbow = IHintLevel.IMPOSSIBLE;
       }
     }
-
-    debugger;
 
     // if there's only one possible color, make it sure
     const onlyPossibleColors = Object.keys(card.hint.color).filter(
@@ -108,7 +110,7 @@ export function emptyHint(options: IGameOptions): ICardHint {
       [IColor.YELLOW]: 1,
       [IColor.WHITE]: 1,
       [IColor.MULTICOLOR]: options.variant === GameVariant.MULTICOLOR ? 1 : 0,
-      [IColor.RAINBOW]: 1, // Should never be used directly
+      [IColor.RAINBOW]: [GameVariant.RAINBOW, GameVariant.EASY_RAINBOW].includes(options.variant) ? 1 : 0,
       [IColor.ORANGE]: options.variant === GameVariant.ORANGE ? 1 : 0,
     },
     number: { 0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 },
@@ -259,6 +261,7 @@ export function getColors(state: IGameState) {
     case GameVariant.MULTICOLOR:
       return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW, IColor.MULTICOLOR];
     case GameVariant.RAINBOW:
+    case GameVariant.EASY_RAINBOW:
       return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW, IColor.RAINBOW];
     case GameVariant.ORANGE:
       return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW, IColor.ORANGE];
@@ -266,6 +269,16 @@ export function getColors(state: IGameState) {
     default:
       return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW];
   }
+}
+
+export function getPilesColors(state: IGameState) {
+  const colors = getColors(state);
+
+  if (state.options.variant === GameVariant.EASY_RAINBOW) {
+    colors.splice(colors.indexOf(IColor.RAINBOW), 1);
+  }
+
+  return colors;
 }
 
 export function getHintableColors(state: IGameState) {
@@ -386,7 +399,7 @@ export function newGame(options: IGameOptions): IGameState {
   }
 
   // Add rainbow cards when applicable
-  if (options.variant === GameVariant.RAINBOW) {
+  if ([GameVariant.RAINBOW, GameVariant.EASY_RAINBOW].includes(options.variant)) {
     cards.push(
       { number: 1, color: IColor.RAINBOW },
       { number: 1, color: IColor.RAINBOW },

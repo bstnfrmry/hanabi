@@ -179,7 +179,7 @@ export default function Card(props: Props) {
   });
 
   const colors = getColors(game);
-  const color = hidden ? "gray-light" : card.color;
+  const color = hidden ? "gray-light" : card.asColor || card.color;
 
   const number = hidden ? null : card.number;
 
@@ -252,6 +252,14 @@ export default function Card(props: Props) {
             onMouseLeave={() => setIsHintPopoverOpen(false)}
           />
         </Popover>
+      )}
+
+      {/* Show original rainbow color when card has been played as another color */}
+      {card.asColor && context === ICardContext.PLAYED && (
+        <div
+          className="absolute right-0 bottom-0 bg-rainbow br--top br--left br-100"
+          style={{ width: "40%", height: "40%" }}
+        />
       )}
 
       {/* show positive hints with a larger type */}

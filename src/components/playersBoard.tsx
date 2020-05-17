@@ -9,11 +9,13 @@ import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 interface Props {
   displayStats: boolean;
   selectedArea: ISelectedArea;
+  pendingTargetColor: boolean;
   onSelectPlayer: Function;
   onNotifyPlayer: Function;
   onReaction: Function;
   onCloseArea: Function;
   onCommitAction: Function;
+  onCancelTargetColor: Function;
 }
 
 const Item = posed.div({
@@ -22,7 +24,17 @@ const Item = posed.div({
 });
 
 export default function PlayersBoard(props: Props) {
-  const { displayStats, selectedArea, onSelectPlayer, onNotifyPlayer, onReaction, onCloseArea, onCommitAction } = props;
+  const {
+    displayStats,
+    selectedArea,
+    pendingTargetColor,
+    onSelectPlayer,
+    onNotifyPlayer,
+    onReaction,
+    onCloseArea,
+    onCommitAction,
+    onCancelTargetColor,
+  } = props;
 
   const game = useGame();
   const selfPlayer = useSelfPlayer();
@@ -72,9 +84,11 @@ export default function PlayersBoard(props: Props) {
               cardIndex={cardIndex}
               displayStats={displayStats}
               id="player-game-self"
+              pendingTargetColor={pendingTargetColor}
               player={selfPlayer}
               selected={selectedPlayer && selectedPlayer === selfPlayer}
               self={true}
+              onCancelTargetColor={onCancelTargetColor}
               onCloseArea={onCloseArea}
               onCommitAction={onCommitAction}
               onReaction={onReaction}

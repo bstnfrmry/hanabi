@@ -11,25 +11,9 @@ import useNetwork from "~/hooks/network";
 import { newGame } from "~/lib/actions";
 import { logEvent } from "~/lib/analytics";
 import { readableUniqueId } from "~/lib/id";
-import { GameMode, GameVariant, IGameHintsLevel } from "~/lib/state";
+import { GameMode, GameVariant, GameVariants, IGameHintsLevel } from "~/lib/state";
 
 const PlayerCounts = [2, 3, 4, 5];
-
-const Variants = {
-  [GameVariant.CLASSIC]: "classicVariant",
-  [GameVariant.MULTICOLOR]: "multicolorVariant",
-  [GameVariant.RAINBOW]: "rainbowVariant",
-  [GameVariant.ORANGE]: "orangeVariant",
-  [GameVariant.SEQUENCE]: "sequenceVariant",
-};
-
-const VariantDescriptions = {
-  [GameVariant.CLASSIC]: "classicVariantDescription",
-  [GameVariant.MULTICOLOR]: "multicolorVariantDescription",
-  [GameVariant.RAINBOW]: "rainbowVariantDescription",
-  [GameVariant.ORANGE]: "orangeVariantDescription",
-  [GameVariant.SEQUENCE]: "sequenceVariantDescription",
-};
 
 const HintsLevels = {
   [IGameHintsLevel.DIRECT]: "showDirectHints",
@@ -123,7 +107,7 @@ export default function NewGame() {
           <div className="flex justify-between items-center">
             <Txt size={TxtSize.MEDIUM} value={t("mode", "Mode")} />
             <div className="flex flex-wrap-l flex-column flex-row-l justify-end">
-              {Object.entries(Variants).map(([gameVariant, label]) => {
+              {Object.entries(GameVariants).map(([gameVariant, { name }]) => {
                 return (
                   <Button
                     key={gameVariant}
@@ -137,14 +121,17 @@ export default function NewGame() {
                         transform: "scale(1.20)",
                       }),
                     }}
-                    text={t(label)}
+                    text={t(name)}
                     onClick={() => setVariant(gameVariant as GameVariant)}
                   />
                 );
               })}
             </div>
           </div>
-          <Txt className="lavender mt4 self-end" size={TxtSize.SMALL} value={t(VariantDescriptions[variant])} />
+          <Txt className="lavender mt4 self-end" size={TxtSize.SMALL} value={t(GameVariants[variant].description)} />
+          {GameVariants[variant].supportsAi === false && (
+            <Txt className="orange mt1 self-end" size={TxtSize.XSMALL} value={t("variantDoesNotSupportAi")} />
+          )}
         </div>
 
         <a

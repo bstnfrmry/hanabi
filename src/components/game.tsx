@@ -27,7 +27,7 @@ import { play } from "~/lib/ai";
 import { cheat } from "~/lib/ai-cheater";
 import { logEvent } from "~/lib/analytics";
 import { uniqueId } from "~/lib/id";
-import IGameState, { GameMode, IGameHintsLevel, IGameStatus } from "~/lib/state";
+import IGameState, { GameMode, IAction, IColor, IGameHintsLevel, IGameStatus, IHintLevel } from "~/lib/state";
 
 interface Props {
   onGameChange: (game: IGameState) => void;
@@ -42,6 +42,8 @@ export function Game(props: Props) {
   const [displayStats, setDisplayStats] = useState(false);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
+  const [pendingAction, setPendingAction] = useState<IAction>(null);
+  const [pendingTargetColor, setPendingTargetColor] = useState(false);
   const [, setGameId] = useLocalStorage("gameId", null);
   const [playerId] = useLocalStorage("playerId", uniqueId());
   const [selectedArea, selectArea] = useState<ISelectedArea>({
@@ -223,7 +225,18 @@ export function Game(props: Props) {
     logEvent("Game", "Game started");
   }
 
-  async function onCommitAction(action) {
+  async function onCommitAction(action: IAction) {
+    if (action.action === "play") {
+      const player = game.players[action.from];
+      const card = player.hand[action.cardIndex];
+
+      if (card.hint.color.rainbow !== IHintLevel.IMPOSSIBLE && !card.asColor) {
+        setPendingTargetColor(true);
+        setPendingAction(action);
+        return;
+      }
+    }
+
     const newState = commitAction(game, action);
 
     const misplay = getMaximumPossibleScore(game) !== getMaximumPossibleScore(newState);
@@ -241,6 +254,20 @@ export function Game(props: Props) {
     network.updateGame(newState);
 
     logEvent("Game", "Turn played");
+  }
+
+  function onPileClick(color: IColor) {
+    if (!pendingAction || pendingAction.action !== "play") {
+      return;
+    }
+
+    const player = game.players[pendingAction.from];
+    const card = player.hand[pendingAction.cardIndex];
+    card.asColor = color;
+
+    onCommitAction(pendingAction);
+    setPendingTargetColor(false);
+    setPendingAction(null);
   }
 
   function onCloseArea() {
@@ -337,11 +364,20 @@ export function Game(props: Props) {
     logEvent("Game", "Game recreated");
   }
 
+  function onCancelTargetColor() {
+    setPendingTargetColor(false);
+  }
+
   return (
     <>
       <div className="bg-main-dark relative flex flex-column w-100 h-100">
         <div className="bg-black-50 pa2 pv2-l ph6.5-m">
-          <GameBoard onMenuClick={onMenuClick} onRollbackClick={onRollbackClick} />
+          <GameBoard
+            pendingTargetColor={pendingTargetColor}
+            onMenuClick={onMenuClick}
+            onPileClick={onPileClick}
+            onRollbackClick={onRollbackClick}
+          />
         </div>
         <div className="flex flex-column bg-black-50 bb b--yellow ph6.5-m">
           {selectedArea.type === ActionAreaType.MENU && (
@@ -405,7 +441,9 @@ export function Game(props: Props) {
             <div className="h-100">
               <PlayersBoard
                 displayStats={displayStats}
+                pendingTargetColor={!!pendingTargetColor}
                 selectedArea={selectedArea}
+                onCancelTargetColor={onCancelTargetColor}
                 onCloseArea={onCloseArea}
                 onCommitAction={onCommitAction}
                 onNotifyPlayer={onNotifyPlayer}
