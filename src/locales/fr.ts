@@ -107,8 +107,8 @@ export const fr = {
   landingImageAlt: "Hanabi.cards Hanabi jeu de cartes en ligne",
   classicVariant: "Classique",
   multicolorVariant: "Multicolore",
-  rainbowVariant: "Arc-en-ciel",
-  easyRainbowVariant: "Arc-en-ciel (facile)",
+  rainbowVariant: "Rainbow",
+  easyRainbowVariant: "Joker",
   orangeVariant: "Orange",
   sequenceVariant: "Séquences",
   classicVariantDescription: "Le jeu traditionnel d'Hanabi sans extension",
@@ -116,7 +116,7 @@ export const fr = {
   rainbowVariantDescription:
     "Une sixième pile est ajoutée dont les cartes sont touchées par tous les indices de couleur",
   easyRainbowVariantDescription:
-    "Une sixième pile est ajoutée dont les cartes sont touchées par tous les indices de couleur",
+    "Une sixième couleur est ajoutée. Les cartes de cette couleur sont jouables sur n'importe quelle pile",
   orangeVariantDescription: "Une sixième pile classique est ajoutée",
   sequenceVariantDescription: "Les indices de nombres ciblent aussi toutes les cartes supérieures",
   variantDoesNotSupportAi: "Ce mode ne fonctionne pas avec l'IA pour l'instant",
