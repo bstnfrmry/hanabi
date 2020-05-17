@@ -5,6 +5,7 @@ export const fr = {
   welcome: "Bienvenue",
   newGame: "Nouvelle partie",
   tagline: "Jouez au jeu Hanabi en ligne avec vos amis !",
+  subTagline: "Jeu de cartes multijoueur et coopératif, disponible sur téléphones, tablettes & ordinateurs",
   createRoom: "Créer une partie",
   joinRoom: "Rejoindre une partie",
   rejoinGame: "Revenir à la partie",
@@ -219,4 +220,5 @@ export const fr = {
   somebodyPlayedTurn: "<0>PlayerName</0> a joué son <2></2>",
   whatYouDrewTurn: "et as pioché le <1></1>",
   whatTheyDrewTurn: "et a pioché le <1></1>",
+  selectLanguage: "Choisis une langue",
 };

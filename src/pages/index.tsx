@@ -26,13 +26,13 @@ export default function Home() {
         <div className="flex flex-column items-center">
           <img
             alt={t("landingImageAlt", "Hanabi cards game online logo")}
-            className="mw4 mb4"
-            src="/static/hanabi.png"
+            className="mb4 w4 h4"
+            src={require("~/images/hanabi.png?size=256")}
           />
           <Txt size={TxtSize.LARGE} value={t("hanabi", "Hanabi")} />
         </div>
         <span className="tc lavender">{t("tagline", "Play the Hanabi game online with friends!")}</span>
-        <div className="flex flex-column mt5">
+        <main className="flex flex-column mt5">
           <Button
             className="mb4"
             id="create-room"
@@ -71,7 +71,7 @@ export default function Home() {
             <span>{t("whatsHanabi", "What's Hanabi?")}</span>
             <span>⌄</span>
           </span>
-        </div>
+        </main>
       </div>
       <div ref={rulesRef}>
         <Rules />

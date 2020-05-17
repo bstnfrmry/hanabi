@@ -23,10 +23,14 @@
     "husky": "^4.2.3",
     "i18next": "^19.4.4",
     "i18next-browser-languagedetector": "^4.1.1",
+    "imagemin-optipng": "^7.1.0",
     "lodash": "^4.17.15",
     "mem": "^6.1.0",
     "moment": "^2.25.1",
     "next": "^9.4",
+    "next-compose-plugins": "^2.2.0",
+    "next-offline": "^5.0.2",
+    "next-optimized-images": "^2.6.0",
     "nprogress": "^0.2.0",
     "rc-slider": "^9.2.1",
     "react": "^16.8.6",
@@ -56,9 +60,11 @@
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-simple-import-sort": "^4.0.0",
     "firebase-server": "^1.0.2",
+    "jimp": "^0.12.0",
     "lint-staged": "^9.2.5",
     "postcss-color-mod-function": "^3.0.3",
     "prettier": "^1.18.2",
+    "responsive-loader": "^1.2.0",
     "typescript": "^3.7"
   }
 }

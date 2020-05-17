@@ -1,6 +1,7 @@
 {
   "short_name": "Hanabi",
   "name": "Hanabi",
+  "description": "Play the Hanabi game online with your friends!",
   "icons": [
     { "src": "/static/hanabi.png", "type": "image/png", "sizes": "512x512" },
     { "src": "/static/hanabi-192.png", "type": "image/png", "sizes": "192x192" }

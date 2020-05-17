@@ -4,7 +4,8 @@ export const en = {
   hanabi: "Hanabi",
   welcome: "Welcome",
   newGame: "New game",
-  tagline: "Play the Hanabi game online with friends!",
+  tagline: "Play Hanabi online with friends!",
+  subTagline: "Cooperative multiplayer card game available on phone, tablet & desktop",
   createRoom: "Create a room",
   joinRoom: "Join a room",
   rejoinGame: "Rejoin game",
@@ -135,7 +136,7 @@ export const en = {
   seed: "Seed",
   objective: "Objective",
   rulesIntro:
-    "Hanabi is a card game created by Antoine Bauza. It's cooperative, which means that players are not againsteach other but assemble to reach a common goal. They incarn here distracted pyrotechnists who - byinattention - mixed their powder, wicks and rockets for a large fireworks display. The show will begin soon and the situation is a bit chaotic. They will need to help each other to prevent the show turning to disaster.",
+    "Hanabi is a card game created by Antoine Bauza. It's cooperative, which means that players are not against each other but assemble to reach a common goal. They incarn here distracted pyrotechnists who - byinattention - mixed their powder, wicks and rockets for a large fireworks display. The show will begin soon and the situation is a bit chaotic. They will need to help each other to prevent the show turning to disaster.",
   rulesGoal:
     "The goal of the pyrotechnics team is to build 5 fireworks, one of each color (white, red, blue, yellow, green) by combining increasing value cards (1,2,3,4,5) of the same color.",
   rulesSetupTitle: "Setup",
@@ -218,4 +219,5 @@ export const en = {
   somebodyPlayedTurn: "<0></0> played <2></2>",
   whatYouDrewTurn: "and drew <1></1>",
   whatTheyDrewTurn: "and drew <1></1>",
+  selectLanauge: "Select a language",
 };
