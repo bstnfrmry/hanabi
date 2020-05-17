@@ -26,8 +26,8 @@ export default function Home() {
         <div className="flex flex-column items-center">
           <img
             alt={t("landingImageAlt", "Hanabi cards game online logo")}
-            className="mw4 mb4"
-            src="/static/hanabi.png"
+            className="mb4 w4 h4"
+            src={require("~/images/hanabi.png?size=256")}
           />
           <Txt size={TxtSize.LARGE} value={t("hanabi", "Hanabi")} />
         </div>

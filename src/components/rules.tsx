@@ -41,14 +41,22 @@ export default function Rules(props: Props) {
 
         <img
           alt="Hanabi cards game online"
-          className="absolute top-0 right-0 mw4 ma4 o-50 dn db-l"
-          src="/static/hanabi.png"
+          className="absolute top-0 right-0 w4 h4 ma4 o-50 dn db-l"
+          src={require("~/images/hanabi.png?size=256")}
         />
 
         <div className="flex justify-center mb4 mb5-l">
           <div className="w-75 w-50-l ba b--yellow br3">
-            <img alt="Game screenshot" className="dn db-l br3" src="/static/images/screenshot-desktop.png" />
-            <img alt="Game screenshot" className="db dn-l br3" src="/static/images/screenshot-mobile.png" />
+            <img
+              alt="Game screenshot"
+              className="dn db-l br3"
+              src={require("~/images/screenshot-desktop.png?size=706")}
+            />
+            <img
+              alt="Game screenshot"
+              className="db dn-l br3"
+              src={require("~/images/screenshot-mobile.png?size=1024")}
+            />
           </div>
         </div>
 

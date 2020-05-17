@@ -194,7 +194,7 @@ button {
 }
 
 .bg-multicolor {
-  background-image: url('/static/images/multicolor.svg');
+  background-image: url('/static/multicolor.svg');
   background-size: contain
   /* background: conic-gradient(
     var(--color-white) 0deg 72deg,
