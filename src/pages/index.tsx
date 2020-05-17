@@ -32,7 +32,7 @@ export default function Home() {
           <Txt size={TxtSize.LARGE} value={t("hanabi", "Hanabi")} />
         </div>
         <span className="tc lavender">{t("tagline", "Play the Hanabi game online with friends!")}</span>
-        <div className="flex flex-column mt5">
+        <main className="flex flex-column mt5">
           <Button
             className="mb4"
             id="create-room"
@@ -71,7 +71,7 @@ export default function Home() {
             <span>{t("whatsHanabi", "What's Hanabi?")}</span>
             <span>⌄</span>
           </span>
-        </div>
+        </main>
       </div>
       <div ref={rulesRef}>
         <Rules />

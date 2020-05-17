@@ -8,8 +8,9 @@ export default function DiscordButton() {
       rel="noopener noreferrer"
       style={{ backgroundColor: "#7289DA", height: "40px" }}
       target="_blank"
+      title="Discord"
     >
-      <img src="/static/discord.svg" />
+      <img alt="Discord" src="/static/discord.svg" />
     </a>
   );
 }

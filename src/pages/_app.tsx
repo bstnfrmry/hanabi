@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/browser";
 import NextApp, { AppProps } from "next/app";
+import { Html } from "next/document";
 import Head from "next/head";
 import Router from "next/router";
 import NProgress from "nprogress";
@@ -111,7 +112,6 @@ function Meta() {
       <link href="/static/favicon.ico" rel="shortcut icon" type="image/x-icon" />
       <link href="/static/hanabi-192.png" rel="apple-touch-icon" />
       <link href="/static/manifest.json" rel="manifest" />
-
       <meta content={t("tagline")} name="Description" />
 
       <meta content="hanabi.cards" property="og:title" />
