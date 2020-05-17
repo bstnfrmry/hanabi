@@ -7,20 +7,14 @@ import useConnectivity from "~/hooks/connectivity";
 import { GameContext } from "~/hooks/game";
 import { ReplayContext } from "~/hooks/replay";
 import { Session, SessionContext } from "~/hooks/session";
+import { getPlayerIdFromSession } from "~/lib/api";
 import { loadGame, subscribeToGame } from "~/lib/firebase";
-import { uniqueId } from "~/lib/id";
 import withSession from "~/lib/session";
 import IGameState from "~/lib/state";
 
 export const getServerSideProps = withSession(async function({ req, params }) {
   const game = await loadGame(params.gameId);
-
-  const playerId = req.session.get("playerId");
-  if (playerId === undefined) {
-    req.session.set("playerId", uniqueId());
-  }
-
-  await req.session.save();
+  const playerId = getPlayerIdFromSession(req);
 
   const protocol = process.env.NODE_ENV === "development" ? "http:" : "https:";
   const { host } = req.headers;
@@ -28,7 +22,7 @@ export const getServerSideProps = withSession(async function({ req, params }) {
   return {
     props: {
       session: {
-        playerId: req.session.get("playerId"),
+        playerId,
       },
       game,
       host: `${protocol}//${host}`,

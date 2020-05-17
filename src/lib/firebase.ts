@@ -3,10 +3,6 @@ import "firebase/database";
 
 import IGameState, { fillEmptyValues, GameMode, IGameStatus } from "~/lib/state";
 
-type GamesHandler = (games: IGameState[]) => void;
-
-type GameHandler = (game: IGameState) => void;
-
 function database() {
   if (!firebase.apps.length) {
     firebase.initializeApp({
@@ -49,7 +45,7 @@ export function loadPublicGames() {
   });
 }
 
-export function subscribeToPublicGames(callback: GamesHandler) {
+export function subscribeToPublicGames(callback: (games: IGameState[]) => void) {
   const ref = database()
     .ref("/games")
     // Only games created less than 10 minutes ago
@@ -78,7 +74,7 @@ export async function loadGame(gameId: string) {
   });
 }
 
-export function subscribeToGame(gameId: string, callback: GameHandler) {
+export function subscribeToGame(gameId: string, callback: (game: IGameState) => void) {
   const ref = database().ref(`/games/${gameId}`);
 
   ref.on("value", event => {
