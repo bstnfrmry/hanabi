@@ -14,7 +14,7 @@ import IGameState from "~/lib/state";
 
 export const getServerSideProps = withSession(async function({ req, params }) {
   const game = await loadGame(params.gameId);
-  const playerId = getPlayerIdFromSession(req);
+  const playerId = await getPlayerIdFromSession(req);
 
   const protocol = process.env.NODE_ENV === "development" ? "http:" : "https:";
   const { host } = req.headers;
