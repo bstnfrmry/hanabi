@@ -1,6 +1,5 @@
 import * as Sentry from "@sentry/browser";
 import NextApp, { AppProps } from "next/app";
-import { Html } from "next/document";
 import Head from "next/head";
 import Router from "next/router";
 import NProgress from "nprogress";

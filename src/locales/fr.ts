@@ -165,9 +165,9 @@ export const fr = {
     "🌈 L'option arc-en-ciel elle aussi rajoute une sixième pile de cartes multicolores des mêmes exemplaires que les 5 autres piles ( trois cartes de valeur 1, 2 exemplaires des 2 3 et 4, un seul 5). La particularité est que les cartes arc-en-ciel sont de toutes les couleurs. Elles sont touchées par tous les indices de couleur.",
   rulesUsTitle: "Qui sommes-nous ?",
   rulesUs:
-    "Nous sommes un groupe d'amateurs de jeux de société. Pendant le confinement en 2020, nous cherchions une alternative pour jouer ensemble en ligne. Et comme on apprécie non seulement de jouer mais également de développer des sites, nous avons créé une version en ligne accessible sur téléphone du jeu.\n\n\n\n👉 Like us, please buy the <2>physical version</2> to support its creator if you like this game!",
+    "Nous sommes un groupe d'amateurs de jeux de société. Pendant le confinement en 2020, nous cherchions une alternative pour jouer ensemble en ligne. Et comme on apprécie non seulement de jouer mais également de développer des sites, nous avons créé une version en ligne accessible sur téléphone du jeu.\n\n\n\n👉 Comme nous, achetez la <2>version physique</2> pour soutenir son créateur si vous aimez le jeu!",
   rulesBuy:
-    "N'hésitez pas à <1>nous contacter</1> si vous avez une question ou suggestion !\nNous avons aussi un <2>repo public sur Github</2> si vous souhaitez contribuer au site.",
+    "N'hésitez pas à <1>nous contacter</1> si vous avez une question ou suggestion !\nNous avons aussi un <3>repo public sur Github</3> si vous souhaitez contribuer au site.",
   noRoom: "Aucune partie n'est accessible",
   faster: "Très rapide",
   fast: "Rapide",

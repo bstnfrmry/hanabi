@@ -17,8 +17,10 @@ class Document extends NextDocument {
   }
 
   render() {
+    const lang = this.props.__NEXT_DATA__?.props?.pageProps?.lang ?? "en";
+
     return (
-      <Html lang="en">
+      <Html lang={lang}>
         <Head />
         <body>
           <Main />
