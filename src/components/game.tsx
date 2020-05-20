@@ -334,7 +334,7 @@ export function Game(props: Props) {
 
   return (
     <>
-      <div className="bg-main-dark relative flex flex-column w-100 h-100">
+      <div className="game bg-main-dark relative flex flex-column w-100 h-100">
         <div className="bg-black-50 pa2 pv2-l ph6.5-m">
           <GameBoard onMenuClick={onMenuClick} onRollbackClick={onRollbackClick} />
         </div>

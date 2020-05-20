@@ -366,3 +366,17 @@ button {
 button {
   -webkit-appearance: none;
 }
+
+@media screen and (min-width: 1024px) and (min-height: 600px) {
+  .game {
+    zoom: 1.2
+  }  
+}
+
+
+@media screen and (min-width: 1400px) and (min-height: 800px) {
+  .game {
+    zoom: 1.3
+  }  
+}
+
