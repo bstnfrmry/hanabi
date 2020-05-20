@@ -16,7 +16,6 @@ import Vignettes from "~/components/vignettes";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 import { useReplay } from "~/hooks/replay";
 import { matchColor, matchNumber, MaxHints } from "~/lib/actions";
-import { playSound } from "~/lib/sound";
 import IGameState, { GameVariant, ICard, IColor, IGameStatus, IHintAction, INumber, IPlayer } from "~/lib/state";
 
 function isCardHintable(game: IGameState, hint: IHintAction, card: ICard) {
@@ -200,11 +199,10 @@ export default function PlayerGame(props: Props) {
 
           {active && selfPlayer && !self && !player.notified && !player.bot && (
             <a
-              className="ml1 ml4-l"
+              className="ml1 ml4-l pointer"
               onClick={e => {
                 e.stopPropagation();
                 onNotifyPlayer(player);
-                playSound(`/static/sounds/bell.mp3`);
               }}
             >
               <Txt value="🔔" />

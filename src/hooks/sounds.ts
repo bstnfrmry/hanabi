@@ -2,16 +2,15 @@ import { last } from "lodash";
 import { useEffect } from "react";
 
 import { useGame, useSelfPlayer } from "~/hooks/game";
-import useNetwork from "~/hooks/network";
 import usePrevious from "~/hooks/previous";
 import { useReplay } from "~/hooks/replay";
-import { playSound } from "~/lib/sound";
+import { setNotification } from "~/lib/firebase";
+import { playSound, vibrate } from "~/lib/sound";
 
 export function useSoundEffects() {
   const game = useGame();
   const replay = useReplay();
   const selfPlayer = useSelfPlayer();
-  const network = useNetwork();
 
   const isReplaying = replay.cursor !== null;
 
@@ -22,8 +21,9 @@ export function useSoundEffects() {
     if (!selfPlayer) return;
     if (!selfPlayer.notified) return;
 
-    playSound(`/static/sounds.bell.mp3`);
-    const timeout = setTimeout(() => network.setNotification(game, selfPlayer, false), 10000);
+    playSound(`/static/sounds/bell.mp3`);
+    vibrate(200);
+    const timeout = setTimeout(() => setNotification(game, selfPlayer, false), 10000);
 
     return () => clearTimeout(timeout);
   }, [selfPlayer && selfPlayer.notified]);

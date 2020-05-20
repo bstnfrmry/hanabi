@@ -13,9 +13,9 @@ import PlayerStats from "~/components/playerStats";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { GameContext } from "~/hooks/game";
-import useNetwork from "~/hooks/network";
 import { newGame } from "~/lib/actions";
 import { logEvent } from "~/lib/analytics";
+import { loadGame, subscribeToGame, updateGame } from "~/lib/firebase";
 import IGameState, { GameVariant } from "~/lib/state";
 
 interface SectionProps {
@@ -46,31 +46,42 @@ function formatDuration(start: number, end: number) {
   return moment.utc(moment(end).diff(start)).format("HH:mm:ss");
 }
 
-export default function Summary() {
-  const network = useNetwork();
-  const router = useRouter();
-  const [game, setGame] = useState<IGameState>(null);
-  const { t } = useTranslation();
+export const getServerSideProps = async function({ params }) {
+  const game = await loadGame(params.gameId);
 
-  const { gameId } = router.query;
+  return {
+    props: {
+      game,
+    },
+  };
+};
+
+interface Props {
+  game: IGameState;
+}
+
+export default function Summary(props: Props) {
+  const { game: initialGame } = props;
+
+  const router = useRouter();
+  const [game, setGame] = useState<IGameState>(initialGame);
+  const { t } = useTranslation();
 
   /**
    * Load game from database
    */
   useEffect(() => {
-    if (!gameId) return;
-
-    return network.subscribeToGame(gameId as string, game => {
+    return subscribeToGame(game.id as string, game => {
       if (!game) {
         return router.push("/404");
       }
 
       setGame(game);
     });
-  }, [gameId]);
+  }, [game.id]);
 
   function onBackClick() {
-    router.push(`/play?gameId=${gameId}`);
+    router.push(`/${game.id}`);
   }
 
   function gameVariantToText(gameVariant) {
@@ -96,7 +107,7 @@ export default function Summary() {
     return <LoadingScreen />;
   }
 
-  const gameDuration = game.startedAt && game.endedAt ? formatDuration(game.startedAt - 7200000, game.endedAt) : null;
+  const gameDuration = game.startedAt && game.endedAt ? formatDuration(game.startedAt, game.endedAt) : null;
 
   return (
     <GameContext.Provider value={game}>
@@ -167,7 +178,7 @@ export default function Summary() {
                   id: nextGameId,
                 });
 
-                await network.updateGame(nextGame);
+                await updateGame(nextGame);
 
                 logEvent("Game", "Game created");
 
