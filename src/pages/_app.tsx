@@ -8,8 +8,6 @@ import { I18nextProvider, useTranslation } from "react-i18next";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
 import useConnectivity from "~/hooks/connectivity";
-import FirebaseNetwork, { setupFirebase } from "~/hooks/firebase";
-import { NetworkContext } from "~/hooks/network";
 import { i18n } from "~/lib/i18n";
 
 import { initAnalytics, logEvent, logPageView } from "../lib/analytics";
@@ -74,28 +72,25 @@ function Hanabi(props: AppProps) {
 
   const [showOffline, setShowOffline] = useState(true);
   const online = useConnectivity();
-  const network = new FirebaseNetwork(setupFirebase());
 
   return (
     <>
       <I18nextProvider i18n={i18n}>
         <Meta />
 
-        <NetworkContext.Provider value={network}>
-          <div className="aspect-ratio--object">
-            {/* Offline indicator */}
-            {!online && showOffline && (
-              <div className="relative flex items-center justify-center bg-red shadow-4 b--red ba pa2 z-99">
-                <Txt uppercase size={TxtSize.MEDIUM} value={t("offline")} />
-                <a className="absolute right-1" onClick={() => setShowOffline(false)}>
-                  <Txt value="×" />
-                </a>
-              </div>
-            )}
+        <div className="aspect-ratio--object">
+          {/* Offline indicator */}
+          {!online && showOffline && (
+            <div className="relative flex items-center justify-center bg-red shadow-4 b--red ba pa2 z-99">
+              <Txt uppercase size={TxtSize.MEDIUM} value={t("offline")} />
+              <a className="absolute right-1" onClick={() => setShowOffline(false)}>
+                <Txt value="×" />
+              </a>
+            </div>
+          )}
 
-            <Component {...pageProps} />
-          </div>
-        </NetworkContext.Provider>
+          <Component {...pageProps} />
+        </div>
       </I18nextProvider>
     </>
   );

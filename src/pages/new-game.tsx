@@ -7,9 +7,9 @@ import HomeButton from "~/components/homeButton";
 import Button, { ButtonSize } from "~/components/ui/button";
 import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import useNetwork from "~/hooks/network";
 import { newGame } from "~/lib/actions";
 import { logEvent } from "~/lib/analytics";
+import { updateGame } from "~/lib/firebase";
 import { readableUniqueId } from "~/lib/id";
 import { GameMode, GameVariant, IGameHintsLevel } from "~/lib/state";
 
@@ -44,7 +44,6 @@ const BotsSpeeds = {
 
 export default function NewGame() {
   const router = useRouter();
-  const network = useNetwork();
   const { t } = useTranslation();
 
   const [offline, setOffline] = useState(false);
@@ -59,6 +58,8 @@ export default function NewGame() {
   const [turnsHistory] = useState(true);
   const [botsWait, setBotsWait] = useState(process.env.NODE_ENV === "production" ? 1000 : 0);
 
+  const [creatingGame, setCreatingGame] = useState(false);
+
   /**
    * Initialise seed on first render
    */
@@ -69,7 +70,9 @@ export default function NewGame() {
   async function onCreateGame() {
     const gameId = readableUniqueId();
 
-    network.updateGame(
+    setCreatingGame(true);
+
+    await updateGame(
       newGame({
         id: gameId,
         variant,
@@ -227,8 +230,9 @@ export default function NewGame() {
           <Button
             className="justify-end mt2"
             id="new-game"
+            primary={!creatingGame}
             size={ButtonSize.LARGE}
-            text={t("newGame")}
+            text={creatingGame ? t("creatingGame") : t("newGame")}
             onClick={onCreateGame}
           />
         </div>

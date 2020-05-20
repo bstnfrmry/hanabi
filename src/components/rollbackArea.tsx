@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
-import useNetwork from "~/hooks/network";
 import { getStateAtTurn } from "~/lib/actions";
+import { updateGame } from "~/lib/firebase";
 import IGameState from "~/lib/state";
 
 interface Props {
@@ -30,7 +30,6 @@ function getLastRollbackableTurn(game: IGameState) {
 
 export default function RollbackArea(props: Props) {
   const { onCloseArea } = props;
-  const network = useNetwork();
   const { t } = useTranslation();
 
   const game = useGame();
@@ -38,7 +37,7 @@ export default function RollbackArea(props: Props) {
   const canRollback = lastRollbackableTurn >= 0;
 
   function onRollback() {
-    network.updateGame(getStateAtTurn(game, lastRollbackableTurn));
+    updateGame(getStateAtTurn(game, lastRollbackableTurn));
   }
 
   return (

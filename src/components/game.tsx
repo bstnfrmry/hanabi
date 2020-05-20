@@ -17,33 +17,34 @@ import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 import useLocalStorage from "~/hooks/localStorage";
-import useNetwork from "~/hooks/network";
 import { useNotifications } from "~/hooks/notifications";
 import usePrevious from "~/hooks/previous";
 import { useReplay } from "~/hooks/replay";
+import { useSession } from "~/hooks/session";
 import { useSoundEffects } from "~/hooks/sounds";
 import { commitAction, getMaximumPossibleScore, getScore, joinGame, newGame, recreateGame } from "~/lib/actions";
 import { play } from "~/lib/ai";
 import { cheat } from "~/lib/ai-cheater";
 import { logEvent } from "~/lib/analytics";
+import { setNotification, setReaction, updateGame } from "~/lib/firebase";
 import { uniqueId } from "~/lib/id";
 import IGameState, { GameMode, IGameHintsLevel, IGameStatus } from "~/lib/state";
 
 interface Props {
+  host: string;
   onGameChange: (game: IGameState) => void;
 }
 
 export function Game(props: Props) {
-  const { onGameChange } = props;
+  const { host, onGameChange } = props;
   const { t } = useTranslation();
 
-  const network = useNetwork();
   const router = useRouter();
   const [displayStats, setDisplayStats] = useState(false);
   const [reachableScore, setReachableScore] = useState<number>(null);
   const [interturn, setInterturn] = useState(false);
+  const { playerId } = useSession();
   const [, setGameId] = useLocalStorage("gameId", null);
-  const [playerId] = useLocalStorage("playerId", uniqueId());
   const [selectedArea, selectArea] = useState<ISelectedArea>({
     id: "logs",
     type: ActionAreaType.LOGS,
@@ -63,50 +64,47 @@ export function Game(props: Props) {
    */
   useEffect(() => {
     selectArea({ id: "logs", type: ActionAreaType.LOGS });
-  }, [game && game.turnsHistory.length]);
+  }, [game.turnsHistory.length]);
 
   /**
    * Toggle interturn state on new turn for pass & play
    */
   useEffect(() => {
-    if (!game) return;
     if (game.options.gameMode !== GameMode.PASS_AND_PLAY) return;
     if (game.players.length < game.options.playersCount) return;
     if (game.status !== IGameStatus.ONGOING) return;
 
     setInterturn(true);
-  }, [game && game.turnsHistory.length, game && game.players.length, game && game.status]);
+  }, [game.turnsHistory.length, game.players.length, game.status]);
 
   /**
    * Play for bots.
    */
   useEffect(() => {
-    if (!game) return;
     if (!game.synced) return;
     if (game.status !== IGameStatus.ONGOING) return;
     if (!selfPlayer || selfPlayer.index) return;
     if (!currentPlayer.bot) return;
 
     if (game.options.botsWait === 0) {
-      network.updateGame(play(game));
+      updateGame(play(game));
       return;
     }
 
-    network.setReaction(game, currentPlayer, "🧠");
+    setReaction(game, currentPlayer, "🧠");
     const timeout = setTimeout(() => {
-      network.updateGame(play(game));
-      game.options.botsWait && network.setReaction(game, currentPlayer, null);
+      updateGame(play(game));
+      game.options.botsWait && setReaction(game, currentPlayer, null);
     }, game.options.botsWait);
 
     return () => clearTimeout(timeout);
-  }, [game && game.currentPlayer, game && game.status, game && game.synced]);
+  }, [game.currentPlayer, game.status, game.synced]);
 
   /**
    * At the start of the game, compute and store the maximum score
    * that our cheating AI can achieve.
    */
   useEffect(() => {
-    if (!game) return;
     if (![IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status)) return;
 
     let sameGame = newGame({
@@ -136,23 +134,21 @@ export function Game(props: Props) {
     }
 
     setReachableScore(getScore(sameGame));
-  }, [game && game.status]);
+  }, [game.status]);
 
   /**
    * Track when the game ends
    */
   useEffect(() => {
-    if (!game) return;
     if (game.status !== IGameStatus.OVER) return;
 
     logEvent("Game", "Game over");
-  }, [game && game.status]);
+  }, [game.status]);
 
   /**
    * Display fireworks animation when game ends
    */
   useEffect(() => {
-    if (!game) return;
     if (game.status !== IGameStatus.OVER) return;
 
     const fireworks = new Fireworks(fireworksRef.current, {
@@ -169,26 +165,25 @@ export function Game(props: Props) {
     }, game.playedCards.length * 200); // stop rockets from spawning
 
     return () => clearTimeout(timeout);
-  }, [game && game.status]);
+  }, [game.status]);
 
   /**
    * Redirect players to next game
    */
   const previousNextGameId = usePrevious(game ? game.nextGameId : null);
   useEffect(() => {
-    if (!game) return;
     if (!game.nextGameId) return;
     if (!previousNextGameId) return;
 
     setDisplayStats(false);
     router.push(`/${game.nextGameId}`);
-  }, [game && game.nextGameId]);
+  }, [game.nextGameId]);
 
   function onJoinGame(player) {
     const newState = joinGame(game, { id: playerId, ...player });
 
     onGameChange({ ...newState, synced: false });
-    network.updateGame(newState);
+    updateGame(newState);
 
     logEvent("Game", "Player joined");
 
@@ -205,7 +200,7 @@ export function Game(props: Props) {
     const newState = joinGame(game, { id: playerId, ...bot, bot: true });
 
     onGameChange({ ...newState, synced: false });
-    network.updateGame(newState);
+    updateGame(newState);
 
     logEvent("Game", "Bot added");
   }
@@ -218,7 +213,7 @@ export function Game(props: Props) {
     };
 
     onGameChange({ ...newState, synced: false });
-    network.updateGame(newState);
+    updateGame(newState);
 
     logEvent("Game", "Game started");
   }
@@ -238,7 +233,7 @@ export function Game(props: Props) {
     }
 
     onGameChange({ ...newState, synced: false });
-    network.updateGame(newState);
+    updateGame(newState);
 
     logEvent("Game", "Turn played");
   }
@@ -260,11 +255,11 @@ export function Game(props: Props) {
   }
 
   async function onNotifyPlayer(player) {
-    network.setNotification(game, player, true);
+    setNotification(game, player, true);
   }
 
   async function onReaction(reaction) {
-    network.setReaction(game, selfPlayer, reaction);
+    setReaction(game, selfPlayer, reaction);
   }
 
   function onSelectArea(area: ISelectedArea) {
@@ -327,9 +322,9 @@ export function Game(props: Props) {
   async function onRestartGame() {
     const nextGame = recreateGame(game);
 
-    await network.updateGame(nextGame);
+    await updateGame(nextGame);
 
-    network.updateGame({
+    updateGame({
       ...game,
       nextGameId: nextGame.id,
     });
@@ -351,7 +346,7 @@ export function Game(props: Props) {
           )}
 
           {game.status === IGameStatus.LOBBY && (
-            <Lobby onAddBot={onAddBot} onJoinGame={onJoinGame} onStartGame={onStartGame} />
+            <Lobby host={host} onAddBot={onAddBot} onJoinGame={onJoinGame} onStartGame={onStartGame} />
           )}
 
           {selectedArea.type === ActionAreaType.ROLLBACK && (

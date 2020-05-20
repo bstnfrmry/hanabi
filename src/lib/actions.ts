@@ -79,8 +79,6 @@ function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
       }
     }
 
-    debugger;
-
     // if there's only one possible color, make it sure
     const onlyPossibleColors = Object.keys(card.hint.color).filter(
       color => card.hint.color[color] === IHintLevel.POSSIBLE

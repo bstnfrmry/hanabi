@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 
 import useLocalStorage from "~/hooks/localStorage";
 import { useReplay } from "~/hooks/replay";
+import { useSession } from "~/hooks/session";
 import { getStateAtTurn } from "~/lib/actions";
 import IGameState, { fillEmptyValues, GameMode } from "~/lib/state";
 
@@ -31,13 +32,9 @@ export function useCurrentPlayer(game: IGameState = useGame()) {
 }
 
 export function useSelfPlayer(game: IGameState = useGame()) {
-  const router = useRouter();
+  const { playerId } = useSession();
   const currentPlayer = useCurrentPlayer(game);
 
-  const [storedPlayerId] = useLocalStorage("playerId", null);
-
-  // Allows overwriting the playerId using the page URL for backwards compatibility
-  const playerId = router.query.playerId || storedPlayerId;
   if (!game) {
     return null;
   }
