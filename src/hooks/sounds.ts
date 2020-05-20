@@ -21,7 +21,7 @@ export function useSoundEffects() {
     if (!selfPlayer) return;
     if (!selfPlayer.notified) return;
 
-    playSound(`/static/sounds.bell.mp3`);
+    playSound(`/static/sounds/bell.mp3`);
     vibrate(200);
     const timeout = setTimeout(() => setNotification(game, selfPlayer, false), 10000);
 
