@@ -13,7 +13,7 @@ interface Props {
   games: IGameState[];
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
+export const getServerSideProps = async () => {
   const games = await loadPublicGames();
 
   return {
