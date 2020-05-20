@@ -1,3 +1,4 @@
+import Fireworks from "fireworks-canvas";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,12 +15,33 @@ export default function Home() {
   const [gameId] = useLocalStorage("gameId", null);
   const [playerId] = useLocalStorage("playerId", null);
   const rulesRef = useRef<HTMLDivElement>();
+  const fireworksRef = useRef();
 
   const lastGame = gameId && playerId ? { gameId } : null;
 
   useEffect(() => {
     router.prefetch("/new-game");
     router.prefetch("/join-game");
+  }, []);
+
+  /**
+   * Display fireworks animation when game ends
+   */
+  useEffect(() => {
+    const fireworks = new Fireworks(fireworksRef.current, {
+      maxRockets: 15, // max # of rockets to spawn
+      rocketSpawnInterval: 150, // milliseconds to check if new rockets should spawn
+      numParticles: 100, // number of particles to spawn when rocket explodes (+0-10)
+      explosionMinHeight: 10, // minimum percentage of height of container at which rockets explode
+      explosionChance: 1, // chance in each tick the rocket will explode
+    });
+    fireworks.start();
+
+    const timeout = setTimeout(() => {
+      fireworks.stop();
+    }, 1500);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
@@ -82,6 +104,7 @@ export default function Home() {
       <div ref={rulesRef}>
         <Rules />
       </div>
+      <div ref={fireworksRef} className="fixed absolute--fill z-999" style={{ pointerEvents: "none" }} />
     </div>
   );
 }
