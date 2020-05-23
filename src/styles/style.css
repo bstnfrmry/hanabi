@@ -9,6 +9,7 @@
   --color-yellow: #f4d03f;
   --color-green: #52be80;
   --color-orange: #ed8936;
+  --color-purple: #805ad5;
 
   --color-white-dark: #4a4a4a;
   --color-red-dark: #701c13;
@@ -218,7 +219,10 @@ button {
     var(--color-green) 40% 60%,
     var(--color-yellow) 60% 80%,
     var(--color-red) 80% 100%
-  )
+  );
+
+  /* Fallback for browsers not supporting radial gradients */
+  background-color: var(--color-purple);
 }
 
 .bg-rainbow-circle {
