@@ -8,7 +8,7 @@ import Home from "~/pages";
 
 export async function getStaticPaths() {
   return {
-    paths: ["fr", "en", "nl"].map(lang => ({ params: { lang } })),
+    paths: ["fr", "en", "es", "nl"].map(lang => ({ params: { lang } })),
     fallback: false,
   };
 }
