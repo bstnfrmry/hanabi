@@ -1,6 +1,6 @@
 import { groupBy } from "lodash";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 import { percentage } from "~/components/playerStats";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -38,7 +38,10 @@ export default function GameActionsStats() {
     <div className="flex flex-column items-center">
       {playsCount > 0 && (
         <Txt size={TxtSize.MEDIUM}>
-          {t("playHints")}: <span className="txt-yellow">{playsPerHint}</span>
+          <Trans i18nKey="playHints">
+            Plays per hint:
+            <span className="txt-yellow">{{ playsPerHint }}</span>
+          </Trans>
         </Txt>
       )}
 

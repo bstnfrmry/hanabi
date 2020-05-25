@@ -2,7 +2,7 @@ import classnames from "classnames";
 import moment from "moment";
 import { useRouter } from "next/router";
 import React, { ReactNode, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import shortid from "shortid";
 
 import GameActionsStats from "~/components/gameActionsStats";
@@ -123,13 +123,10 @@ export default function Summary(props: Props) {
         <div className="flex flex-column items-center mt4">
           <Txt size={TxtSize.MEDIUM} value={t("summarySubtitle")} />
           <Txt className="mt2" size={TxtSize.MEDIUM}>
-            <span>{`${t("players")}: ${game.players.length}`}</span>
-            <span className="ml1">
-              · {t("mode")}: {gameVariantToText(game.options.variant)}
-            </span>
-            <span className="ml2">
-              · {t("shuffle")} #{game.options.seed}
-            </span>
+            <Trans i18nKey="partySetup">
+              Players: {{ players: game.players.length }} · Mode: {{ variant: gameVariantToText(game.options.variant) }}{" "}
+              · Shuffle #{{ shuffle: game.options.seed }}
+            </Trans>
           </Txt>
           {gameDuration && <Txt className="mt2" size={TxtSize.MEDIUM} value={t("gameCompleted", { gameDuration })} />}
         </div>
@@ -162,11 +159,10 @@ export default function Summary(props: Props) {
 
         <Section className="tc" title={t("tryOutTitle")}>
           <div>
-            <Txt
-              value={`${t("players")}: ${game.players.length} - ${t("mode")}: ${gameVariantToText(
-                game.options.variant
-              )}`}
-            />
+            <Trans i18nKey="partySetup">
+              Players: {{ players: game.players.length }} · Mode: {{ variant: gameVariantToText(game.options.variant) }}{" "}
+              · Shuffle #{{ shuffle: game.options.seed }}
+            </Trans>
             <Button
               primary
               className="ml3"
@@ -188,10 +184,12 @@ export default function Summary(props: Props) {
           </div>
           <div className="mt4">
             <Txt>
-              <span>{t("tryOutAlternative")}</span>
-              <a className="ml2 lavender" href="https://hanabi.cards">
-                hanabi.cards
-              </a>
+              <Trans i18nKey="tryOutAlternative">
+                You can also play with other setups and meet our AI on
+                <a className="lavender" href="https://hanabi.cards">
+                  hanabi.cards
+                </a>
+              </Trans>
             </Txt>
           </div>
         </Section>
