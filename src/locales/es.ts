@@ -211,7 +211,7 @@ export const es = {
   ShowCards: "Mostrar cartas",
   started: "Comenzó",
   youGaveHintTurn: "Diste pista a <1></1> en sus <3></3>",
-  tuDiscardedTurn: "Tu descartaste <1></1>",
+  youDiscardedTurn: "Tu descartaste <1></1>",
   youPlayedTurn: "Jugaste <1></1>",
   somebodyHintedYouTurn: "<0></0> te dio pista en tus <2></2>",
   somebodyHintedSomebodyTurn: "<0></0> dio pista a <2></2> en sus <4></4>",
