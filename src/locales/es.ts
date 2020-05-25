@@ -217,9 +217,9 @@ export const es = {
   somebodyHintedSomebodyTurn: "<0></0> dio pista a <2></2> en sus <4></4>",
   somebodyDiscardedTurn: "<0></0> descartó <2></2>",
   somebodyPlayedTurn: "<0></0> jugó <2></2>",
-  whatYouDrewTurn: "y robó <1></1>",
-  whatTheyDrewTurn: "y robaron <1></1>",
+  whatYouDrewTurn: "y robaste <1></1>",
+  whatTheyDrewTurn: "y robó <1></1>",
   selectLanguage: "Seleccione un idioma",
   creatingGame: "Partida en creación...",
-  partySetup: "Jugadores: {{players}} · Modo: {{variante}} · Baraja #{{shuffle}}",
+  partySetup: "Jugadores: {{players}} · Modo: {{variant}} · Baraja #{{shuffle}}",
 };
