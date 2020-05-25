@@ -147,10 +147,10 @@ export const en = {
     "On each player's turn, they take one (and only one) of the three following actions. You are not allowed to pass.\n\n1. Give information to another player.\n2. Discard a card.\n3. Play a card\n\nPlayers are not allowed to give hints or suggestions on other player's turns!",
   rulesHintTitle: "1. Give information",
   rulesHint:
-    "When you give information, it will remove a blue token. Note: If you have no more blue tokens, you cannotchoose to give information and must pick a different action.\n\nYou then give information to a fellow player about the cards in that player's hand by clicking on it. You can tell the player either about one (and only one) color, or one (and only one) value of card.",
+    "When you give information, it will remove a blue token. Note: If you have no more blue tokens, you cannot choose to give information and must pick a different action.\n\nYou then give information to a fellow player about the cards in that player's hand by clicking on it. You can tell the player either about one (and only one) color, or one (and only one) value of card.",
   rulesDiscardTitle: "2. Discard a card",
   rulesDiscard:
-    "Discarding a card returns a blue token. You discard a card from your hand by tapping it. You then draw a new card from the deck and it will be added to your hand. \nNote: If you have all 8 blue tokens, you cannot discard cards and must pick a different action. \nYou can consult discarded cards by clicking on the grey deck",
+    "Discarding a card returns a blue token. You discard a card from your hand by tapping it. You then draw a new card from the deck and it will be added to your hand. \nNote: If you have all 8 blue tokens, you cannot discard cards and must pick a different action. \nYou can consult discarded cards at anytime.",
   rulesPlayTitle: "3. Play a card",
   rulesPlay:
     "At your turn, to play a card, take a card from your hand and play it.\nOne of two things happen:\n· If the card begins or adds to a firework, it will be added to that firework pile\n· If the card does not add to a firework, it will be discarded the card and add a red strike token\nThen you will draw a replacement card from the deck.\n\nWhen a player finishes a firework by playing a value 5 card on it, it will return one blue token to the lid of the box as a bonus. If all the blue tokens are in the box lid, you do not get the bonus.",
@@ -164,7 +164,7 @@ export const en = {
     "🌈 The rainbow extension also adds a 6th pile with the same values that the 5 other piles (three 1s, 2 items of cards 2/3/4 and one 5). The particularity is that rainbow cards are of all colors. Every time you give a hint on colors, they will be touched.",
   rulesUsTitle: "Who are we?",
   rulesUs:
-    "We are a group of board-game addicts. Locked down in 2020, we were willing to find an alternative to play together remotely. \nSince we both have fun coding and playing Hanabi, we decided to create an online mobile-friendly version of the game.\n\n👉 Like us, please buy the <2>physical version</2> to support its creator if you like this game!",
+    "We are a group of board-game addicts. Locked down in 2020, we were willing to find an alternative to play together remotely.\nSince we both have fun coding and playing Hanabi, we decided to create an online mobile-friendly version of the game.\n\n👉 Like us, please buy the <2>physical version</2> to support its creator if you like this game!",
   rulesBuy:
     "Don't hesitate to <1>contact us</1> if you have any question or suggestion. We also have a <3>public Github repository</3> if you'd like to contribute.",
   noRoom: "No available room",
