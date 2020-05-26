@@ -221,4 +221,7 @@ export const en = {
   selectLanguage: "Select a language",
   creatingGame: "Partie en cours de création...",
   partySetup: "Players: {{players}} · Mode: {{variant}} · Shuffle #{{shuffle}}",
+  sendMessagePlaceholder: "Send a message to your teammates",
+  sendMessage: "Send",
+  message: "<0></0>: <1></1>",
 };
