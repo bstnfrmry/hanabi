@@ -175,7 +175,9 @@ export interface ITokens {
 // empty arrays are returned as null in Firebase, so we fill
 // them back to avoid having to type check everywhere
 export function fillEmptyValues(state: IGameState): IGameState {
-  if (!state) return null;
+  if (!state) {
+    return null;
+  }
 
   return defaults(state, {
     playedCards: [],
