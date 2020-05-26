@@ -4,8 +4,7 @@ export const en = {
   hanabi: "Hanabi",
   welcome: "Welcome",
   newGame: "New game",
-  tagline: "Play Hanabi online with friends!",
-  subTagline: "Cooperative multiplayer card game available on phone, tablet & desktop",
+  tagline: "Play the Hanabi game online with friends!",
   createRoom: "Create a room",
   joinRoom: "Join a room",
   rejoinGame: "Rejoin game",
@@ -63,10 +62,8 @@ export const en = {
   negativeHintNumber: "You have no {{ number }}s",
   positiveHintColor: "Your card {{ position }} is {{ color }}",
   positiveHintNumber: "Your card {{ position }} is a {{ number }}",
-  positiveHintNumberSequence: "Your card {{ position }} is a {{ number }} or higher",
   positiveHintColorPlural: "Your cards {{ positions }} are {{ color }}",
   positiveHintNumberPlural: "Your cards {{ positions }} are {{ number }}s",
-  positiveHintNumberSequencePlural: "Your cards {{ positions }} are {{ number }}s or higher",
   you: "You",
   hinted: "Hinted",
   played: "Played",
@@ -97,7 +94,7 @@ export const en = {
     "Playing a wrong card will discard it and cost you 1 strike token.\nReaching 3 strike tokens will instantly lose the game.",
   yourTurnTutorial: "It's your turn",
   yourTurnTutorialContent:
-    "You have 3 options:\n\n- Tap your game to play a card...\n- ... or discard it\n- Tap one of your teammates games to give them a hint.",
+    "You have 3 options:\n\n- Tap your game to play a card...\n- ... or discard it\n- Tap one of your teammates games to give them a hints.",
   skip: "✕ Skip",
   offline: "You are offline !",
   apologies: "We're sorry, something went wrong 😕",
@@ -111,12 +108,10 @@ export const en = {
   orangeVariant: "Orange",
   multicolorVariant: "Multicolor",
   rainbowVariant: "Rainbow",
-  sequenceVariant: "Sequence",
   classicVariantDescription: "A classic game of Hanabi with 5 colors",
-  multicolorVariantDescription: "A 6th suit is added with only one card of each",
-  rainbowVariantDescription: "A 6th suit is added that matches every color",
-  orangeVariantDescription: "A 6th classic suit is added",
-  sequenceVariantDescription: "Number hints also target higher value cards",
+  multicolorVariantDescription: "A 6th suite is added with only one card of each",
+  rainbowVariantDescription: "A 6th suite is added that matches every color",
+  orangeVariantDescription: "A 6th classic suite is added",
   showDirectHints: "Show direct hints",
   hideDirectHints: "Do not show hints",
   botSpeed: "Bots speed",
@@ -136,7 +131,7 @@ export const en = {
   seed: "Seed",
   objective: "Objective",
   rulesIntro:
-    "Hanabi is a card game created by Antoine Bauza. It's cooperative, which means that players are not against each other but assemble to reach a common goal. They incarn here distracted pyrotechnists who - byinattention - mixed their powder, wicks and rockets for a large fireworks display. The show will begin soon and the situation is a bit chaotic. They will need to help each other to prevent the show turning to disaster.",
+    "Hanabi is a card game created by Antoine Bauza. It's cooperative, which means that players are not againsteach other but assemble to reach a common goal. They incarn here distracted pyrotechnists who - due to inattention - mixed their powder, wicks and rockets for a large fireworks display. The show will begin soon and the situation is a bit chaotic. They will need to help each other to prevent the show turning to disaster.",
   rulesGoal:
     "The goal of the pyrotechnics team is to build 5 fireworks, one of each color (white, red, blue, yellow, green) by combining increasing value cards (1,2,3,4,5) of the same color.",
   rulesSetupTitle: "Setup",
@@ -144,7 +139,7 @@ export const en = {
     "The app sets up everything for you, which is handy 😉. At the beginning of a game, you will have 8 blue tokens - your hints - and 3 red tokens - your strike tokens.\n\nThe deck is composed of 50 cards, 10 of each color <1>with numbers 1, 1, 1, 2, 2, 3, 3, 4, 4, 5</1>.\n· In a 2 or 3 player game, each player will be dealt 5 cards\n· In a 4 or 5 player game, each player will be dealt 4 cards.\n\nAs you will see, players are not allowed to look at their own cards!",
   rulesGameTitle: "Playing the game",
   rulesGame:
-    "On each player's turn, they take one (and only one) of the three following actions. You are not allowed to pass.\n\n1. Give information to another player.\n2. Discard a card.\n3. Play a card\n\nPlayers are not allowed to give hints or suggestions on other player's turns!",
+    "On each player's turn, they take one (and only one) of the three following actions. You are not allowed to pass.\n1. Give information to another player.\n2. Discard a card.\n3. Play a card\nPlayers are not allowed to give hints or suggestions on other player's turns!",
   rulesHintTitle: "1. Give information",
   rulesHint:
     "When you give information, it will remove a blue token. Note: If you have no more blue tokens, you cannotchoose to give information and must pick a different action.\n\nYou then give information to a fellow player about the cards in that player's hand by clicking on it. You can tell the player either about one (and only one) color, or one (and only one) value of card.",
@@ -159,7 +154,7 @@ export const en = {
     "Hanabi can end in three ways:\n· If you get the third red token, you lose the game as the display goes up in flames!\n· If the team completes all five colors of firework with a value of 5, the team makes a spectacular victorydisplay and obtains the maximum score of 25 points - 30 with multicolor option!\n· If a player draws the last card from deck, the game is almost over. Each player gets one more turn,including the player who drew the last card. Players cannot draw more cards during these final turns.\n\nThe players then score their performance based on the fireworks they assembled.",
   rulesExtensionTitle: "Extension",
   rulesExtensionMulticolor:
-    "🎨 The multicolor variant adds up a 6th pile and a 6th set of cards with only one item of each card: 1, 2, 3, 4, 5. These fireworks are therefore more scarce and you will have to be cautious not to discard them. Rules are the same and you have to complete all siw piles to reach a maximum score of 30 points.",
+    "🎨 The multicolor variant adds up a 6th pile and a 6th set of cards with only one item of each card: 1, 2, 3, 4, 5. These fireworks are therefore more scarce and you will have to be cautious not to discard them. Rules are the same and you have to complete all six piles to reach a maximum score of 30 points.",
   rulesExtensionRainbow:
     "🌈 The rainbow extension also adds a 6th pile with the same values that the 5 other piles (three 1s, 2 items of cards 2/3/4 and one 5). The particularity is that rainbow cards are of all colors. Every time you give a hint on colors, they will be touched.",
   rulesUsTitle: "Who are we?",
@@ -219,5 +214,4 @@ export const en = {
   somebodyPlayedTurn: "<0></0> played <2></2>",
   whatYouDrewTurn: "and drew <1></1>",
   whatTheyDrewTurn: "and drew <1></1>",
-  selectLanauge: "Select a language",
 };
