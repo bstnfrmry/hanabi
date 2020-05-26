@@ -6,6 +6,7 @@ import Popover from "react-popover";
 import posed, { PoseGroup } from "react-pose";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
+import ChatPopover from "~/components/chatPopover";
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import PlayerStats from "~/components/playerStats";
 import ReactionsPopover from "~/components/reactionsPopover";
@@ -95,6 +96,7 @@ export default function PlayerGame(props: Props) {
   const { t } = useTranslation();
   const replay = useReplay();
   const [reactionsOpen, setReactionsOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
   const [selectedCard, selectCard] = useState<number>(cardIndex);
   const [revealCards, setRevealCards] = useState(false);
   const [pendingHint, setPendingHint] = useState<IHintAction>({
@@ -193,6 +195,25 @@ export default function PlayerGame(props: Props) {
                   />
                 )}
                 {!player.reaction && <Txt style={{ filter: "grayscale(100%)" }} value="︎︎︎︎😊" />}
+              </a>
+            </Popover>
+          )}
+
+          {self && !replay.cursor && game.status !== IGameStatus.LOBBY && (
+            <Popover
+              body={<ChatPopover onClose={() => setChatOpen(false)} />}
+              className="z-999"
+              isOpen={chatOpen}
+              onOuterAction={() => setChatOpen(false)}
+            >
+              <a
+                className="pointer grow ml2"
+                onClick={e => {
+                  e.stopPropagation();
+                  setChatOpen(!chatOpen);
+                }}
+              >
+                💬
               </a>
             </Popover>
           )}

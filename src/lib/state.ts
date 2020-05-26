@@ -1,5 +1,7 @@
 import { defaults } from "lodash";
 
+import { ID } from "~/lib/id";
+
 /**
  * game state
  */
@@ -156,6 +158,7 @@ export interface ITurn {
 }
 
 export interface IMessage {
+  id: ID;
   content: string;
   from: number;
   turn: number;

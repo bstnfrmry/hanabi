@@ -1,12 +1,14 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import posed, { PoseGroup } from "react-pose";
 
+import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 import { useReplay } from "~/hooks/replay";
+import { IMessage } from "~/lib/state";
 
 interface Props {
   interturn: boolean;
@@ -20,16 +22,23 @@ export default function Logs(props: Props) {
   const replay = useReplay();
   const selfPlayer = useSelfPlayer();
 
+  const PoseItem = replay.cursor ? posed.div() : Item;
+  const firstMessages = game.messages.filter(message => message.turn === 0).reverse();
+
   return (
     <div className="flex-grow-1 overflow-y-scroll">
       <div className="relative">
         <PoseGroup>
           {[...game.turnsHistory].reverse().map((turn, i) => {
             const key = game.turnsHistory.length - i;
-            const PoseItem = replay.cursor ? posed.div() : Item;
+
+            const messages = game.messages.filter(message => message.turn === game.turnsHistory.length - i).reverse();
 
             return (
               <PoseItem key={key}>
+                {messages.map(message => {
+                  return <Message key={message.id} message={message} />;
+                })}
                 <Turn
                   key={key}
                   showDrawn={!interturn && game.players[turn.action.from].id !== selfPlayer?.id}
@@ -39,6 +48,10 @@ export default function Logs(props: Props) {
             );
           })}
         </PoseGroup>
+        {firstMessages.map(message => {
+          return <Message key={message.id} message={message} />;
+        })}
+
         <Tutorial placement="below" step={ITutorialStep.WELCOME}>
           <Txt
             className="lavender"
@@ -47,6 +60,27 @@ export default function Logs(props: Props) {
           />
         </Tutorial>
       </div>
+    </div>
+  );
+}
+
+interface MessageProps {
+  message: IMessage;
+}
+
+function Message(props: MessageProps) {
+  const { message } = props;
+
+  const game = useGame();
+
+  const player = game.players[message.from];
+
+  return (
+    <div key={message.id}>
+      <Trans i18nKey="message">
+        <PlayerName className="lavender" player={player} size={PlayerNameSize.SMALL} />
+        <Txt size={TxtSize.SMALL} value={message.content} />
+      </Trans>
     </div>
   );
 }

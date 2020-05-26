@@ -223,4 +223,7 @@ export const fr = {
   selectLanguage: "Choisis une langue",
   creatingGame: "Creating game...",
   partySetup: "Joueurs : {{players}} · Variante : {{variant}} · Série #{{shuffle}}",
+  sendMessagePlaceholder: "Envoie un message à tes partenaires",
+  sendMessage: "Envoyer",
+  message: "<0></0> : <1></1>",
 };
