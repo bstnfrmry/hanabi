@@ -242,6 +242,7 @@ export const getStateAtTurn = mem<[IGameState, number], IGameState, string>(
       newState = commitAction(newState, turn.action);
     });
 
+    newState.messages = state.messages;
     newState.status = IGameStatus.ONGOING;
     newState.createdAt = state.createdAt;
 
