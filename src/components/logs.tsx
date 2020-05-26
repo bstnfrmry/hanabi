@@ -76,10 +76,10 @@ function Message(props: MessageProps) {
   const player = game.players[message.from];
 
   return (
-    <div key={message.id}>
+    <div key={message.id} className="lavender">
       <Trans i18nKey="message">
-        <PlayerName className="lavender" player={player} size={PlayerNameSize.SMALL} />
-        <Txt size={TxtSize.SMALL} value={message.content} />
+        <Txt size={TxtSize.SMALL} value={player.name} />
+        <Txt className="white" size={TxtSize.SMALL} value={message.content} />
       </Trans>
     </div>
   );
