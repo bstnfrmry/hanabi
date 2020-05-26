@@ -215,4 +215,7 @@ export const nl = {
   whatYouDrewTurn: "& trok <1></1>",
   whatTheyDrewTurn: "& trok <1></1>",
   partySetup: "Spelers: {{players}} · Variant: {{variant}} · Shuffle #{{shuffle}}",
+  sendMessagePlaceholder: "Stuur een bericht naar je teamgenoten",
+  sendMessage: "Sturen",
+  message: "<0></0>: <1></1>",
 };
