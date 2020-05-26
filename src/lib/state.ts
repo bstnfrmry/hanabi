@@ -18,6 +18,7 @@ export default interface IGameState {
   // the last round of game when the draw is empty
   actionsLeft: number;
   turnsHistory: ITurn[];
+  messages: IMessage[];
   createdAt: number;
   startedAt?: number;
   endedAt?: number;
@@ -154,6 +155,12 @@ export interface ITurn {
   card?: ICard;
 }
 
+export interface IMessage {
+  content: string;
+  from: number;
+  turn: number;
+}
+
 export interface IPlayer {
   id: string;
   name: string;
@@ -181,6 +188,7 @@ export function fillEmptyValues(state: IGameState): IGameState {
     playedCards: [],
     drawPile: [],
     discardPile: [],
+    messages: [],
     players: (state.players || []).map(player =>
       defaults(player, {
         hand: [],
