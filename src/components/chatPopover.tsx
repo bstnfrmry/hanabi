@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import Button, { ButtonSize } from "~/components/ui/button";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 import { sendMessage } from "~/lib/actions";
+import { logEvent } from "~/lib/analytics";
 import { updateGame } from "~/lib/firebase";
 import { uniqueId } from "~/lib/id";
 
@@ -34,6 +35,7 @@ export default function ChatPopover(props: Props) {
     updateGame(newGame);
 
     setMessage("");
+    logEvent("Game", "Message sent");
     onClose();
   }
 
