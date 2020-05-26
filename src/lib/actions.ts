@@ -16,6 +16,7 @@ import IGameState, {
   IHand,
   IHintAction,
   IHintLevel,
+  IMessage,
   INumber,
   IPlayer,
 } from "./state";
@@ -218,6 +219,14 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   return s;
 }
 
+export function sendMessage(state: IGameState, message: IMessage) {
+  const newGame = cloneDeep(state);
+
+  newGame.messages.push(message);
+
+  return newGame;
+}
+
 /**
  * Rollback the state for the given amount of turns
  */
@@ -233,6 +242,7 @@ export const getStateAtTurn = mem<[IGameState, number], IGameState, string>(
       newState = commitAction(newState, turn.action);
     });
 
+    newState.messages = state.messages;
     newState.status = IGameStatus.ONGOING;
     newState.createdAt = state.createdAt;
 
@@ -425,6 +435,7 @@ export function newGame(options: IGameOptions): IGameState {
     options,
     actionsLeft: options.playersCount + 1, // this will be decreased when the draw pile is empty
     turnsHistory: [],
+    messages: [],
     createdAt: Date.now(),
     synced: false,
   };
