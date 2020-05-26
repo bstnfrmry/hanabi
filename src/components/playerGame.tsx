@@ -213,7 +213,7 @@ export default function PlayerGame(props: Props) {
                   setChatOpen(!chatOpen);
                 }}
               >
-                💬
+                <Txt value="💬" />
               </a>
             </Popover>
           )}
