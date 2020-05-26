@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import Button, { ButtonSize } from "~/components/ui/button";
@@ -24,35 +24,43 @@ export default function ChatPopover(props: Props) {
     messageRef.current?.focus();
   }, [messageRef]);
 
+  function onSubmit() {
+    const newGame = sendMessage(game, {
+      id: uniqueId(),
+      content: message,
+      from: selfPlayer.index,
+      turn: game.turnsHistory.length,
+    });
+    updateGame(newGame);
+
+    setMessage("");
+    onClose();
+  }
+
   return (
     <form
       className="flex flex-column items-center justify-center b--yellow ba bw1 bg-white pa1 br2 gray"
       onSubmit={e => {
         e.preventDefault();
-
-        const newGame = sendMessage(game, {
-          id: uniqueId(),
-          content: message,
-          from: selfPlayer.index,
-          turn: game.turnsHistory.length,
-        });
-        updateGame(newGame);
-
-        setMessage("");
-        onClose();
+        onSubmit();
       }}
     >
       <textarea
         ref={messageRef}
-        className="bw0 f6 w5 pa2"
+        className="bw0 f6 w5 pa2 br2"
         placeholder={t("sendMessagePlaceholder")}
         rows={4}
         value={message}
         onChange={e => {
           setMessage(e.target.value);
         }}
+        onKeyDown={e => {
+          if (e.keyCode === 13 /* enter */ && e.metaKey) {
+            onSubmit();
+          }
+        }}
       />
-      <Button className="mt2 self-end" size={ButtonSize.SMALL} text={t("sendMessage")} type="submit" />
+      <Button className="mt1 self-end" size={ButtonSize.SMALL} text={t("sendMessage")} type="submit" />
     </form>
   );
 }
