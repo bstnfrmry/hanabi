@@ -243,7 +243,7 @@ export const getStateAtTurn = mem<[IGameState, number], IGameState, string>(
     });
 
     newState.messages = state.messages;
-    newState.status = IGameStatus.ONGOING;
+    newState.status = state.status;
     newState.createdAt = state.createdAt;
 
     return newState;
