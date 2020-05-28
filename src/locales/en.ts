@@ -10,9 +10,9 @@ export const en = {
   joinRoom: "Join a room",
   rejoinGame: "Rejoin game",
   whatsHanabi: "What's Hanabi ?",
-  invitationByPlayers: "{{playersNames}} invited you to a game of Hanabi 🎉",
-  invitationByPlayer: "{{playerName}} invited you to a game of Hanabi 🎉", // necessary in French
-  invitationNoPlayers: "You've been invited to a game of Hanabi 🎉",
+  invitationByPlayers: "{{playersNames}} are inviting you to a game of Hanabi 🎉",
+  invitationByPlayer: "{{playerName}} is inviting you to a game of Hanabi 🎉", // necessary in French
+  invitationNoPlayers: "You're being invited to a game of Hanabi 🎉",
   gameFull: "Everybody's here!",
   gameNotFull: "{{joined}} / {{playersCount}} joined already",
   gameNotFullPlural: "{{joined}} / {{playersCount}} joined already", // necessary in French
