@@ -119,6 +119,7 @@ export function Game(props: Props) {
       botsWait: 1000,
       turnsHistory: false,
       gameMode: GameMode.NETWORK,
+      colorBlindMode: game.options.colorBlindMode,
     });
 
     game.players.forEach(player => {
