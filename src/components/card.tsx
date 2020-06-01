@@ -8,7 +8,7 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
 import useLongPress from "~/hooks/longPress";
 import { getColors, numbers } from "~/lib/actions";
-import { ICard, IColor, IGameHintsLevel, IHintLevel } from "~/lib/state";
+import { ColorSymbols, ICard, IColor, IGameHintsLevel, IHintLevel } from "~/lib/state";
 
 export enum CardSize {
   XSMALL = "xsmall",
@@ -31,6 +31,20 @@ const CardTextSizes = {
   [CardSize.SMALL]: TxtSize.SMALL,
   [CardSize.MEDIUM]: TxtSize.MEDIUM,
   [CardSize.LARGE]: TxtSize.MEDIUM,
+};
+
+const SymbolOffset = {
+  [CardSize.XSMALL]: 1,
+  [CardSize.SMALL]: 0,
+  [CardSize.MEDIUM]: 4,
+  [CardSize.LARGE]: -4,
+};
+
+const SymbolSize = {
+  [CardSize.XSMALL]: "f3",
+  [CardSize.SMALL]: "f1",
+  [CardSize.MEDIUM]: "f1",
+  [CardSize.LARGE]: "f0",
 };
 
 export const PositionMap = {
@@ -75,6 +89,9 @@ export function CardWrapper(props: CardWrapperProps) {
     ...attributes
   } = props;
 
+  const game = useGame();
+
+  const displaySymbol = game.options.colorBlindMode && ColorSymbols[color];
   const sizeClass = CardClasses[size];
 
   return (
@@ -93,6 +110,14 @@ export function CardWrapper(props: CardWrapperProps) {
       onClick={onClick}
       {...attributes}
     >
+      {displaySymbol && (
+        <div
+          className="absolute w-100 h-100 flex justify-center items-center"
+          style={{ top: `${SymbolOffset[size]}px` }}
+        >
+          <span className={classnames("outline-main-dark", SymbolSize[size])}>{ColorSymbols[color]}</span>
+        </div>
+      )}
       {children}
     </div>
   );
@@ -213,7 +238,7 @@ export default function Card(props: Props) {
     >
       {/* Card value */}
       <Txt
-        className={classnames(`b txt-${color}-dark`, {
+        className={classnames(`b txt-${color}-dark z-999`, {
           mb3: displayHints && size === CardSize.LARGE,
         })}
         size={CardTextSizes[size]}

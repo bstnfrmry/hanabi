@@ -46,6 +46,7 @@ export interface IGameOptions {
   turnsHistory: boolean;
   botsWait: number;
   gameMode: GameMode;
+  colorBlindMode: boolean;
 }
 
 export enum GameVariant {
@@ -86,6 +87,15 @@ export enum IColor {
   RAINBOW = "rainbow",
   ORANGE = "orange",
 }
+
+export const ColorSymbols = {
+  [IColor.RED]: "♠️",
+  [IColor.GREEN]: "♦️",
+  [IColor.BLUE]: "♣️",
+  [IColor.WHITE]: "♥",
+  [IColor.YELLOW]: "★",
+  [IColor.ORANGE]: "☁",
+};
 
 export enum IInsightColor {
   Play = "#B7E1BC",

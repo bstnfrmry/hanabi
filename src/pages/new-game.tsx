@@ -56,6 +56,7 @@ export default function NewGame() {
   const [private_, setPrivate] = useState(false);
   const [hintsLevel, setHintsLevel] = useState(IGameHintsLevel.DIRECT);
   const [turnsHistory] = useState(true);
+  const [colorBlindMode, setColorBlindMode] = useState(false);
   const [botsWait, setBotsWait] = useState(process.env.NODE_ENV === "production" ? 1000 : 0);
 
   const [creatingGame, setCreatingGame] = useState(false);
@@ -84,6 +85,7 @@ export default function NewGame() {
         hintsLevel,
         turnsHistory,
         botsWait,
+        colorBlindMode,
         gameMode: offline ? GameMode.PASS_AND_PLAY : GameMode.NETWORK,
       })
     );
@@ -166,6 +168,14 @@ export default function NewGame() {
               subText={t("passandplaySubtext", "Physically pass the device to each player on their turn")}
             >
               <Checkbox checked={offline} id="offline" onChange={e => setOffline(e.target.checked)} />
+            </Field>
+
+            <Field
+              className="pb2 mb2 bb b--yellow-light"
+              label={t("colorBlindMode", "Color blind mode")}
+              subText={t("colorBlindModeSubtext", "Display symbols on top of cards to help distinguish colors")}
+            >
+              <Checkbox checked={colorBlindMode} onChange={e => setColorBlindMode(e.target.checked)} />
             </Field>
 
             <Field
