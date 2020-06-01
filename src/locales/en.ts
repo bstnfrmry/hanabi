@@ -219,7 +219,7 @@ export const en = {
   whatYouDrewTurn: "and drew <1></1>",
   whatTheyDrewTurn: "and drew <1></1>",
   selectLanguage: "Select a language",
-  creatingGame: "Partie en cours de création...",
+  creatingGame: "Creating game...",
   partySetup: "Players: {{players}} · Mode: {{variant}} · Shuffle #{{shuffle}}",
   sendMessagePlaceholder: "Send a message to your teammates",
   sendMessage: "Send",

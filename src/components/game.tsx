@@ -345,7 +345,7 @@ export function Game(props: Props) {
             </div>
           )}
 
-          {game.status === IGameStatus.LOBBY && (
+          {game.status === IGameStatus.LOBBY && selectedArea.type !== ActionAreaType.MENU && (
             <Lobby host={host} onAddBot={onAddBot} onJoinGame={onJoinGame} onStartGame={onStartGame} />
           )}
 

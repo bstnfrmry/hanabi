@@ -202,7 +202,7 @@ export default function GameStats() {
         </div>
 
         {orderedPlayers.map((player, playerIndex) => {
-          const firstHand = getStateAtTurn(game, 0).players[playerIndex].hand;
+          const firstHand = getStateAtTurn(game, 0).players[player.index].hand;
 
           return (
             <div key={player.id} className="flex flex-column items-center mr4">
@@ -225,7 +225,7 @@ export default function GameStats() {
               </div>
               {game.turnsHistory.map((turn, i) => {
                 const state = getStateAtTurn(game, i);
-                const playerState = state.players[(playerIndex + state.players.length - 1) % state.players.length];
+                const playerState = state.players[(player.index + state.players.length) % state.players.length];
 
                 return (
                   <div key={i} className="flex items-center justify-end w-100">
@@ -234,7 +234,7 @@ export default function GameStats() {
                         <Dot backgroundColor={turnToStateColor(turn)} size={12} />
                       </div>
                     )}
-                    {playerState.hand.map((card, cardIndex) => {
+                    {playerState.hand.map(card => {
                       return (
                         <div key={card.id} className="flex items-center">
                           {displayCards && (
