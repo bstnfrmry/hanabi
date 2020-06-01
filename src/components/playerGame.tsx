@@ -17,7 +17,16 @@ import Vignettes from "~/components/vignettes";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 import { useReplay } from "~/hooks/replay";
 import { matchColor, matchNumber, MaxHints } from "~/lib/actions";
-import IGameState, { GameVariant, ICard, IColor, IGameStatus, IHintAction, INumber, IPlayer } from "~/lib/state";
+import IGameState, {
+  GameMode,
+  GameVariant,
+  ICard,
+  IColor,
+  IGameStatus,
+  IHintAction,
+  INumber,
+  IPlayer,
+} from "~/lib/state";
 
 function isCardHintable(game: IGameState, hint: IHintAction, card: ICard) {
   return hint.type === "color"
@@ -119,6 +128,10 @@ export default function PlayerGame(props: Props) {
   // Show cards to other players
   if (!self && selfPlayer) {
     hideCards = false;
+  }
+  // Hide cards when pass&play and lobby
+  if (game.status === IGameStatus.LOBBY && game.options.gameMode === GameMode.PASS_AND_PLAY) {
+    hideCards = true;
   }
   // Show cards in replay mode (when toggled)
   if (revealCards) {
