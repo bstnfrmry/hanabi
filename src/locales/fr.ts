@@ -221,7 +221,7 @@ export const fr = {
   whatYouDrewTurn: "et as pioché le <1></1>",
   whatTheyDrewTurn: "et a pioché le <1></1>",
   selectLanguage: "Choisis une langue",
-  creatingGame: "Creating game...",
+  creatingGame: "Partie en cours de création...",
   partySetup: "Joueurs : {{players}} · Variante : {{variant}} · Série #{{shuffle}}",
   sendMessagePlaceholder: "Envoie un message à tes partenaires",
   sendMessage: "Envoyer",
