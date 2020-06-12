@@ -36,15 +36,15 @@ const CardTextSizes = {
 const SymbolOffset = {
   [CardSize.XSMALL]: 1,
   [CardSize.SMALL]: 0,
-  [CardSize.MEDIUM]: 4,
+  [CardSize.MEDIUM]: 3,
   [CardSize.LARGE]: -4,
 };
 
 const SymbolSize = {
   [CardSize.XSMALL]: "f3",
   [CardSize.SMALL]: "f1",
-  [CardSize.MEDIUM]: "f1",
-  [CardSize.LARGE]: "f0",
+  [CardSize.MEDIUM]: "f1-l f2",
+  [CardSize.LARGE]: "f0-l f1",
 };
 
 export const PositionMap = {
@@ -138,13 +138,18 @@ interface CardPartialHintProps {
 function CardPartialHint(props: CardPartialHintProps) {
   const { card, size } = props;
 
+  const game = useGame();
+
+  const displayColorSymbol = game.options.colorBlindMode && card.hint.color[card.color] === IHintLevel.SURE;
   let className = "";
 
   // when card is sure, apply a colored background and border using the card color
   if (card.hint.color[card.color] === IHintLevel.SURE) {
     const color = card.color === IColor.RAINBOW ? `rainbow-circle` : card.color;
 
-    className = `bg-${color} txt-${card.color}-dark ba b--${card.color}`;
+    className = classnames(`txt-${card.color}-dark`, {
+      [`bg-${color} ba b--${card.color}`]: !displayColorSymbol,
+    });
   }
 
   // when they are only 2 possible cards and one of them is rainbow,
@@ -160,13 +165,23 @@ function CardPartialHint(props: CardPartialHintProps) {
   }
 
   return (
-    <div
-      className={classnames("top-0 br-100 w-50 h-50 flex justify-center items-center", className, {
-        [`txt-white-dark`]: card.hint.color[card.color] !== 2,
-      })}
-    >
-      {card.hint.number[card.number] === 2 && <Txt value={card.number} />}
-    </div>
+    <>
+      <div
+        className={classnames("top-0 br-100 w-50 h-50 flex justify-center items-center", className, {
+          [`txt-white-dark`]: card.hint.color[card.color] !== IHintLevel.SURE,
+        })}
+      >
+        {card.hint.number[card.number] === IHintLevel.SURE && <Txt className="z-1" value={card.number} />}
+      </div>
+      {displayColorSymbol && (
+        <div
+          className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center z-0 w-100 h-100"
+          style={{ marginTop: "3px", marginLeft: "2px" }}
+        >
+          <Txt className={`txt-${card.color}`} size={TxtSize.LARGE} value={ColorSymbols[card.color]} />
+        </div>
+      )}
+    </>
   );
 }
 
@@ -208,6 +223,7 @@ export default function Card(props: Props) {
 
   const number = hidden ? null : card.number;
 
+  const displayColorSymbol = game.options.colorBlindMode;
   const displayHints =
     game.options.hintsLevel !== IGameHintsLevel.NONE &&
     [ICardContext.OTHER_PLAYER, ICardContext.TARGETED_PLAYER, ICardContext.SELF_PLAYER].includes(context);
@@ -238,8 +254,10 @@ export default function Card(props: Props) {
     >
       {/* Card value */}
       <Txt
-        className={classnames(`b txt-${color}-dark z-999`, {
-          mb3: displayHints && size === CardSize.LARGE,
+        className={classnames(`b absolute`, {
+          "bottom-1 mb3": displayHints && size === CardSize.LARGE,
+          [`txt-${color}-dark`]: !displayColorSymbol,
+          "main-dark": displayColorSymbol,
         })}
         size={CardTextSizes[size]}
         value={number}

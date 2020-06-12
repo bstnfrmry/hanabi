@@ -89,12 +89,12 @@ export enum IColor {
 }
 
 export const ColorSymbols = {
-  [IColor.RED]: "♠️",
-  [IColor.GREEN]: "♦️",
-  [IColor.BLUE]: "♣️",
-  [IColor.WHITE]: "♥",
-  [IColor.YELLOW]: "★",
-  [IColor.ORANGE]: "☁",
+  [IColor.RED]: "\u2665\uFE0E",
+  [IColor.GREEN]: "\u2663\uFE0E",
+  [IColor.BLUE]: "\u2666\uFE0E",
+  [IColor.WHITE]: "\u2660\uFE0E",
+  [IColor.YELLOW]: "★\uFE0E",
+  [IColor.ORANGE]: "☁\uFE0E",
 };
 
 export enum IInsightColor {

@@ -85,6 +85,30 @@ button {
   border-color: var(--color-lavender);
 }
 
+.txt-red {
+  color: var(--color-red);
+}
+
+.txt-blue {
+  color: var(--color-blue);
+}
+
+.txt-yellow {
+  color: var(--color-yellow);
+}
+
+.txt-white {
+  color: var(--color-white);
+}
+
+.txt-green {
+  color: var(--color-green);
+}
+
+.txt-orange {
+  color: var(--color-orange);
+}
+
 .txt-red-dark {
   color: color-mod(var(--color-red) lightness(15%));
   text-shadow: 0 0 2px color-mod(var(--color-red) lightness(90%));
@@ -367,13 +391,13 @@ button {
 @media screen and (min-width: 1024px) and (min-height: 600px) {
   .game {
     zoom: 1.2
-  }  
+  }
 }
 
 
 @media screen and (min-width: 1400px) and (min-height: 800px) {
   .game {
     zoom: 1.3
-  }  
+  }
 }
 

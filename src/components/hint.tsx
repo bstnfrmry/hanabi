@@ -34,7 +34,7 @@ export default function Hint(props: Props) {
           })}
         >
           {type === "number" && <Txt value={value} />}
-          {displaySymbol && <span className="f7 mt1">{ColorSymbols[value]}</span>}
+          {displaySymbol && <span className="f7">{ColorSymbols[value]}</span>}
         </div>
       )}
 
