@@ -224,4 +224,5 @@ export const es = {
   sendMessagePlaceholder: "Envía un mensaje a tus compañeros de equipo",
   sendMessage: "Enviado",
   message: "<0></0>: <1></1>",
+  pageNotFound: "Página no encontrada",
 };

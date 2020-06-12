@@ -226,4 +226,5 @@ export const fr = {
   sendMessagePlaceholder: "Envoie un message à tes partenaires",
   sendMessage: "Envoyer",
   message: "<0></0> : <1></1>",
+  pageNotFound: "Pagina niet gevonden",
 };

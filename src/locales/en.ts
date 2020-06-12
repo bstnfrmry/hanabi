@@ -226,4 +226,5 @@ export const en = {
   message: "<0></0>: <1></1>",
   colorBlindMode: "Color blind mode",
   colorBlindModeSubtext: "Display symbols on top of cards to help distinguish colors",
+  pageNotFound: "Page not found",
 };
