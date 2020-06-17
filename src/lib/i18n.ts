@@ -6,7 +6,7 @@ import { en } from "~/locales/en";
 import { es } from "~/locales/es";
 import { fr } from "~/locales/fr";
 import { nl } from "~/locales/nl";
-import { ru } from "~/locales/eu";
+import { ru } from "~/locales/ru";
 
 i18n
   .use(initReactI18next)
