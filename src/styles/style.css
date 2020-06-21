@@ -374,14 +374,14 @@ button {
 }
 
 @media screen and (min-width: 1024px) and (min-height: 600px) {
-  .game {
+  .game, .Popover {
     zoom: 1.2
   }
 }
 
 
 @media screen and (min-width: 1400px) and (min-height: 800px) {
-  .game {
+  .game, .Popover {
     zoom: 1.3
   }
 }
