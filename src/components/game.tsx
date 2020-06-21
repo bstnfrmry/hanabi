@@ -339,13 +339,9 @@ export function Game(props: Props) {
           <GameBoard onMenuClick={onMenuClick} onRollbackClick={onRollbackClick} />
         </div>
         <div className="flex flex-column bg-black-50 bb b--yellow ph6.5-m">
-          {selectedArea.type === ActionAreaType.MENU && (
-            <div className="h4 pa2 ph3-l">
-              <MenuArea onCloseArea={onCloseArea} />
-            </div>
-          )}
+          {selectedArea.type === ActionAreaType.MENU && <MenuArea onCloseArea={onCloseArea} />}
 
-          {game.status === IGameStatus.LOBBY && selectedArea.type !== ActionAreaType.MENU && (
+          {game.status === IGameStatus.LOBBY && (
             <Lobby host={host} onAddBot={onAddBot} onJoinGame={onJoinGame} onStartGame={onStartGame} />
           )}
 
@@ -355,32 +351,30 @@ export function Game(props: Props) {
             </div>
           )}
 
-          {game.status !== IGameStatus.LOBBY &&
-            selectedArea.type !== ActionAreaType.MENU &&
-            selectedArea.type !== ActionAreaType.ROLLBACK && (
-              <div className="h4 pt0-l overflow-y-scroll">
-                <div className="flex justify-between h-100 pa1 pa2-l">
-                  <Logs interturn={interturn} />
-                  <div className="flex flex-column justify-between items-end">
-                    <Tutorial placement="above" step={ITutorialStep.DISCARD_PILE}>
-                      <DiscardArea />
-                    </Tutorial>
-                    <Button
-                      void
-                      size={ButtonSize.TINY}
-                      text={replay.cursor === null ? t("rewind") : t("backToGame")}
-                      onClick={() => {
-                        if (replay.cursor === null) {
-                          onReplay();
-                        } else {
-                          onStopReplay();
-                        }
-                      }}
-                    />
-                  </div>
+          {game.status !== IGameStatus.LOBBY && selectedArea.type !== ActionAreaType.ROLLBACK && (
+            <div className="h4 pt0-l overflow-y-scroll">
+              <div className="flex justify-between h-100 pa1 pa2-l">
+                <Logs interturn={interturn} />
+                <div className="flex flex-column justify-between items-end">
+                  <Tutorial placement="left" step={ITutorialStep.DISCARD_PILE}>
+                    <DiscardArea />
+                  </Tutorial>
+                  <Button
+                    void
+                    size={ButtonSize.TINY}
+                    text={replay.cursor === null ? t("rewind") : t("backToGame")}
+                    onClick={() => {
+                      if (replay.cursor === null) {
+                        onReplay();
+                      } else {
+                        onStopReplay();
+                      }
+                    }}
+                  />
                 </div>
               </div>
-            )}
+            </div>
+          )}
         </div>
 
         {interturn && (

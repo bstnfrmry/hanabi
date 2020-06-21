@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import Button from "~/components/ui/button";
+import { Modal } from "~/components/ui/modal";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
 import { getStateAtTurn } from "~/lib/actions";
@@ -41,16 +42,18 @@ export default function RollbackArea(props: Props) {
   }
 
   return (
-    <div className="h-100 flex flex-column items-center justify-center pa2">
-      <Txt
-        className="w-75 tc"
-        size={TxtSize.MEDIUM}
-        value={canRollback ? t("rollbackDisclaimer") : t("cannotRollback")}
-      />
-      <div className="mt2">
-        <Button text={t("abort")} onClick={() => onCloseArea()} />
-        <Button primary className="ml4" disabled={!canRollback} text={t("rollback")} onClick={() => onRollback()} />
+    <Modal isOpen onRequestClose={() => onCloseArea()}>
+      <div className="h-100 flex flex-column items-center justify-center pa2">
+        <Txt
+          className="tc w-75"
+          size={TxtSize.MEDIUM}
+          value={canRollback ? t("rollbackDisclaimer") : t("cannotRollback")}
+        />
+        <div className="mt4">
+          <Button text={t("abort")} onClick={() => onCloseArea()} />
+          <Button primary className="ml4" disabled={!canRollback} text={t("rollback")} onClick={() => onRollback()} />
+        </div>
       </div>
-    </div>
+    </Modal>
   );
 }

@@ -218,4 +218,5 @@ export const nl = {
   sendMessagePlaceholder: "Stuur een bericht naar je teamgenoten",
   sendMessage: "Sturen",
   message: "<0></0>: <1></1>",
+  contributeLanguage: "Bijdragen!",
 };
