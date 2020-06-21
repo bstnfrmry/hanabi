@@ -1,9 +1,7 @@
 import ReactGA from "react-ga";
-import { hotjar } from "react-hotjar";
 
 const NODE_ENV = process.env.NODE_ENV;
 const GOOGLE_ANALYTICS_ID = process.env.GOOGLE_ANALYTICS_ID;
-const HOTJAR_ID = process.env.HOTJAR_ID;
 
 const isDevelopment = NODE_ENV === "development";
 
@@ -12,10 +10,6 @@ export function initAnalytics() {
 
   if (GOOGLE_ANALYTICS_ID) {
     ReactGA.initialize(GOOGLE_ANALYTICS_ID);
-  }
-
-  if (HOTJAR_ID) {
-    hotjar.initialize(+HOTJAR_ID, 6);
   }
 }
 

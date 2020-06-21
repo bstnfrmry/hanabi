@@ -6,8 +6,8 @@ import LanguageSelector from "~/components/languageSelector";
 import Rules from "~/components/rules";
 import { TutorialContext } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
-import { useGame } from "~/hooks/game";
-import { IGameStatus } from "~/lib/state";
+import { Modal } from "~/components/ui/modal";
+import Txt, { TxtSize } from "~/components/ui/txt";
 
 interface Props {
   onCloseArea: Function;
@@ -19,7 +19,6 @@ export default function MenuArea(props: Props) {
   const [showRules, setShowRules] = useState(false);
   const { reset } = useContext(TutorialContext);
   const router = useRouter();
-  const game = useGame();
   const { t } = useTranslation();
 
   function onMenuClick() {
@@ -32,25 +31,32 @@ export default function MenuArea(props: Props) {
   }
 
   return (
-    <div className="flex justify-center items-center w-100 h-100 pa2">
-      {!showRules && (
-        <div className="flex justify-center items-center">
-          <div className="mr2 mr4-m mr5-l">
-            <LanguageSelector />
-          </div>
-          <Button className="mr2" size={ButtonSize.MEDIUM} text={t("menu")} onClick={onMenuClick} />
-          {game.status === IGameStatus.ONGOING && (
-            <Button className="mr2" size={ButtonSize.MEDIUM} text={t("tutorial")} onClick={onTutorialClick} />
-          )}
-          <Button size={ButtonSize.MEDIUM} text={t("rules")} onClick={() => setShowRules(true)} />
-        </div>
-      )}
+    <Modal isOpen onRequestClose={() => onCloseArea()}>
+      <div className="flex flex-column justify-center items-center w-100 h-100 pa2 z-10">
+        {!showRules && (
+          <div className="flex flex-column justify-center items-center">
+            <Txt className="ttu txt-yellow mb4 mb5-l" size={TxtSize.MEDIUM} value={t("hanabi")} />
 
-      {showRules && (
-        <div className="aspect-ratio--object z-9999 overflow-y-scroll">
-          <Rules setShowRules={setShowRules} />
-        </div>
-      )}
-    </div>
+            <div className="mb4 mb5-l">
+              <LanguageSelector />
+            </div>
+            <Button className="mb3 w-100" size={ButtonSize.MEDIUM} text={t("menu")} onClick={onMenuClick} />
+            <Button className="mb3 w-100" size={ButtonSize.MEDIUM} text={t("tutorial")} onClick={onTutorialClick} />
+            <Button
+              className="mb3 w-100"
+              size={ButtonSize.MEDIUM}
+              text={t("rules")}
+              onClick={() => setShowRules(true)}
+            />
+          </div>
+        )}
+
+        {showRules && (
+          <div className="overflow-y-scroll">
+            <Rules setShowRules={setShowRules} />
+          </div>
+        )}
+      </div>
+    </Modal>
   );
 }
