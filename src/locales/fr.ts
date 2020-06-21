@@ -227,4 +227,5 @@ export const fr = {
   sendMessage: "Envoyer",
   message: "<0></0> : <1></1>",
   pageNotFound: "Pagina niet gevonden",
+  contributeLanguage: "Contribuer !",
 };

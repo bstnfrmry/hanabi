@@ -219,4 +219,5 @@ export const nl = {
   sendMessage: "Sturen",
   message: "<0></0>: <1></1>",
   pageNotFound: "Pagina niet gevonden",
+  contributeLanguage: "Bijdragen!",
 };

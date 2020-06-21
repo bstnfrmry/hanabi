@@ -227,4 +227,5 @@ export const en = {
   colorBlindMode: "Color blind mode",
   colorBlindModeSubtext: "Display symbols on top of cards to help distinguish colors",
   pageNotFound: "Page not found",
+  contributeLanguage: "Contribute!",
 };

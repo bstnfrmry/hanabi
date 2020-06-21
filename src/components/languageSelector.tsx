@@ -31,9 +31,26 @@ export default function LanguageSelector(props: Props) {
     i18n.changeLanguage(lang);
   }, [lang]);
 
+  const languages = {
+    ...Languages,
+    new: `🎁 ${t("contributeLanguage")}`,
+  };
+
   return (
     <label title={t("selectLanguage")}>
-      <Select options={Languages} outlined={outlined} value={lang} onChange={e => setLang(e.target.value)} />
+      <Select
+        options={languages}
+        outlined={outlined}
+        value={lang}
+        onChange={e => {
+          if (e.target.value === "new") {
+            window.open("https://github.com/bstnfrmry/hanabi/issues/180", "_blank").focus();
+            return;
+          }
+
+          setLang(e.target.value);
+        }}
+      />
     </label>
   );
 }

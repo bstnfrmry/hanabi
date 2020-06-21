@@ -225,4 +225,5 @@ export const es = {
   sendMessage: "Enviado",
   message: "<0></0>: <1></1>",
   pageNotFound: "Página no encontrada",
+  contributeLanguage: "Contribuir!",
 };
