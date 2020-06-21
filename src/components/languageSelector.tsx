@@ -9,6 +9,7 @@ const Languages = {
   fr: "🇫🇷 Français",
   es: "🇪🇸 Español",
   nl: "🇳🇱 Dutch",
+  ru: "🇷🇺 Russian",
 };
 
 interface Props {
