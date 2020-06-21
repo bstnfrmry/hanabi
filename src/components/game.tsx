@@ -363,7 +363,7 @@ export function Game(props: Props) {
                 <div className="flex justify-between h-100 pa1 pa2-l">
                   <Logs interturn={interturn} />
                   <div className="flex flex-column justify-between items-end">
-                    <Tutorial placement="above" step={ITutorialStep.DISCARD_PILE}>
+                    <Tutorial placement="left" step={ITutorialStep.DISCARD_PILE}>
                       <DiscardArea />
                     </Tutorial>
                     <Button
