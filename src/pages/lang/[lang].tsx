@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { I18nextProvider } from "react-i18next";
 
 import useLocalStorage from "~/hooks/localStorage";
 import { i18n } from "~/lib/i18n";
@@ -8,7 +7,7 @@ import Home from "~/pages";
 
 export async function getStaticPaths() {
   return {
-    paths: ["fr", "en", "es", "nl"].map(lang => ({ params: { lang } })),
+    paths: ["fr", "en", "es", "nl", "ru"].map(lang => ({ params: { lang } })),
     fallback: false,
   };
 }
