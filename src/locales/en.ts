@@ -224,4 +224,5 @@ export const en = {
   sendMessagePlaceholder: "Send a message to your teammates",
   sendMessage: "Send",
   message: "<0></0>: <1></1>",
+  contributeLanguage: "Contribute!",
 };
