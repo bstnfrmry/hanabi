@@ -58,7 +58,7 @@ const offlineConfig = [
     generateInDevMode: false,
     workboxOpts: {
       swDest: "static/service-worker.js",
-      maximumFileSizeToCacheInBytes: 10000000,
+      maximumFileSizeToCacheInBytes: 100000000,
       runtimeCaching: [
         {
           urlPattern: /^https?.*/,
