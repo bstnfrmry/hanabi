@@ -1,5 +1,4 @@
 import React from "react";
-import posed from "react-pose";
 
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import PlayerGame from "~/components/playerGame";
@@ -15,11 +14,6 @@ interface Props {
   onCloseArea: Function;
   onCommitAction: Function;
 }
-
-const Item = posed.div({
-  selected: { height: "auto" },
-  notSelected: { height: "auto" },
-});
 
 export default function PlayersBoard(props: Props) {
   const { displayStats, selectedArea, onSelectPlayer, onNotifyPlayer, onReaction, onCloseArea, onCommitAction } = props;
@@ -45,11 +39,7 @@ export default function PlayersBoard(props: Props) {
     <>
       <Tutorial step={ITutorialStep.OTHER_PLAYERS}>
         {otherPlayers.map((otherPlayer, i) => (
-          <Item
-            key={i}
-            className="bb b--yellow bg-main-dark"
-            pose={selectedPlayer == otherPlayer ? "selected" : "notSelected"}
-          >
+          <div key={i} className="bb b--yellow bg-main-dark h-auto">
             <PlayerGame
               active={currentPlayer === otherPlayer}
               displayStats={displayStats}
@@ -61,7 +51,7 @@ export default function PlayersBoard(props: Props) {
               onNotifyPlayer={onNotifyPlayer}
               onSelectPlayer={onSelectPlayer}
             />
-          </Item>
+          </div>
         ))}
       </Tutorial>
       {selfPlayer && (

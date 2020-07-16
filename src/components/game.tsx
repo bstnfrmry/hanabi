@@ -1,4 +1,5 @@
 import Fireworks from "fireworks-canvas";
+import { AnimateSharedLayout } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -333,7 +334,7 @@ export function Game(props: Props) {
   }
 
   return (
-    <>
+    <AnimateSharedLayout>
       <div className="game bg-main-dark relative flex flex-column w-100 h-100">
         <div className="bg-black-50 pa2 pv2-l ph6.5-m">
           <GameBoard onMenuClick={onMenuClick} onRollbackClick={onRollbackClick} />
@@ -474,6 +475,6 @@ export function Game(props: Props) {
       </div>
 
       <div ref={fireworksRef} className="fixed absolute--fill z-999" style={{ pointerEvents: "none" }} />
-    </>
+    </AnimateSharedLayout>
   );
 }

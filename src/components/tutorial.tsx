@@ -1,7 +1,6 @@
 import React, { ReactNode, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Popover, { PopoverPlace } from "react-popover";
-import posed from "react-pose";
 
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -9,17 +8,6 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 export const TutorialContext = React.createContext(null);
 
 const LocalStorageKey = "tutorialStep";
-
-const HighlightedArea = posed.div({
-  attention: {
-    opacity: 0.7,
-    transition: {
-      type: "spring",
-      stiffness: 10,
-      damping: 0,
-    },
-  },
-});
 
 export enum ITutorialStep {
   WELCOME = 0,
@@ -114,7 +102,6 @@ export default function Tutorial(props: Props) {
   const { step, placement, children } = props;
   const { t } = useTranslation();
 
-  const [pose, setPose] = useState(null);
   const context = useContext(TutorialContext);
 
   if (!context) {
@@ -122,14 +109,6 @@ export default function Tutorial(props: Props) {
   }
 
   const { currentStep, previousStep, nextStep, lastStep, skip, totalSteps } = context;
-
-  useEffect(() => {
-    if (step !== currentStep) return;
-
-    const interval = setTimeout(() => setPose("attention"), 100);
-
-    return () => clearInterval(interval);
-  }, [currentStep]);
 
   if (step !== currentStep) {
     return children ? <>{children}</> : null;
@@ -183,7 +162,26 @@ export default function Tutorial(props: Props) {
       isOpen={true}
       preferPlace={placement}
     >
-      <HighlightedArea pose={pose}>{children}</HighlightedArea>
+      <div className="animate-opacity">{children}</div>
+      <style jsx>{`
+        @keyframes opacityAnimation {
+          /* flame pulses */
+          0% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.3;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+        .animate-opacity {
+          opacity: 1;
+          animation: opacityAnimation 3s infinite;
+          animation-timing-function: ease-in-out;
+        }
+      `}</style>
     </Popover>
   );
 }

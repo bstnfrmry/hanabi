@@ -1,13 +1,11 @@
+import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
-import posed, { PoseGroup } from "react-pose";
 
-import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
-import { useReplay } from "~/hooks/replay";
 import { IMessage } from "~/lib/state";
 
 interface Props {
@@ -19,23 +17,21 @@ export default function Logs(props: Props) {
   const { t } = useTranslation();
 
   const game = useGame();
-  const replay = useReplay();
   const selfPlayer = useSelfPlayer();
 
-  const PoseItem = replay.cursor ? posed.div() : Item;
   const firstMessages = game.messages.filter(message => message.turn === 0).reverse();
 
   return (
     <div className="flex-grow-1 overflow-y-scroll">
       <div className="relative">
-        <PoseGroup>
+        <AnimatePresence>
           {[...game.turnsHistory].reverse().map((turn, i) => {
             const key = game.turnsHistory.length - i;
 
             const messages = game.messages.filter(message => message.turn === game.turnsHistory.length - i).reverse();
 
             return (
-              <PoseItem key={key}>
+              <motion.div key={key} animate={{ y: 0 }} exit={{ y: -100 }} initial={{ y: -100 }}>
                 {messages.map(message => {
                   return <Message key={message.id} message={message} />;
                 })}
@@ -44,10 +40,10 @@ export default function Logs(props: Props) {
                   showDrawn={!interturn && game.players[turn.action.from].id !== selfPlayer?.id}
                   turn={turn}
                 />
-              </PoseItem>
+              </motion.div>
             );
           })}
-        </PoseGroup>
+        </AnimatePresence>
         {firstMessages.map(message => {
           return <Message key={message.id} message={message} />;
         })}
@@ -84,5 +80,3 @@ function Message(props: MessageProps) {
     </div>
   );
 }
-
-const Item = posed.div({ enter: { y: 0 }, exit: { y: -100 } });

@@ -3,7 +3,6 @@ import { TFunction } from "i18next";
 import React, { HTMLAttributes, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Popover from "react-popover";
-import posed, { PoseGroup } from "react-pose";
 
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import ChatPopover from "~/components/chatPopover";
@@ -269,37 +268,33 @@ export default function PlayerGame(props: Props) {
                 />
               )}
 
-              <PoseGroup>
-                {player.hand.map((card, i) => (
-                  <AnimatedCard key={card.id}>
-                    <Card
-                      card={card}
-                      className={classnames({
-                        "ma1": selected,
-                        "mr1 mr2-l": i < player.hand.length - 1,
-                      })}
-                      context={cardContext}
-                      hidden={hideCards}
-                      position={i}
-                      selected={
-                        selected &&
-                        (player === selfPlayer ? selectedCard === i : isCardHintable(game, pendingHint, card))
-                      }
-                      size={selected ? CardSize.LARGE : CardSize.MEDIUM}
-                      style={{
-                        ...(selected && { transition: "all 50ms ease-in-out" }),
-                      }}
-                      onClick={e => {
-                        e.stopPropagation();
-                        onSelectPlayer(player, i);
-                        if (player === selfPlayer) {
-                          selectCard(i);
-                        }
-                      }}
-                    />
-                  </AnimatedCard>
-                ))}
-              </PoseGroup>
+              {player.hand.map((card, i) => (
+                <Card
+                  key={card.id}
+                  card={card}
+                  className={classnames({
+                    "ma1": selected,
+                    "mr1 mr2-l": i < player.hand.length - 1,
+                  })}
+                  context={cardContext}
+                  hidden={hideCards}
+                  position={i}
+                  selected={
+                    selected && (player === selfPlayer ? selectedCard === i : isCardHintable(game, pendingHint, card))
+                  }
+                  size={selected ? CardSize.LARGE : CardSize.MEDIUM}
+                  style={{
+                    ...(selected && { transition: "all 50ms ease-in-out" }),
+                  }}
+                  onClick={e => {
+                    e.stopPropagation();
+                    onSelectPlayer(player, i);
+                    if (player === selfPlayer) {
+                      selectCard(i);
+                    }
+                  }}
+                />
+              ))}
             </div>
           )}
         </div>
@@ -411,19 +406,3 @@ export default function PlayerGame(props: Props) {
     </>
   );
 }
-
-const AnimatedCard = posed.div({
-  enter: {
-    opacity: 1,
-    transition: {
-      delay: 200,
-      duration: 100,
-    },
-  },
-  exit: {
-    opacity: 0.1,
-    transition: {
-      duration: 100,
-    },
-  },
-});

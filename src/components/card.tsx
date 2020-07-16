@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import { motion } from "framer-motion";
 import React, { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode, useState } from "react";
 import Popover from "react-popover";
 
@@ -49,6 +50,7 @@ export enum ICardContext {
   DISCARDED,
   DRAWN,
   OTHER,
+  LOGS,
 }
 
 interface CardWrapperProps extends HTMLAttributes<HTMLElement> {
@@ -60,6 +62,7 @@ interface CardWrapperProps extends HTMLAttributes<HTMLElement> {
   style?: CSSProperties;
   onClick?: MouseEventHandler;
   children?: ReactNode;
+  layoutId?: string;
 }
 
 export function CardWrapper(props: CardWrapperProps) {
@@ -72,15 +75,16 @@ export function CardWrapper(props: CardWrapperProps) {
     style = {},
     onClick,
     children,
+    layoutId,
     ...attributes
   } = props;
 
   const sizeClass = CardClasses[size];
 
   return (
-    <div
+    <motion.div
       className={classnames(
-        "relative flex items-center justify-center br1 ba",
+        "relative flex items-center justify-center br1 ba z-999",
         sizeClass,
         className,
         `bg-${color}`,
@@ -89,12 +93,19 @@ export function CardWrapper(props: CardWrapperProps) {
         { pointer: playable },
         { grow: context === ICardContext.TARGETED_PLAYER }
       )}
+      layoutId={layoutId}
       style={style}
+      transition={{
+        type: "spring",
+        stiffness: 30,
+        damping: 30,
+      }}
       onClick={onClick}
-      {...attributes}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      {...(attributes as any)}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
 
@@ -202,6 +213,7 @@ export default function Card(props: Props) {
       color={color}
       context={context}
       data-card={PositionMap[position]}
+      layoutId={context !== ICardContext.LOGS ? card.id.toString() : undefined}
       playable={playable}
       size={size}
       style={{

@@ -62,11 +62,11 @@ export default function Turn(props: Props) {
   } else if (turn.action.action === "discard") {
     textualTurn = isViewingOwnActions ? (
       <Trans i18nKey="youDiscardedTurn">
-        You discarded your <TurnCard card={turn.action.card} context={ICardContext.DISCARDED} />
+        You discarded your <TurnCard card={turn.action.card} context={ICardContext.LOGS} />
       </Trans>
     ) : (
       <Trans i18nKey="somebodyDiscardedTurn">
-        {playerNameFrom} discarded their <TurnCard card={turn.action.card} context={ICardContext.DISCARDED} />
+        {playerNameFrom} discarded their <TurnCard card={turn.action.card} context={ICardContext.LOGS} />
       </Trans>
     );
 
@@ -81,11 +81,11 @@ export default function Turn(props: Props) {
   } else if (turn.action.action === "play") {
     textualTurn = isViewingOwnActions ? (
       <Trans i18nKey="youPlayedTurn">
-        You discarded your <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
+        You discarded your <TurnCard card={turn.action.card} context={ICardContext.LOGS} />
       </Trans>
     ) : (
       <Trans i18nKey="somebodyPlayedTurn">
-        {playerNameFrom} discarded their <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
+        {playerNameFrom} discarded their <TurnCard card={turn.action.card} context={ICardContext.LOGS} />
       </Trans>
     );
 
@@ -142,6 +142,6 @@ const CardPosition = ({ action }: { action: IDiscardAction | IPlayAction | IHint
 
 const DrawnCard = ({ card }: { card: ICard }) => (
   <span className="dib">
-    <Card card={card} className="mr1" context={ICardContext.DRAWN} size={CardSize.XSMALL} />
+    <Card card={card} className="mr1" context={ICardContext.LOGS} size={CardSize.XSMALL} />
   </span>
 );
