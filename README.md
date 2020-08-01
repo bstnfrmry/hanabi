@@ -124,12 +124,12 @@ i18n
 
 ```Typescript
 const Languages = {
-  en: "🇬🇧 English",
-  fr: "🇫🇷 Français",
-  es: "🇪🇸 Español",
-  nl: "🇳🇱 Dutch",
-  ru: "🇷🇺 Russian",
-  it: "🇮🇹 Italian"
+  en: "English",
+  fr: "Français",
+  es: "Español",
+  nl: "Dutch",
+  ru: "Russian",
+  it: "Italian"
 };
 ```
 
