@@ -5,11 +5,11 @@ import { Select } from "~/components/ui/forms";
 import useLocalStorage from "~/hooks/localStorage";
 
 const Languages = {
-  en: "🇬🇧 English",
-  fr: "🇫🇷 Français",
-  es: "🇪🇸 Español",
-  nl: "🇳🇱 Dutch",
-  ru: "🇷🇺 Russian",
+  en: "English",
+  fr: "Français",
+  es: "Español",
+  nl: "Dutch",
+  ru: "Russian",
 };
 
 interface Props {
