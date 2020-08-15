@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/database";
+import { cloneDeep } from "lodash";
 
 import IGameState, { fillEmptyValues, GameMode, IGameStatus, IPlayer } from "~/lib/state";
 
@@ -85,6 +86,8 @@ export function subscribeToGame(gameId: string, callback: (game: IGameState) => 
 }
 
 export async function updateGame(game: IGameState) {
+  window["hanabi"] = cloneDeep(game);
+
   await database()
     .ref(`/games/${game.id}`)
     .set(game);
