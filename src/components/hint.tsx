@@ -35,7 +35,6 @@ export default function Hint(props: Props) {
 
       {hint === IHintLevel.IMPOSSIBLE && (
         <div className="w-100 h-100 relative flex justify-center items-center">
-          {type === "number" && <Txt className="absolute white o-50" value={value} />}
           <div className={`absolute w-100 o-80 rotate-135 bg-${color} b--${color}`} style={{ height: "2px" }} />
         </div>
       )}
