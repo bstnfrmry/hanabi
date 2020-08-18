@@ -6,6 +6,9 @@ Being locked down in March 2020, we were willing to play the Hanabi game remotel
 
 Like us, please buy the [physical version](https://fr.asmodee.com/fr/games/hanabi/products/hanabi/) to support its creator if you like this game!
 
+If you enjoy our app, you can also [buy us a coffee](https://www.buymeacoffee.com/hanabicards) ☕️. It will help cover the Firebase costs!
+
+
 ## Contribute
 
 We are so happy to see people join the project and contribute to the repository. Do not hesitate to add an issue or open a pull request.
