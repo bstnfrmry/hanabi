@@ -93,6 +93,24 @@ export default function Rules(props: Props) {
           <Paragraph>{t("rulesExtensionMulticolor")}</Paragraph>
           <Paragraph>{t("rulesExtensionRainbow")}</Paragraph>
           <Txt className="w-100 ttu tc mt5 mb4 dib" size={TxtSize.LARGE} value={t("rulesUsTitle", "Who are we?")} />
+          <Txt className="txt-yellow">
+            <a
+              className="lavender mr1"
+              href="/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >hanabi.samuelhsiang.com</a> is a <a
+              className="lavender mr1"
+              href="https://github.com/alwayswimmin/hanabi/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >fork</a> of <a
+              className="lavender mr1"
+              href="https://hanabi.cards/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >Hanabi.cards</a> whose original creators have written the message below:
+          </Txt>
           <Paragraph>
             <Trans i18nKey="rulesUs">
               We are a group of board-game addicts. Locked down in 2020, we were willing to find an alternative to play

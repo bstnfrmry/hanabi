@@ -1,4 +1,8 @@
-# Hanabi.cards
+# hanabi.samuelhsiang.com
+
+This is a fork of [Hanabi.cards](https://hanabi.cards/). The main repository is [here](https://github.com/bstnfrmry/hanabi/).
+
+## Hanabi.cards
 
 Hanabi is a cooperative card game created by French game designer Antoine Bauza published in 2010 by Asmodée Éditions.
 
