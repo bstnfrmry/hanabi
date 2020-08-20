@@ -25,7 +25,7 @@ export default function BuymeacoffeeButton(props: Props) {
         target="_blank"
       >
         <img
-          alt={t("buyusacoffeeAlt", "Buy us a coffee on website buymeacoffee.com")}
+          alt="Buy us a coffee on website buymeacoffee.com"
           src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg"
         />
         <span>Buy us a coffee</span>
