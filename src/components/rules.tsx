@@ -1,12 +1,15 @@
+import classnames from "classnames";
 import React, { ReactNode } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
+import BuymeacoffeeButton from "~/components/buymeacoffeeButton";
 import DiscordButton from "~/components/discordButton";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 
 interface TxtProps {
   children: ReactNode;
+  className?: string;
 }
 
 const Title = (props: TxtProps) => (
@@ -21,7 +24,7 @@ const Subtitle = (props: TxtProps) => (
   </Txt>
 );
 
-const Paragraph = (props: TxtProps) => <Txt className="mv2 font-regular">{props.children}</Txt>;
+const Paragraph = (props: TxtProps) => <Txt className={classnames("mv2", props.className)}>{props.children}</Txt>;
 
 interface Props {
   setShowRules?: (showRules: boolean) => void;
@@ -109,13 +112,19 @@ export default function Rules(props: Props) {
               to support its creator if you like this game!
             </Trans>
           </Paragraph>
+          <Title>{t("howToContribute", "How to contribute?")}</Title>
           <Paragraph>
-            <Trans i18nKey="rulesBuy">
-              Don't hesitate to
+            <Trans i18nKey="rulesContact">
+              ✉️
               <a className="lavender" href="mailto:bastien.formery@gmail.com">
-                contact us
+                Contact us
               </a>
-              if you have any question or suggestion. We also have a
+              if you have any question or suggestion.
+            </Trans>
+          </Paragraph>
+          <Paragraph>
+            <Trans i18nKey="rulesContributeRepo">
+              💻 We also have a
               <a
                 className="lavender"
                 href="https://github.com/bstnfrmry/hanabi/"
@@ -127,9 +136,17 @@ export default function Rules(props: Props) {
               if you'd like to contribute.
             </Trans>
           </Paragraph>
-          <div className="mt4">
+          <Paragraph className="tl">
+            {t("rulesDiscordServer", "Join our Discord server to discuss potential new features or improvements")}
             <DiscordButton />
-          </div>
+          </Paragraph>
+          <Paragraph className="tl">
+            {t(
+              "rulesBuymeacoffee",
+              "🙇‍♀️ And you can also support our initiative and help cover the server costs by buying us a coffee"
+            )}
+            <BuymeacoffeeButton className="ml4 mt2 pointer tl" />
+          </Paragraph>
         </div>
       </div>
     </div>

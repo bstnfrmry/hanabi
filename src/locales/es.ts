@@ -165,8 +165,11 @@ export const es = {
   rulesUsTitle: "¿Quiénes somos?",
   rulesUs:
     "Somos un grupo de adictos a los juegos de mesa. En la cuarentena en 2020 nos propusimos encontrar una alternativa para jugar juntos remotamente. \nComo nos divertimos tanto programando como jugando Hanabi, decidimos crear una versión del juego en línea, compatible para móviles.\n\n👉 Al igual que nosotros, si te gusta el juego, ¡por favor compra la <2>versión física</2> para apoyar al creador!",
-  rulesBuy:
-    "No dudes en <1>comunicarte con nosotros</1> si tienes alguna pregunta o sugerencia. También tenemos un <2>repositorio público en Github</2> si quieres contribuir.",
+  rulesContact: "✉️ <1>Comunicate con nosotros</1> si tienes alguna pregunta o sugerencia",
+  rulesContributeRepo: "💻 También tenemos un <1>repositorio público en Github</1> si quieres contribuir.",
+  rulesDiscordServer: "🗣 Únete a nuestro servidor Discord para discutir posibles mejoras y sugerencias",
+  rulesBuymeacoffee:
+    "🙇‍♀️ Y también puedes apoyar nuestra iniciativa y ayudar a cubrir los gastos del servidor comprándonos un café en buymeacoffee.com",
   noRoom: "No hay ningún salón disponible",
   faster: "Más rápido",
   fast: "Rápido",
@@ -225,4 +228,5 @@ export const es = {
   sendMessage: "Enviado",
   message: "<0></0>: <1></1>",
   contributeLanguage: "Contribuir!",
+  buymeacoffeePostGame: "Apoya el juego, <2>ofrécenos un café</2>",
 };

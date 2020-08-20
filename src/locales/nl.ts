@@ -161,8 +161,11 @@ export const nl = {
   rulesUsTitle: "Wie zijn we?",
   rulesUs:
     "Wij zijn een groep bordspelverslaafden. Tijdens de lockdown in 2020, waren we bereid om een ​​alternatief te vinden om op afstand samen te spelen.\nOmdat we allebei plezier hebben in het coderen en spelen van Hanabi, hebben we besloten om een ​​online mobielvriendelijke versie van de game te maken.\n\n👉 Koop - net als wij - de <2>fysieke versie</2> om de maker te steunen als je dit spel leuk vindt!",
-  rulesBuy:
-    "Aarzel niet om <1>contact met ons op te nemen</1> als je vragen of suggesties hebt. We hebben ook een <3>openbare GitHub-repository</3> als je een bijdrage wilt leveren.",
+  rulesContact: "✉️ Aarzel niet om<1>contact met ons op te nemen</1> ials je vragen of suggesties hebt",
+  rulesContributeRepo: "💻 We hebben ook een <1>openbare GitHub-repository</1> als je een bijdrage wilt leveren.",
+  rulesDiscordServer: "🗣 Word lid van onze Discord-server om potentiële nieuwe functies of verbeteringen te bespreken",
+  rulesBuymeacoffee:
+    "🙇‍♀️ En u kunt ook ons initiatief steunen en helpen de kosten van de server te dekken door een koffie voor ons te kopen.",
   noRoom: "Geen kamers beschikbaar",
   faster: "Sneller",
   fast: "Snel",
@@ -219,4 +222,5 @@ export const nl = {
   sendMessage: "Sturen",
   message: "<0></0>: <1></1>",
   contributeLanguage: "Bijdragen!",
+  buymeacoffeePostGame: "Steun het spel, <2>koop ons een koffie</2>",
 };

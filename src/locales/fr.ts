@@ -166,8 +166,11 @@ export const fr = {
   rulesUsTitle: "Qui sommes-nous ?",
   rulesUs:
     "Nous sommes un groupe d'amateurs de jeux de société. Pendant le confinement en 2020, nous cherchions une alternative pour jouer ensemble en ligne. Et comme on apprécie non seulement de jouer mais également de développer des sites, nous avons créé une version en ligne accessible sur téléphone du jeu.\n\n\n\n👉 Comme nous, achetez la <2>version physique</2> pour soutenir son créateur si vous aimez le jeu!",
-  rulesBuy:
-    "N'hésitez pas à <1>nous contacter</1> si vous avez une question ou suggestion !\nNous avons aussi un <3>repo public sur Github</3> si vous souhaitez contribuer au site.",
+  rulesContact: "✉️ <1>Contactez-nous</1> si vous avez une question ou suggestion !",
+  rulesContributeRepo: "💻 Nous avons aussi un <1>repo public sur Github</1> si vous souhaitez contribuer au site.",
+  rulesDiscordServer: "🗣 Rejoignez notre serveur Discord pour discuter du site et de ses avancées",
+  rulesBuymeacoffee:
+    "🙇‍♀️ Et vous pouvez également supporter notre travail et nous aider à couvrir les coûts des serveurs sur buymeacoffee.com",
   noRoom: "Aucune partie n'est accessible",
   faster: "Très rapide",
   fast: "Rapide",
@@ -227,4 +230,5 @@ export const fr = {
   sendMessage: "Envoyer",
   message: "<0></0> : <1></1>",
   contributeLanguage: "Contribuer !",
+  buymeacoffeePostGame: "Soutenez le jeu, <2>offrez-nous un café</2>",
 };
