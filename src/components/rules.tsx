@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import React, { ReactNode } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
@@ -23,7 +24,7 @@ const Subtitle = (props: TxtProps) => (
   </Txt>
 );
 
-const Paragraph = (props: TxtProps) => <Txt className={"mv2 " + props.className}>{props.children}</Txt>;
+const Paragraph = (props: TxtProps) => <Txt className={classnames("mv2", props.className)}>{props.children}</Txt>;
 
 interface Props {
   setShowRules?: (showRules: boolean) => void;

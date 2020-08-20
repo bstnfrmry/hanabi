@@ -6,7 +6,6 @@ export default function DiscordButton() {
       className="db br3 w4 pa2 ml4 mt2 discord-button"
       href="https://discord.gg/QEWtYdW"
       rel="noopener noreferrer"
-      style={{ backgroundColor: "#8b9dff", height: "50px" }}
       target="_blank"
       title="Discord"
     >
@@ -14,8 +13,9 @@ export default function DiscordButton() {
       <style jsx>
         {`
           .discord-button {
+            height: 50px;
+            background-color: #8b9dff;
             box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5);
-            -webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5);
           }
         `}
       </style>
