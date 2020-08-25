@@ -2,13 +2,14 @@ import classnames from "classnames";
 import React, { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode, useState } from "react";
 import Popover from "react-popover";
 
+import ColorSymbol from "~/components/colorSymbol";
 import Hint from "~/components/hint";
 import Turn from "~/components/turn";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
 import useLongPress from "~/hooks/longPress";
 import { getColors, numbers } from "~/lib/actions";
-import { ColorSymbols, ICard, IColor, IGameHintsLevel, IHintLevel } from "~/lib/state";
+import { ICard, IColor, IGameHintsLevel, IHintLevel } from "~/lib/state";
 
 export enum CardSize {
   XSMALL = "xsmall",
@@ -91,7 +92,6 @@ export function CardWrapper(props: CardWrapperProps) {
 
   const game = useGame();
 
-  const displaySymbol = game.options.colorBlindMode && ColorSymbols[color];
   const sizeClass = CardClasses[size];
 
   return (
@@ -110,14 +110,7 @@ export function CardWrapper(props: CardWrapperProps) {
       onClick={onClick}
       {...attributes}
     >
-      {displaySymbol && (
-        <div
-          className="absolute w-100 h-100 flex justify-center items-center"
-          style={{ top: `${SymbolOffset[size]}px` }}
-        >
-          <span className={classnames("outline-main-dark", SymbolSize[size])}>{ColorSymbols[color]}</span>
-        </div>
-      )}
+      {game.options.colorBlindMode && <ColorSymbol color={color as IColor} />}
       {children}
     </div>
   );
@@ -173,14 +166,7 @@ function CardPartialHint(props: CardPartialHintProps) {
       >
         {card.hint.number[card.number] === IHintLevel.SURE && <Txt className="z-1" value={card.number} />}
       </div>
-      {displayColorSymbol && (
-        <div
-          className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center z-0 w-100 h-100"
-          style={{ marginTop: "3px", marginLeft: "2px" }}
-        >
-          <Txt className={`txt-${card.color}`} size={TxtSize.LARGE} value={ColorSymbols[card.color]} />
-        </div>
-      )}
+      {displayColorSymbol && <ColorSymbol color={card.color} />}
     </>
   );
 }

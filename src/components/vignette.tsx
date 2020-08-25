@@ -1,9 +1,10 @@
 import classnames from "classnames";
 import React from "react";
 
+import ColorSymbol from "~/components/colorSymbol";
 import Txt from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
-import { ColorSymbols, GameVariant, IHintType } from "~/lib/state";
+import { GameVariant, IColor, IHintType } from "~/lib/state";
 
 interface Props {
   type: IHintType;
@@ -18,7 +19,7 @@ export default function Vignette(props: Props) {
 
   const game = useGame();
 
-  const displaySymbol = game.options.colorBlindMode && type === "color" && ColorSymbols[value];
+  const displaySymbol = game.options.colorBlindMode && type === "color";
 
   const style = {
     ...(selected && { transform: "scale(1.2)" }),
@@ -37,7 +38,7 @@ export default function Vignette(props: Props) {
       style={style}
       onClick={() => onClick && onClick({ type, value })}
     >
-      {displaySymbol && <span className="outline-main-dark f3 mt1">{ColorSymbols[value]}</span>}
+      {displaySymbol && <ColorSymbol color={value as IColor} />}
       {type === "number" && (
         <Txt value={game.options.variant === GameVariant.SEQUENCE && value < 5 ? `${value}+` : value} />
       )}

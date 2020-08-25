@@ -88,15 +88,6 @@ export enum IColor {
   ORANGE = "orange",
 }
 
-export const ColorSymbols = {
-  [IColor.RED]: "\u2665\uFE0E",
-  [IColor.GREEN]: "\u2663\uFE0E",
-  [IColor.BLUE]: "\u2666\uFE0E",
-  [IColor.WHITE]: "\u2660\uFE0E",
-  [IColor.YELLOW]: "★\uFE0E",
-  [IColor.ORANGE]: "☁\uFE0E",
-};
-
 export enum IInsightColor {
   Play = "#B7E1BC",
   Discard = "#fdfd96",

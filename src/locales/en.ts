@@ -226,6 +226,7 @@ export const en = {
   sendMessagePlaceholder: "Send a message to your teammates",
   sendMessage: "Send",
   message: "<0></0>: <1></1>",
+  new: "New!",
   colorBlindMode: "Color blind mode",
   colorBlindModeSubtext: "Display symbols on top of cards to help distinguish colors",
   pageNotFound: "Page not found",
