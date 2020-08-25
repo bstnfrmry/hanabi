@@ -221,6 +221,7 @@ export const nl = {
   sendMessagePlaceholder: "Stuur een bericht naar je teamgenoten",
   sendMessage: "Sturen",
   message: "<0></0>: <1></1>",
+  pageNotFound: "Pagina niet gevonden",
   contributeLanguage: "Bijdragen!",
   buymeacoffeePostGame: "Steun het spel, <2>koop ons een koffie</2>",
 };

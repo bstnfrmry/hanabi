@@ -2,6 +2,7 @@ import classnames from "classnames";
 import React, { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode, useState } from "react";
 import Popover from "react-popover";
 
+import ColorSymbol from "~/components/colorSymbol";
 import Hint from "~/components/hint";
 import Turn from "~/components/turn";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -31,6 +32,20 @@ const CardTextSizes = {
   [CardSize.SMALL]: TxtSize.SMALL,
   [CardSize.MEDIUM]: TxtSize.MEDIUM,
   [CardSize.LARGE]: TxtSize.MEDIUM,
+};
+
+const SymbolOffset = {
+  [CardSize.XSMALL]: 1,
+  [CardSize.SMALL]: 0,
+  [CardSize.MEDIUM]: 3,
+  [CardSize.LARGE]: -4,
+};
+
+const SymbolSize = {
+  [CardSize.XSMALL]: "f3",
+  [CardSize.SMALL]: "f1",
+  [CardSize.MEDIUM]: "f1-l f2",
+  [CardSize.LARGE]: "f0-l f1",
 };
 
 export const PositionMap = {
@@ -75,6 +90,8 @@ export function CardWrapper(props: CardWrapperProps) {
     ...attributes
   } = props;
 
+  const game = useGame();
+
   const sizeClass = CardClasses[size];
 
   return (
@@ -93,6 +110,7 @@ export function CardWrapper(props: CardWrapperProps) {
       onClick={onClick}
       {...attributes}
     >
+      {game.options.colorBlindMode && <ColorSymbol color={color as IColor} />}
       {children}
     </div>
   );
@@ -113,13 +131,18 @@ interface CardPartialHintProps {
 function CardPartialHint(props: CardPartialHintProps) {
   const { card, size } = props;
 
+  const game = useGame();
+
+  const displayColorSymbol = game.options.colorBlindMode && card.hint.color[card.color] === IHintLevel.SURE;
   let className = "";
 
   // when card is sure, apply a colored background and border using the card color
   if (card.hint.color[card.color] === IHintLevel.SURE) {
     const color = card.color === IColor.RAINBOW ? `rainbow-circle` : card.color;
 
-    className = `bg-${color} txt-${card.color}-dark ba b--${card.color}`;
+    className = classnames(`txt-${card.color}-dark`, {
+      [`bg-${color} ba b--${card.color}`]: !displayColorSymbol,
+    });
   }
 
   // when they are only 2 possible cards and one of them is rainbow,
@@ -135,13 +158,16 @@ function CardPartialHint(props: CardPartialHintProps) {
   }
 
   return (
-    <div
-      className={classnames("top-0 br-100 w-50 h-50 flex justify-center items-center", className, {
-        [`txt-white-dark`]: card.hint.color[card.color] !== 2,
-      })}
-    >
-      {card.hint.number[card.number] === 2 && <Txt value={card.number} />}
-    </div>
+    <>
+      <div
+        className={classnames("top-0 br-100 w-50 h-50 flex justify-center items-center", className, {
+          [`txt-white-dark`]: card.hint.color[card.color] !== IHintLevel.SURE,
+        })}
+      >
+        {card.hint.number[card.number] === IHintLevel.SURE && <Txt className="z-1" value={card.number} />}
+      </div>
+      {displayColorSymbol && <ColorSymbol color={card.color} />}
+    </>
   );
 }
 
@@ -183,6 +209,7 @@ export default function Card(props: Props) {
 
   const number = hidden ? null : card.number;
 
+  const displayColorSymbol = game.options.colorBlindMode;
   const displayHints =
     game.options.hintsLevel !== IGameHintsLevel.NONE &&
     [ICardContext.OTHER_PLAYER, ICardContext.TARGETED_PLAYER, ICardContext.SELF_PLAYER].includes(context);
@@ -213,8 +240,10 @@ export default function Card(props: Props) {
     >
       {/* Card value */}
       <Txt
-        className={classnames(`b txt-${color}-dark`, {
-          mb3: displayHints && size === CardSize.LARGE,
+        className={classnames(`b absolute`, {
+          "bottom-1 mb3": displayHints && size === CardSize.LARGE,
+          [`txt-${color}-dark`]: !displayColorSymbol,
+          "main-dark": displayColorSymbol,
         })}
         size={CardTextSizes[size]}
         value={number}

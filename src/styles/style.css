@@ -82,6 +82,30 @@ button {
   border-color: var(--color-lavender);
 }
 
+.txt-red {
+  color: var(--color-red);
+}
+
+.txt-blue {
+  color: var(--color-blue);
+}
+
+.txt-yellow {
+  color: var(--color-yellow);
+}
+
+.txt-white {
+  color: var(--color-white);
+}
+
+.txt-green {
+  color: var(--color-green);
+}
+
+.txt-orange {
+  color: var(--color-orange);
+}
+
 .txt-red-dark {
   color: color-mod(var(--color-red) lightness(15%));
   text-shadow: 0 0 2px color-mod(var(--color-red) lightness(90%));
@@ -199,13 +223,6 @@ button {
 .bg-multicolor {
   background-image: url('/static/multicolor.svg');
   background-size: contain
-  /* background: conic-gradient(
-    var(--color-white) 0deg 72deg,
-    var(--color-blue) 72deg 144deg,
-    var(--color-green) 144deg 216deg,
-    var(--color-red) 216deg 288deg,
-    var(--color-yellow) 288deg 360deg
-  ); */
 }
 
 .bg-rainbow {

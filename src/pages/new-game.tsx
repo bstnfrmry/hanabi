@@ -56,6 +56,7 @@ export default function NewGame() {
   const [private_, setPrivate] = useState(false);
   const [hintsLevel, setHintsLevel] = useState(IGameHintsLevel.DIRECT);
   const [turnsHistory] = useState(true);
+  const [colorBlindMode, setColorBlindMode] = useState(false);
   const [botsWait, setBotsWait] = useState(process.env.NODE_ENV === "production" ? 1000 : 0);
 
   const [creatingGame, setCreatingGame] = useState(false);
@@ -84,6 +85,7 @@ export default function NewGame() {
         hintsLevel,
         turnsHistory,
         botsWait,
+        colorBlindMode,
         gameMode: offline ? GameMode.PASS_AND_PLAY : GameMode.NETWORK,
       })
     );
@@ -151,17 +153,18 @@ export default function NewGame() {
         </div>
 
         <a
-          className="mv4 self-end underline pointer silver"
+          className="flex flex-column items-end mv4 self-end  pointer silver"
           id="advanced-options"
           onClick={() => setShowAdvanced(!showAdvanced)}
         >
-          <Txt className="lavender" value={t("advancedOptions", "Advanced options")} />
+          <Txt className="lavender underline" value={t("advancedOptions", "Advanced options")} />
+          <Txt className="yellow mt2" value={`💎 ${t("new", "New!")} ${t("colorBlindMode", "Color blind mode")}`} />
         </a>
 
         {showAdvanced && (
           <>
             <Field
-              className="pb2 mb2  bb b--yellow-light"
+              className="pb3 mb3  bb b--yellow-light"
               label={t("passandplay", "Pass & Play")}
               subText={t("passandplaySubtext", "Physically pass the device to each player on their turn")}
             >
@@ -169,26 +172,34 @@ export default function NewGame() {
             </Field>
 
             <Field
-              className="pb2 mb2 bb b--yellow-light"
+              className="pb3 mb3 bb b--yellow-light"
+              label={t("colorBlindMode", "Color blind mode")}
+              subText={t("colorBlindModeSubtext", "Display symbols on top of cards to help distinguish colors")}
+            >
+              <Checkbox checked={colorBlindMode} onChange={e => setColorBlindMode(e.target.checked)} />
+            </Field>
+
+            <Field
+              className="pb3 mb3 bb b--yellow-light"
               label={t("private", "Private")}
               subText={t("privateSubtext", "Your game won't be visible in the 'Join Room' section")}
             >
               <Checkbox checked={private_} onChange={e => setPrivate(e.target.checked)} />
             </Field>
 
-            <Field className="pb2 mb2 bb b--yellow-light" label={t("seed", "Seed")}>
+            <Field className="pb3 mb3 bb b--yellow-light" label={t("seed", "Seed")}>
               <TextInput className="w3 tr" id="seed" value={seed} onChange={e => setSeed(e.target.value)} />
             </Field>
 
-            <Field className="pb2 mb2 bb b--yellow-light" label={t("allowRollback", "Allow rollback")}>
+            <Field className="pb3 mb3 bb b--yellow-light" label={t("allowRollback", "Allow rollback")}>
               <Checkbox checked={allowRollback} onChange={e => setAllowRollback(e.target.checked)} />
             </Field>
 
-            <Field className="pb2 mb2 bb b--yellow-light" label={t("preventLoss", "Prevent loss")}>
+            <Field className="pb3 mb3 bb b--yellow-light" label={t("preventLoss", "Prevent loss")}>
               <Checkbox checked={preventLoss} onChange={e => setPreventLoss(e.target.checked)} />
             </Field>
 
-            <Field className="pb2 mb2 bb b--yellow-light" label={t("hints", "Hints")}>
+            <Field className="pb3 mb3 bb b--yellow-light" label={t("hints", "Hints")}>
               <Select
                 className="pl3"
                 formatter={t}

@@ -45,7 +45,7 @@
   }
 }
 
-@media screen and (min-width: 80em) { 
+@media screen and (min-width: 80em) {
   .ph8-l {
     padding-left: 16rem; padding-right: 16rem;
   }
@@ -95,6 +95,16 @@
 
 .pre-line {
   white-space: pre-line;
+}
+
+.f0 {
+  font-size: 4rem;
+}
+
+@media screen and (min-width: 60em) {
+  .f0-l {
+    font-size: 4rem;
+  }
 }
 
 .f8 {

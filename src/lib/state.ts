@@ -46,6 +46,7 @@ export interface IGameOptions {
   turnsHistory: boolean;
   botsWait: number;
   gameMode: GameMode;
+  colorBlindMode: boolean;
 }
 
 export enum GameVariant {

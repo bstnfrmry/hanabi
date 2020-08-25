@@ -16,6 +16,7 @@ const options: IGameOptions = {
   botsWait: 0,
   gameMode: GameMode.NETWORK,
   turnsHistory: false,
+  colorBlindMode: false,
 };
 
 const defaultPlayer: IPlayer = {
