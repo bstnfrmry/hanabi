@@ -79,7 +79,7 @@ export const en = {
   introContent: "Vamos aprender como jogar!",
   playedCardsTutorial: "Cartas Jogadas",
   playedCardsTutorialContent:
-    "Aqui vão ficar as cartas que foram jogadas.\nColetivamente, alcançem 5 em cada cor para ganhar o jogo.",
+    "Aqui vão ficar as cartas que foram jogadas.\nColetivamente, alcancem 5 em cada cor para ganhar o jogo.",
   discardTutorial: "Descarte",
   discardTutorialContent:
     "Aqui você vai ver as cartas\nque você e o seu time descartaram.\nTente não descartar as cartas\nque vocês precisam para ganhar o jogo.",
@@ -88,23 +88,23 @@ export const en = {
     "Essas são as suas cartas.\nVocê não consegue ver elas, mas outros jogadores vão te dar dicas sobre elas.",
   teammatesTutorial: "Companheiros de time",
   teammatesTutorialContent:
-    "Esses são os seu companheiros de time.\nComo você, eles não conseguem ver as respectivas cartas.\nDê dicas para ajudar eles a jogar ou descartar cartas.",
+    "Esses são os seus companheiros de time.\nComo você, eles não conseguem ver as respectivas cartas.\nDê dicas para ajudar eles a jogar ou descartar cartas.",
   hintTokensTutorial: "Fichas de dicas",
   hintTokensTutorialContent:
-    "Algumas ações tem um custo.\n\n- Dar dica custa uma ficha de dica.\n- Descartando uma carta vocês ganham uma ficha de dica.\n- Jogando um 5 ganham uma ficha de dica como bonus.",
+    "Algumas ações têm um custo.\n\n- Dar dica custa uma ficha de dica.\n- Descartando uma carta vocês ganham uma ficha de dica.\n- Jogando um 5 ganham uma ficha de dica como bônus.",
   strikeTokensTutorial: "Ficha de penalidade",
   strikeTokensTutorialContent:
     "Ao jogar uma carta errada, ela é descartada e te custa uma ficha de penalidade.\nSe chegarem a 3 fichas de penalidade, perdem o jogo.",
   yourTurnTutorial: "É a sua vez",
   yourTurnTutorialContent:
-    "Você tem 3 opçõws:\n\n- Clique o seu jogo para jogar uma carta...\n- ... ou descartar ela\n- Clique um dos seu companheiros para dar uma dica.",
+    "Você tem 3 opçõws:\n\n- Clique o seu jogo para jogar uma carta...\n- ... ou descartar ela\n- Clique um dos seus companheiros para dar uma dica.",
   skip: "✕ Pular",
   offline: "Você está offline !",
   apologies: "Desculpe, alguma coisa deu errado 😕",
   errorWillInvestigate:
     "Vamos investigar o mais rápido possível. Não exite em <1>nos contactar</1> com detalhes do que aconteceu.",
   earlyDevelopment: "Esse jogo ainda está em desenvolvimento e apreciamos muito o seu feedback.",
-  publicRepo: "Também temos um <1>repositórip público no Github </1>se você quiser contribuir ou reportar um bug.",
+  publicRepo: "Também temos um <1>repositório público no Github </1>se você quiser contribuir ou reportar um bug.",
   backMenu: "Voltar ao menu",
   landingImageAlt: "Logo do jogo de cartas online Hanabi",
   classicVariant: "Clássico",
@@ -116,11 +116,11 @@ export const en = {
   multicolorVariantDescription: "É adicionado um sexto naipe com apenas uma carta de cada número",
   rainbowVariantDescription: "É adicionado um sexto naipe que combina com todas as cores",
   orangeVariantDescription: "É adicionado um sexto naipe clássico",
-  sequenceVariantDescription: "Dica de números também incluem cartas de numeros maiores",
+  sequenceVariantDescription: "Dica de números também incluem cartas de números maiores",
   showDirectHints: "Mostar dicas diretas",
   hideDirectHints: "Não mostrar dicas diretas",
   botSpeed: "Velocidade do robô",
-  normalGameExplanation: "Você vai conseguir jogar online compartilhando o link do jogo com seu amigos.",
+  normalGameExplanation: "Você vai conseguir jogar online compartilhando o link do jogo com seus amigos.",
   passandplayExplanation:
     "Nesse modo 'passe e jogue', você pode jogar offline com pessoas que estão fisicamente no mesmo lugar que você, passando o aparelho para cada pessoa no turno delas.",
   private: "Privado",
@@ -136,12 +136,12 @@ export const en = {
   seed: "Seed",
   objective: "Objetivo",
   rulesIntro:
-    "Hanabi é um jogo de cartas criado por Antoine Bauza. É cooperativo, o que significa que os jogadores não competem com outros mas tentam alcançãe um objetivo comum. Aqui eles encarnam pirotécnicos distratídos que - por inatenção - misturaram a pólvora, pavís e foguetes para uma grande demonstração de fogos de artifício. O show vai começar logo e a situação é um pouco caótica. Eles vão precisar ajudar uns aos outros para previnir que o show se torne um desastre.
+    "Hanabi é um jogo de cartas criado por Antoine Bauza. É cooperativo, o que significa que os jogadores não competem com outros, mas tentam alcançar um objetivo comum. Aqui eles encarnam pirotécnicos distraídos que - por inatenção - misturaram a pólvora, pavís e foguetes para uma grande demonstração de fogos de artifício. O show vai começar logo e a situação é um pouco caótica. Eles vão precisar ajudar uns aos outros para prevenir que o show se torne um desastre.
   rulesGoal:
     "O objetivo dos pirotécnicos é construir 5 fogos de artifício, um de cada cor (branco, vermelho, azul, amarelo, verde) combinando cartas de valor crescente (1,2,3,4,5) da mesma cor.",
   rulesSetupTitle: "Configuração",
   rulesSetup:
-    "O app arruma tudo para você, o que ajuda 😉. No começo de um jogo, você vai ter 8 fichas azuis - suas fichas de dica - e 3 fichas vermelhas - suas fichas de penalidade.\n\nThe baralho é composto de 50 cartas, 10 de cada cor <1>com os números 1, 1, 1, 2, 2, 3, 3, 4, 4, 5</1>.\n· Em um jogo com 2 ou 3 jogadores, cada jogador recebe 5 cartas\n· Em um jogo de 4 ou 5 jogadores, cada jogador recebe 4 cartas.\n\nComo você vai ver, não é permitido aos jogadores ver as próprias cartas!",
+    "O app arruma tudo para você, o que ajuda 😉. No começo de um jogo, você vai ter 8 fichas azuis - suas fichas de dica - e 3 fichas vermelhas - suas fichas de penalidade.\n\nO baralho é composto de 50 cartas, 10 de cada cor <1>com os números 1, 1, 1, 2, 2, 3, 3, 4, 4, 5</1>.\n· Em um jogo com 2 ou 3 jogadores, cada jogador recebe 5 cartas\n· Em um jogo de 4 ou 5 jogadores, cada jogador recebe 4 cartas.\n\nComo você vai ver, não é permitido aos jogadores ver as próprias cartas!",
   rulesGameTitle: "Jogando",
   rulesGame:
     "No turno de cada jogador, eles fazer uma (e somente uma) das três ações seguintes. Não é permitido passar a vez.\n\n1. Dar informação a um outro jogador.\n2. Descartar uma carta.\n3. Jogar uma carta\n\nNão é permitido aos jogadores dar dicas ou sugestões durante o turno de outros jogadores!",
@@ -153,18 +153,18 @@ export const en = {
     "Ao descartar uma carta, você ganha uma ficha azul. Você descarta uma carta da sua mão clicando nela. Você então compra uma carta nova do baralho e ela vai para a sua mão. \nNota: Se você já tiver todas as 8 fichas azuis, você não pode descartar e deve fazer outra ação. \nVocê pode consultar as cartas descartadas a qualquer hora.",
   rulesPlayTitle: "3. Jogar uma carta",
   rulesPlay:
-    "No seu turno, para jogar uma carta, tira a carta da sua mão e jogue.\nUma de duas coisas vai acontecer:\n· Se uma carta começa ou adiciona a um fogo de artifício, ela vai ser adicionada à pilha desse fogo de artifício\n· Se a carta não adiciona a um fogo de artifício, ela vai ser descartada e você ganha uma ficha de penalidade vermelha\nVocê então compra uma carta do baralho.\n\nQuando um jogador acaba um fogo de artifício jogando um 5 nele, você ganha uma ficha azul como bonus. Se você já tem as 8 fichas azuis, você não ganha o bonus.",
+    "No seu turno, para jogar uma carta, tira a carta da sua mão e jogue.\nUma de duas coisas vai acontecer:\n· Se uma carta começa ou adiciona a um fogo de artifício, ela vai ser adicionada à pilha desse fogo de artifício\n· Se a carta não adiciona a um fogo de artifício, ela vai ser descartada e você ganha uma ficha de penalidade vermelha\nVocê então compra uma carta do baralho.\n\nQuando um jogador acaba um fogo de artifício jogando um 5 nele, você ganha uma ficha azul como bônus. Se você já tem as 8 fichas azuis, você não ganha o bônus.",
   rulesEndTitle: "Fim do jogo",
   rulesEnd:
-    "Hanabi de 3 jeitos distintos:\n· Se você ganhar uma terceira ficha vermelha, você perde o jogo e o show acaba em chamas!\n· Se o time completar todas as cinco cores de fogos de artifício com o valor de 5, o time faz uma demonstração vitoriosa e ganha a pontuação máxima de 25 pontos - 30 com a opção multicolor!\n· Se um jogador comprar a última carta do baralho, o jogo esta quase no fim. Cada jogador ganha mais um turno, incluindo o jogador que comprou a última carta. Os jogadores não podem comprar mais cartas nesses turnos finais.\n\nOs jogadores então ganham pontos baseados na demonstração de fogos de artifício que construiram.",
+    "Hanabi de 3 jeitos distintos:\n· Se você ganhar uma terceira ficha vermelha, você perde o jogo e o show acaba em chamas!\n· Se o time completar todas as cinco cores de fogos de artifício com o valor de 5, o time faz uma demonstração vitoriosa e ganha a pontuação máxima de 25 pontos - 30 com a opção multicolor!\n· Se um jogador comprar a última carta do baralho, o jogo esta quase no fim. Cada jogador ganha mais um turno, incluindo o jogador que comprou a última carta. Os jogadores não podem comprar mais cartas nesses turnos finais.\n\nOs jogadores então ganham pontos baseados na demonstração de fogos de artifício que construíram.",
   rulesExtensionTitle: "Extensão",
   rulesExtensionMulticolor:
-    "🎨 A variação multicolor adiciona uma sexta pilha e um sexta cor de cartas com só uma carta de cada: 1, 2, 3, 4, 5. Esses fogos de artifício são então mais escassos e você vai ter que ter cuidado de não descartar eles. As regras são as mesmas e você vai ter que completar todas as 6 pilhas para receber a pontuacão máxima de 30 pontos.",
+    "🎨 A variação multicolor adiciona uma sexta pilha e um sexta cor de cartas com só uma carta de cada: 1, 2, 3, 4, 5. Esses fogos de artifício são então mais escassos e você vai ter que ter cuidado de não descartar eles. As regras são as mesmas e você vai ter que completar todas as 6 pilhas para receber a pontuação máxima de 30 pontos.",
   rulesExtensionRainbow:
     "🌈 A variação de arco-íris também adiciona uma sexta pilha com os mesmos valores das outras 5 pilhas (três 1s, duas cartas de 2/3/4 e um 5). A diferença é que essas cartas arco-íris são cartas de todas as cores. Toda vez que você der uma dica de cor, elas vão ser mostradas.",
   rulesUsTitle: "Quem somos nós?",
   rulesUs:
-    "Nós somos um grupo de fanáticos por jogos de tabuleiro. Presos em casa em 2020, nos queriamos achar uma alternativa para jogar juntos remotamente.\nComo nós nos divertimos escrevendo código e jogando Hanabi, nós decidimos criar uma versão online (e também para celulares) do jogo.\n\n👉 Como nós, por favor compre a <2>versão física</2> para ajudar os criadores se você gostar do jogo!",
+    "Nós somos um grupo de fanáticos por jogos de tabuleiro. Presos em casa em 2020, nós queríamos achar uma alternativa para jogar juntos remotamente.\nComo nós nos divertimos escrevendo código e jogando Hanabi, nós decidimos criar uma versão online (e também para celulares) do jogo.\n\n👉 Como nós, por favor compre a <2>versão física</2> para ajudar os criadores se você gostar do jogo!",
   rulesContact: "✉️ <1>Nos contate</1> se você tiver alguma pergunta ou sugestão.",
   rulesContributeRepo: "💻 Nós também temos um <1>repositório público no Github</1> se você quiser contribuir.",
   rulesDiscordServer: "🗣Entre no nosso servidor de Discord para discutir melhoria",
@@ -220,7 +220,7 @@ export const en = {
   somebodyPlayedTurn: "<0></0> jogou <2></2>",
   whatYouDrewTurn: "e comprou <1></1>",
   whatTheyDrewTurn: "e comprou <1></1>",
-  selectLanguage: "Selecione uma lingua",
+  selectLanguage: "Selecione uma língua",
   creatingGame: "Criando jogo...",
   partySetup: "Jogadores: {{players}} · Modo: {{variant}} · Mesa #{{shuffle}}",
   sendMessagePlaceholder: "Mande uma mensagem para os seus companheiros",
