@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
-export const en = {
+export const pt = {
   hanabi: "Hanabi",
   welcome: "Bem vindo(a)",
   newGame: "Novo jogo",
