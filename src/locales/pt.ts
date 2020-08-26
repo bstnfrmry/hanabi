@@ -136,39 +136,39 @@ export const en = {
   seed: "Seed",
   objective: "Objetivo",
   rulesIntro:
-    "Hanabi is a card game created by Antoine Bauza. It's cooperative, which means that players are not against each other but assemble to reach a common goal. They incarn here distracted pyrotechnists who - byinattention - mixed their powder, wicks and rockets for a large fireworks display. The show will begin soon and the situation is a bit chaotic. They will need to help each other to prevent the show turning to disaster.",
+    "Hanabi é um jogo de cartas criado por Antoine Bauza. É cooperativo, o que significa que os jogadores não competem com outros mas tentam alcançãe um objetivo comum. Aqui eles encarnam pirotécnicos distratídos que - por inatenção - misturaram a pólvora, pavís e foguetes para uma grande demonstração de fogos de artifício. O show vai começar logo e a situação é um pouco caótica. Eles vão precisar ajudar uns aos outros para previnir que o show se torne um desastre.
   rulesGoal:
-    "The goal of the pyrotechnics team is to build 5 fireworks, one of each color (white, red, blue, yellow, green) by combining increasing value cards (1,2,3,4,5) of the same color.",
-  rulesSetupTitle: "Setup",
+    "O objetivo dos pirotécnicos é construir 5 fogos de artifício, um de cada cor (branco, vermelho, azul, amarelo, verde) combinando cartas de valor crescente (1,2,3,4,5) da mesma cor.",
+  rulesSetupTitle: "Configuração",
   rulesSetup:
-    "The app sets up everything for you, which is handy 😉. At the beginning of a game, you will have 8 blue tokens - your hints - and 3 red tokens - your strike tokens.\n\nThe deck is composed of 50 cards, 10 of each color <1>with numbers 1, 1, 1, 2, 2, 3, 3, 4, 4, 5</1>.\n· In a 2 or 3 player game, each player will be dealt 5 cards\n· In a 4 or 5 player game, each player will be dealt 4 cards.\n\nAs you will see, players are not allowed to look at their own cards!",
-  rulesGameTitle: "Playing the game",
+    "O app arruma tudo para você, o que ajuda 😉. No começo de um jogo, você vai ter 8 fichas azuis - suas fichas de dica - e 3 fichas vermelhas - suas fichas de penalidade.\n\nThe baralho é composto de 50 cartas, 10 de cada cor <1>com os números 1, 1, 1, 2, 2, 3, 3, 4, 4, 5</1>.\n· Em um jogo com 2 ou 3 jogadores, cada jogador recebe 5 cartas\n· Em um jogo de 4 ou 5 jogadores, cada jogador recebe 4 cartas.\n\nComo você vai ver, não é permitido aos jogadores ver as próprias cartas!",
+  rulesGameTitle: "Jogando",
   rulesGame:
-    "On each player's turn, they take one (and only one) of the three following actions. You are not allowed to pass.\n\n1. Give information to another player.\n2. Discard a card.\n3. Play a card\n\nPlayers are not allowed to give hints or suggestions on other player's turns!",
-  rulesHintTitle: "1. Give information",
+    "No turno de cada jogador, eles fazer uma (e somente uma) das três ações seguintes. Não é permitido passar a vez.\n\n1. Dar informação a um outro jogador.\n2. Descartar uma carta.\n3. Jogar uma carta\n\nNão é permitido aos jogadores dar dicas ou sugestões durante o turno de outros jogadores!",
+  rulesHintTitle: "1. Dar informação",
   rulesHint:
-    "When you give information, it will remove a blue token. Note: If you have no more blue tokens, you cannot choose to give information and must pick a different action.\n\nYou then give information to a fellow player about the cards in that player's hand by clicking on it. You can tell the player either about one (and only one) color, or one (and only one) value of card.",
-  rulesDiscardTitle: "2. Discard a card",
+    "Quando você der uma informação, uma ficha azul é removida. Nota: Se você não tem mais fichas azuis, você não pode dar uma informação e deve fazer uma ação diferente.\n\nVocê então da uma informação a um outro jogador sobre as cartas na respectiva mão clicando nela. Você informa ao jogador sobre uma (e somente uma) cor, ou um (e somente um) valor de carta.",
+  rulesDiscardTitle: "2. Descartar uma carta",
   rulesDiscard:
-    "Discarding a card returns a blue token. You discard a card from your hand by tapping it. You then draw a new card from the deck and it will be added to your hand. \nNote: If you have all 8 blue tokens, you cannot discard cards and must pick a different action. \nYou can consult discarded cards at anytime.",
-  rulesPlayTitle: "3. Play a card",
+    "Ao descartar uma carta, você ganha uma ficha azul. Você descarta uma carta da sua mão clicando nela. Você então compra uma carta nova do baralho e ela vai para a sua mão. \nNota: Se você já tiver todas as 8 fichas azuis, você não pode descartar e deve fazer outra ação. \nVocê pode consultar as cartas descartadas a qualquer hora.",
+  rulesPlayTitle: "3. Jogar uma carta",
   rulesPlay:
-    "At your turn, to play a card, take a card from your hand and play it.\nOne of two things happen:\n· If the card begins or adds to a firework, it will be added to that firework pile\n· If the card does not add to a firework, it will be discarded the card and add a red strike token\nThen you will draw a replacement card from the deck.\n\nWhen a player finishes a firework by playing a value 5 card on it, it will return one blue token to the lid of the box as a bonus. If all the blue tokens are in the box lid, you do not get the bonus.",
-  rulesEndTitle: "End of the game",
+    "No seu turno, para jogar uma carta, tira a carta da sua mão e jogue.\nUma de duas coisas vai acontecer:\n· Se uma carta começa ou adiciona a um fogo de artifício, ela vai ser adicionada à pilha desse fogo de artifício\n· Se a carta não adiciona a um fogo de artifício, ela vai ser descartada e você ganha uma ficha de penalidade vermelha\nVocê então compra uma carta do baralho.\n\nQuando um jogador acaba um fogo de artifício jogando um 5 nele, você ganha uma ficha azul como bonus. Se você já tem as 8 fichas azuis, você não ganha o bonus.",
+  rulesEndTitle: "Fim do jogo",
   rulesEnd:
-    "Hanabi can end in three ways:\n· If you get the third red token, you lose the game as the display goes up in flames!\n· If the team completes all five colors of firework with a value of 5, the team makes a spectacular victorydisplay and obtains the maximum score of 25 points - 30 with multicolor option!\n· If a player draws the last card from deck, the game is almost over. Each player gets one more turn,including the player who drew the last card. Players cannot draw more cards during these final turns.\n\nThe players then score their performance based on the fireworks they assembled.",
-  rulesExtensionTitle: "Extension",
+    "Hanabi de 3 jeitos distintos:\n· Se você ganhar uma terceira ficha vermelha, você perde o jogo e o show acaba em chamas!\n· Se o time completar todas as cinco cores de fogos de artifício com o valor de 5, o time faz uma demonstração vitoriosa e ganha a pontuação máxima de 25 pontos - 30 com a opção multicolor!\n· Se um jogador comprar a última carta do baralho, o jogo esta quase no fim. Cada jogador ganha mais um turno, incluindo o jogador que comprou a última carta. Os jogadores não podem comprar mais cartas nesses turnos finais.\n\nOs jogadores então ganham pontos baseados na demonstração de fogos de artifício que construiram.",
+  rulesExtensionTitle: "Extensão",
   rulesExtensionMulticolor:
-    "🎨 The multicolor variant adds up a 6th pile and a 6th set of cards with only one item of each card: 1, 2, 3, 4, 5. These fireworks are therefore more scarce and you will have to be cautious not to discard them. Rules are the same and you have to complete all siw piles to reach a maximum score of 30 points.",
+    "🎨 A variação multicolor adiciona uma sexta pilha e um sexta cor de cartas com só uma carta de cada: 1, 2, 3, 4, 5. Esses fogos de artifício são então mais escassos e você vai ter que ter cuidado de não descartar eles. As regras são as mesmas e você vai ter que completar todas as 6 pilhas para receber a pontuacão máxima de 30 pontos.",
   rulesExtensionRainbow:
-    "🌈 The rainbow extension also adds a 6th pile with the same values that the 5 other piles (three 1s, 2 items of cards 2/3/4 and one 5). The particularity is that rainbow cards are of all colors. Every time you give a hint on colors, they will be touched.",
-  rulesUsTitle: "Who are we?",
+    "🌈 A variação de arco-íris também adiciona uma sexta pilha com os mesmos valores das outras 5 pilhas (três 1s, duas cartas de 2/3/4 e um 5). A diferença é que essas cartas arco-íris são cartas de todas as cores. Toda vez que você der uma dica de cor, elas vão ser mostradas.",
+  rulesUsTitle: "Quem somos nós?",
   rulesUs:
-    "We are a group of board-game addicts. Locked down in 2020, we were willing to find an alternative to play together remotely.\nSince we both have fun coding and playing Hanabi, we decided to create an online mobile-friendly version of the game.\n\n👉 Like us, please buy the <2>physical version</2> to support its creator if you like this game!",
-  rulesContact: "✉️ <1>Contact us</1> if you have any question or suggestion",
-  rulesContributeRepo: "💻 We also have a <1>public Github repository</1> if you'd like to contribute.",
-  rulesDiscordServer: "🗣 Join our Discord server to discuss potential new features or improvements",
-  rulesBuymeacoffee: "🙇‍♀️ And you can also support our initiative and help cover the server costs by buying us a coffee",
+    "Nós somos um grupo de fanáticos por jogos de tabuleiro. Presos em casa em 2020, nos queriamos achar uma alternativa para jogar juntos remotamente.\nComo nós nos divertimos escrevendo código e jogando Hanabi, nós decidimos criar uma versão online (e também para celulares) do jogo.\n\n👉 Como nós, por favor compre a <2>versão física</2> para ajudar os criadores se você gostar do jogo!",
+  rulesContact: "✉️ <1>Nos contate</1> se você tiver alguma pergunta ou sugestão.",
+  rulesContributeRepo: "💻 Nós também temos um <1>repositório público no Github</1> se você quiser contribuir.",
+  rulesDiscordServer: "🗣Entre no nosso servidor de Discord para discutir melhoria",
+  rulesBuymeacoffee: "🙇‍♀️ Você também pode ajudar a nossa iniciativa e ajudar com os custos do servidor nos comprando um café.",
   noRoom: "Sem salas disponíveis",
   faster: "Mais rápido",
   fast: "Rapido",
