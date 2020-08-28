@@ -97,7 +97,7 @@ export const pt = {
     "Ao jogar uma carta errada, ela é descartada e te custa uma ficha de penalidade.\nSe chegarem a 3 fichas de penalidade, perdem o jogo.",
   yourTurnTutorial: "É a sua vez",
   yourTurnTutorialContent:
-    "Você tem 3 opçõws:\n\n- Clique o seu jogo para jogar uma carta...\n- ... ou descartar ela\n- Clique um dos seus companheiros para dar uma dica.",
+    "Você tem 3 opções:\n\n- Clique o seu jogo para jogar uma carta...\n- ... ou descartar ela\n- Clique um dos seus companheiros para dar uma dica.",
   skip: "✕ Pular",
   offline: "Você está offline !",
   apologies: "Desculpe, alguma coisa deu errado 😕",
@@ -136,7 +136,7 @@ export const pt = {
   seed: "Seed",
   objective: "Objetivo",
   rulesIntro:
-    "Hanabi é um jogo de cartas criado por Antoine Bauza. É cooperativo, o que significa que os jogadores não competem com outros, mas tentam alcançar um objetivo comum. Aqui eles encarnam pirotécnicos distraídos que - por inatenção - misturaram a pólvora, pavís e foguetes para uma grande demonstração de fogos de artifício. O show vai começar logo e a situação é um pouco caótica. Eles vão precisar ajudar uns aos outros para prevenir que o show se torne um desastre.
+    "Hanabi é um jogo de cartas criado por Antoine Bauza. É cooperativo, o que significa que os jogadores não competem com outros, mas tentam alcançar um objetivo comum. Aqui eles encarnam pirotécnicos distraídos que - por inatenção - misturaram a pólvora, pavís e foguetes para uma grande demonstração de fogos de artifício. O show vai começar logo e a situação é um pouco caótica. Eles vão precisar ajudar uns aos outros para prevenir que o show se torne um desastre.",
   rulesGoal:
     "O objetivo dos pirotécnicos é construir 5 fogos de artifício, um de cada cor (branco, vermelho, azul, amarelo, verde) combinando cartas de valor crescente (1,2,3,4,5) da mesma cor.",
   rulesSetupTitle: "Configuração",
@@ -227,5 +227,5 @@ export const pt = {
   sendMessage: "Mandar",
   message: "<0></0>: <1></1>",
   contributeLanguage: "Contribua!",
-  buymeacoffeePostGame: "Apoie o jogo, <2>nos compre um café para</2>",
+  buymeacoffeePostGame: "Apoie o jogo, <2>compre um café para nós</2>",
 };
