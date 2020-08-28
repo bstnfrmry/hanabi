@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 import "firebase/database";
 import { cloneDeep } from "lodash";
 
-import IGameState, { fillEmptyValues, GameMode, IGameStatus, IPlayer } from "~/lib/state";
+import IGameState, { cleanState, fillEmptyValues, GameMode, IGameStatus, IPlayer, rebuildGame } from "~/lib/state";
 
 function database() {
   if (!firebase.apps.length) {
@@ -70,7 +70,7 @@ export async function loadGame(gameId: string) {
 
   return new Promise<IGameState>(resolve => {
     ref.once("value", event => {
-      resolve(fillEmptyValues(event.val()));
+      resolve(rebuildGame(fillEmptyValues(event.val())));
     });
   });
 }
@@ -79,7 +79,7 @@ export function subscribeToGame(gameId: string, callback: (game: IGameState) => 
   const ref = database().ref(`/games/${gameId}`);
 
   ref.on("value", event => {
-    callback(fillEmptyValues(event.val() as IGameState));
+    callback(rebuildGame(fillEmptyValues(event.val() as IGameState)));
   });
 
   return () => ref.off();
@@ -90,7 +90,7 @@ export async function updateGame(game: IGameState) {
 
   await database()
     .ref(`/games/${game.id}`)
-    .set(game);
+    .set(cleanState(game));
 }
 
 export async function setReaction(game: IGameState, player: IPlayer, reaction: string) {

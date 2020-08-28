@@ -1,5 +1,6 @@
-import { defaults } from "lodash";
+import { defaults, omit } from "lodash";
 
+import { commitAction, joinGame, newGame } from "~/lib/actions";
 import { ID } from "~/lib/id";
 
 /**
@@ -181,6 +182,43 @@ export interface IPlayer {
 export interface ITokens {
   hints: number;
   strikes: number;
+}
+
+export function rebuildGame(state: Partial<IGameState>) {
+  if (!state) {
+    return null;
+  }
+
+  let newState = newGame(state.options);
+
+  state.players.forEach(player => {
+    newState = joinGame(newState, player);
+  });
+
+  state.turnsHistory.forEach(turn => {
+    newState = commitAction(newState, turn.action);
+  });
+
+  newState.messages = state.messages;
+  newState.status = state.status;
+  newState.createdAt = state.createdAt;
+  newState.nextGameId = state.nextGameId ?? null;
+
+  return newState;
+}
+
+export function cleanState(state: IGameState): Partial<IGameState> {
+  return {
+    ...omit(state, ["playedCards", "drawPile", "discardPile"]),
+    players: state.players.map(player => {
+      return omit(player, "hand");
+    }),
+    turnsHistory: state.turnsHistory.map(turn => {
+      return {
+        action: omit(turn.action, ["card"]) as IAction,
+      };
+    }),
+  };
 }
 
 // empty arrays are returned as null in Firebase, so we fill
