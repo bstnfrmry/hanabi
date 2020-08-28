@@ -6,7 +6,7 @@ Being locked down in March 2020, we were willing to play the Hanabi game remotel
 
 Like us, please buy the [physical version](https://fr.asmodee.com/fr/games/hanabi/products/hanabi/) to support its creator if you like this game!
 
-If you enjoy our app, you can also [buy us a coffee](https://www.buymeacoffee.com/hanabicards) ☕️. It will help cover the Firebase costs (~10€ / month)!
+If you enjoy our app, you can also [buy us a coffee](https://www.buymeacoffee.com/hanabicards) ☕️!
 
 <a href="https://www.buymeacoffee.com/hanabicards" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-blue.png" alt="Buy Us A Coffee" height="34px" ></a>
 
