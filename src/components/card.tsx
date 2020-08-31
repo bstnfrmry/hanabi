@@ -34,20 +34,6 @@ const CardTextSizes = {
   [CardSize.LARGE]: TxtSize.MEDIUM,
 };
 
-const SymbolOffset = {
-  [CardSize.XSMALL]: 1,
-  [CardSize.SMALL]: 0,
-  [CardSize.MEDIUM]: 3,
-  [CardSize.LARGE]: -4,
-};
-
-const SymbolSize = {
-  [CardSize.XSMALL]: "f3",
-  [CardSize.SMALL]: "f1",
-  [CardSize.MEDIUM]: "f1-l f2",
-  [CardSize.LARGE]: "f0-l f1",
-};
-
 export const PositionMap = {
   0: "A",
   1: "B",

@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import React from "react";
+import React, { CSSProperties } from "react";
 
 import ColorSymbol from "~/components/colorSymbol";
 import Txt from "~/components/ui/txt";
@@ -12,6 +12,7 @@ interface Props {
   className?: string;
   selected?: boolean;
   onClick?: Function;
+  style?: CSSProperties;
 }
 
 export default function Vignette(props: Props) {
@@ -22,6 +23,7 @@ export default function Vignette(props: Props) {
   const displaySymbol = game.options.colorBlindMode && type === "color";
 
   const style = {
+    ...props.style,
     ...(selected && { transform: "scale(1.2)" }),
   };
 

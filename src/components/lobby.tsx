@@ -8,6 +8,7 @@ import Button from "~/components/ui/button";
 import { Checkbox, Field, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
+import { joinGame } from "~/lib/actions";
 import { GameMode, IPlayer } from "~/lib/state";
 
 function listPlayerNames(players: IPlayer[]) {
@@ -152,7 +153,7 @@ export default function Lobby(props: Props) {
                 />
                 <Button primary disabled={name.length === 0} id="join-game" text={t("join")} />
               </div>
-              {process.env.NODE_ENV !== "production" && (
+              {process.env.NODE_ENV !== "production" && !game.options.tutorial && (
                 <Field
                   label={<Txt className="gray" size={TxtSize.SMALL} value={t("autoplay")} />}
                   style={{ width: "80px" }}
@@ -163,7 +164,7 @@ export default function Lobby(props: Props) {
             </div>
           </form>
         )}
-        {!gameFull && (
+        {!gameFull && !game.options.tutorial && (
           <div className="flex mt4">
             <div className="flex flex-column mr2">
               <Txt className="mb1" value={t("shareGame")} />

@@ -48,6 +48,7 @@ export interface IGameOptions {
   botsWait: number;
   gameMode: GameMode;
   colorBlindMode: boolean;
+  tutorial?: boolean;
 }
 
 export enum GameVariant {
