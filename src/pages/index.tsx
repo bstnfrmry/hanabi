@@ -8,6 +8,11 @@ import Rules from "~/components/rules";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import useLocalStorage from "~/hooks/localStorage";
+import { newGame } from "~/lib/actions";
+import { logEvent } from "~/lib/analytics";
+import { updateGame } from "~/lib/firebase";
+import { readableUniqueId } from "~/lib/id";
+import { GameMode, GameVariant, IGameHintsLevel } from "~/lib/state";
 
 export default function Home() {
   const router = useRouter();
@@ -43,6 +48,31 @@ export default function Home() {
 
     return () => clearTimeout(timeout);
   }, []);
+
+  const onTutorialClick = async () => {
+    const id = readableUniqueId();
+    const game = newGame({
+      id,
+      playersCount: 3,
+      variant: GameVariant.CLASSIC,
+      seed: "1234",
+      gameMode: GameMode.NETWORK,
+      allowRollback: false,
+      botsWait: 2000,
+      colorBlindMode: false,
+      hintsLevel: IGameHintsLevel.ALL,
+      private: true,
+      preventLoss: false,
+      turnsHistory: true,
+      tutorial: true,
+    });
+
+    await updateGame(game);
+
+    logEvent("Game", "Tutorial created");
+
+    router.push(`/${id}`);
+  };
 
   return (
     <div className="relative w-100 overflow-y-scroll flex flex-column justify-center items-center bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
@@ -89,6 +119,12 @@ export default function Home() {
               }
             />
           )}
+          <Button outlined className="mb4" id="tutorial" size={ButtonSize.LARGE} onClick={() => onTutorialClick()}>
+            {t("tutorial", "Tutorial")}
+            <Txt className="ml2" size={TxtSize.XXSMALL}>
+              ~5 mn
+            </Txt>
+          </Button>
 
           <span
             className="flex flex-column items-center link white pointer mt4"

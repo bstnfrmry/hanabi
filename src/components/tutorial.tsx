@@ -97,6 +97,8 @@ export function TutorialProvider(props: TutorialProviderProps) {
         nextStep: () => setStep(currentStep + 1),
         skip: () => setStep(-1),
         reset: () => setStep(1),
+        hardReset: () => setStep(0),
+        isOver: currentStep === count,
       }}
     >
       {children}

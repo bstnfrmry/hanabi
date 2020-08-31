@@ -1,6 +1,6 @@
 import Fireworks from "fireworks-canvas";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
@@ -12,7 +12,8 @@ import MenuArea from "~/components/menuArea";
 import PlayersBoard from "~/components/playersBoard";
 import ReplayViewer from "~/components/replayViewer";
 import RollbackArea from "~/components/rollbackArea";
-import Tutorial, { ITutorialStep } from "~/components/tutorial";
+import Tutorial, { ITutorialStep, TutorialContext } from "~/components/tutorial";
+import TutorialInstructions from "~/components/tutorialInstructions";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
@@ -55,6 +56,7 @@ export function Game(props: Props) {
   const currentPlayer = useCurrentPlayer();
   const selfPlayer = useSelfPlayer();
   const replay = useReplay();
+  const tutorial = useContext(TutorialContext);
 
   useNotifications();
   useSoundEffects();
@@ -169,6 +171,21 @@ export function Game(props: Props) {
   }, [game.status]);
 
   /**
+   * Automatically start tutorial when player joins
+   */
+  useEffect(() => {
+    if (!game.options.tutorial) return;
+
+    if (game.players.length === 1 && game.status === IGameStatus.LOBBY) {
+      fillBots();
+    }
+    if (game.players.length === game.options.playersCount && game.status === IGameStatus.LOBBY) {
+      tutorial.hardReset();
+      startTutorial();
+    }
+  }, [game.players.length]);
+
+  /**
    * Redirect players to next game
    */
   const previousNextGameId = usePrevious(game ? game.nextGameId : null);
@@ -204,6 +221,31 @@ export function Game(props: Props) {
     updateGame(newState);
 
     logEvent("Game", "Bot added");
+  }
+
+  async function fillBots() {
+    let newState = game;
+    const botsName = ["Jane", "Adam"];
+
+    for (let i = 1; i < newState.options.playersCount; i++) {
+      const playerId = uniqueId();
+
+      newState = joinGame(newState, { id: playerId, name: botsName[i - 1] + " 🤖", bot: true });
+
+      await updateGame(newState);
+    }
+  }
+
+  async function startTutorial() {
+    const newState = {
+      ...game,
+      status: IGameStatus.ONGOING,
+      startedAt: Date.now(),
+    };
+
+    await updateGame(newState);
+
+    logEvent("Game", "Tutorial started");
   }
 
   async function onStartGame() {
@@ -403,6 +445,12 @@ export function Game(props: Props) {
                 onSelectPlayer={onSelectPlayer}
               />
             </div>
+          </div>
+        )}
+
+        {game.status === IGameStatus.ONGOING && game.options.tutorial && tutorial.isOver && (
+          <div className="flex flex-column bg-black-50 bt b--yellow pv3 ph6.5-m ph2">
+            <TutorialInstructions />
           </div>
         )}
 
