@@ -88,7 +88,7 @@ export function isCardDiscardable(card: IHiddenCard, state: IGameState): boolean
 
 export function getHintDeductions(hint: ICardHint, possibleCards: ICard[], game: IGameState): IDeduction[] {
   const deductions: IDeduction[] = [];
-  const colors = getColors(game);
+  const colors = getColors(game.options.variant);
 
   colors.forEach(color => {
     numbers.forEach(number => {

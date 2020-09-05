@@ -7,6 +7,7 @@ import Hint from "~/components/hint";
 import Turn from "~/components/turn";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
+import useLocalStorage from "~/hooks/localStorage";
 import useLongPress from "~/hooks/longPress";
 import { getColors, numbers } from "~/lib/actions";
 import { ICard, IColor, IGameHintsLevel, IHintLevel } from "~/lib/state";
@@ -76,8 +77,7 @@ export function CardWrapper(props: CardWrapperProps) {
     ...attributes
   } = props;
 
-  const game = useGame();
-
+  const [colorBlindMode] = useLocalStorage("colorBlindMode", false);
   const sizeClass = CardClasses[size];
 
   return (
@@ -96,7 +96,7 @@ export function CardWrapper(props: CardWrapperProps) {
       onClick={onClick}
       {...attributes}
     >
-      {game.options.colorBlindMode && <ColorSymbol color={color as IColor} />}
+      {colorBlindMode && <ColorSymbol color={color as IColor} />}
       {children}
     </div>
   );
@@ -189,15 +189,15 @@ export default function Card(props: Props) {
   const longPressProps = useLongPress(() => {
     setIsHintPopoverOpen(true);
   });
+  const [colorBlindMode] = useLocalStorage("colorBlindMode", false);
 
-  const colors = getColors(game);
+  const colors = getColors(game?.options?.variant);
   const color = hidden ? "gray-light" : card.color;
 
   const number = hidden ? null : card.number;
 
-  const displayColorSymbol = game.options.colorBlindMode;
   const displayHints =
-    game.options.hintsLevel !== IGameHintsLevel.NONE &&
+    game?.options.hintsLevel !== IGameHintsLevel.NONE &&
     [ICardContext.OTHER_PLAYER, ICardContext.TARGETED_PLAYER, ICardContext.SELF_PLAYER].includes(context);
 
   if (selected) {
@@ -228,8 +228,8 @@ export default function Card(props: Props) {
       <Txt
         className={classnames(`b absolute`, {
           "bottom-1 mb3": displayHints && size === CardSize.LARGE,
-          [`txt-${color}-dark`]: !displayColorSymbol,
-          "main-dark": displayColorSymbol,
+          [`txt-${color}-dark`]: !colorBlindMode,
+          "main-dark": colorBlindMode,
         })}
         size={CardTextSizes[size]}
         value={number}

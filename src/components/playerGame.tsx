@@ -354,7 +354,7 @@ export default function PlayerGame(props: Props) {
                       className="mr2"
                       disabled={
                         !isTutorialAction(tutorialAction?.action, {
-                          action: action,
+                          action: action as "discard" | "play",
                           from: 0,
                           cardIndex: selectedCard,
                         })

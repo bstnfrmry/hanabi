@@ -98,7 +98,7 @@ export function TutorialProvider(props: TutorialProviderProps) {
         skip: () => setStep(-1),
         reset: () => setStep(1),
         hardReset: () => setStep(0),
-        isOver: currentStep === count,
+        isOver: currentStep === count || currentStep === -1,
       }}
     >
       {children}
@@ -144,7 +144,7 @@ export default function Tutorial(props: Props) {
       body={
         <div className="flex flex-column b--yellow ba bw1 bg-white pa2 pa3-l br2 main-dark">
           <span className="flex items-center justify-between">
-            <Txt size={TxtSize.MEDIUM} value={t(title)} />
+            <Txt className="ttu" size={TxtSize.MEDIUM} value={t(title)} />
             {step > 0 && <Txt className="gray mr2" value={`${step} / ${totalSteps - 1}`} />}
           </span>
           <div className="flex flex-column mt1 mt2-l">

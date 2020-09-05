@@ -76,7 +76,7 @@ export const en = {
   cannotRollback: "You cannot rollback the game yet",
   abort: "Abort",
   introTutorial: "Tutorial",
-  introContent: "Let's learn how to play!",
+  introContent: "Let's take a quick tour!",
   playedCardsTutorial: "Played Cards",
   playedCardsTutorialContent:
     "This will nest the cards that have been played.\nCollectively, reach 5 on each color to win the game.",

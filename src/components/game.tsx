@@ -480,11 +480,7 @@ export function Game(props: Props) {
           </div>
         )}
 
-        {game.status === IGameStatus.ONGOING && game.options.tutorial && tutorial.isOver && (
-          <div className="flex flex-column bg-black-50 bt b--yellow pv3 ph6.5-m ph2">
-            <TutorialInstructions />
-          </div>
-        )}
+        {game.status === IGameStatus.ONGOING && game.options.tutorial && tutorial.isOver && <TutorialInstructions />}
 
         {game.status === IGameStatus.ONGOING && replay.cursor !== null && (
           <div className="flex flex-column bg-black-50 bt b--yellow pv3 ph6.5-m">

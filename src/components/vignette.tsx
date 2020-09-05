@@ -20,7 +20,7 @@ export default function Vignette(props: Props) {
 
   const game = useGame();
 
-  const displaySymbol = game.options.colorBlindMode && type === "color";
+  const displaySymbol = game?.options?.colorBlindMode && type === "color";
 
   const style = {
     ...props.style,
@@ -42,7 +42,7 @@ export default function Vignette(props: Props) {
     >
       {displaySymbol && <ColorSymbol color={value as IColor} />}
       {type === "number" && (
-        <Txt value={game.options.variant === GameVariant.SEQUENCE && value < 5 ? `${value}+` : value} />
+        <Txt value={game?.options?.variant === GameVariant.SEQUENCE && value < 5 ? `${value}+` : value} />
       )}
     </a>
   );
