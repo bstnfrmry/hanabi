@@ -32,7 +32,7 @@ export default function GameActionsStats() {
   const groupedTurns = groupBy(game.turnsHistory, turn => turn.action.action);
   const hintsCount = game.turnsHistory.filter(turn => turn.action.action === "hint").length;
   const playsCount = game.turnsHistory.filter(turn => turn.action.action === "play").length || 1;
-  const playsPerHint = (hintsCount / playsCount).toFixed(2);
+  const playsPerHint = (playsCount / hintsCount).toFixed(2);
 
   return (
     <div className="flex flex-column items-center">
