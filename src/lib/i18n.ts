@@ -5,6 +5,7 @@ import { initReactI18next } from "react-i18next";
 import { en } from "~/locales/en";
 import { es } from "~/locales/es";
 import { fr } from "~/locales/fr";
+import { it } from "~/locales/it";
 import { nl } from "~/locales/nl";
 import { ru } from "~/locales/ru";
 import { pt } from "~/locales/pt";
@@ -22,6 +23,9 @@ i18n
       },
       es: {
         translation: es,
+      },
+      it: {
+        translation: it,
       },
       nl: {
         translation: nl,

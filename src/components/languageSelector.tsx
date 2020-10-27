@@ -8,6 +8,7 @@ const Languages = {
   en: "English",
   fr: "Français",
   es: "Español",
+  it: "Italiano",
   nl: "Dutch",
   ru: "Russian",
   pt: "Português",
