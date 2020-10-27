@@ -1,7 +1,6 @@
 {
   "version": 2,
-  "alias": "hanabi.cards",
-  "scope": "hanabi",
+  "scope": "pelica",
   "rewrites": [
     {
       "source": "/service-worker.js",
