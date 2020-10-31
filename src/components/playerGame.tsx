@@ -17,7 +17,16 @@ import Vignettes from "~/components/vignettes";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 import { useReplay } from "~/hooks/replay";
 import { matchColor, matchNumber, MaxHints } from "~/lib/actions";
-import IGameState, { GameVariant, ICard, IColor, IGameStatus, IHintAction, INumber, IPlayer } from "~/lib/state";
+import IGameState, {
+  GameMode,
+  GameVariant,
+  ICard,
+  IColor,
+  IGameStatus,
+  IHintAction,
+  INumber,
+  IPlayer,
+} from "~/lib/state";
 
 function isCardHintable(game: IGameState, hint: IHintAction, card: ICard) {
   return hint.type === "color"
@@ -97,6 +106,7 @@ export default function PlayerGame(props: Props) {
   const replay = useReplay();
   const [reactionsOpen, setReactionsOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
+  const [hideCards, setHideCards] = useState(true);
   const [selectedCard, selectCard] = useState<number>(cardIndex);
   const [revealCards, setRevealCards] = useState(false);
   const [pendingHint, setPendingHint] = useState<IHintAction>({
@@ -111,19 +121,26 @@ export default function PlayerGame(props: Props) {
     setRevealCards(false);
   }, [game.id]);
 
-  let hideCards = true;
-  // Show cards when spectating game
-  if (!selfPlayer) {
-    hideCards = false;
-  }
-  // Show cards to other players
-  if (!self && selfPlayer) {
-    hideCards = false;
-  }
-  // Show cards in replay mode (when toggled)
-  if (revealCards) {
-    hideCards = false;
-  }
+  useEffect(() => {
+    let tempHideCards = true;
+    // Show cards when spectating game
+    if (!selfPlayer) {
+      tempHideCards = false;
+    }
+    // Show cards to other players
+    if (!self && selfPlayer) {
+      tempHideCards = false;
+    }
+    // Show cards in replay mode (when toggled)
+    if (revealCards) {
+      tempHideCards = false;
+    }
+    // Before game has started, hide cards in pass&play mode
+    if (game.options.gameMode === GameMode.PASS_AND_PLAY && game.status === IGameStatus.LOBBY) {
+      tempHideCards = true;
+    }
+    setHideCards(tempHideCards);
+  }, [game.status]);
 
   const canPlay = [IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status) && !replay.cursor;
 
