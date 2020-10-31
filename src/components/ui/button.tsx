@@ -34,7 +34,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
   children?: ReactNode;
   text?: string;
-  tightLetterSpacing: boolean;
+  tightLetterSpacing?: boolean;
 }
 
 export default function Button(props: Props) {

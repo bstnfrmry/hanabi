@@ -33,8 +33,7 @@ export default class Error extends React.Component<Props> {
                     reach out
                   </a>
                   to let us know what happened.
-                </Trans>
-
+                </Trans>{" "}
                 {t("earlyDevelopment", "The game is still in early development and we'd love your feedback.")}
                 <br />
                 <br />
@@ -46,7 +45,7 @@ export default class Error extends React.Component<Props> {
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    a public Github repository
+                    a public Github repository{" "}
                   </a>
                   if you'd like to contribute or report a bug.
                 </Trans>
