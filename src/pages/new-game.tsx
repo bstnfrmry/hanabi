@@ -158,6 +158,7 @@ export default function NewGame() {
           onClick={() => setShowAdvanced(!showAdvanced)}
         >
           <Txt className="lavender underline" value={t("advancedOptions", "Advanced options")} />
+          <Txt className="yellow mt2" value={`💎 ${t("new", "New!")} ${t("colorBlindMode", "Color blind mode")}`} />
         </a>
 
         {showAdvanced && (

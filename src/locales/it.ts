@@ -167,10 +167,8 @@ export const it = {
     "Siamo un gruppo di dipendenti da giochi da tavolo. Bloccati durante il lock-down del 2020, stavamo cercando un modo alternativo di giocare insieme per via remota.\nPoichè ci piace sia programmare che giocare ad Hanabi, abbiamo deciso di creare una versione online del gioco compatibile con cellulari/tablet.\n\n👉 Se anche a voi piace questo gioco, compratene la <2>versione fisica</2> così da supportare il suo creatore!",
   rulesContact: "✉️ <1>Contattaci</1> se hai qualche domanda o suggerimento",
   rulesContributeRepo: "💻 Abbiamo anche un <1>respository pubblico di Github</1> nel caso ti piacerebbe contribuire.",
-  rulesDiscordServer:
-    "🗣 Unisciti al nostro server di Discord per discutere di potenziali nuove funzionalità o miglioramenti",
-  rulesBuymeacoffee:
-    "🙇‍♀️ Puoi anche supportare la nostra iniziativa e aiutarci con i costi del server offrendoci un caffè",
+  rulesDiscordServer: "🗣 Unisciti al nostro server di Discord per discutere di potenziali nuove funzionalità o miglioramenti",
+  rulesBuymeacoffee: "🙇‍♀️ Puoi anche supportare la nostra iniziativa e aiutarci con i costi del server offrendoci un caffè",
   noRoom: "Nessuna stanza disponibile",
   faster: "Molto veloce",
   fast: "Veloce",
@@ -228,6 +226,8 @@ export const it = {
   sendMessagePlaceholder: "Invia un messaggio ai tuoi compagni di squadra",
   sendMessage: "Invia",
   message: "<0></0>: <1></1>",
+  new: "Novità!",
+  colorBlindMode: "Modalità daltonico",
   colorBlindModeSubtext: "Mostra i simboli sopra le carte per aiutare a distinguere i colori",
   pageNotFound: "Pagina non trovata",
   contributeLanguage: "Contribuisci!",

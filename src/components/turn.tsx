@@ -6,7 +6,7 @@ import Hint from "~/components/hint";
 import PlayerName from "~/components/playerName";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
-import { GameMode, ICard, IDiscardAction, IHintAction, IHintLevel, IPlayAction, ITurn } from "~/lib/state";
+import { ICard, IDiscardAction, IHintAction, IHintLevel, IPlayAction, ITurn } from "~/lib/state";
 
 interface Props {
   turn: ITurn;
@@ -23,17 +23,13 @@ export default function Turn(props: Props) {
   const isViewingOwnActions = turn.action.from === selfPlayer?.index;
   const isViewingOwnReceivedHint = turn.action.action === "hint" && turn.action.to === selfPlayer?.index;
 
-  const playerNameFrom = (
-    <PlayerName explicit={game.options.gameMode === GameMode.PASS_AND_PLAY} player={game.players[turn.action.from]} />
-  );
+  const playerNameFrom = <PlayerName player={game.players[turn.action.from]} />;
 
   let textualTurn;
   let drawnTurn;
 
   if (turn.action.action === "hint") {
-    const playerNameTo = (
-      <PlayerName explicit={game.options.gameMode === GameMode.PASS_AND_PLAY} player={game.players[turn.action.to]} />
-    );
+    const playerNameTo = <PlayerName player={game.players[turn.action.to]} />;
 
     if (isViewingOwnActions) {
       textualTurn = (
