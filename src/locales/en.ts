@@ -32,7 +32,7 @@ export const en = {
   rewind: "🕑 Rewind",
   backToGame: "Back to game",
   theirTurn: "It's {{currentPlayerName}} turn!",
-  go: "Go!",
+  go: "Learn",
   estimatedMaxScore: "Estimated max score for this shuffle: {{reachableScore}}.",
   keepPracticing: "Keep practicing",
   congrats: "You did great!",

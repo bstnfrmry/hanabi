@@ -361,8 +361,8 @@ export function Game(props: Props) {
                     <DiscardArea />
                   </Tutorial>
                   <Button
-                    tightLetterSpacing
                     void
+                    className="tracked-tight"
                     size={ButtonSize.TINY}
                     text={replay.cursor === null ? t("rewind") : t("backToGame")}
                     onClick={() => {

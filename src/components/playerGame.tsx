@@ -258,11 +258,13 @@ export default function PlayerGame(props: Props) {
               Enable user to view their game */}
               {game.endedAt && player === selfPlayer && (
                 <Button
-                  tightLetterSpacing
                   void
-                  className={classnames({
-                    revealCardButton: selected,
-                  })}
+                  className={
+                    (classnames({
+                      revealCardButton: selected,
+                    }),
+                    "tracked-tight")
+                  }
                   size={ButtonSize.TINY}
                   text={revealCards ? t("hide") : t("reveal")}
                   onClick={e => {

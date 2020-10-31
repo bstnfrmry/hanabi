@@ -34,7 +34,6 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
   children?: ReactNode;
   text?: string;
-  tightLetterSpacing?: boolean;
 }
 
 export default function Button(props: Props) {
@@ -48,7 +47,6 @@ export default function Button(props: Props) {
     text,
     children,
     disabled,
-    tightLetterSpacing = false,
     ...attributes
   } = props;
 
@@ -56,7 +54,6 @@ export default function Button(props: Props) {
     <button
       className={classnames(className, ButtonSizes[size], "shadow-2 ttu tracked outline-0 lh-normal", {
         "bn": !outlined,
-        "tracked-tight": tightLetterSpacing,
         "pointer grow": !disabled,
         "o-80": disabled,
         "bg-cta shadow-light": primary,
