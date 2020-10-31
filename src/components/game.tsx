@@ -362,6 +362,7 @@ export function Game(props: Props) {
                   </Tutorial>
                   <Button
                     void
+                    className="tracked-tight"
                     size={ButtonSize.TINY}
                     text={replay.cursor === null ? t("rewind") : t("backToGame")}
                     onClick={() => {

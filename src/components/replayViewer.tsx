@@ -37,7 +37,7 @@ export default function ReplayViewer(props: Props) {
   const maxTurns = game.originalGame.turnsHistory.length;
 
   return (
-    <div className="bg-black-50 flex justify-between items-center pa2">
+    <div className="flex justify-between items-center pa2">
       <div className="flex flex-column">
         <Txt className="db" size={TxtSize.SMALL} value={`Replay`} />
         <Txt
