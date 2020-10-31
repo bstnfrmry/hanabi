@@ -7,8 +7,8 @@ import { es } from "~/locales/es";
 import { fr } from "~/locales/fr";
 import { it } from "~/locales/it";
 import { nl } from "~/locales/nl";
-import { ru } from "~/locales/ru";
 import { pt } from "~/locales/pt";
+import { ru } from "~/locales/ru";
 
 i18n
   .use(initReactI18next)
@@ -33,7 +33,7 @@ i18n
       ru: {
         translation: ru,
       },
-	  pt: {
+      pt: {
         translation: pt,
       },
     },

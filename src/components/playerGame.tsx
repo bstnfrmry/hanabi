@@ -258,6 +258,7 @@ export default function PlayerGame(props: Props) {
               Enable user to view their game */}
               {game.endedAt && player === selfPlayer && (
                 <Button
+                  tightLetterSpacing
                   void
                   className={classnames({
                     revealCardButton: selected,

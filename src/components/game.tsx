@@ -361,6 +361,7 @@ export function Game(props: Props) {
                     <DiscardArea />
                   </Tutorial>
                   <Button
+                    tightLetterSpacing
                     void
                     size={ButtonSize.TINY}
                     text={replay.cursor === null ? t("rewind") : t("backToGame")}
