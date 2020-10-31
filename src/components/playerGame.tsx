@@ -254,7 +254,9 @@ export default function PlayerGame(props: Props) {
                 />
               )}
 
-              {game.status === IGameStatus.OVER && player === selfPlayer && (
+              {/* When game has ended (even in replay mode)
+              Enable user to view their game */}
+              {game.endedAt && player === selfPlayer && (
                 <Button
                   void
                   className={classnames({
