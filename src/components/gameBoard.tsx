@@ -37,15 +37,7 @@ export default function GameBoard(props: Props) {
           {maxScore !== maxPossibleScore && <Txt uppercase className="strike ml1 gray" value={maxScore} />}
 
           {game.actionsLeft > 0 && game.actionsLeft <= game.options.playersCount && (
-            <Txt
-              uppercase
-              className="red ml2"
-              value={
-                game.actionsLeft > 1
-                  ? t("turnsLeftDisclaimer", { actionsLeft: game.actionsLeft }) // plural
-                  : t("turnLeftDisclaimer") // sing
-              }
-            />
+            <Txt uppercase className="red ml2" value={t("turnsLeftDisclaimer", { count: game.actionsLeft })} />
           )}
         </div>
         <div className="flex">

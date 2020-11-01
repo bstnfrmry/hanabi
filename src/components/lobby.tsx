@@ -111,10 +111,8 @@ export default function Lobby(props: Props) {
                     value={
                       gameFull
                         ? t("gameFull")
-                        : game.players.length === 1
-                        ? t("gameNotFull", { joined: game.players.length, playersCount: game.options.playersCount })
-                        : t("gameNotFullPlural", {
-                            joined: game.players.length,
+                        : t("gameNotFull", {
+                            count: game.players.length,
                             playersCount: game.options.playersCount,
                           })
                     }
