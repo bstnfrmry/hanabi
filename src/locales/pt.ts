@@ -10,12 +10,12 @@ export const pt = {
   joinRoom: "Entrar em uma sala",
   rejoinGame: "Reentrar no jogo",
   whatsHanabi: "O quê é Hanabi?",
-  invitationByPlayers: "{{playersNames}} estão te convidando para um jogo de Hanabi 🎉",
-  invitationByPlayer: "{{playerName}} esta te convidando para um jogo de Hanabi 🎉", // necessary in French
+  invitationByPlayers: "{{playersNames}} esta te convidando para um jogo de Hanabi 🎉",
+  invitationByPlayers_plural: "{{playerNames}} estão te convidando para um jogo de Hanabi 🎉",
   invitationNoPlayers: "Você está sendo convidado para um jogo de Hanabi 🎉",
   gameFull: "Todos estão aqui!",
   gameNotFull: "{{count}} / {{playersCount}} já entrou",
-  gameNotFull_plural: "{{count}} / {{playersCount}} já entraram", // necessary in French
+  gameNotFull_plural: "{{count}} / {{playersCount}} já entraram",
   startGame: "Começar jogo",
   addAi: "+ adicionar AI",
   lobby: "Lobby",

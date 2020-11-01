@@ -35,11 +35,7 @@ function Meta() {
 
   const playersNames = listPlayerNames(inviters);
 
-  const description = playersNames
-    ? inviters.length === 1
-      ? t("invitationByPlayer", { playerName: playersNames })
-      : t("invitationByPlayers", { playersNames })
-    : t("invitationNoPlayers");
+  const description = playersNames ? t("invitationByPlayers", { playersNames }) : t("invitationNoPlayers");
 
   return (
     <Head>
