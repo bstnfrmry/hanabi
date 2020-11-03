@@ -155,6 +155,32 @@ If you started some work and did not have time to finish, do not hesitate to ope
 
 - `<1>...</1>` or `<0>...</0>` are HTML elements. Usually, they are used to apply some transformation on the encapsuled expression (like color, font weight, text decoration, etc.) or enclose objects.
 
+#### Pluralization
+
+- Plurals are handled by the suffix "_plural" in most languages
+
+The variable that will trigger the plural or singular is always named `count`.
+
+For example 
+```  Typescript
+  turnsLeftDisclaimer: "· 1 turn left",
+  turnsLeftDisclaimer_plural: "· {{count}} turns left", // 2 turns left
+``` 
+`count` does not have to be in the translation itself. It can be used only to trigger or not the plural. For example :
+```  Typescript
+  // in the code file
+  t("red", { count: hintableCards.length }),
+
+  // in the translation file, for ex fr.ts rouge = red
+  red: "rouge"
+  red_plural: "rouges" // as you can see, count is not in the translation itself
+``` 
+
+- Some languages have different plural rules. For example, in English, 0 is plural whereas it is singular in French. The suffix "_plural" will automatically handle it. 
+
+- Yet some languages like Russian or Arabic have more complex plurals. You can use this site https://jsfiddle.net/sm9wgLze to know what suffix you can use.
+
+
 #### Need to modify the code?
 
 If your language requires adapting the code or splitting a translation and you do not know how to implement these modifications, do not hesitate to ask for help on [Github](https://github.com/bstnfrmry/hanabi/issues/) or [Discord](https://discord.gg/QEWtYdW).

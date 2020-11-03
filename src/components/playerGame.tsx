@@ -42,33 +42,31 @@ function textualHint(game: IGameState, hint: IHintAction, cards: ICard[], t: TFu
 
   if (hintableCards.length === 0) {
     if (hint.type === "color") return t("negativeHintColor", { color: t(hint.value as string, { count: 5 }) });
-    // count= 5, to force plural in French
+    // count= 5, to force plural in some languages
     else return t("negativeHintNumber", { number: hint.value });
   }
 
-  if (hintableCards.length === 1) {
-    if (hint.type === "color") {
-      return t("positiveHintColor", { position: hintableCards[0], color: t(hint.value as string) });
-    } else {
-      if (game.options.variant === GameVariant.SEQUENCE) {
-        return t("positiveHintNumberSequence", { position: hintableCards[0], number: hint.value });
-      }
-
-      return t("positiveHintNumber", { position: hintableCards[0], number: hint.value });
-    }
-  }
-
-  if (hint.type === "color")
-    return t("positiveHintColorPlural", {
+  if (hint.type === "color") {
+    return t("positiveHintColor", {
+      count: hintableCards.length, // whether to use the plural translation
       positions: hintableCards.join(", "),
       color: t(hint.value as string, { count: hintableCards.length }),
     });
+  } else {
+    if (game.options.variant === GameVariant.SEQUENCE) {
+      return t("positiveHintNumberSequence", {
+        count: hintableCards.length,
+        positions: hintableCards.join(", "),
+        number: hint.value,
+      });
+    }
 
-  if (game.options.variant === GameVariant.SEQUENCE) {
-    return t("positiveHintNumberSequencePlural", { positions: hintableCards.join(", "), number: hint.value });
+    return t("positiveHintNumber", {
+      count: hintableCards.length,
+      positions: hintableCards.join(", "),
+      number: hint.value,
+    });
   }
-
-  return t("positiveHintNumberPlural", { positions: hintableCards.join(", "), number: hint.value });
 }
 
 interface Props extends HTMLAttributes<HTMLElement> {

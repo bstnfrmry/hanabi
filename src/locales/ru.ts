@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
+// For plural
+// * _0 is for 1, 11...
+// * _1 is for 2, 3, 4, 22, 23...
+// * _2 is for 0, 5, 6, 20, 25...
+
 export const ru = {
   hanabi: "Ханаби",
   welcome: "Добро пожаловать",
@@ -10,12 +15,12 @@ export const ru = {
   joinRoom: "Присоедениться к комнате",
   rejoinGame: "Вернуться в игру",
   whatsHanabi: "Что такое Ханаби ?",
-  invitationByPlayers: "{{playersNames}} приглашают Вас сыграть в Ханаби 🎉",
-  invitationByPlayer: "{{playerName}} приглашет Вас сыграть в Ханаби 🎉", // necessary in French
+  invitationByPlayers: "{{playerNames}} приглашет Вас сыграть в Ханаби 🎉",
+  invitationByPlayers_plural: "{{playersNames}} приглашают Вас сыграть в Ханаби 🎉",
   invitationNoPlayers: "Вас приглашают сыграть в Ханаби 🎉",
   gameFull: "Все в сборе!",
-  gameNotFull: "{{joined}} / {{playersCount}} уже присоеденился",
-  gameNotFullPlural: "{{joined}} / {{playersCount}} уже присоединились", // necessary in French
+  gameNotFull_0: "{{count}} / {{playersCount}} уже присоеденился", // 1
+  gameNotFull_1: "{{count}} / {{playersCount}} уже присоединились", // 2, 3, 4
   startGame: "Начать игру",
   addAi: "+ добавить ИИ",
   lobby: "Лобби",
@@ -40,8 +45,9 @@ export const ru = {
   showStats: "Показать статистику",
   gameOver: "Игра окончена! • Ваш счет {{playedCardsLength}} 🎉",
   score: "Ханаби • Счет: {{score}} / {{maxPossibleScore}}",
-  turnLeftDisclaimer: "· 1 ход остался",
-  turnsLeftDisclaimer: "· {{actionsLeft}} ходов осталось",
+  turnsLeftDisclaimer_0: "· 1 ход остался", // _0 is for 1 turn left
+  turnsLeftDisclaimer_1: "· {{count}} хода осталось", // _1 is for 2, 3, 4 turns left
+  turnsLeftDisclaimer_2: "· {{count}} ходов осталось", // _2 is for 0, 5 turns left
   cardLeft: "{{pileLength}} осталось",
   tokens: "жетоны",
   deck: "колода",
@@ -61,12 +67,15 @@ export const ru = {
   hint: "Подсказка",
   negativeHintColor: "У вас нет карт с цветом: {{ color }}",
   negativeHintNumber: "У вас нет {{ number }}",
-  positiveHintColor: "Цвет карты {{ position }} - {{ color }}",
-  positiveHintNumber: "На карте {{ position }} цифра {{ number }}",
-  positiveHintNumberSequence: "Цифра на карте {{ position }} - {{ number }} или выше",
-  positiveHintColorPlural: "Цвет карт {{ positions }} - {{ color }}",
-  positiveHintNumberPlural: "На картах {{ positions }} цифра {{ number }}",
-  positiveHintNumberSequencePlural: "На картах {{ positions }} цифра {{ number }} или выше",
+  positiveHintColor: "Цвет карт {{ positions }} - {{ color }}",
+  positiveHintNumber: "На карте {{ positions }} цифра {{ number }}",
+  positiveHintNumberSequence: "Цифра на карте {{ positions }} - {{ number }} или выше",
+  positiveHintColor_1: "Цвет карты {{ positions }} - {{ color }}", // for 2 3 4 cards
+  positiveHintNumber_1: "На картах {{ positions }} цифра {{ number }}",
+  positiveHintNumberSequence_1: "На картах {{ positions }} цифра {{ number }} или выше",
+  positiveHintColor_2: "Цвет карты {{ positions }} - {{ color }}", // for 5 cards
+  positiveHintNumber_2: "На картах {{ positions }} цифра {{ number }}",
+  positiveHintNumberSequence_2: "На картах {{ positions }} цифра {{ number }} или выше",
   you: "Вы",
   hinted: "Подсказал",
   played: "Сыграл",
