@@ -1,4 +1,5 @@
 import Fireworks from "fireworks-canvas";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -51,11 +52,14 @@ export default function Home() {
       </div>
       <div className="vh-100 flex flex-column items-center justify-center">
         <div className="flex flex-column items-center">
-          <img
-            alt={t("landingImageAlt", "Hanabi cards game online logo")}
-            className="mb4 w4 h4"
-            src={require("~/images/hanabi.png?size=256")}
-          />
+          <div className="mb4 w4 h4">
+            <Image
+              alt={t("landingImageAlt", "Hanabi cards game online logo")}
+              height={256}
+              src={"/static/hanabi.png"}
+              width={256}
+            />
+          </div>
           <Txt size={TxtSize.LARGE} value={t("hanabi", "Hanabi")} />
         </div>
         <span className="tc lavender">{t("tagline", "Play the Hanabi game online with friends!")}</span>

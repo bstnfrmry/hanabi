@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import Image from "next/image";
 import React, { ReactNode } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
@@ -46,24 +47,18 @@ export default function Rules(props: Props) {
           />
         )}
 
-        <img
-          alt="Hanabi cards game online"
-          className="absolute top-0 right-0 w4 h4 ma4 o-50 dn db-l"
-          src={require("~/images/hanabi.png?size=256")}
-        />
+        <div className="absolute top-0 right-0 w4 h4 ma4 o-50 dn db-l">
+          <Image alt="Hanabi cards game online" height={256} src={"/static/hanabi.png"} width={256} />
+        </div>
 
         <div className="flex justify-center mb4 mb5-l">
-          <div className="w-75 w-50-l ba b--yellow br3">
-            <img
-              alt="Game screenshot"
-              className="dn db-l br3"
-              src={require("~/images/screenshot-desktop.png?size=706")}
-            />
-            <img
-              alt="Game screenshot"
-              className="db dn-l br3"
-              src={require("~/images/screenshot-mobile.png?size=1024")}
-            />
+          <div className="w-75 w-50-l ba b--yellow br3 overflow-hidden">
+            <div className="dn db-l">
+              <Image alt="Game screenshot" height={1570} src={"/static/screenshot-desktop.png"} width={1816} />
+            </div>
+            <div className="db dn-l">
+              <Image alt="Game screenshot" height={1498} src={"/static/screenshot-mobile.png"} width={1024} />
+            </div>
           </div>
         </div>
 
