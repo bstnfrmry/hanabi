@@ -15,6 +15,12 @@ If you enjoy our app, you can also [buy us a coffee](https://www.buymeacoffee.co
 
 We are so happy to see people join the project and contribute to the repository. Do not hesitate to add an issue or open a pull request.
 
+Thanks to all the people who contributed!
+
+<a href="https://github.com/bstnfrmry/hanabi/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=bstnfrmry/hanabi" />
+</a>
+
 ### Issues
 
 Open an issue everything you want to report
