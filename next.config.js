@@ -16,6 +16,10 @@ const config = [
     env: {
       SENTRY_DSN: process.env.SENTRY_DSN,
     },
+    i18n: {
+      locales: ["en", "fr", "es", "it", "nl", "ru", "pt"],
+      defaultLocale: "en",
+    },
     webpack: (config, { isServer, buildId }) => {
       config.plugins.push(
         new Dotenv({

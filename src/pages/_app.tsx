@@ -1,9 +1,9 @@
 import * as Sentry from "@sentry/browser";
 import NextApp, { AppProps } from "next/app";
 import Head from "next/head";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import NProgress from "nprogress";
-import React, { ErrorInfo, useState } from "react";
+import React, { ErrorInfo, useEffect, useState } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -69,6 +69,11 @@ export function reportWebVitals({ id, name, label, value }) {
 function Hanabi(props: AppProps) {
   const { Component, pageProps } = props;
   const { t } = useTranslation();
+  const router = useRouter();
+
+  useEffect(() => {
+    i18n.changeLanguage(router.locale);
+  }, [router.locale]);
 
   const [showOffline, setShowOffline] = useState(true);
   const online = useConnectivity();

@@ -123,6 +123,18 @@ i18n
       },
 ```
 
+**Add it to the configuration (next)**
+
+Open the [next.config.js](next.config.js) file and add the language to the list of options for the configuration.
+
+```Javascript
+
+  i18n: {
+    locales: ["en", "fr", "es", "it", "nl", "ru", "pt"],
+    defaultLocale: "en",
+  },
+```
+
 **Add it to the selector**
 
 - Add the new language to the language selector dropdown. File `src/components/languageSelector.tsx`
@@ -134,7 +146,7 @@ const Languages = {
   es: "Español",
   nl: "Dutch",
   ru: "Russian",
-  it: "Italian"
+  it: "Italian" // italian
 };
 ```
 
