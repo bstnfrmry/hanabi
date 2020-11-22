@@ -236,6 +236,8 @@ export const ru = {
   sendMessagePlaceholder: "Отправить сообщение Вашей команде",
   sendMessage: "Отправить",
   message: "<0></0>: <1></1>",
+  colorBlindMode: "Цветной режим слепых",
+  colorBlindModeSubtext: "Отображение символов на верхней части карт, чтобы помочь различать цвета",
   contributeLanguage: "способствовать!",
   buymeacoffeePostGame: "Поддержите игру, <2>купите нам кофе</2>",
 };

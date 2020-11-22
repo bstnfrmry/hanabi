@@ -228,6 +228,7 @@ export const it = {
   sendMessagePlaceholder: "Invia un messaggio ai tuoi compagni di squadra",
   sendMessage: "Invia",
   message: "<0></0>: <1></1>",
+  colorBlindMode: "Modo daltonico",
   colorBlindModeSubtext: "Mostra i simboli sopra le carte per aiutare a distinguere i colori",
   pageNotFound: "Pagina non trovata",
   contributeLanguage: "Contribuisci!",

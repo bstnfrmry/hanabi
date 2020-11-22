@@ -229,6 +229,7 @@ export const fr = {
   sendMessagePlaceholder: "Envoie un message à tes partenaires",
   sendMessage: "Envoyer",
   message: "<0></0> : <1></1>",
+  colorBlindMode: "Mode daltonien",
   colorBlindModeSubtext: "Affiche des symboles sur les cartes pour aider à distinguer les couleurs",
   pageNotFound: "Pagina niet gevonden",
   contributeLanguage: "Contribuer !",

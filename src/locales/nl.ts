@@ -222,6 +222,8 @@ export const nl = {
   sendMessage: "Sturen",
   message: "<0></0>: <1></1>",
   pageNotFound: "Pagina niet gevonden",
+  colorBlindMode: "Kleurenblinde modus",
+  colorBlindModeSubtext: "Toon symbolen boven op de kaarten om de kleuren te helpen onderscheiden",
   contributeLanguage: "Bijdragen!",
   buymeacoffeePostGame: "Steun het spel, <2>koop ons een koffie</2>",
 };
