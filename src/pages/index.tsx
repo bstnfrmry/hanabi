@@ -1,9 +1,11 @@
 import Fireworks from "fireworks-canvas";
+import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
-import LanguageSelector from "~/components/languageSelector";
+import LanguageSelector, { Languages } from "~/components/languageSelector";
 import Rules from "~/components/rules";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -46,16 +48,25 @@ export default function Home() {
 
   return (
     <div className="relative w-100 overflow-y-scroll flex flex-column justify-center items-center bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
+      <Head>
+        <link href="/" hrefLang="x-default" rel="alternate" />
+        {Object.keys(Languages).map(locale => (
+          <link key={locale} href={`/${locale}`} hrefLang={locale} rel="alternate" />
+        ))}
+      </Head>
       <div className="absolute top-1 right-2">
         <LanguageSelector outlined />
       </div>
       <div className="vh-100 flex flex-column items-center justify-center">
         <div className="flex flex-column items-center">
-          <img
-            alt={t("landingImageAlt", "Hanabi cards game online logo")}
-            className="mb4 w4 h4"
-            src={require("~/images/hanabi.png?size=256")}
-          />
+          <div className="mb4 w4 h4">
+            <Image
+              alt={t("landingImageAlt", "Hanabi cards game online logo")}
+              height={256}
+              src={"/static/hanabi.png"}
+              width={256}
+            />
+          </div>
           <Txt size={TxtSize.LARGE} value={t("hanabi", "Hanabi")} />
         </div>
         <span className="tc lavender">{t("tagline", "Play the Hanabi game online with friends!")}</span>

@@ -227,6 +227,8 @@ export const pt = {
   sendMessagePlaceholder: "Mande uma mensagem para os seus companheiros",
   sendMessage: "Mandar",
   message: "<0></0>: <1></1>",
+  colorBlindMode: "Modo daltónico",
+  colorBlindModeSubtext: "Mostrar símbolos em cima dos cartões para ajudar a distinguir as cores",
   contributeLanguage: "Contribua!",
   buymeacoffeePostGame: "Apoie o jogo, <2>compre um café para nós</2>",
 };

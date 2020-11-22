@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 export default function DiscordButton() {
@@ -9,7 +10,7 @@ export default function DiscordButton() {
       target="_blank"
       title="Discord"
     >
-      <img alt="Discord" src="/static/discord.svg" />
+      <Image alt="Discord" height={38} src="/static/discord.svg" width={112} />
       <style jsx>
         {`
           .discord-button {

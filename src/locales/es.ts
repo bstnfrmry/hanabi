@@ -228,6 +228,8 @@ export const es = {
   sendMessage: "Enviado",
   message: "<0></0>: <1></1>",
   pageNotFound: "Página no encontrada",
+  colorBlindMode: "Modo Daltonismo",
+  colorBlindModeSubtext: "Mostrar símbolos en la parte superior de las tarjetas para ayudar a distinguir los colores",
   contributeLanguage: "Contribuir!",
   buymeacoffeePostGame: "Apoya el juego, <2>ofrécenos un café</2>",
 };

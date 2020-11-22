@@ -1,5 +1,6 @@
 import classnames from "classnames";
 import Head from "next/head";
+import Image from "next/image";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -24,9 +25,11 @@ export default function BuymeacoffeeButton(props: Props) {
         rel="noopener noreferrer"
         target="_blank"
       >
-        <img
+        <Image
           alt="Buy us a coffee on website buymeacoffee.com"
+          height={34}
           src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg"
+          width={35}
         />
         <span>Buy us a coffee</span>
         <style jsx>
