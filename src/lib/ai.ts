@@ -1,7 +1,7 @@
 import { cloneDeep, filter, findLastIndex } from "lodash";
 
 import { commitAction, getColors, getPlayedCardsPile, getStateAtTurn, isPlayable, numbers } from "./actions";
-import IGameState, { IAction, ICard, ICardHint, IHintAction, INumber, IPlayer } from "./state";
+import IGameState, { IAction, ICard, ICardHint, IHintAction, IHintLevel, INumber, IPlayer } from "./state";
 
 export enum IDeductionStatus {
   PLAYABLE = 0, // the card value is such that it can be played right now
@@ -321,25 +321,38 @@ export function chooseAction(state: IGameView): IAction {
 
   // discard otherwise
   if (state.tokens.hints < 8) {
-    let definitelyDiscardableCard = false;
-    let discardableIndex = -1;
-    for (let i = 0; i < currentGameView.hand.length; i++) {
-      const card = currentGameView.hand[i];
-
-      // if the card is definitely discardable (never playable)
-      if (card.deductions.every(deduction => !isCardEverPlayable(deduction, state))) {
-        definitelyDiscardableCard = true;
-        discardableIndex = i;
-      } else if (isCardDiscardable(card, state) && !definitelyDiscardableCard) {
-        discardableIndex = i;
-      }
-    }
+    const discardableIndex = findBestDiscardIndex(currentGameView, state);
 
     if (discardableIndex > -1) {
       return {
         action: "discard",
         from: state.currentPlayer,
         cardIndex: discardableIndex,
+      };
+    }
+  }
+
+  // if 1st play and no playable cards in next player hand, give a hint on 5s or 2s
+  if (state.turnsHistory.length === 0) {
+    const pIndex = (state.currentPlayer + 1) % state.options.playersCount;
+    const nextPlayerHand = state.players[pIndex].hand;
+    if (nextPlayerHand.find(c => c.number === 5)) {
+      return {
+        action: "hint",
+        from: state.currentPlayer,
+        to: pIndex,
+        type: "number",
+        value: 5,
+      };
+    }
+    // if next player has no 5, give a hint on 2s (positive or negative)
+    else {
+      return {
+        action: "hint",
+        from: state.currentPlayer,
+        to: pIndex,
+        type: "number",
+        value: 2,
       };
     }
   }
@@ -359,7 +372,43 @@ function isLastDiscardableCard(hand: IHiddenCard[], cardIndex: number, state: IG
       return lastDiscardableCard;
     }
   }
+
   return lastDiscardableCard;
+}
+
+/**
+ * Find the index of the right most unclued card
+ */
+function findBestDiscardIndex(playerView: IPlayerView, state: IGameState) {
+  let uncluedDiscardableCard = false;
+  let discardableIndex = -1;
+
+  for (let i = playerView.hand.length - 1; i >= 0; i--) {
+    const card = playerView.hand[i];
+    // if the card is definitely discardable (never playable)
+    if (card.deductions.every(deduction => !isCardEverPlayable(deduction, state))) {
+      discardableIndex = i;
+      break;
+    }
+
+    // if the card is unclued and not dangerous
+    if (
+      isCardDiscardable(card, state) &&
+      !Object.values(card.hint.color).find(v => v === IHintLevel.SURE) &&
+      !Object.values(card.hint.number).find(v => v === IHintLevel.SURE) &&
+      !uncluedDiscardableCard
+    ) {
+      uncluedDiscardableCard = true;
+      discardableIndex = i;
+    }
+
+    // if it's the first discardable card we find, regardless of being already clued
+    if (isCardDiscardable(card, state) && discardableIndex === -1) {
+      discardableIndex = i;
+    }
+  }
+
+  return discardableIndex;
 }
 
 /**
