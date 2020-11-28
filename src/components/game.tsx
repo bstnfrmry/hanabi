@@ -320,6 +320,38 @@ export function Game(props: Props) {
     });
   }
 
+  /**
+   * Catch some key pressed for replay mode
+   */
+  useEffect(() => {
+    function checkKey(e) {
+      e = e || window.event;
+      const cursor = replay.cursor;
+
+      // left arrow: if hidden, display replay mode
+      if (e.keyCode == "37" && cursor === null) {
+        onReplay();
+      }
+      // left arrow: slide the cursor to the left, if possible
+      else if (e.keyCode == "37" && cursor !== 0) {
+        onReplayCursorChange(cursor - 1);
+      }
+      // right arrow: slide the cursor to the right, if possible
+      else if (e.keyCode == "39" && cursor !== null && cursor !== game.originalGame?.turnsHistory?.length) {
+        onReplayCursorChange(cursor + 1);
+      }
+      // escape: if replay displayed, remove replay
+      else if (e.keyCode == "27" && cursor !== null) {
+        onStopReplay();
+      }
+    }
+
+    document.addEventListener("keydown", checkKey);
+    return () => {
+      document.removeEventListener("keydown", checkKey);
+    };
+  }, [replay.cursor, game]);
+
   async function onRestartGame() {
     const nextGame = recreateGame(game);
 

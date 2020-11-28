@@ -138,7 +138,7 @@ export default function PlayerGame(props: Props) {
       tempHideCards = true;
     }
     setHideCards(tempHideCards);
-  }, [game.status]);
+  }, [game.status, revealCards]);
 
   const canPlay = [IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status) && !replay.cursor;
 
@@ -271,7 +271,7 @@ export default function PlayerGame(props: Props) {
 
               {/* When game has ended (even in replay mode)
               Enable user to view their game */}
-              {game.endedAt && player === selfPlayer && (
+              {(game.endedAt || game.originalGame?.endedAt) && player === selfPlayer && (
                 <Button
                   void
                   className={

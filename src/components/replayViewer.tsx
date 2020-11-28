@@ -74,7 +74,7 @@ export default function ReplayViewer(props: Props) {
         text=">"
         onClick={() => onReplayCursorChange(replay.cursor + 1)}
       />
-      <Button void className="ml3" size={ButtonSize.TINY} text="&times;" onClick={onStopReplay} />
+      <Button void className="ml3 pointer:hover" size={ButtonSize.TINY} text="&times;" onClick={onStopReplay} />
     </div>
   );
 }
