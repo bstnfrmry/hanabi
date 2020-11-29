@@ -56,9 +56,9 @@ export const es = {
   cardSelected: "Carta {{position}} seleccionada",
   eightTokens: "8 fichas",
   cannotDiscard: "No se puede descartar",
-  noTokens: "No quedan fichas para dar datos",
-  selectVignette: "Selecciona un color o un valor para dar un datos",
-  hint: "Dar dato",
+  noTokens: "No quedan fichas para dar información",
+  selectVignette: "Selecciona un color o un valor",
+  hint: "Información",
   negativeHintColor: "No tienes ninguna carta de color {{color}}",
   negativeHintNumber: "No tienes ningún {{number}}",
   positiveHintColor: "Tu carta {{ positions }} es de color {{ color}}",
@@ -91,13 +91,13 @@ export const es = {
     "Estos son tus compañeros de equipo.\nAl igual que tú, no pueden ver sus propias cartas.\nDales información para ayudarlos a jugar o descartar cartas.",
   hintTokensTutorial: "Fichas de información",
   hintTokensTutorialContent:
-    "Algunas acciones tienen un costo.\n\n- Dar un dato cuesta 1 ficha para datos.\n- Al descartar una carta, ganas 1 ficha para datos.\n- Al jugar un 5, ganas 1 bono de 1 ficha para datos.",
-  strikeTokensTutorial: "Fichas rojas",
+    "Algunas acciones tienen un costo:\n\n- Dar información gasta 1 ficha de información.\n- Descartar una carta recupera 1 ficha de información.\n- Jugar un 5 recupera 1 ficha de información.",
+  strikeTokensTutorial: "Fichas de error",
   strikeTokensTutorialContent:
     "Si se juega una carta que no se puede colocar,\nla carta se descarta y se añade 1 ficha de error.\nSi se acumulan 3 fichas de error, perdéis el juego.",
   yourTurnTutorial: "¡Es tu turno!",
   yourTurnTutorialContent:
-    "Tienes 3 opciones:\n\n- Toca tus cartas para jugar una...\n- ... o para descartarla\n- Toca las cartas de uno de tus compañeros para darle un dato.",
+    "Tienes 3 opciones:\n\n- Toca tus cartas para jugar una de ellas...\n- ... o para descartarla.\n- Toca las cartas de otro jugador para darle información.",
   skip: "✕ Saltar",
   offline: "¡Estás sin conexión!",
   apologies: "Lo lamentamos, algo salió mal 😕",
@@ -124,7 +124,7 @@ export const es = {
   passandplayExplanation:
     "En el modo 'Pasa y Juega' podrás jugar con otros jugadores que estén físicamente en el mismo lugar, pasando el dispositivo a cada jugador en su turno",
   private: "Privado",
-  hints: "Datos",
+  hints: "Información",
   allowRollback: "Permitir deshacer acciones",
   preventLoss: "Evitar perder",
   passandplay: "Pasa y Juega",
@@ -138,30 +138,30 @@ export const es = {
   rulesIntro:
     "Hanabi es un juego de cartas creado por Antoine Bauza. Es cooperativo, es decir, los jugadores no juegan unos contra otros sino que colaboran para lograr un objetivo común. Los jugadores forman un equipo de pirotécnicos distraídos que, por falta de atención, han mezclado su pólvora, mechas y cohetes para un espectáculo de fuegos artificiales. El espectáculo comenzará pronto y la situación es más bien caótica. Todos los jugadores tendrán que colaborar para evitar que el espectáculo sea un desastre.",
   rulesGoal:
-    "El objetivo del equipo de pirotécnicos es construir 5 fuegos artificiales, uno de cada color (blanco, rojo, azul, amarillo y verde), combinando cartas de valor ascendente (1, 2, 3, 4, 5) del mismo color.",
+    "El objetivo del equipo de pirotécnicos es construir 5 grupos de fuegos artificiales, uno de cada color (blanco, rojo, azul, amarillo y verde), combinando cartas de valor ascendente (1, 2, 3, 4, 5) del mismo color.",
   rulesSetupTitle: "Instalación",
   rulesSetup:
-    "La aplicación prepara todo por ti. Muy útil, ¿no? 😉. Al inicio del juego, tendrán 8 fichas azules, para dar datos, y 3 fichas rojas: los errores.\n\nEl mazo contiene 50 cartas, 10 de cada color, <1>numeradas 1, 1, 1, 2, 2, 3, 3, 4, 4, 5</1>.\n· En un juego con 2 o 3 jugadores, cada uno recibirá 5 cartas\n· En un juego con 4 o 5 jugadores, cada uno recibirá 4 cartas.\n\nComo verán, ¡los jugadores no pueden ver sus propias cartas!",
+    "La aplicación prepara todo por ti. Muy útil, ¿no? 😉. Al inicio del juego, habrá 8 fichas azules de información, para compartir información con otros jugadores, y 3 fichas rojas de errores.\n\nEl mazo contiene 50 cartas, 10 de cada color, <1>numeradas 1, 1, 1, 2, 2, 3, 3, 4, 4, 5</1>.\n· En un juego con 2 o 3 jugadores, cada uno recibirá 5 cartas\n· En un juego con 4 o 5 jugadores, cada uno recibirá 4 cartas.\n\n¡Y los jugadores no pueden ver sus propias cartas!",
   rulesGameTitle: "Mecanismo del juego",
   rulesGame:
-    "En su turno, cada jugador realiza una (y solamente una) de las siguientes acciones. No está permitido pasar. \n1. Darle un dato a otro jugador.\n2. Descartar una carta.\n3. Jugar una carta\n\n¡Los jugadores no tienen permitido dar datos o sugerencias durante el turno de otro jugador!",
-  rulesHintTitle: "1. Dar un dato",
+    "En su turno, cada jugador realiza exactamente una de las siguientes acciones. No está permitido pasar. \n1. Darle información a otro jugador.\n2. Descartar una carta.\n3. Jugar una carta\n\n¡Los jugadores no tienen permitido dar información o sugerencias durante el turno de otro jugador!",
+  rulesHintTitle: "1. Dar información",
   rulesHint:
-    "Cuando das un dato, gastarás una ficha azul. Nota: Si no hay más fichas azules, no puedes decidir dar un dato, debes realizar otra acción.\n\nEntonces le das un dato a un compañero sobre las cartas que tiene en su mano, haciendo clic sobre ella. Puedes decirle al jugador algo sobre un color (y sólo uno), o sobre ún número (y sólo uno) de carta.",
+    "Dar información gasta una ficha azul de información. Nota: Si no hay ninguna de estas fichas, no puedes dar información y debes realizar otra acción.\n\nPuedes darle información a un compañero sobre las cartas que tiene haciendo clic sobre su mano de cartas. Puedes decirle al jugador algo sobre un color (y sólo uno), o sobre un número (y sólo uno) de carta.",
   rulesDiscardTitle: "2. Descartar una carta",
   rulesDiscard:
-    "Descartando una carta ganarás una ficha azul. Descartas una carta de tu mano haciendo clic sobre ella. Luego tomas una carta del mazo, que se añadirá a tu mano. \nNota: Si tienen todas las 8 fichas azules, no puedes descartar y debes realizar otra acción. \nPuedes consultar las cartas descartadas a todo tiempo.",
+    "Descartar una carta recupera una ficha azul de información. Descartas una carta de tu mano haciendo clic sobre ella. Después de descartar, se añade a tu mano una nueva carta del mazo. \nNota: Si están todas las 8 fichas azules, no puedes descartar y debes realizar otra acción. \nPuedes consultar las cartas descartadas en todo momento.",
   rulesPlayTitle: "3. Jugar una carta",
   rulesPlay:
-    "En tu turno, puedes tomar una carta de tu mano y jugarla.\nPasará una de dos cosas:\n· Si la carta comienza o continúa un color de fuegos artificiales, se añadirá a ese montón\n· Si la carta no inicia ni continúa un color de fuegos artificiales, será descartada y se añadirá una ficha roja de error\nA continuación se añade a tu mano una nueva carta del mazo.\n\nCuando un jugador termina un color de fuegos artificiales jugando una carta con valor de 5, se recupera una ficha azul de información. Si todas las fichas azules están disponibles, no se recupera ninguna ficha.",
+    "En tu turno, para jugar una carta, tómala de tu mano y juégala.\nPasará una de dos cosas:\n· Si la carta comienza o continúa un color de fuegos artificiales, se añadirá a ese montón\n· Si la carta no inicia ni añade un color de fuegos artificiales, será descartada, y se añadirá una ficha roja de error\nLuego tomas una carta del mazo.\n\nCuando un jugador termina un color de fuegos artificiales jugando una carta con valor de 5, se recupera una ficha azul de información. Si todas las fichas azules están disponibles, no se recuperan fichas.",
   rulesEndTitle: "Fin del juego",
   rulesEnd:
-    "Hanabi puede terminar de tres maneras diferentes:\n· Al recibir la tercera ficha roja de error, ¡los fuegos artificiales se incendiarán!\n· Si el equipo completa todos los colores de fuegos artificiales con cartas de valor 5, el espectáculo de fuegos artificiales es maravilloso y el equipo obtiene la puntuación máxima de 25, ¡30 con la opción multicolor!\n· Si un jugador toma la última carta del mazo, el juego está a punto de finalizar. Cada jugador tendrá un turno más, incluyendo al jugador que tomó la última carta. No se pueden tomar cartas del mazo durante estos turnos finales.\n\nLa puntuación que reciben los jugadores se basa en el número de fuegos artificiales que ensamblaron.",
+    "Hanabi puede terminar de tres maneras diferentes:\n· Si reciben la tercera ficha roja de error, ¡los fuegos artificiales se incendiarán!\n· Si el equipo completa todos los 5 colores de fuegos artificiales con una carta de valor 5, el equipo hace un espectáculo maravilloso de fuegos artificiales y obtiene la puntuación máxima de 25, ¡30 con la opción multicolor!\n· Si un jugador toma la última carta del mazo, el juego está a punto de finalizar. Cada jugador tendrá un turno más, incluyendo al jugador que tomó la última carta. No se pueden tomar más cartas durante estos turnos finales.\n\nLa puntuación que reciben los jugadores se basa en el número de fuegos artificiales que ensamblaron.",
   rulesExtensionTitle: "Extensión",
   rulesExtensionMulticolor:
     "🎨 La variante multicolor añade un 6to montón y una 6ta pinta de cartas con una sola carta de cada número: 1, 2, 3, 4, 5. Estos fuegos artificiales, por lo tanto, son más escasos, y tendrás que tener cuidado de no descartarlos. Las reglas son las mismas, y hay que completar los 6 montones para lograr la puntuación máxima de 30 puntos.",
   rulesExtensionRainbow:
-    "🌈 La variante arcoiris añade un 6to montón con la misma cantidad de cartas de los otros 5 (tres 1, 2 de cada número 2/3/4, y un 5). La particularidad es que las cartas arcoiris son de todos los colores. Cuando des un dato sobre cualquier color, afectará a las cartas arcoiris.",
+    "🌈 La variante arcoiris añade un 6to montón con la misma cantidad de cartas de los otros 5 (tres 1, 2 de cada número 2/3/4, y un 5). La particularidad es que las cartas arcoiris son de todos los colores. Cuando des información sobre cualquier color, incluirá a las cartas arcoiris.",
   rulesUsTitle: "¿Quiénes somos?",
   rulesUs:
     "Somos un grupo de adictos a los juegos de mesa. En la cuarentena de 2020 nos propusimos encontrar una alternativa para jugar juntos remotamente. \nComo nos divertimos tanto programando como jugando Hanabi, decidimos crear una versión del juego en línea, compatible para móviles.\n\n👉 Al igual que nosotros, si te gusta el juego, ¡por favor compra la <2>versión física</2> para apoyar al creador!",
@@ -198,7 +198,7 @@ export const es = {
   evolutionSubtext:
     "¡Sigue la historia del juego! Las cartas de cada jugador se muestran, sin importar si podían jugarse, descartarse o peligrosas (una carta que reduciría la puntuación máxima posible si la descartas, como una multicolor o un 5).",
   playHints: "Jugadas promedio por dato: <1>{{playsPerHint}}</1>",
-  playerHints: "¿Quién dio más datos?",
+  playerHints: "¿Quién dio más información?",
   tryOutTitle: "¡Pruébalo!",
   tryOutButton: "Prueba esta mezcla",
   tryOutAlternative:
@@ -212,11 +212,11 @@ export const es = {
   showInsights: "Mostrar detalles",
   showCards: "Mostrar cartas",
   started: "Comenzó",
-  youGaveHintTurn: "Diste el dato a <1></1> sobre sus <3></3>",
+  youGaveHintTurn: "Diste información a <1></1> sobre sus <3></3>",
   youDiscardedTurn: "Descartaste <1></1>",
   youPlayedTurn: "Jugaste <1></1>",
-  somebodyHintedYouTurn: "<0></0> te dio un dato sobre tus <2></2>",
-  somebodyHintedSomebodyTurn: "<0></0> dio un dato a <2></2> sobre sus <4></4>",
+  somebodyHintedYouTurn: "<0></0> te dio información sobre tus <2></2>",
+  somebodyHintedSomebodyTurn: "<0></0> dio información a <2></2> sobre sus <4></4>",
   somebodyDiscardedTurn: "<0></0> descartó <2></2>",
   somebodyPlayedTurn: "<0></0> jugó <2></2>",
   whatYouDrewTurn: "y tomaste <1></1>",
