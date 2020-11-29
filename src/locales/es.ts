@@ -116,7 +116,7 @@ export const es = {
   multicolorVariantDescription: "Se añade una 6ta pinta con una sola carta de cada número",
   rainbowVariantDescription: "Se añade una 6ta pinta que combina con todos los demás colores",
   orangeVariantDescription: "Se añade una 6ta pinta clásica",
-  sequenceVariantDescription: "La información sobre números también indica cartas con números superiores",
+  sequenceVariantDescription: "La información númerica también indica cartas con números superiores",
   showDirectHints: "Mostrar información y conclusiones",
   hideDirectHints: "Ocultar información y conclusiones",
   botSpeed: "Velocidad de los bots",
@@ -147,7 +147,7 @@ export const es = {
     "En su turno, cada jugador realiza exactamente una de las siguientes acciones. No está permitido pasar. \n1. Darle información a otro jugador.\n2. Descartar una carta.\n3. Jugar una carta\n\n¡Los jugadores no tienen permitido dar información o sugerencias durante el turno de otro jugador!",
   rulesHintTitle: "1. Dar información",
   rulesHint:
-    "Dar información gasta una ficha azul de información. Nota: Si no hay ninguna de estas fichas, no puedes dar información y debes realizar otra acción.\n\nPuedes darle información a un compañero sobre las cartas que tiene haciendo clic sobre su mano de cartas. Puedes decirle al jugador algo sobre un color (y sólo uno), o sobre un número (y sólo uno) de carta.",
+    "Dar información gasta una ficha azul de información. Nota: Si no hay ninguna de estas fichas, no puedes dar información y debes realizar otra acción.\n\nPuedes darle información a un compañero sobre las cartas que tiene haciendo clic sobre su mano de cartas. Puedes decirle al jugador algo sobre un color (y solo uno), o sobre un número (y solo uno) de carta.",
   rulesDiscardTitle: "2. Descartar una carta",
   rulesDiscard:
     "Descartar una carta recupera una ficha azul de información. Descartas una carta de tu mano haciendo clic sobre ella. Después de descartar, se añade a tu mano una nueva carta del mazo. \nNota: Si están todas las 8 fichas azules, no puedes descartar y debes realizar otra acción. \nPuedes consultar las cartas descartadas en todo momento.",
