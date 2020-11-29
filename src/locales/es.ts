@@ -14,8 +14,8 @@ export const es = {
   invitationByPlayers_plural: "{{playersNames}} te invitan a un juego de Hanabi 🎉",
   invitationNoPlayers: "Has recibido una invitación a un juego de Hanabi 🎉",
   gameFull: "¡Llegaron todos!",
-  gameNotFull: "Ya llegó {{count}} / {{playersCount}}",
-  gameNotFull_plural: "Ya llegaron {{count}} / {{playersCount}}",
+  gameNotFull: "{{count}} / {{playersCount}} jugador presente",
+  gameNotFull_plural: "{{count}} / {{playersCount}} jugadores presentes",
   startGame: "Comenzar juego",
   addAi: "+ añadir una IA",
   lobby: "Lobby",
@@ -68,9 +68,9 @@ export const es = {
   positiveHintNumber_plural: "Tus cartas {{ positions }} son {{ number }}",
   positiveHintNumberSequence_plural: "Tus cartas {{ positions }} son {{ number }} o más",
   you: "Tú",
-  hinted: "Pistas",
-  played: "Cartas jugadas",
-  discarded: "Descartes",
+  hinted: "Información",
+  played: "Jugadas",
+  discarded: "Descartadas",
   rollback: "Deshacer",
   rollbackDisclaimer: "Estás a punto de deshacer la última acción.",
   cannotRollback: "Todavía no puedes deshacer",
@@ -79,22 +79,22 @@ export const es = {
   introContent: "¡Aprende a jugar!",
   playedCardsTutorial: "Cartas jugadas",
   playedCardsTutorialContent:
-    "Aquí estarán las cartas que se han jugado.\nJuntos, hay que llegar al 5 en cada color para ganar el juego.",
+    "Aquí estarán las cartas que se han jugado.\nPara ganar hay que llegar al 5 de cada color entre todos.",
   discardTutorial: "Descarte",
   discardTutorialContent:
-    "Los descartes aparecerán aquí.\nEvita descartar las que sean\nnecesarias para terminar el juego.",
+    "Aquí aparecerán las cartas descartadas.\nEvitad descartar cartas que sean\nnecesarias para terminar el juego.",
   yourGameTutorial: "Tu juego",
   yourGameTutorialContent:
-    "Estas son tus cartas.\nTú no puedes verlas, pero los demás jugadores sí, y te darán datos sobre ellas.",
+    "Estas son tus cartas.\nTú no puedes verlas, pero los demás jugadores\nsí pueden y te darán información sobre ellas.",
   teammatesTutorial: "Compañeros",
   teammatesTutorialContent:
-    "Estos son tus compañeros de equipo.\nAl igual que tú, no pueden ver sus cartas.\nDales datos para ayudarlos a jugar o a descartar cartas.",
-  hintTokensTutorial: "Fichas azules",
+    "Estos son tus compañeros de equipo.\nAl igual que tú, no pueden ver sus propias cartas.\nDales información para ayudarlos a jugar o descartar cartas.",
+  hintTokensTutorial: "Fichas de información",
   hintTokensTutorialContent:
     "Algunas acciones tienen un costo.\n\n- Dar un dato cuesta 1 ficha para datos.\n- Al descartar una carta, ganas 1 ficha para datos.\n- Al jugar un 5, ganas 1 bono de 1 ficha para datos.",
   strikeTokensTutorial: "Fichas rojas",
   strikeTokensTutorialContent:
-    "Jugar una carta equivocada hará que se descarte y costará 1 ficha de error.\nSi acumulan 3 fichas de error, perderán el juego al instante.",
+    "Si se juega una carta que no se puede colocar,\nla carta se descarta y se añade 1 ficha de error.\nSi se acumulan 3 fichas de error, perdéis el juego.",
   yourTurnTutorial: "¡Es tu turno!",
   yourTurnTutorialContent:
     "Tienes 3 opciones:\n\n- Toca tus cartas para jugar una...\n- ... o para descartarla\n- Toca las cartas de uno de tus compañeros para darle un dato.",
@@ -113,8 +113,8 @@ export const es = {
   rainbowVariant: "Arcoiris",
   sequenceVariant: "Secuencia",
   classicVariantDescription: "Un juego clásico de Hanabi con 5 colores",
-  multicolorVariantDescription: "Se añade una 6ta pinta con solo una carta de cada número",
-  rainbowVariantDescription: "Se añade una 6ta pinta que se nombra como todos los demás colores",
+  multicolorVariantDescription: "Se añade una 6ta pinta con una sola carta de cada número",
+  rainbowVariantDescription: "Se añade una 6ta pinta que combina con todos los demás colores",
   orangeVariantDescription: "Se añade una 6ta pinta clásica",
   sequenceVariantDescription: "La información sobre números también indica cartas con números superiores",
   showDirectHints: "Mostrar información y conclusiones",
@@ -136,9 +136,9 @@ export const es = {
   seed: "Semilla",
   objective: "Objetivo",
   rulesIntro:
-    "Hanabi es un juego de cartas creado por Antoine Bauza. Es cooperativo, es decir, los jugadores no juegan unos contra otros sino que colaboran para lograr un objetivo común. Los jugadores representan pirotécnicos distraídos, quienes por falta de atención confundieron su pólvora, mechas y cohetes para un espectáculo de fuegos artificiales. El espectáculo comenzará pronto y la situación es un poco caótica. Tendrán que colaborar entre ellos para evitar que el espectáculo se vuelva un desastre.",
+    "Hanabi es un juego de cartas creado por Antoine Bauza. Es cooperativo, es decir, los jugadores no juegan unos contra otros sino que colaboran para lograr un objetivo común. Los jugadores forman un equipo de pirotécnicos distraídos que, por falta de atención, han mezclado su pólvora, mechas y cohetes para un espectáculo de fuegos artificiales. El espectáculo comenzará pronto y la situación es más bien caótica. Todos los jugadores tendrán que colaborar para evitar que el espectáculo sea un desastre.",
   rulesGoal:
-    "El objetivo del equipo de pirotécnicos es construir 5 fuegos artificiales, uno de cada color (blanco, rojo, azul, amarillo y verde), combinando cartas de valor ascendente (1,2,3,4,5) del mismo color.",
+    "El objetivo del equipo de pirotécnicos es construir 5 fuegos artificiales, uno de cada color (blanco, rojo, azul, amarillo y verde), combinando cartas de valor ascendente (1, 2, 3, 4, 5) del mismo color.",
   rulesSetupTitle: "Instalación",
   rulesSetup:
     "La aplicación prepara todo por ti. Muy útil, ¿no? 😉. Al inicio del juego, tendrán 8 fichas azules, para dar datos, y 3 fichas rojas: los errores.\n\nEl mazo contiene 50 cartas, 10 de cada color, <1>numeradas 1, 1, 1, 2, 2, 3, 3, 4, 4, 5</1>.\n· En un juego con 2 o 3 jugadores, cada uno recibirá 5 cartas\n· En un juego con 4 o 5 jugadores, cada uno recibirá 4 cartas.\n\nComo verán, ¡los jugadores no pueden ver sus propias cartas!",
@@ -153,19 +153,19 @@ export const es = {
     "Descartando una carta ganarás una ficha azul. Descartas una carta de tu mano haciendo clic sobre ella. Luego tomas una carta del mazo, que se añadirá a tu mano. \nNota: Si tienen todas las 8 fichas azules, no puedes descartar y debes realizar otra acción. \nPuedes consultar las cartas descartadas a todo tiempo.",
   rulesPlayTitle: "3. Jugar una carta",
   rulesPlay:
-    "Cuando sea tu turno, para jugar una carta, tómala de tu mano y juégala.\nPasará una de dos cosas:\n· Si la carta comienza o continúa un color de fuegos artificiales, se añadirá a ese montón\n· Si la carta no inicia ni añade un color de fuegos artificiales, será descartada, y se añadirá una ficha roja de error\nLuego tomas una carta del mazo.\n\nCuando un jugador termina un color de fuegos artificiales jugando una carta con valor de 5, ganará una ficha azul como bono. Si todas las fichas azules están disponibles, no recibirán el bono.",
+    "En tu turno, puedes tomar una carta de tu mano y jugarla.\nPasará una de dos cosas:\n· Si la carta comienza o continúa un color de fuegos artificiales, se añadirá a ese montón\n· Si la carta no inicia ni continúa un color de fuegos artificiales, será descartada y se añadirá una ficha roja de error\nA continuación se añade a tu mano una nueva carta del mazo.\n\nCuando un jugador termina un color de fuegos artificiales jugando una carta con valor de 5, se recupera una ficha azul de información. Si todas las fichas azules están disponibles, no se recupera ninguna ficha.",
   rulesEndTitle: "Fin del juego",
   rulesEnd:
-    "Hanabi puede terminar de tres maneras diferentes:\n· Si reciben la tercera ficha roja de error, ¡los fuegos artificiales se incendiarán!\n· Si el equipo completa todos los 5 colores de fuegos artificiales con una carta de valor 5, el equipo hace un espectáculo maravilloso de fuegos artificiales y obtiene la puntuación máxima de 25, ¡30 con la opción multicolor!\n· Si un jugador toma la última carta del mazo, el juego casi se acaba. Cada jugador tendrá un turno más, incluyendo al jugador que tomó la última carta. Los jugadores no pueden tomar más cartas durante estos turnos finales.\n\nLos jugadores califican su desempeño según los fuegos artificiales que ensamblaron.",
+    "Hanabi puede terminar de tres maneras diferentes:\n· Al recibir la tercera ficha roja de error, ¡los fuegos artificiales se incendiarán!\n· Si el equipo completa todos los colores de fuegos artificiales con cartas de valor 5, el espectáculo de fuegos artificiales es maravilloso y el equipo obtiene la puntuación máxima de 25, ¡30 con la opción multicolor!\n· Si un jugador toma la última carta del mazo, el juego está a punto de finalizar. Cada jugador tendrá un turno más, incluyendo al jugador que tomó la última carta. No se pueden tomar cartas del mazo durante estos turnos finales.\n\nLa puntuación que reciben los jugadores se basa en el número de fuegos artificiales que ensamblaron.",
   rulesExtensionTitle: "Extensión",
   rulesExtensionMulticolor:
-    "🎨 La variante multicolor añade un 6to montón y una 6ta pinta de cartas con solo una carta de cada número: 1, 2, 3, 4, 5. Estos fuegos artificiales, por lo tanto, son más escasos, y tendrás que tener cuidado de no descartarlos. Las reglas son las mismas, y hay que completar los 6 montones para lograr la puntuación máxima de 30 puntos.",
+    "🎨 La variante multicolor añade un 6to montón y una 6ta pinta de cartas con una sola carta de cada número: 1, 2, 3, 4, 5. Estos fuegos artificiales, por lo tanto, son más escasos, y tendrás que tener cuidado de no descartarlos. Las reglas son las mismas, y hay que completar los 6 montones para lograr la puntuación máxima de 30 puntos.",
   rulesExtensionRainbow:
     "🌈 La variante arcoiris añade un 6to montón con la misma cantidad de cartas de los otros 5 (tres 1, 2 de cada número 2/3/4, y un 5). La particularidad es que las cartas arcoiris son de todos los colores. Cuando des un dato sobre cualquier color, afectará a las cartas arcoiris.",
   rulesUsTitle: "¿Quiénes somos?",
   rulesUs:
-    "Somos un grupo de adictos a los juegos de mesa. En la cuarentena en 2020 nos propusimos encontrar una alternativa para jugar juntos remotamente. \nComo nos divertimos tanto programando como jugando Hanabi, decidimos crear una versión del juego en línea, compatible para móviles.\n\n👉 Al igual que nosotros, si te gusta el juego, ¡por favor compra la <2>versión física</2> para apoyar al creador!",
-  rulesContact: "✉️ <1>Comunicate con nosotros</1> si tienes alguna pregunta o sugerencia",
+    "Somos un grupo de adictos a los juegos de mesa. En la cuarentena de 2020 nos propusimos encontrar una alternativa para jugar juntos remotamente. \nComo nos divertimos tanto programando como jugando Hanabi, decidimos crear una versión del juego en línea, compatible para móviles.\n\n👉 Al igual que nosotros, si te gusta el juego, ¡por favor compra la <2>versión física</2> para apoyar al creador!",
+  rulesContact: "✉️ <1>Comunícate con nosotros</1> si tienes alguna pregunta o sugerencia",
   rulesContributeRepo: "💻 También tenemos un <1>repositorio público en Github</1> si quieres contribuir.",
   rulesDiscordServer: "🗣 Únete a nuestro servidor Discord para discutir posibles mejoras y sugerencias",
   rulesBuymeacoffee:
