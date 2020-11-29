@@ -223,7 +223,7 @@ export const es = {
   whatYouDrewTurn: "y tomaste <1></1>",
   whatTheyDrewTurn: "y tomó <1></1>",
   selectLanguage: "Selecciona un idioma",
-  creatingGame: "Partida en creación...",
+  creatingGame: "Creando juego...",
   partySetup: "Jugadores: {{players}} · Modo: {{variant}} · Semilla #{{shuffle}}",
   sendMessagePlaceholder: "Envía un mensaje a tus compañeros de equipo",
   sendMessage: "Enviar",
