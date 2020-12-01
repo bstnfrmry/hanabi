@@ -29,7 +29,7 @@ export const es = {
   gameStarts: "¡Comienza el juego!",
   discardPile: "descartadas ({{discardLength}})",
   preventLossContent: "Esta acción os hará perder un punto - ¿Continuar?",
-  rewind: "Rebobinar 🕑",
+  rewind: "🕑 Turnos anteriores",
   backToGame: "Volver al juego",
   theirTurn: "¡Le toca a {{currentPlayerName}}!",
   go: "¡Vamos!",
@@ -110,13 +110,13 @@ export const es = {
   classicVariant: "Clásico",
   orangeVariant: "Naranja",
   multicolorVariant: "Multicolor",
-  rainbowVariant: "Arcoiris",
+  rainbowVariant: "Arcoíris",
   sequenceVariant: "Secuencia",
   classicVariantDescription: "Un juego clásico de Hanabi con 5 colores",
   multicolorVariantDescription: "Se añade una 6ta pinta con una sola carta de cada número",
   rainbowVariantDescription: "Se añade una 6ta pinta que combina con todos los demás colores",
   orangeVariantDescription: "Se añade una 6ta pinta clásica",
-  sequenceVariantDescription: "La información númerica también indica cartas con números superiores",
+  sequenceVariantDescription: "La información numérica también indica cartas con números superiores",
   showDirectHints: "Mostrar",
   hideDirectHints: "Ocultar",
   botSpeed: "Velocidad de los bots",
@@ -136,7 +136,7 @@ export const es = {
   seed: "Semilla",
   objective: "Objetivo",
   rulesIntro:
-    "Hanabi es un juego de cartas creado por Antoine Bauza. Es cooperativo, es decir, los jugadores no juegan unos contra otros sino que colaboran para lograr un objetivo común. Los jugadores forman un equipo de pirotécnicos distraídos que, por falta de atención, han mezclado su pólvora, mechas y cohetes para un espectáculo de fuegos artificiales. El espectáculo comenzará pronto y la situación es más bien caótica. Todos los jugadores tendrán que colaborar para evitar que el espectáculo sea un desastre.",
+    "Hanabi es un juego de cartas creado por Antoine Bauza. Es cooperativo, es decir, los jugadores no juegan unos contra otros, sino que colaboran para lograr un objetivo común. Los jugadores forman un equipo de pirotécnicos distraídos que, por falta de atención, han mezclado su pólvora, mechas y cohetes para un espectáculo de fuegos artificiales. El espectáculo comenzará pronto y la situación es más bien caótica. Todos los jugadores tendrán que colaborar para evitar que el espectáculo sea un desastre.",
   rulesGoal:
     "El objetivo del equipo de pirotécnicos es construir 5 grupos de fuegos artificiales, uno de cada color (blanco, rojo, azul, amarillo y verde), combinando cartas de valor ascendente (1, 2, 3, 4, 5) del mismo color.",
   rulesSetupTitle: "Instalación",
@@ -161,7 +161,7 @@ export const es = {
   rulesExtensionMulticolor:
     "🎨 La variante multicolor añade un 6to montón y una 6ta pinta de cartas con una sola carta de cada número: 1, 2, 3, 4, 5. Estos fuegos artificiales, por lo tanto, son más escasos, y tendrás que tener cuidado de no descartarlos. Las reglas son las mismas, y hay que completar los 6 montones para lograr la puntuación máxima de 30 puntos.",
   rulesExtensionRainbow:
-    "🌈 La variante arcoiris añade un 6to montón con la misma cantidad de cartas de los otros 5 (tres 1, 2 de cada número 2/3/4, y un 5). La particularidad es que las cartas arcoiris son de todos los colores. Cuando des información sobre cualquier color, incluirá a las cartas arcoiris.",
+    "🌈 La variante arcoíris añade un 6to montón con la misma cantidad de cartas de los otros 5 (tres 1, 2 de cada número 2/3/4, y un 5). La particularidad es que las cartas arcoíris son de todos los colores. Cuando des información sobre cualquier color, incluirá a las cartas arcoíris.",
   rulesUsTitle: "¿Quiénes somos?",
   rulesUs:
     "Somos un grupo de adictos a los juegos de mesa. En la cuarentena de 2020 nos propusimos encontrar una alternativa para jugar juntos remotamente. \nComo nos divertimos tanto programando como jugando Hanabi, decidimos crear una versión del juego en línea, compatible para móviles.\n\n👉 Al igual que nosotros, si te gusta el juego, ¡por favor compra la <2>versión física</2> para apoyar al creador!",
