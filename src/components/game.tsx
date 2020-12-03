@@ -320,6 +320,37 @@ export function Game(props: Props) {
     });
   }
 
+  /**
+   * Catch some key pressed for replay mode
+   */
+  useEffect(() => {
+    function checkKey(event: KeyboardEvent) {
+      const cursor = replay.cursor;
+
+      // left arrow: if hidden, display replay mode
+      if (event.key === "ArrowLeft" && cursor === null) {
+        onReplay();
+      }
+      // left arrow: slide the cursor to the left, if possible
+      else if (event.key === "ArrowLeft" && cursor !== 0) {
+        onReplayCursorChange(cursor - 1);
+      }
+      // right arrow: slide the cursor to the right, if possible
+      else if (event.key === "ArrowRight" && cursor !== null && cursor !== game.originalGame?.turnsHistory?.length) {
+        onReplayCursorChange(cursor + 1);
+      }
+      // escape: if replay displayed, remove replay
+      else if (event.key === "Escape" && cursor !== null) {
+        onStopReplay();
+      }
+    }
+
+    window.addEventListener("keydown", checkKey);
+    return () => {
+      window.removeEventListener("keydown", checkKey);
+    };
+  }, [replay.cursor, game]);
+
   async function onRestartGame() {
     const nextGame = recreateGame(game);
 
