@@ -29,11 +29,9 @@ export default function TutorialInstructions() {
           )}
         />
         {originalGameId && (
-          <Link href={`/${originalGameId}`}>
-            <a className="mt3">
-              <Button primary size={ButtonSize.SMALL} text={t("backToGame", "Back to game")} />
-            </a>
-          </Link>
+          <a className="mt3" href={`/${originalGameId}`}>
+            <Button primary size={ButtonSize.SMALL} text={t("backToGame", "Back to game")} />
+          </a>
         )}
         <Button void className="absolute right-0 bottom-0 mb1" text="&times;" onClick={() => setShowTutorial(false)} />
       </div>
