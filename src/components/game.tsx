@@ -180,7 +180,6 @@ export function Game(props: Props) {
       fillBots();
     }
     if (game.players.length === game.options.playersCount && game.status === IGameStatus.LOBBY) {
-      tutorial.hardReset();
       startTutorial();
     }
   }, [game.players.length]);

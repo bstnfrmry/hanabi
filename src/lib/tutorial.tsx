@@ -142,8 +142,8 @@ export const tutorialActions: TutorialAction[] = [
         <br />
         <span className="txt-blue db mt1">Convention: right-most discard</span>
         Discarding a card can be risky since you could accidently throw away an important card and get stuck in the
-        game. Always discard your right-most card as it's the oldest one. Like so, if it was dangerous to discard, your
-        teammates would have had time to let you know.
+        game. Always discard your unknown right-most card as it's the oldest one. Like so, if it was dangerous to
+        discard, your teammates would have had time to let you know.
         <br />
       </>
     ),
@@ -155,26 +155,25 @@ export const tutorialActions: TutorialAction[] = [
       <>
         Looks like your teammates are a bit wasteful. You're out of hints. They'll probably have to discard next turn.
         <br />
-        It's okay though. Jane will discard her second {card(IColor.YELLOW, 3)} and Adam will discard{" "}
-        {card(IColor.GREEN, 4)}. They're not needed right now and there is another similar card available somewhere in
-        the deck.
-        <br />
       </>
     ),
     todo: <>Play your first card</>,
   },
   {
-    action: { action: "hint", type: "number", value: 5, to: 2, from: 0 },
+    action: { action: "hint", type: "number", value: 5, to: 1, from: 0 },
     content: (
       <>
-        Things are getting dangerous. You're still low on hints and Adam might discard {card(IColor.GREEN, 5)} next
-        turn. There's only one {vignette("number", 5)} for each color in the deck so it should never be discarded!
+        😅 Adam just discarded {card(IColor.GREEN, 5)}. There's only one {vignette("number", 5)} for each color in the
+        deck so it should never be discarded!
         <br />
-        <span className="txt-blue db mt1">Convention: danger hint</span>
-        When giving / receiving a hint on a card you might discard next turn, let's assume it's too risky to discard.
-        Instead, discard the one at its left.
+        <br />
+        It might have been predicted using the <span className="txt-blue">right-most discard</span> convention. Adam had
+        info about his latest card, so he chose to discard {card(IColor.GREEN, 5)} instead.
+        <br />
+        <br />
+        Always be mindful of what your teammates are likely to do next!
       </>
     ),
-    todo: <>Save Adam by giving him a {vignette("number", 5)} hint</>,
+    todo: <>Tell Jane about her {card(IColor.YELLOW, 5)}</>,
   },
 ];

@@ -233,4 +233,10 @@ export const it = {
   pageNotFound: "Pagina non trovata",
   contributeLanguage: "Contribuisci!",
   buymeacoffeePostGame: "Supporta il gioco, <2>offrici un caffè</2>",
+  next: "Avanti",
+  new: "Nuovo",
+  learnHanabi: "Imparare",
+  learnHanabiTime: "~5 mn",
+  learnHanabiEnglish: "Questa sezione è in fase di sviluppo e non è ancora stata tradotta in tutte le lingue.",
+  learnWhileWaiting: "Imparare le basi di Hanabi in attesa",
 };

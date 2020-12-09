@@ -74,10 +74,14 @@ interface TutorialProviderProps {
 export function TutorialProvider(props: TutorialProviderProps) {
   const { children } = props;
 
-  const [currentStep, setCurrentStep] = useState(ITutorialStep.WELCOME);
+  const [currentStep, setCurrentStep] = useState(-1);
 
   useEffect(() => {
-    setCurrentStep(+localStorage.getItem(LocalStorageKey));
+    const storedStep = localStorage.getItem(LocalStorageKey);
+
+    if (storedStep) {
+      setCurrentStep(+localStorage.getItem(LocalStorageKey));
+    }
   }, []);
 
   function setStep(step: number) {

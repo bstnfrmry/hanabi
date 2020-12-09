@@ -1,3 +1,5 @@
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -7,6 +9,7 @@ import Card, { CardSize, ICardContext } from "~/components/card";
 import HomeButton from "~/components/homeButton";
 import PlayedCards from "~/components/playedCards";
 import Button from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { Paragraph, Subtitle, Title } from "~/components/ui/typography";
 import Vignette from "~/components/vignette";
@@ -49,6 +52,9 @@ const Divider = () => <div className="mv4 bt b--yellow w4" />;
 const useSteps = () => {
   const { t } = useTranslation();
   const [colorBlindMode, setColorBlindMode] = useLocalStorage("colorBlindMode", false);
+  const router = useRouter();
+  const gameId = router.query["back-to-game"];
+
   const amountPerNumber = {
     1: 3,
     2: 2,
@@ -61,7 +67,21 @@ const useSteps = () => {
     {
       html: (
         <>
-          <Title className="ttu mb4">{t("learn.welome.title", "Learn Hanabi")}</Title>
+          {router.locale !== "en" && (
+            <div className="mb4 bg-white br2 pa2 main-dark b--yellow ba bw1">
+              <Txt value={`🚧 ${t("learnHanabiEnglish")}`} />
+              <a
+                className="ml1 main-dark"
+                href="https://github.com/bstnfrmry/hanabi/issues/180"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <Txt value={t("contributeLanguage")} />
+              </a>
+            </div>
+          )}
+
+          <Title className="ttu mb4">{t("learn.welcome.title", "Learn Hanabi")}</Title>
           <Paragraph>
             {t("learn.welcome.1", "Welcome! In this brief tutorial, you'll play a game by yourself.")}
           </Paragraph>
@@ -74,6 +94,20 @@ const useSteps = () => {
               "Hanabi is a cooperative game.\n\nYou play with other players to reach a common goal."
             )}
           </Paragraph>
+          <Divider />
+          <div className="flex items-center mt2 lavender" onClick={() => setColorBlindMode(!colorBlindMode)}>
+            <Txt
+              className="lavender mr2"
+              size={TxtSize.XSMALL}
+              value={t("learn.colorBlind.label", "Having trouble seeing colors? Toggle color-blind mode")}
+            />
+            <Checkbox
+              checked={colorBlindMode}
+              onChange={e => {
+                setColorBlindMode(e.target.checked);
+              }}
+            />
+          </div>
         </>
       ),
     },
@@ -106,21 +140,7 @@ const useSteps = () => {
               );
             })}
           </div>
-          {/* <div className="flex items-center mt2 lavender" onClick={() => setColorBlindMode(!colorBlindMode)}>
-            (
-            <Txt
-              className="lavender mr2"
-              size={TxtSize.XSMALL}
-              value={t("learn.cards.colorBlind", "Having trouble seeing colors? Toggle color-blind mode")}
-            />
-            <Checkbox
-              checked={colorBlindMode}
-              onChange={e => {
-                setColorBlindMode(e.target.checked);
-              }}
-            />
-            )
-          </div> */}
+
           <Divider />
           <Paragraph>{t("learn.cards.2", "At the start of the game, each player will be dealt 5 cards.")}</Paragraph>
           <Paragraph>
@@ -186,19 +206,6 @@ const useSteps = () => {
               Draw a new card from the deck.
             </Trans>
           </Paragraph>
-          <Divider />
-          <Subtitle className="ttu mb2">{t("learn.actions.discard.title", "2. Discard")}</Subtitle>
-          <Paragraph>
-            <Trans key="learn.actions.discard.2">
-              Throw away a card from your hand. It will be lost forever.
-              <br />
-              <br />
-              Gain one hint token: {token("hints")}
-              <br />
-              <br />
-              Draw a new card from the deck.
-            </Trans>
-          </Paragraph>
         </>
       ),
     },
@@ -207,7 +214,7 @@ const useSteps = () => {
       html: (
         <>
           <Title className="ttu mb4">{t("learn.actions", "Actions")}</Title>
-          <Subtitle className="ttu mb2">{t("learn.actions.play", "3. Hint")}</Subtitle>
+          <Subtitle className="ttu mb2">{t("learn.actions.play", "2. Hint")}</Subtitle>
           <Paragraph>
             <Trans key="learn.actions.hint">
               Give indications about cards in one of your teammates hand.
@@ -241,6 +248,26 @@ const useSteps = () => {
     {
       html: (
         <>
+          <Title className="ttu mb4">{t("learn.actions", "Actions")}</Title>
+          <Subtitle className="ttu mb2">{t("learn.actions.discard.title", "3. Discard")}</Subtitle>
+          <Paragraph>
+            <Trans key="learn.actions.discard.2">
+              Throw away a card from your hand. It will be lost forever.
+              <br />
+              <br />
+              Gain one hint token: {token("hints")}
+              <br />
+              <br />
+              Draw a new card from the deck.
+            </Trans>
+          </Paragraph>
+        </>
+      ),
+    },
+
+    {
+      html: (
+        <>
           <Title className="ttu mb4">{t("learn.tokens", "Tokens")}</Title>
           <Paragraph>
             {token("hints", 1.5)}
@@ -265,7 +292,14 @@ const useSteps = () => {
       html: (
         <>
           <Title className="ttu">{t("learn.ready.title", "Ready?")}</Title>
-          <Paragraph>{t("learn.ready.1", "Let's jump into a game to try all this out!")}</Paragraph>
+          <Paragraph>{t("learn.ready.1", "Let's jump into a trial game to try all this out!")}</Paragraph>
+          {gameId && (
+            <Link passHref href={`/${gameId}`}>
+              <a className="lavender pointer">
+                <Txt value={t("backToGame", "Go back to my game instead")} />
+              </a>
+            </Link>
+          )}
           <Divider />
           <Paragraph>
             {t(
@@ -331,18 +365,21 @@ export default function Learn() {
 
     logEvent("Game", "Tutorial created");
 
-    router.push(`/${id}`);
+    const originalGameId = router.query["back-to-game"];
+    if (originalGameId) {
+      router.push(`/${id}?back-to-game=${originalGameId}`);
+    } else {
+      router.push(`/${id}`);
+    }
   };
 
   return (
     <>
       <HomeButton className="absolute top-1 right-1 z-2" />
 
-      <img
-        alt="Hanabi cards game online"
-        className="fixed top-0 right-0 w4 h4 ma4 o-50 "
-        src={require("~/images/hanabi.png?size=256")}
-      />
+      <div className="fixed top-0 right-0 w4 h4 ma4 o-50 ">
+        <Image alt="Hanabi cards game online" height={256} src="/static/hanabi.png" width={256} />
+      </div>
 
       <div className="relative flex items-center h-90 w-90 w-50-l center">
         <PoseGroup>
@@ -355,7 +392,7 @@ export default function Learn() {
           })}
         </PoseGroup>
         <div className="absolute left-0 right-0 bottom-1 flex justify-between items-center mh2">
-          <Txt className="lavender" size={TxtSize.XXSMALL} value={`${currentStep + 1} / ${steps.length}`} />
+          <Txt className="lavender nowrap" size={TxtSize.XXSMALL} value={`${currentStep + 1} / ${steps.length}`} />
           <div>
             {canGoBack && (
               <Button

@@ -1,5 +1,6 @@
 import { last } from "lodash";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,7 +9,6 @@ import Button from "~/components/ui/button";
 import { Checkbox, Field, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
-import { joinGame } from "~/lib/actions";
 import { GameMode, IPlayer } from "~/lib/state";
 
 function listPlayerNames(players: IPlayer[]) {
@@ -126,12 +126,23 @@ export default function Lobby(props: Props) {
                   )}
                 </div>
                 {selfPlayer && !gameFull && (
-                  <div>
-                    <Txt className="lavender" value={t("waitForOthers")} />
-                    <a className="underline lavender pointer ml1" id="add-ai" onClick={() => onAddBot()}>
-                      <Txt value={t("addAi")} />
-                    </a>
-                  </div>
+                  <>
+                    <div>
+                      <Txt className="lavender" value={t("waitForOthers")} />
+                      <a className="underline lavender pointer ml1" id="add-ai" onClick={() => onAddBot()}>
+                        <Txt value={t("addAi")} />
+                      </a>
+                    </div>
+                    <div className="mt5">
+                      <Txt className="txt-yellow mr2 ttu" size={TxtSize.XXSMALL} value={t("new")} />
+                      <Txt value={t("learnWhileWaiting")} />
+                      <Link passHref href={`/learn?back-to-game=${game.id}`}>
+                        <a className="ml2 underline lavender ttu pointer">
+                          <Txt value={t("go")} />
+                        </a>
+                      </Link>
+                    </div>
+                  </>
                 )}
               </div>
             </div>

@@ -206,6 +206,7 @@ export const fr = {
   tryOutAlternative:
     "Tu peux également jouer avec d'autres configurations et rencontrer notre IA sur <1>hanabi.cards</1>",
   back: "Retour",
+  next: "Suivant",
   statsPlayable: "jouable",
   statsDiscardable: "défaussable",
   statsDangerous: "dangereuse",
@@ -234,4 +235,10 @@ export const fr = {
   pageNotFound: "Pagina niet gevonden",
   contributeLanguage: "Contribuer !",
   buymeacoffeePostGame: "Soutenez le jeu, <2>offrez-nous un café</2>",
+  new: "Nouveau",
+  learnHanabi: "Apprendre",
+  learnHanabiTime: "~5 min",
+  learnHanabiEnglish:
+    "Cette section est en cours de développement et n'a pas encore été traduite dans toutes les langues.",
+  learnWhileWaiting: "Apprendre les bases d'Hanabi en attendant",
 };

@@ -109,9 +109,9 @@ export default function Home() {
               router.push("/learn");
             }}
           >
-            {t("learn", "Learn")}
+            {t("learnHanabi", "Learn")}
             <Txt className="ml2" size={TxtSize.XXSMALL}>
-              ~5 mn
+              {t("learnHanabiTime", "~5 mn")}
             </Txt>
           </Button>
 
