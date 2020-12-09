@@ -17,7 +17,7 @@ export default function Rules(props: Props) {
   const { t } = useTranslation();
 
   return (
-    <div className="bg-main-dark flex justify-center pa4 relative tj lh-copy">
+    <div className="flex justify-center pa4 relative tj lh-copy">
       <div className="w-75-l">
         {setShowRules && (
           <Button
