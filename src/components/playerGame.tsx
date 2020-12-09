@@ -353,7 +353,7 @@ export default function PlayerGame(props: Props) {
                       key={action}
                       className="mr2"
                       disabled={
-                        !isTutorialAction(tutorialAction?.action, {
+                        !isTutorialAction(game, tutorialAction?.action, {
                           action: action as "discard" | "play",
                           from: 0,
                           cardIndex: selectedCard,
@@ -408,7 +408,7 @@ export default function PlayerGame(props: Props) {
                 disabled={
                   !pendingHint.type ||
                   game.tokens.hints === 0 ||
-                  !isTutorialAction(tutorialAction?.action, { action: "hint", to: player.index, ...pendingHint })
+                  !isTutorialAction(game, tutorialAction?.action, { action: "hint", to: player.index, ...pendingHint })
                 }
                 id="give-hint"
                 text={t("hint")}

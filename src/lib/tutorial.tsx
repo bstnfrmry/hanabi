@@ -3,7 +3,7 @@ import React, { ReactNode } from "react";
 import Card, { CardSize, ICardContext } from "~/components/card";
 import Vignette from "~/components/vignette";
 import { useGame } from "~/hooks/game";
-import { IAction, IColor, IHintType, INumber } from "~/lib/state";
+import IGameState, { IAction, IColor, IHintType, INumber } from "~/lib/state";
 
 export type TutorialAction = { action: IAction; content: ReactNode; todo: ReactNode };
 
@@ -34,7 +34,11 @@ function token(color: string, size = 1) {
   return <div className={`inline-flex w${size} h${size} bg-${color} ba b--${color} br-100`} />;
 }
 
-export function isTutorialAction(tutAction: IAction, action: IAction) {
+export function isTutorialAction(game: IGameState, tutAction: IAction, action: IAction) {
+  if (!game.options.tutorial) {
+    return true;
+  }
+
   if (!tutAction) {
     return true;
   }
