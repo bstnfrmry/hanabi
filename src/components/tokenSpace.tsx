@@ -10,7 +10,7 @@ interface TokenProps {
   amount: number;
 }
 
-function Token(props: TokenProps) {
+export function Token(props: TokenProps) {
   const { color, amount } = props;
 
   if (!amount) {

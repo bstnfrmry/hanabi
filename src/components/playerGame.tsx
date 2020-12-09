@@ -27,6 +27,7 @@ import IGameState, {
   INumber,
   IPlayer,
 } from "~/lib/state";
+import { isTutorialAction, useTutorialAction } from "~/lib/tutorial";
 
 function isCardHintable(game: IGameState, hint: IHintAction, card: ICard) {
   return hint.type === "color"
@@ -114,6 +115,7 @@ export default function PlayerGame(props: Props) {
 
   const selfPlayer = useSelfPlayer();
   const currentPlayer = useCurrentPlayer();
+  const tutorialAction = useTutorialAction();
 
   useEffect(() => {
     setRevealCards(false);
@@ -350,7 +352,13 @@ export default function PlayerGame(props: Props) {
                     <Button
                       key={action}
                       className="mr2"
-                      disabled={action === "discard" && game.tokens.hints === 8}
+                      disabled={
+                        !isTutorialAction(tutorialAction?.action, {
+                          action: action as "discard" | "play",
+                          from: 0,
+                          cardIndex: selectedCard,
+                        })
+                      }
                       id={action}
                       text={t(action)}
                       onClick={() =>
@@ -397,7 +405,11 @@ export default function PlayerGame(props: Props) {
               {!pendingHint.value && game.tokens.hints > 0 && <Txt className="mr3" value={t("selectVignette")} />}
 
               <Button
-                disabled={!pendingHint.type || game.tokens.hints === 0}
+                disabled={
+                  !pendingHint.type ||
+                  game.tokens.hints === 0 ||
+                  !isTutorialAction(tutorialAction?.action, { action: "hint", to: player.index, ...pendingHint })
+                }
                 id="give-hint"
                 text={t("hint")}
                 onClick={() =>

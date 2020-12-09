@@ -20,6 +20,9 @@ const config = [
       locales: ["en", "fr", "es", "it", "nl", "ru", "pt"],
       defaultLocale: "en",
     },
+    images: {
+      domains: ["cdn.buymeacoffee.com"],
+    },
     webpack: (config, { isServer, buildId }) => {
       config.plugins.push(
         new Dotenv({

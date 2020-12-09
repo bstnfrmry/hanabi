@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import React from "react";
+import React, { CSSProperties } from "react";
 
 import ColorSymbol from "~/components/colorSymbol";
 import Txt from "~/components/ui/txt";
@@ -12,6 +12,7 @@ interface Props {
   className?: string;
   selected?: boolean;
   onClick?: Function;
+  style?: CSSProperties;
 }
 
 export default function Vignette(props: Props) {
@@ -19,9 +20,10 @@ export default function Vignette(props: Props) {
 
   const game = useGame();
 
-  const displaySymbol = game.options.colorBlindMode && type === "color";
+  const displaySymbol = game?.options?.colorBlindMode && type === "color";
 
   const style = {
+    ...props.style,
     ...(selected && { transform: "scale(1.2)" }),
   };
 
@@ -40,7 +42,7 @@ export default function Vignette(props: Props) {
     >
       {displaySymbol && <ColorSymbol color={value as IColor} />}
       {type === "number" && (
-        <Txt value={game.options.variant === GameVariant.SEQUENCE && value < 5 ? `${value}+` : value} />
+        <Txt value={game?.options?.variant === GameVariant.SEQUENCE && value < 5 ? `${value}+` : value} />
       )}
     </a>
   );

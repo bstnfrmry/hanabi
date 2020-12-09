@@ -233,4 +233,10 @@ export const es = {
   colorBlindModeSubtext: "Mostrar símbolos en la parte superior de las tarjetas para ayudar a distinguir los colores",
   contributeLanguage: "¡Contribuir!",
   buymeacoffeePostGame: "Apoya el juego, <2>cómpranos un café</2>",
+  next: "Siguiente",
+  new: "Nuevo",
+  learnHanabi: "Aprende",
+  learnHanabiTime: "~5 mn",
+  learnHanabiEnglish: "Esta sección está en desarrollo y aún no ha sido traducida a todos los idiomas.",
+  learnWhileWaiting: "Aprende lo básico de Hanabi mientras esperas",
 };

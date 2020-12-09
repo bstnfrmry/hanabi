@@ -24,6 +24,7 @@ export default function Home() {
   useEffect(() => {
     router.prefetch("/new-game");
     router.prefetch("/join-game");
+    router.prefetch("/learn");
   }, []);
 
   /**
@@ -47,7 +48,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative w-100 overflow-y-scroll flex flex-column justify-center items-center bg-main-dark pa2 pv4-l ph3-l shadow-5 br3">
+    <div
+      className="relative w-100 overflow-y-scroll flex flex-column justify-center items-center pa2 pv4-l ph3-l shadow-5 br3"
+      style={{
+        backgroundImage: "linear-gradient(to bottom right, #001030, #00133d)",
+      }}
+    >
       <Head>
         <link href="/" hrefLang="x-default" rel="alternate" />
         {Object.keys(Languages).map(locale => (
@@ -100,6 +106,19 @@ export default function Home() {
               }
             />
           )}
+          <Button
+            className="mb4"
+            id="tutorial"
+            size={ButtonSize.LARGE}
+            onClick={() => {
+              router.push("/learn");
+            }}
+          >
+            {t("learnHanabi", "Learn")}
+            <Txt className="ml2" size={TxtSize.XXSMALL}>
+              {t("learnHanabiTime", "~5 mn")}
+            </Txt>
+          </Button>
 
           <span
             className="flex flex-column items-center link white pointer mt4"

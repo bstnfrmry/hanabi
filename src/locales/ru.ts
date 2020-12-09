@@ -240,4 +240,10 @@ export const ru = {
   colorBlindModeSubtext: "Отображение символов на верхней части карт, чтобы помочь различать цвета",
   contributeLanguage: "способствовать!",
   buymeacoffeePostGame: "Поддержите игру, <2>купите нам кофе</2>",
+  next: "Следующий",
+  new: "Новый сайт",
+  learnHanabi: "Узнать",
+  learnHanabiEnglish: "Этот раздел находится в стадии разработки и еще не переведен на все языки.",
+  learnHanabiTime: "~5 mn",
+  learnWhileWaiting: "Узнайте основы Ханаби в ожидании.",
 };

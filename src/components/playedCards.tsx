@@ -16,7 +16,7 @@ export default function PlayedCards(props: Props) {
 
   const game = useGame();
   const groupedCards = groupBy(cards, c => c.color);
-  const colors = getColors(game);
+  const colors = getColors(game?.options?.variant);
 
   return (
     <Tutorial placement="below" step={ITutorialStep.PLAYED_CARDS}>

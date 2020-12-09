@@ -1,31 +1,12 @@
-import classnames from "classnames";
 import Image from "next/image";
-import React, { ReactNode } from "react";
+import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 
 import BuymeacoffeeButton from "~/components/buymeacoffeeButton";
 import DiscordButton from "~/components/discordButton";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-
-interface TxtProps {
-  children: ReactNode;
-  className?: string;
-}
-
-const Title = (props: TxtProps) => (
-  <Txt className="txt-yellow mt3" size={TxtSize.MEDIUM}>
-    {props.children}
-  </Txt>
-);
-
-const Subtitle = (props: TxtProps) => (
-  <Txt className="mt2" size={TxtSize.MEDIUM}>
-    {props.children}
-  </Txt>
-);
-
-const Paragraph = (props: TxtProps) => <Txt className={classnames("mv2", props.className)}>{props.children}</Txt>;
+import { Paragraph, Subtitle, Title } from "~/components/ui/typography";
 
 interface Props {
   setShowRules?: (showRules: boolean) => void;
@@ -36,7 +17,7 @@ export default function Rules(props: Props) {
   const { t } = useTranslation();
 
   return (
-    <div className="bg-main-dark flex justify-center pa4 relative tj lh-copy">
+    <div className="flex justify-center pa4 relative tj lh-copy">
       <div className="w-75-l">
         {setShowRules && (
           <Button

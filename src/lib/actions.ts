@@ -262,8 +262,8 @@ export function emptyPlayer(id: string, name: string): IPlayer {
   };
 }
 
-export function getColors(state: IGameState) {
-  switch (state.options.variant) {
+export function getColors(variant: GameVariant) {
+  switch (variant) {
     case GameVariant.MULTICOLOR:
       return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW, IColor.MULTICOLOR];
     case GameVariant.RAINBOW:
@@ -277,7 +277,7 @@ export function getColors(state: IGameState) {
 }
 
 export function getHintableColors(state: IGameState) {
-  return getColors(state).filter(color => color !== IColor.RAINBOW);
+  return getColors(state.options.variant).filter(color => color !== IColor.RAINBOW);
 }
 
 export function getScore(state: IGameState) {
@@ -297,7 +297,7 @@ export function getMaximumScore(state: IGameState) {
 }
 
 export function getPlayedCardsPile(state: IGameState): { [key in IColor]: INumber } {
-  const colors = getColors(state);
+  const colors = getColors(state.options.variant);
 
   return zipObject(
     colors,

@@ -43,7 +43,7 @@ export default function DiscardArea() {
     card => card.color
   );
 
-  const rows = chunk(getColors(game), 2);
+  const rows = chunk(getColors(game.options.variant), 2);
 
   return (
     <div className="relative pl1">

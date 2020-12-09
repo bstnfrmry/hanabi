@@ -226,4 +226,10 @@ export const nl = {
   colorBlindModeSubtext: "Toon symbolen boven op de kaarten om de kleuren te helpen onderscheiden",
   contributeLanguage: "Bijdragen!",
   buymeacoffeePostGame: "Steun het spel, <2>koop ons een koffie</2>",
+  next: "Volgende",
+  new: "Nieuw",
+  learnHanabi: "Leer",
+  learnHanabiTime: "~5 mn",
+  learnHanabiEnglish: "Dit onderdeel is in ontwikkeling en is nog niet in alle talen vertaald.",
+  learnWhileWaiting: "Leer de basis van Hanabi tijdens het wachten",
 };

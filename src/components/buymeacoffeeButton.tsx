@@ -2,7 +2,6 @@ import classnames from "classnames";
 import Head from "next/head";
 import Image from "next/image";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 interface Props {
   className?: string;
@@ -12,7 +11,6 @@ interface Props {
 
 export default function BuymeacoffeeButton(props: Props) {
   const { className } = props;
-  const { t } = useTranslation();
 
   return (
     <>
@@ -20,7 +18,7 @@ export default function BuymeacoffeeButton(props: Props) {
         <link href="https://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" />
       </Head>
       <a
-        className={classnames("bmc-button db", className)}
+        className={classnames("bmc-button flex", className)}
         href="https://www.buymeacoffee.com/hanabicards"
         rel="noopener noreferrer"
         target="_blank"
