@@ -353,6 +353,7 @@ export default function PlayerGame(props: Props) {
                       key={action}
                       className="mr2"
                       disabled={
+                        (action === "discard" && game.tokens.hints === 8) ||
                         !isTutorialAction(game, tutorialAction?.action, {
                           action: action as "discard" | "play",
                           from: 0,
