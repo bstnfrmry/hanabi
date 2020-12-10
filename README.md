@@ -49,7 +49,7 @@ You'll need to setup a free Firebase account to test the project locally.
 $ yarn
 
 # Configure Firebase
-$ cp .env.sample && open .env
+$ cp .env.sample .env && open .env
 
 # Launch development environment
 $ yarn dev
