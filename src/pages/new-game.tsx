@@ -20,6 +20,7 @@ const Variants = {
   [GameVariant.CLASSIC]: "classicVariant",
   [GameVariant.MULTICOLOR]: "multicolorVariant",
   [GameVariant.RAINBOW]: "rainbowVariant",
+  [GameVariant.CRITICAL_RAINBOW]: "criticalRainbowVariant",
   [GameVariant.ORANGE]: "orangeVariant",
   [GameVariant.SEQUENCE]: "sequenceVariant",
 };
@@ -28,6 +29,7 @@ const VariantDescriptions = {
   [GameVariant.CLASSIC]: "classicVariantDescription",
   [GameVariant.MULTICOLOR]: "multicolorVariantDescription",
   [GameVariant.RAINBOW]: "rainbowVariantDescription",
+  [GameVariant.CRITICAL_RAINBOW]: "criticalRainbowVariantDescription",
   [GameVariant.ORANGE]: "orangeVariantDescription",
   [GameVariant.SEQUENCE]: "sequenceVariantDescription",
 };

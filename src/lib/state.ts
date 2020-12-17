@@ -55,6 +55,7 @@ export enum GameVariant {
   CLASSIC = "classic",
   MULTICOLOR = "multicolor",
   RAINBOW = "rainbow",
+  CRITICAL_RAINBOW = "criticalRainbow",
   ORANGE = "orange",
   SEQUENCE = "sequence",
 }

@@ -84,20 +84,20 @@ export default function Summary(props: Props) {
     router.push(`/${game.id}`);
   }
 
-  function gameVariantToText(gameVariant) {
+  function gameVariantToText(gameVariant: GameVariant) {
     switch (gameVariant) {
       case GameVariant.CLASSIC:
         return t("classicVariant");
-        break;
       case GameVariant.MULTICOLOR:
         return t("multicolorVariant");
-        break;
       case GameVariant.RAINBOW:
         return t("rainbowVariant");
-        break;
+      case GameVariant.CRITICAL_RAINBOW:
+        return t("criticalRainbowVariant");
       case GameVariant.ORANGE:
         return t("orangeVariant");
-        break;
+      case GameVariant.SEQUENCE:
+        return t("sequenceVariant");
       default:
         return "UNKNOWN";
     }

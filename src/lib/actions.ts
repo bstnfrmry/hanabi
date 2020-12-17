@@ -39,6 +39,10 @@ export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
  * Side effect function that applies the given hint on a given hand's cards
  */
 function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
+  const isRainbowVariant =
+    game.options.variant === GameVariant.RAINBOW || game.options.variant === GameVariant.CRITICAL_RAINBOW;
+  const isSequenceVariant = game.options.variant === GameVariant.SEQUENCE;
+
   hint.cardsIndex = [];
 
   hand.forEach((card, index) => {
@@ -53,10 +57,10 @@ function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
       // positive hint on card - mark all other values as impossible (except rainbow)
       Object.keys(card.hint[hint.type])
         .filter(value => {
-          return GameVariant.RAINBOW === game.options.variant ? value !== IColor.RAINBOW : true;
+          return isRainbowVariant ? value !== IColor.RAINBOW : true;
         })
         .filter(value => {
-          if (hint.type === "number" && game.options.variant === GameVariant.SEQUENCE) {
+          if (hint.type === "number" && isSequenceVariant) {
             return value < hint.value;
           }
           return value != hint.value;
@@ -68,7 +72,7 @@ function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
       // negative hint on card - mark as impossible
       card.hint[hint.type][hint.value] = IHintLevel.IMPOSSIBLE;
 
-      if (hint.type === "number" && game.options.variant === GameVariant.SEQUENCE) {
+      if (hint.type === "number" && isSequenceVariant) {
         range(hint.value as INumber, 6).forEach(n => {
           card.hint.number[n] = IHintLevel.IMPOSSIBLE;
         });
@@ -267,6 +271,7 @@ export function getColors(variant: GameVariant) {
     case GameVariant.MULTICOLOR:
       return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW, IColor.MULTICOLOR];
     case GameVariant.RAINBOW:
+    case GameVariant.CRITICAL_RAINBOW:
       return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW, IColor.RAINBOW];
     case GameVariant.ORANGE:
       return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW, IColor.ORANGE];
@@ -404,6 +409,17 @@ export function newGame(options: IGameOptions): IGameState {
       { number: 3, color: IColor.RAINBOW },
       { number: 3, color: IColor.RAINBOW },
       { number: 4, color: IColor.RAINBOW },
+      { number: 4, color: IColor.RAINBOW },
+      { number: 5, color: IColor.RAINBOW }
+    );
+  }
+
+  // Add rainbow cards when applicable
+  if (options.variant === GameVariant.CRITICAL_RAINBOW) {
+    cards.push(
+      { number: 1, color: IColor.RAINBOW },
+      { number: 2, color: IColor.RAINBOW },
+      { number: 3, color: IColor.RAINBOW },
       { number: 4, color: IColor.RAINBOW },
       { number: 5, color: IColor.RAINBOW }
     );
