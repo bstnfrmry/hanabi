@@ -29,7 +29,7 @@ export default class Error extends React.Component<Props> {
               <Txt className="mv4 tc lh-copy">
                 <Trans i18nKey="errorWillInvestigate">
                   We'll investigate as soon as possible. Don't hesitate to{" "}
-                  <a className="lavender" href="mailto:bastien.formery@gmail.com">
+                  <a className="lavender" href="mailto:bastien.formery+hanabi@gmail.com">
                     reach out
                   </a>
                   to let us know what happened.

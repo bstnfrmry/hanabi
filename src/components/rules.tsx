@@ -92,7 +92,7 @@ export default function Rules(props: Props) {
           <Paragraph>
             <Trans i18nKey="rulesContact">
               ✉️
-              <a className="lavender" href="mailto:bastien.formery@gmail.com">
+              <a className="lavender" href="mailto:bastien.formery+hanabi@gmail.com">
                 Contact us
               </a>
               if you have any question or suggestion.
