@@ -3,8 +3,7 @@ import { cloneDeep, findIndex, flatMap, last, range, shuffle, zipObject } from "
 import mem from "mem";
 import { shuffle as shuffleSeed } from "shuffle-seed";
 
-import { readableUniqueId } from "~/lib/id";
-
+import { readableUniqueId } from "./id";
 import IGameState, {
   GameVariant,
   IAction,

@@ -1,7 +1,7 @@
 import { defaults, omit } from "lodash";
 
-import { commitAction, joinGame, newGame } from "~/lib/actions";
-import { ID } from "~/lib/id";
+import { commitAction, joinGame, newGame } from "./actions";
+import { ID } from "./id";
 
 /**
  * game state
