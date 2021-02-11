@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
-export const en = {
+export const de = {
   hanabi: "Hanabi",
   welcome: "Willkommen",
   newGame: "Neues Spiel",
@@ -79,10 +79,10 @@ export const en = {
   introContent: "Mach eine kurze Tour!",
   playedCardsTutorial: "Gespielte Karten",
   playedCardsTutorialContent:
-    "This will nest the cards that have been played.\nCollectively, reach 5 on each color to win the game.",
-  discardTutorial: "Discard",
+    "Hier werden die Karten abgelegt die gespielt wurden.\nErreiche zusammen 5 Karten jeder Farbe um das Spiel zu gewinnen.",
+  discardTutorial: "Ablegen",
   discardTutorialContent:
-    "Here you will see the cards\nyou and your team discarded.\nAvoid discarding the ones\nyou need to finish the game.",
+    "Hier siehst du die Karten die\ndu und dein Team abgelegt haben.\nVermeide Karten abzulegen die du\nbrauchst um das Spiel zu gewinnen.",
   yourGameTutorial: "Your game",
   yourGameTutorialContent:
     "These are your cards.\nYou can't see them, but other players can and will give you hints about them.",
