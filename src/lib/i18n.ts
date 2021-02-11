@@ -9,6 +9,7 @@ import { it } from "~/locales/it";
 import { nl } from "~/locales/nl";
 import { pt } from "~/locales/pt";
 import { ru } from "~/locales/ru";
+import { de } from "~/locales/de";
 
 i18n
   .use(initReactI18next)
@@ -35,6 +36,9 @@ i18n
       },
       pt: {
         translation: pt,
+      },
+      de: {
+        translation: de,
       },
     },
     fallbackLng: "en",
