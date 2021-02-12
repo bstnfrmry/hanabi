@@ -311,7 +311,7 @@ export const en = {
       1: "Let's jump into a trial game to try all this out!",
       2: "Hanabi is a game with endless options and possibilities. There is no right choice when playing.",
       3: "This tutorial aims to help you understand a basic play style you'll be able to use with your friends.",
-      4: "The conventions mentionned afterwards are not part of the official rules, but rather a system some players created to be more efficient. If you'd like to discover those by yourself, you can leave this tutorial right now and jump right into a game.",
+      4: "The conventions mentioned afterwards are not part of the official rules, but rather a system some players created to be more efficient. If you'd like to discover those by yourself, you can leave this tutorial right now and jump right into a game.",
     },
   },
 };
