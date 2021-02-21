@@ -117,12 +117,10 @@ const useSteps = () => {
         <>
           <Title className="ttu mb4">{t("learn.cards.title", "Cards")}</Title>
           <Paragraph>
-            <Trans key="learn.cards.1">
-              Cards are numbered from {vignette("number", 1)} to {vignette("number", 5)} and colored{" "}
-              <span className="txt-red">red</span>, <span className="txt-yellow">yellow</span>,{" "}
-              <span className="txt-green">green</span>, <span className="txt-blue">blue</span> or{" "}
-              <span className="txt-white">white</span>.
-            </Trans>
+                {t("learn.cards.1.1", "Cards are numbered from")} {vignette("number", 1)} {t("learn.cards.1.2", "to")} {vignette("number", 5)} {t("learn.cards.1.3", "and colored")}{" "}
+              <span className="txt-red">{t("red", "red")}</span>, <span className="txt-yellow">{t("yellow", "yellow")}</span>,{" "}
+              <span className="txt-green">{t("green", "green")}</span>, <span className="txt-blue">{t("blue", "blue")}</span> {t("learn.cards.1.4", "or")}{" "}
+              <span className="txt-white">{t("white", "white")}</span>.
           </Paragraph>
           <div className="mb3">
             {getColors(GameVariant.CLASSIC).map(color => {
@@ -177,11 +175,9 @@ const useSteps = () => {
           </div>
           <div className="mt4">
             <Paragraph>
-              <Trans key="learn.goal.2">
-                Piles from each color must be built in ascending order. For instance, in the example above, you must
-                play
-                {card(IColor.GREEN, 4)} before playing {card(IColor.GREEN, 5)}.
-              </Trans>
+                {t("learn.goal.2", "Piles from each color must be built in ascending order.")}<br />
+                {t("learn.goal.3","For instance, in the example above, you must play")} {card(IColor.GREEN, 4)}{" "}
+                    {t("learn.goal.4", "before playing")} {card(IColor.GREEN, 5)}{" "}{t("learn.goal.5", ".")}
             </Paragraph>
           </div>
         </>
@@ -192,19 +188,18 @@ const useSteps = () => {
       html: (
         <>
           <Title className="ttu mb4">{t("learn.actions.title", "Actions")}</Title>
-          <Paragraph className="nt4">{t("At your turn, you have the choice between 3 actions")}</Paragraph>
+          <Paragraph className="nt4">{t("learn.actions.0","At your turn, you have the choice between 3 actions")}</Paragraph>
 
           <Subtitle className="ttu mt4 mb2">{t("learn.actions.play.title", "1. Play")}</Subtitle>
           <Paragraph>
-            <Trans key="learn.actions.discard.1">
-              Play a card from your hand on the board.
+              {t("learn.actions.play.1", "Play a card from your hand on the board.")}
               <br />
               <br />
-              If the card was not playable, the card is discarded and your team gains a strike token: {token("strikes")}
+              {t("learn.actions.play.2", "If the card was not playable, the card is discarded and your team gains a strike token:")}
+              {" "}{token("strikes")}
               <br />
               <br />
-              Draw a new card from the deck.
-            </Trans>
+              {t("learn.actions.play.3", "Draw a new card from the deck.")}
           </Paragraph>
         </>
       ),
@@ -213,19 +208,18 @@ const useSteps = () => {
     {
       html: (
         <>
-          <Title className="ttu mb4">{t("learn.actions", "Actions")}</Title>
-          <Subtitle className="ttu mb2">{t("learn.actions.play", "2. Hint")}</Subtitle>
+          <Title className="ttu mb4">{t("learn.actions.title", "Actions")}</Title>
+          <Subtitle className="ttu mb2">{t("learn.actions.hint.title", "2. Hint")}</Subtitle>
           <Paragraph>
-            <Trans key="learn.actions.hint">
-              Give indications about cards in one of your teammates hand.
+              {t("learn.actions.hint.1", "Give indications about cards in one of your teammates hand.")}
               <br />
               <br />
-              Giving a hint costs a hint token: {token("hints")}
+              {t("learn.actions.hint.2", "Giving a hint costs a hint token:")} {token("hints")}
               <br />
               <br />
-              You can hint about one color or one value.
+              {t("learn.actions.hint.3", "You can hint about one color or one value.")}
               <br />
-              For instance, in the hand below:
+              {t("learn.actions.hint.4", "For instance, in the hand below:")}
               <div className="flex mt3 mb4">
                 {card(IColor.BLUE, 2, CardSize.LARGE, 0)}
                 {card(IColor.BLUE, 3, CardSize.LARGE, 1)}
@@ -233,13 +227,12 @@ const useSteps = () => {
                 {card(IColor.RED, 4, CardSize.LARGE, 3)}
                 {card(IColor.YELLOW, 5, CardSize.LARGE, 4)}
               </div>
-              You could give the following hints:
+              {t("learn.actions.hint.5", "You could give the following hints:")}
               <br />
-              <span className="db mv1 lavender">“Your cards A & B are blue”</span>
-              <span className="db mv1 lavender">“Your cards A & C are 2s”</span>
-              <span className="db mv1 lavender">“Your card E is yellow”</span>
-              <span className="db mv1 lavender">“You have no green cards”</span>
-            </Trans>
+              <span className="db mv1 lavender">“{t("learn.actions.hint.6", "Your cards A & B are blue")}”</span>
+              <span className="db mv1 lavender">“{t("learn.actions.hint.7", "Your cards A & C are 2s")}”</span>
+              <span className="db mv1 lavender">“{t("learn.actions.hint.8", "Your card E is yellow")}”</span>
+              <span className="db mv1 lavender">“{t("learn.actions.hint.9", "You have no green cards")}”</span>
           </Paragraph>
         </>
       ),
@@ -248,18 +241,16 @@ const useSteps = () => {
     {
       html: (
         <>
-          <Title className="ttu mb4">{t("learn.actions", "Actions")}</Title>
+          <Title className="ttu mb4">{t("learn.actions.title", "Actions")}</Title>
           <Subtitle className="ttu mb2">{t("learn.actions.discard.title", "3. Discard")}</Subtitle>
           <Paragraph>
-            <Trans key="learn.actions.discard.2">
-              Throw away a card from your hand. It will be lost forever.
+              {t("learn.actions.discard.1", "Throw away a card from your hand. It will be lost forever.")}
               <br />
               <br />
-              Gain one hint token: {token("hints")}
+              {t("learn.actions.discard.2", "Gain one hint token:")} {token("hints")}
               <br />
               <br />
-              Draw a new card from the deck.
-            </Trans>
+              {t("learn.actions.discard.3", "Draw a new card from the deck.")}
           </Paragraph>
         </>
       ),
@@ -268,21 +259,21 @@ const useSteps = () => {
     {
       html: (
         <>
-          <Title className="ttu mb4">{t("learn.tokens", "Tokens")}</Title>
+          <Title className="ttu mb4">{t("learn.tokens.title", "Tokens")}</Title>
           <Paragraph>
             {token("hints", 1.5)}
             <br />
-            Hint tokens allow you to give hints.
+            {t("learn.tokens.1", "Hint tokens allow you to give hints.")}
             <br />
-            At the start of the game, your team has 8 tokens.
+            {t("learn.tokens.2", "At the start of the game, your team has 8 tokens.")}
           </Paragraph>
           <Divider />
           <Paragraph>
             {token("strikes", 1.5)}
             <br />
-            Strike tokens are gained when someone plays an unplayable card.
+            {t("learn.tokens.3", "Strike tokens are gained when someone plays an unplayable card.")}
             <br />
-            After reaching 3 strike tokens, you instantly lose the game.
+            {t("learn.tokens.4", "After reaching 3 strike tokens, you instantly lose the game.")}
           </Paragraph>
         </>
       ),
