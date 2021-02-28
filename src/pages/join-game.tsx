@@ -49,7 +49,7 @@ export default function JoinGame(props: Props) {
             <Button
               className="ma2"
               size={ButtonSize.LARGE}
-              text="Create a room"
+              text={t("createRoom", "Create a room")}
               onClick={() => router.push("/new-game")}
             />
           </>
