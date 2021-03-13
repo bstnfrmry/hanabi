@@ -395,14 +395,17 @@ export function Game(props: Props) {
   async function onRestartGame() {
     const nextGame = recreateGame(game);
 
-    await updateGame(nextGame);
-
-    updateGame({
+    await updateGame({
       ...game,
       nextGameId: nextGame.id,
     });
 
+    // synced: true seems to be necessary to get the AI to play once the new game starts
+    onGameChange({ ...nextGame, synced: true });
+
     logEvent("Game", "Game recreated");
+    router.push(`/${nextGame.id}`);
+
   }
 
   return (
