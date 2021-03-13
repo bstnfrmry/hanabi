@@ -464,6 +464,10 @@ export function recreateGame(game: IGameState) {
     seed: `${Math.round(Math.random() * 10000)}`,
   });
 
+  // Player index matters for whether a bot can play. 
+  // If there's only one non-bot player, they must have index 0 or the bots won't play
+  // TODO sort so that bots are last
+  // OR, remove the player index check in the "Play for bots." effect
   shuffle(game.players).forEach(player => {
     nextGame = joinGame(nextGame, player);
   });
