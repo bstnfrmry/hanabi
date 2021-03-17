@@ -458,11 +458,9 @@ export function newGame(options: IGameOptions): IGameState {
 }
 
 export function recreateGame(game: IGameState) {
-  const nextGameId = readableUniqueId();
-
   let nextGame = newGame({
     ...game.options,
-    id: nextGameId,
+    id: game.nextGameId || readableUniqueId(),
     seed: `${Math.round(Math.random() * 10000)}`,
   });
 

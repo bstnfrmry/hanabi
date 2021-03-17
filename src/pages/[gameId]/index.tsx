@@ -56,7 +56,7 @@ export default function Play(props: Props) {
 
       setGame({ ...game, synced: true });
     });
-  }, [online]);
+  }, [online, game.id]);
 
   return (
     <TutorialProvider>

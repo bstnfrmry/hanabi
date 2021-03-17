@@ -396,13 +396,11 @@ export function Game(props: Props) {
     const nextGame = recreateGame(game);
 
     await updateGame(nextGame);
-
-    updateGame({
-      ...game,
-      nextGameId: nextGame.id,
-    });
+    onGameChange(nextGame);
 
     logEvent("Game", "Game recreated");
+    router.push(`/${nextGame.id}`);
+
   }
 
   return (
