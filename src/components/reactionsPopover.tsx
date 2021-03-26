@@ -4,7 +4,7 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 import { useSelfPlayer } from "~/hooks/game";
 
 const ClearReaction = "⊘";
-const Reactions = ["👍", "👎", "👏", "😅", "🤩", "🤭", "🤔", "😬", "♻️"];
+const Reactions = ["👍", "👎", "👏", "😅", "🤩", "🤭", "🤔", "😬", "♻️", "❤️", "😻"];
 
 interface Props {
   onReaction: Function;
