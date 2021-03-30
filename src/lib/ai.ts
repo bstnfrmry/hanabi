@@ -42,7 +42,12 @@ export function isCardDangerous(card: ICard, state: IGameState): boolean {
   if (card.color === "multicolor" || card.number === 5) {
     return true;
   }
-  if (state.discardPile.find(c => c.color === card.color && c.number === card.number)) {
+  const discarded = state.discardPile.filter(c => c.color === card.color && c.number === card.number);
+  if (card.number === 1) {
+    if (discarded.length === 2) {
+      return true;
+    }
+  } else if (discarded.length > 0) {
     return true;
   }
 
