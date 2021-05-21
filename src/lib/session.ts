@@ -1,7 +1,6 @@
-import { uniqueId } from "lodash";
 import { withIronSession } from "next-iron-session";
 
-import { ID } from "~/lib/id";
+import { ID, uniqueId } from "~/lib/id";
 
 export default function withSession(handler) {
   return withIronSession(handler, {
