@@ -1,9 +1,8 @@
 import React from "react";
-
 import LoadingScreen from "~/components/loadingScreen";
 import withSession from "~/lib/session";
 
-export const getServerSideProps = withSession(async function(ctx) {
+export const getServerSideProps = withSession(async function (ctx) {
   ctx.req.session.destroy();
   await ctx.req.session.save();
 

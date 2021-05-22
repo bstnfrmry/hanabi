@@ -2,7 +2,6 @@ import classnames from "classnames";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import HomeButton from "~/components/homeButton";
 import Button, { ButtonSize } from "~/components/ui/button";
 import { Checkbox, Field, Select, TextInput } from "~/components/ui/forms";
@@ -105,7 +104,7 @@ export default function NewGame() {
         <div className="flex justify-between ph1 items-center pb4 mb4 bb b--yellow-light">
           <Txt size={TxtSize.MEDIUM} value={t("players", "Players")} />
           <div className="flex">
-            {PlayerCounts.map(count => {
+            {PlayerCounts.map((count) => {
               return (
                 <Button
                   key={count}
@@ -170,7 +169,7 @@ export default function NewGame() {
               label={t("passandplay", "Pass & Play")}
               subText={t("passandplaySubtext", "Physically pass the device to each player on their turn")}
             >
-              <Checkbox checked={offline} id="offline" onChange={e => setOffline(e.target.checked)} />
+              <Checkbox checked={offline} id="offline" onChange={(e) => setOffline(e.target.checked)} />
             </Field>
 
             <Field
@@ -178,7 +177,7 @@ export default function NewGame() {
               label={t("colorBlindMode", "Color blind mode")}
               subText={t("colorBlindModeSubtext", "Display symbols on top of cards to help distinguish colors")}
             >
-              <Checkbox checked={colorBlindMode} onChange={e => setColorBlindMode(e.target.checked)} />
+              <Checkbox checked={colorBlindMode} onChange={(e) => setColorBlindMode(e.target.checked)} />
             </Field>
 
             <Field
@@ -186,19 +185,19 @@ export default function NewGame() {
               label={t("private", "Private")}
               subText={t("privateSubtext", "Your game won't be visible in the 'Join Room' section")}
             >
-              <Checkbox checked={private_} onChange={e => setPrivate(e.target.checked)} />
+              <Checkbox checked={private_} onChange={(e) => setPrivate(e.target.checked)} />
             </Field>
 
             <Field className="pb3 mb3 bb b--yellow-light" label={t("seed", "Seed")}>
-              <TextInput className="w3 tr" id="seed" value={seed} onChange={e => setSeed(e.target.value)} />
+              <TextInput className="w3 tr" id="seed" value={seed} onChange={(e) => setSeed(e.target.value)} />
             </Field>
 
             <Field className="pb3 mb3 bb b--yellow-light" label={t("allowRollback", "Allow rollback")}>
-              <Checkbox checked={allowRollback} onChange={e => setAllowRollback(e.target.checked)} />
+              <Checkbox checked={allowRollback} onChange={(e) => setAllowRollback(e.target.checked)} />
             </Field>
 
             <Field className="pb3 mb3 bb b--yellow-light" label={t("preventLoss", "Prevent loss")}>
-              <Checkbox checked={preventLoss} onChange={e => setPreventLoss(e.target.checked)} />
+              <Checkbox checked={preventLoss} onChange={(e) => setPreventLoss(e.target.checked)} />
             </Field>
 
             <Field className="pb3 mb3 bb b--yellow-light" label={t("hints", "Hints")}>
@@ -207,7 +206,7 @@ export default function NewGame() {
                 formatter={t}
                 options={HintsLevels}
                 value={hintsLevel}
-                onChange={e => setHintsLevel(e.target.value as IGameHintsLevel)}
+                onChange={(e) => setHintsLevel(e.target.value as IGameHintsLevel)}
               />
             </Field>
 
@@ -223,7 +222,7 @@ export default function NewGame() {
                 id="bots-speed"
                 options={BotsSpeeds}
                 value={botsWait}
-                onChange={e => setBotsWait(+e.target.value)}
+                onChange={(e) => setBotsWait(+e.target.value)}
               />
             </Field>
           </>

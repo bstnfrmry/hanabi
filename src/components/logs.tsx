@@ -1,7 +1,6 @@
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import posed, { PoseGroup } from "react-pose";
-
 import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -22,7 +21,7 @@ export default function Logs(props: Props) {
   const selfPlayer = useSelfPlayer();
 
   const PoseItem = replay.cursor ? posed.div() : Item;
-  const firstMessages = game.messages.filter(message => message.turn === 0).reverse();
+  const firstMessages = game.messages.filter((message) => message.turn === 0).reverse();
 
   return (
     <div className="flex-grow-1 overflow-y-scroll">
@@ -31,11 +30,11 @@ export default function Logs(props: Props) {
           {[...game.turnsHistory].reverse().map((turn, i) => {
             const key = game.turnsHistory.length - i;
 
-            const messages = game.messages.filter(message => message.turn === game.turnsHistory.length - i).reverse();
+            const messages = game.messages.filter((message) => message.turn === game.turnsHistory.length - i).reverse();
 
             return (
               <PoseItem key={key}>
-                {messages.map(message => {
+                {messages.map((message) => {
                   return <Message key={message.id} message={message} />;
                 })}
                 <Turn
@@ -47,7 +46,7 @@ export default function Logs(props: Props) {
             );
           })}
         </PoseGroup>
-        {firstMessages.map(message => {
+        {firstMessages.map((message) => {
           return <Message key={message.id} message={message} />;
         })}
 

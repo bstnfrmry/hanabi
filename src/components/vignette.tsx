@@ -1,17 +1,16 @@
 import classnames from "classnames";
 import React, { CSSProperties } from "react";
-
 import ColorSymbol from "~/components/colorSymbol";
 import Txt from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
-import { GameVariant, IColor, IHintType } from "~/lib/state";
+import { GameVariant, IColor, IHintAction, IHintType } from "~/lib/state";
 
 interface Props {
   type: IHintType;
   value: string | number;
   className?: string;
   selected?: boolean;
-  onClick?: Function;
+  onClick?: (action: Pick<IHintAction, "type" | "value">) => void;
   style?: CSSProperties;
 }
 
@@ -38,7 +37,7 @@ export default function Vignette(props: Props) {
       )}
       id={`hint-${type}-${value}`}
       style={style}
-      onClick={() => onClick && onClick({ type, value })}
+      onClick={() => onClick?.({ type, value: value as IHintAction["value"] })}
     >
       {displaySymbol && <ColorSymbol color={value as IColor} />}
       {type === "number" && (

@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-
 import Button from "~/components/ui/button";
 import { Modal } from "~/components/ui/modal";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -10,7 +9,7 @@ import { updateGame } from "~/lib/firebase";
 import IGameState from "~/lib/state";
 
 interface Props {
-  onCloseArea: Function;
+  onCloseArea: () => void;
 }
 
 function getLastRollbackableTurn(game: IGameState) {

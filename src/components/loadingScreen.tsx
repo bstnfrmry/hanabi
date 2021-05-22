@@ -1,8 +1,6 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import posed from "react-pose";
-
 import Txt, { TxtSize } from "~/components/ui/txt";
 
 const Animation = posed.div({

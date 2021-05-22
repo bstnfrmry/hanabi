@@ -1,7 +1,6 @@
 import classnames from "classnames";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useSelfPlayer } from "~/hooks/game";
 import { IPlayer } from "~/lib/state";

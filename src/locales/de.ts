@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
-
 export const de = {
   hanabi: "Hanabi",
   welcome: "Willkommen",
@@ -104,7 +102,8 @@ export const de = {
   errorWillInvestigate:
     "Wir werden das so schnell wie möglich untersuchen. Du kannst uns gerne <1>melden</1> was passiert ist.",
   earlyDevelopment: "Das Spiel ist derzeit in Entwicklung und wir freuen uns über dein Feedback.",
-  publicRepo: "Wir haben auch ein <1>öffentliches Github Repository</1> falls du beitragen oder einen Bug melden möchtest.",
+  publicRepo:
+    "Wir haben auch ein <1>öffentliches Github Repository</1> falls du beitragen oder einen Bug melden möchtest.",
   backMenu: "Zurück zum Menü",
   landingImageAlt: "Hanabi Kartenspiel Online Logo",
   classicVariant: "Klassik",
@@ -116,7 +115,8 @@ export const de = {
   classicVariantDescription: "Ein klassisches Hanabi Spiel mit 5 Farben",
   multicolorVariantDescription: "Ein sechster Ablage-Stapel wird ergänzt mit jeweils nur einer Karte",
   rainbowVariantDescription: "Ein sechster Ablage-Stapel wird ergänzt dessen Karten zu jeder Farbe passen",
-  criticalRainbowVariantDescription: "Regenbogen-Version, aber der sechste Ablage-Stapel Farbe hat jeweils nur eine Karte",
+  criticalRainbowVariantDescription:
+    "Regenbogen-Version, aber der sechste Ablage-Stapel Farbe hat jeweils nur eine Karte",
   orangeVariantDescription: "Eine sechster klassicher Ablage-Stapel wird ergänzt",
   sequenceVariantDescription: "Hinweise auf Zahlen gelten auch für Karten mit höherer Zahl",
   showDirectHints: "Zeige direkte Hinweise",
@@ -169,7 +169,8 @@ export const de = {
     "Wir sind eine Gruppe von Brett-Spielern. Durch den Lockdown im Jahr 2020, wollten wir mehr Alternativen schaffen, um Remote gemeinsam Spielen zu können.\nDurch unseren Spass am Programmieren und Hanabi spielen haben wir uns entschlossen eine Online-Version des Spiels zu erstellen, die auch auf mobilen Geräten funktioniert.\n\n👉 Bedanke dich bei uns indem du die <2>Offline-Brettspiel-Version</2> kaufst um den Erfinder des Spiels zu unterstützen!",
   rulesContact: "✉️ <1>Kontaktiere uns</1> wenn du Fragen oder Anregungen hast",
   rulesContributeRepo: "💻 Wir haben auch ein <1>öffentliches Github Repository</1> falls du beitragen möchtest.",
-  rulesDiscordServer: "🗣 Triff uns auf unserem Discord Server um mögliche neue Features und Verbesserungen zu diskutieren",
+  rulesDiscordServer:
+    "🗣 Triff uns auf unserem Discord Server um mögliche neue Features und Verbesserungen zu diskutieren",
   rulesBuymeacoffee: "🙇‍♀️ Und du kannst unsere Initiative auch unterstützen indem du uns einen Kaffee kaufst",
   noRoom: "Kein Raum verfügbar",
   faster: "Schneller",

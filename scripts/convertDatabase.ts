@@ -3,14 +3,14 @@ import { program } from "commander";
 import fs from "fs";
 import { omit } from "lodash";
 import { Sequelize } from "sequelize";
-
+import { JsonObject } from "type-fest";
 import { getMaximumPossibleScore, getScore } from "../src/lib/actions";
 import IGameState, { rebuildGame } from "../src/lib/state";
 
 interface Database {
   games: Array<{
     id: string;
-    options: object;
+    options: JsonObject;
   }>;
 }
 
@@ -24,7 +24,7 @@ program
   .action(async ({ path }) => {
     await sequelize.authenticate();
 
-    const db = await new Promise<Database>(resolve => {
+    const db = await new Promise<Database>((resolve) => {
       const readStream = fs.createReadStream(path, { flags: "r", encoding: "utf-8" });
       const parseStream = json.createParseStream();
 
@@ -36,7 +36,7 @@ program
     });
 
     await Promise.all(
-      Object.values(db.games as Partial<IGameState>[]).map(async game => {
+      Object.values((db.games as unknown) as Partial<IGameState>[]).map(async (game) => {
         const id = game.id;
         const options = JSON.stringify(game.options);
         const state = JSON.stringify(omit(game, ["id", "options", "history"]));

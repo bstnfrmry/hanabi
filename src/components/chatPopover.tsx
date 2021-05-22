@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import Button, { ButtonSize } from "~/components/ui/button";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 import { sendMessage } from "~/lib/actions";
@@ -8,7 +7,7 @@ import { updateGame } from "~/lib/firebase";
 import { uniqueId } from "~/lib/id";
 
 interface Props {
-  onClose: Function;
+  onClose: () => void;
 }
 
 export default function ChatPopover(props: Props) {
@@ -40,7 +39,7 @@ export default function ChatPopover(props: Props) {
   return (
     <form
       className="flex flex-column items-center justify-center b--yellow ba bw1 bg-white pa1 br2 gray"
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         onSubmit();
       }}
@@ -51,10 +50,10 @@ export default function ChatPopover(props: Props) {
         placeholder={t("sendMessagePlaceholder")}
         rows={4}
         value={message}
-        onChange={e => {
+        onChange={(e) => {
           setMessage(e.target.value);
         }}
-        onKeyDown={e => {
+        onKeyDown={(e) => {
           if (e.keyCode === 13 /* enter */ && e.metaKey) {
             onSubmit();
           }

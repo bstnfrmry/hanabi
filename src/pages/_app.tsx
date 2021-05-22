@@ -5,16 +5,14 @@ import Router, { useRouter } from "next/router";
 import NProgress from "nprogress";
 import React, { ErrorInfo, useEffect, useState } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
-
 import Txt, { TxtSize } from "~/components/ui/txt";
 import useConnectivity from "~/hooks/connectivity";
 import { i18n } from "~/lib/i18n";
-
 import { initAnalytics, logEvent, logPageView } from "../lib/analytics";
 import "../styles/style.css";
 
 Sentry.init({
-  dsn: process.env.SENTRY_DSN,
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   environment: process.env.NODE_ENV,
 });
 
@@ -42,8 +40,8 @@ export default class App extends NextApp {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    Sentry.withScope(scope => {
-      Object.keys(errorInfo).forEach(key => {
+    Sentry.withScope((scope) => {
+      Object.keys(errorInfo).forEach((key) => {
         scope.setExtra(key, errorInfo[key]);
       });
 

@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import ReactModal from "react-modal";
-
 import Button from "~/components/ui/button";
 
 interface Props extends ReactModal.Props {

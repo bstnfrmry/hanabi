@@ -1,6 +1,5 @@
 import { groupBy, last } from "lodash";
 import React from "react";
-
 import Card, { CardSize, CardWrapper, ICardContext } from "~/components/card";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import { useGame } from "~/hooks/game";
@@ -15,7 +14,7 @@ export default function PlayedCards(props: Props) {
   const { cards } = props;
 
   const game = useGame();
-  const groupedCards = groupBy(cards, c => c.color);
+  const groupedCards = groupBy(cards, (c) => c.color);
   const colors = getColors(game?.options?.variant);
 
   return (

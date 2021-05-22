@@ -1,7 +1,6 @@
 import { groupBy } from "lodash";
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
-
 import { percentage } from "~/components/playerStats";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
@@ -29,9 +28,9 @@ export default function GameActionsStats() {
     },
   };
 
-  const groupedTurns = groupBy(game.turnsHistory, turn => turn.action.action);
-  const hintsCount = game.turnsHistory.filter(turn => turn.action.action === "hint").length;
-  const playsCount = game.turnsHistory.filter(turn => turn.action.action === "play").length || 1;
+  const groupedTurns = groupBy(game.turnsHistory, (turn) => turn.action.action);
+  const hintsCount = game.turnsHistory.filter((turn) => turn.action.action === "hint").length;
+  const playsCount = game.turnsHistory.filter((turn) => turn.action.action === "play").length || 1;
   const playsPerHint = (playsCount / hintsCount).toFixed(2);
 
   return (
@@ -46,9 +45,9 @@ export default function GameActionsStats() {
       )}
 
       <div className="flex justify-center-l w-100 mt4">
-        {Object.keys(Order).map(column => {
+        {Object.keys(Order).map((column) => {
           const turns = groupedTurns[column] || [];
-          const groupedPlayers = groupBy(turns, turn => turn.action.from);
+          const groupedPlayers = groupBy(turns, (turn) => turn.action.from);
 
           return (
             <div key={column} className="flex flex-grow-1 flex-column items-center mw4 mh4 mh5-l">
@@ -57,7 +56,7 @@ export default function GameActionsStats() {
               <div className="mt1">
                 {Object.values(groupedPlayers).map((actionTurns, playerIndex) => {
                   const player = game.players[playerIndex];
-                  const count = actionTurns.filter(turn => turn.action.action === column).length;
+                  const count = actionTurns.filter((turn) => turn.action.action === column).length;
 
                   return (
                     <div key={playerIndex} className="flex w-100 items-center">

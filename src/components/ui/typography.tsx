@@ -1,6 +1,5 @@
 import classnames from "classnames";
 import React, { ReactNode } from "react";
-
 import Txt, { TxtSize } from "~/components/ui/txt";
 
 interface TxtProps {

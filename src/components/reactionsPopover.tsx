@@ -1,14 +1,13 @@
 import React from "react";
-
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useSelfPlayer } from "~/hooks/game";
 
 const ClearReaction = "⊘";
-const Reactions = ["👍", "👎", "👏", "😅", "🤩", "🤭", "🤔", "😬", "♻️"];
+const Reactions = ["👍", "👎", "👏", "😅", "🤩", "🤭", "🤔", "😬", "♻️", "❤️", "😻"];
 
 interface Props {
-  onReaction: Function;
-  onClose: Function;
+  onReaction: (reaction: string) => void;
+  onClose: () => void;
 }
 
 export default function ReactionsPopover(props: Props) {
@@ -22,7 +21,7 @@ export default function ReactionsPopover(props: Props) {
         <a
           key={i}
           className="mh1 pointer"
-          onClick={e => {
+          onClick={(e) => {
             e.stopPropagation();
             onClose();
             onReaction(null);
@@ -38,7 +37,7 @@ export default function ReactionsPopover(props: Props) {
         <a
           className="ml4 pointer"
           style={{ marginTop: -6 }}
-          onClick={e => {
+          onClick={(e) => {
             e.stopPropagation();
             onClose();
             onReaction(null);

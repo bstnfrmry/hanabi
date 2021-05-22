@@ -3,8 +3,6 @@
 require("dotenv").config();
 
 const webpack = require("webpack");
-const path = require("path");
-const Dotenv = require("dotenv-webpack");
 const nextSourceMaps = require("@zeit/next-source-maps")();
 const optimizedImages = require("next-optimized-images");
 const nextOffline = require("next-offline");
@@ -13,24 +11,14 @@ const withPlugins = require("next-compose-plugins");
 const config = [
   {
     target: "serverless",
-    env: {
-      SENTRY_DSN: process.env.SENTRY_DSN,
-    },
     i18n: {
-      locales: ["en", "fr", "es", "it", "nl", "ru", "pt", "de"],
+      locales: ["en", "fr", "es", "it", "nl", "ru", "pt", "de", "sk"],
       defaultLocale: "en",
     },
     images: {
       domains: ["cdn.buymeacoffee.com"],
     },
     webpack: (config, { isServer, buildId }) => {
-      config.plugins.push(
-        new Dotenv({
-          path: path.join(__dirname, ".env"),
-          systemvars: true,
-        })
-      );
-
       config.plugins.push(
         new webpack.DefinePlugin({
           "process.env.SENTRY_RELEASE": JSON.stringify(buildId),
@@ -59,7 +47,7 @@ const optimizedImagesConfig = [
 const offlineConfig = [
   nextOffline,
   {
-    transformManifest: manifest => ["/"].concat(manifest), // add the homepage to the cache
+    transformManifest: (manifest) => ["/"].concat(manifest), // add the homepage to the cache
     // Trying to set NODE_ENV=production when running yarn dev causes a build-time error so we
     // turn on the SW in dev mode so that we can actually test it
     generateInDevMode: false,

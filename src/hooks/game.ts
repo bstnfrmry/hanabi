@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-
 import { useReplay } from "~/hooks/replay";
 import { useSession } from "~/hooks/session";
 import { getStateAtTurn } from "~/lib/actions";
@@ -38,7 +37,7 @@ export function useSelfPlayer(game: IGameState = useGame()) {
   }
 
   if (game.options.gameMode === GameMode.NETWORK) {
-    return game.players.find(p => p.id === playerId);
+    return game.players.find((p) => p.id === playerId);
   }
 
   if (game.options.gameMode === GameMode.PASS_AND_PLAY) {

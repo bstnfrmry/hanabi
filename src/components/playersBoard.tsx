@@ -1,19 +1,19 @@
 import React from "react";
 import posed from "react-pose";
-
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import PlayerGame from "~/components/playerGame";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
+import { IAction, IPlayer } from "~/lib/state";
 
 interface Props {
   displayStats: boolean;
   selectedArea: ISelectedArea;
-  onSelectPlayer: Function;
-  onNotifyPlayer: Function;
-  onReaction: Function;
-  onCloseArea: Function;
-  onCommitAction: Function;
+  onSelectPlayer: (player: IPlayer, cardIndex: number) => void;
+  onNotifyPlayer: (player: IPlayer) => void;
+  onReaction: (reaction: string) => void;
+  onCloseArea: () => void;
+  onCommitAction: (action: IAction) => void;
 }
 
 const Item = posed.div({

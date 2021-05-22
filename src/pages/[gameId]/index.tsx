@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-
 import { Game } from "~/components/game";
 import { TutorialProvider } from "~/components/tutorial";
 import useConnectivity from "~/hooks/connectivity";
@@ -11,7 +10,7 @@ import { loadGame, subscribeToGame } from "~/lib/firebase";
 import withSession, { getPlayerIdFromSession } from "~/lib/session";
 import IGameState from "~/lib/state";
 
-export const getServerSideProps = withSession(async function({ req, params }) {
+export const getServerSideProps = withSession(async function ({ req, params }) {
   const game = await loadGame(params.gameId);
   const playerId = await getPlayerIdFromSession(req);
 
@@ -49,7 +48,7 @@ export default function Play(props: Props) {
   useEffect(() => {
     if (!online) return;
 
-    return subscribeToGame(game.id as string, game => {
+    return subscribeToGame(game.id as string, (game) => {
       if (!game) {
         return router.push("/404");
       }

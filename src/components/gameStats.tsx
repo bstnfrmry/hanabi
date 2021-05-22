@@ -1,7 +1,6 @@
 import { groupBy, range } from "lodash";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -36,20 +35,20 @@ function cardToStateColor(game: IGameState, player: IPlayer, card: ICard) {
     return [IInsightColor.Dangerous];
   }
 
-  const playedCard = game.playedCards.find(c => card.number === c.number && card.color === c.color);
+  const playedCard = game.playedCards.find((c) => card.number === c.number && card.color === c.color);
   if (playedCard) {
     return [IInsightColor.Discard];
   }
 
   const discardedCardsOfSameColorAndInferiorValue = game.discardPile.filter(
-    c => card.number < c.number && card.color === c.color
+    (c) => card.number < c.number && card.color === c.color
   );
 
   if (card.color === IColor.MULTICOLOR && discardedCardsOfSameColorAndInferiorValue.length) {
     return [IInsightColor.Discard];
   }
-  const groupedByNumber = groupBy(discardedCardsOfSameColorAndInferiorValue, card => card.number);
-  const allCardsInDiscard = Object.keys(groupedByNumber).find(number => {
+  const groupedByNumber = groupBy(discardedCardsOfSameColorAndInferiorValue, (card) => card.number);
+  const allCardsInDiscard = Object.keys(groupedByNumber).find((number) => {
     return groupedByNumber[number].length === CountPerNumber[number];
   });
   if (allCardsInDiscard) {
@@ -234,7 +233,7 @@ export default function GameStats() {
                         <Dot backgroundColor={turnToStateColor(turn)} size={12} />
                       </div>
                     )}
-                    {playerState.hand.map(card => {
+                    {playerState.hand.map((card) => {
                       return (
                         <div key={card.id} className="flex items-center">
                           {displayCards && (
@@ -263,7 +262,7 @@ export default function GameStats() {
             return (
               <div key={i} className="flex relative">
                 <div className="flex" style={{ width: "20px", height: "21px", margin: "1px 1px 0 0" }}>
-                  {range(0, state.tokens.strikes).map(x => {
+                  {range(0, state.tokens.strikes).map((x) => {
                     return (
                       <div
                         key={x}
@@ -278,7 +277,7 @@ export default function GameStats() {
                   })}
                 </div>
                 <div className="flex" style={{ width: "40px", height: "21px", margin: "1px 1px 0 0" }}>
-                  {range(0, state.tokens.hints).map(x => {
+                  {range(0, state.tokens.hints).map((x) => {
                     return (
                       <div
                         key={x}

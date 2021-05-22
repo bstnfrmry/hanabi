@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import React, { ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import shortid from "shortid";
-
 import GameActionsStats from "~/components/gameActionsStats";
 import GameBoard from "~/components/gameBoard";
 import GameStats from "~/components/gameStats";
@@ -46,7 +45,7 @@ function formatDuration(start: number, end: number) {
   return moment.utc(moment(end).diff(start)).format("HH:mm:ss");
 }
 
-export const getServerSideProps = async function({ params }) {
+export const getServerSideProps = async function ({ params }) {
   const game = await loadGame(params.gameId);
 
   return {
@@ -71,7 +70,7 @@ export default function Summary(props: Props) {
    * Load game from database
    */
   useEffect(() => {
-    return subscribeToGame(game.id as string, game => {
+    return subscribeToGame(game.id as string, (game) => {
       if (!game) {
         return router.push("/404");
       }

@@ -1,5 +1,4 @@
 import { defaults, omit } from "lodash";
-
 import { commitAction, joinGame, newGame } from "./actions";
 import { ID } from "./id";
 
@@ -193,11 +192,11 @@ export function rebuildGame(state: Partial<IGameState>) {
 
   let newState = newGame(state.options);
 
-  state.players.forEach(player => {
+  state.players.forEach((player) => {
     newState = joinGame(newState, player);
   });
 
-  state.turnsHistory.forEach(turn => {
+  state.turnsHistory.forEach((turn) => {
     newState = commitAction(newState, turn.action);
   });
 
@@ -212,10 +211,10 @@ export function rebuildGame(state: Partial<IGameState>) {
 export function cleanState(state: IGameState): Partial<IGameState> {
   return {
     ...omit(state, ["playedCards", "drawPile", "discardPile"]),
-    players: state.players.map(player => {
+    players: state.players.map((player) => {
       return omit(player, "hand");
     }),
-    turnsHistory: state.turnsHistory.map(turn => {
+    turnsHistory: state.turnsHistory.map((turn) => {
       return {
         action: omit(turn.action, ["card"]) as IAction,
       };
@@ -235,7 +234,7 @@ export function fillEmptyValues(state: IGameState): IGameState {
     drawPile: [],
     discardPile: [],
     messages: [],
-    players: (state.players || []).map(player =>
+    players: (state.players || []).map((player) =>
       defaults(player, {
         hand: [],
       })

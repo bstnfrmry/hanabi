@@ -4,7 +4,6 @@ import React, { HTMLAttributes, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Popover from "react-popover";
 import posed, { PoseGroup } from "react-pose";
-
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import ChatPopover from "~/components/chatPopover";
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
@@ -20,6 +19,7 @@ import { matchColor, matchNumber, MaxHints } from "~/lib/actions";
 import IGameState, {
   GameMode,
   GameVariant,
+  IAction,
   ICard,
   IColor,
   IGameStatus,
@@ -38,8 +38,8 @@ function isCardHintable(game: IGameState, hint: IHintAction, card: ICard) {
 function textualHint(game: IGameState, hint: IHintAction, cards: ICard[], t: TFunction) {
   const hintableCards = cards
     .map((c, i) => (isCardHintable(game, hint, c) ? i : null))
-    .filter(i => i !== null)
-    .map(i => PositionMap[i]);
+    .filter((i) => i !== null)
+    .map((i) => PositionMap[i]);
 
   if (hintableCards.length === 0) {
     if (hint.type === "color") return t("negativeHintColor", { color: t(hint.value as string, { count: 5 }) });
@@ -77,11 +77,11 @@ interface Props extends HTMLAttributes<HTMLElement> {
   self?: boolean;
   cardIndex?: number;
   displayStats: boolean;
-  onSelectPlayer: Function;
-  onNotifyPlayer?: Function;
-  onReaction?: Function;
-  onCommitAction: Function;
-  onCloseArea: Function;
+  onSelectPlayer: (player: IPlayer, cardIndex: number) => void;
+  onNotifyPlayer?: (player: IPlayer) => void;
+  onReaction?: (reaction: string) => void;
+  onCommitAction: (action: IAction) => void;
+  onCloseArea: () => void;
 }
 
 export default function PlayerGame(props: Props) {
@@ -198,7 +198,7 @@ export default function PlayerGame(props: Props) {
             >
               <a
                 className="pointer grow"
-                onClick={e => {
+                onClick={(e) => {
                   e.stopPropagation();
                   setReactionsOpen(!reactionsOpen);
                 }}
@@ -225,7 +225,7 @@ export default function PlayerGame(props: Props) {
             >
               <a
                 className="pointer grow ml2"
-                onClick={e => {
+                onClick={(e) => {
                   e.stopPropagation();
                   setChatOpen(!chatOpen);
                 }}
@@ -238,7 +238,7 @@ export default function PlayerGame(props: Props) {
           {active && selfPlayer && !self && !player.notified && !player.bot && (
             <a
               className="ml1 ml4-l pointer"
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation();
                 onNotifyPlayer(player);
               }}
@@ -284,7 +284,7 @@ export default function PlayerGame(props: Props) {
                   }
                   size={ButtonSize.TINY}
                   text={revealCards ? t("hide") : t("reveal")}
-                  onClick={e => {
+                  onClick={(e) => {
                     e.stopPropagation();
                     setRevealCards(!revealCards);
                   }}
@@ -311,7 +311,7 @@ export default function PlayerGame(props: Props) {
                       style={{
                         ...(selected && { transition: "all 50ms ease-in-out" }),
                       }}
-                      onClick={e => {
+                      onClick={(e) => {
                         e.stopPropagation();
                         onSelectPlayer(player, i);
                         if (player === selfPlayer) {
@@ -348,7 +348,7 @@ export default function PlayerGame(props: Props) {
 
               {hasSelectedCard && (
                 <div className="flex flex pb2">
-                  {["discard", "play"].map(action => (
+                  {["discard", "play"].map((action) => (
                     <Button
                       key={action}
                       className="mr2"
@@ -364,7 +364,7 @@ export default function PlayerGame(props: Props) {
                       text={t(action)}
                       onClick={() =>
                         onCommitAction({
-                          action,
+                          action: action as "discard" | "play",
                           from: selfPlayer.index,
                           cardIndex: selectedCard,
                         })
@@ -396,7 +396,7 @@ export default function PlayerGame(props: Props) {
       >
         {canPlay && selected && player !== selfPlayer && selfPlayer === currentPlayer && (
           <div className="flex flex-column items-end pb2 mr2">
-            <Vignettes pendingHint={pendingHint} onSelect={action => setPendingHint(action)} />
+            <Vignettes pendingHint={pendingHint} onSelect={(action) => setPendingHint(action)} />
 
             <div className="mt2 flex items-center">
               {pendingHint.value && game.tokens.hints !== 0 && (

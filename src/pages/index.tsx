@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-
 import LanguageSelector, { Languages } from "~/components/languageSelector";
 import Rules from "~/components/rules";
 import Button, { ButtonSize } from "~/components/ui/button";
@@ -56,7 +55,7 @@ export default function Home() {
     >
       <Head>
         <link href="/" hrefLang="x-default" rel="alternate" />
-        {Object.keys(Languages).map(locale => (
+        {Object.keys(Languages).map((locale) => (
           <link key={locale} href={`/${locale}`} hrefLang={locale} rel="alternate" />
         ))}
       </Head>

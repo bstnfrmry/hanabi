@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import LanguageSelector from "~/components/languageSelector";
 import Rules from "~/components/rules";
 import { TutorialContext } from "~/components/tutorial";
@@ -10,7 +9,7 @@ import { Modal } from "~/components/ui/modal";
 import Txt, { TxtSize } from "~/components/ui/txt";
 
 interface Props {
-  onCloseArea: Function;
+  onCloseArea: () => void;
 }
 
 export default function MenuArea(props: Props) {

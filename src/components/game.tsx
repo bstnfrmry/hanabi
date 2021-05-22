@@ -2,7 +2,6 @@ import Fireworks from "fireworks-canvas";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import DiscardArea from "~/components/discardArea";
 import GameBoard from "~/components/gameBoard";
@@ -29,7 +28,7 @@ import { cheat } from "~/lib/ai-cheater";
 import { logEvent } from "~/lib/analytics";
 import { setNotification, setReaction, updateGame } from "~/lib/firebase";
 import { uniqueId } from "~/lib/id";
-import IGameState, { GameMode, IGameHintsLevel, IGameStatus } from "~/lib/state";
+import IGameState, { GameMode, IAction, IGameHintsLevel, IGameStatus, IPlayer } from "~/lib/state";
 
 interface Props {
   host: string;
@@ -124,7 +123,7 @@ export function Game(props: Props) {
       colorBlindMode: game.options.colorBlindMode,
     });
 
-    game.players.forEach(player => {
+    game.players.forEach((player) => {
       sameGame = joinGame(sameGame, {
         id: player.id,
         name: player.name,
@@ -196,7 +195,7 @@ export function Game(props: Props) {
     router.push(`/${game.nextGameId}`);
   }, [game.nextGameId]);
 
-  function onJoinGame(player) {
+  function onJoinGame(player: Omit<IPlayer, "id">) {
     const newState = joinGame(game, { id: playerId, ...player });
 
     onGameChange({ ...newState, synced: false });
@@ -209,7 +208,7 @@ export function Game(props: Props) {
 
   function onAddBot() {
     const playerId = uniqueId();
-    const botsCount = game.players.filter(p => p.bot).length;
+    const botsCount = game.players.filter((p) => p.bot).length;
 
     const bot = {
       name: `AI #${botsCount + 1}`,
@@ -260,7 +259,7 @@ export function Game(props: Props) {
     logEvent("Game", "Game started");
   }
 
-  async function onCommitAction(action) {
+  async function onCommitAction(action: IAction) {
     const newState = commitAction(game, action);
 
     const misplay = getMaximumPossibleScore(game) !== getMaximumPossibleScore(newState);
@@ -296,11 +295,11 @@ export function Game(props: Props) {
     logEvent("Game", "Game rolled back");
   }
 
-  async function onNotifyPlayer(player) {
+  async function onNotifyPlayer(player: IPlayer) {
     setNotification(game, player, true);
   }
 
-  async function onReaction(reaction) {
+  async function onReaction(reaction: string) {
     setReaction(game, selfPlayer, reaction);
   }
 
@@ -400,7 +399,6 @@ export function Game(props: Props) {
 
     logEvent("Game", "Game recreated");
     router.push(`/${nextGame.id}`);
-
   }
 
   return (

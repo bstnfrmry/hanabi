@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
 import { Select } from "~/components/ui/forms";
 
 export const Languages = {
@@ -13,6 +12,7 @@ export const Languages = {
   ru: "Russian",
   pt: "Português",
   de: "Deutsch",
+  sk: "Slovak",
 };
 
 interface Props {
@@ -36,7 +36,7 @@ export default function LanguageSelector(props: Props) {
         options={languages}
         outlined={outlined}
         value={router.locale}
-        onChange={e => {
+        onChange={(e) => {
           if (e.target.value === "new") {
             window.open("https://github.com/bstnfrmry/hanabi/issues/180", "_blank").focus();
             return;

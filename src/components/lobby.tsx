@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import Button from "~/components/ui/button";
 import { Checkbox, Field, TextInput } from "~/components/ui/forms";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -22,7 +21,7 @@ function listPlayerNames(players: IPlayer[]) {
 
   const firstNames = players
     .slice(0, -1)
-    .map(player => player.name)
+    .map((player) => player.name)
     .join("& ");
   const lastName = last(players).name;
 
@@ -32,7 +31,7 @@ function listPlayerNames(players: IPlayer[]) {
 function Meta() {
   const game = useGame();
   const { t } = useTranslation();
-  const inviters = game.players.filter(player => !player.bot);
+  const inviters = game.players.filter((player) => !player.bot);
 
   const playersNames = listPlayerNames(inviters);
 
@@ -47,9 +46,9 @@ function Meta() {
 
 interface Props {
   host: string;
-  onJoinGame: Function;
-  onAddBot: Function;
-  onStartGame: Function;
+  onJoinGame: (player: Omit<IPlayer, "id">) => void;
+  onAddBot: () => void;
+  onStartGame: () => void;
 }
 
 const NAME_KEY = "name";
@@ -160,7 +159,7 @@ export default function Lobby(props: Props) {
                   id="player-name"
                   style={{ width: "12rem" }}
                   value={name}
-                  onChange={e => setName(e.target.value)}
+                  onChange={(e) => setName(e.target.value)}
                 />
                 <Button primary disabled={name.length === 0} id="join-game" text={t("join")} />
               </div>
@@ -169,7 +168,7 @@ export default function Lobby(props: Props) {
                   label={<Txt className="gray" size={TxtSize.SMALL} value={t("autoplay")} />}
                   style={{ width: "80px" }}
                 >
-                  <Checkbox checked={bot} className="ml2" id="autoplay" onChange={e => setBot(e.target.checked)} />
+                  <Checkbox checked={bot} className="ml2" id="autoplay" onChange={(e) => setBot(e.target.checked)} />
                 </Field>
               )}
             </div>
