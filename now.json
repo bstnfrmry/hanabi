@@ -21,16 +21,5 @@
         }
       ]
     }
-  ],
-  "build": {
-    "env": {
-      "FIREBASE_API_KEY": "@firebase_api_key",
-      "FIREBASE_AUTH_DOMAIN": "@firebase_auth_domain",
-      "FIREBASE_DATABASE_URL": "@firebase_database_url",
-      "FIREBASE_PROJECT_ID": "@firebase_project_id",
-      "FIREBASE_MESSAGING_SENDER_ID": "@firebase_messaging_sender_id",
-      "FIREBASE_APP_ID": "@firebase_app_id",
-      "SENTRY_DSN": "@sentry_dsn"
-    }
-  }
+  ]
 }

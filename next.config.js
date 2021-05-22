@@ -11,9 +11,6 @@ const withPlugins = require("next-compose-plugins");
 const config = [
   {
     target: "serverless",
-    env: {
-      SENTRY_DSN: process.env.SENTRY_DSN,
-    },
     i18n: {
       locales: ["en", "fr", "es", "it", "nl", "ru", "pt", "de", "sk"],
       defaultLocale: "en",
