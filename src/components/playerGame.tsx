@@ -354,6 +354,7 @@ export default function PlayerGame(props: Props) {
                       className="mr2"
                       disabled={
                         (action === "discard" && game.tokens.hints === 8) ||
+                        (action === "discard" && player.hand.length === 0) ||
                         !isTutorialAction(game, tutorialAction?.action, {
                           action: action as "discard" | "play",
                           from: 0,
