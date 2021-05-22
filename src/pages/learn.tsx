@@ -2,9 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import posed, { PoseGroup } from "react-pose";
-
 import Card, { CardSize, ICardContext } from "~/components/card";
 import HomeButton from "~/components/homeButton";
 import PlayedCards from "~/components/playedCards";
@@ -103,7 +102,7 @@ const useSteps = () => {
             />
             <Checkbox
               checked={colorBlindMode}
-              onChange={e => {
+              onChange={(e) => {
                 setColorBlindMode(e.target.checked);
               }}
             />
@@ -117,16 +116,19 @@ const useSteps = () => {
         <>
           <Title className="ttu mb4">{t("learn.cards.title", "Cards")}</Title>
           <Paragraph>
-                {t("learn.cards.1.1", "Cards are numbered from")} {vignette("number", 1)} {t("learn.cards.1.2", "to")} {vignette("number", 5)} {t("learn.cards.1.3", "and colored")}{" "}
-              <span className="txt-red">{t("red", "red")}</span>, <span className="txt-yellow">{t("yellow", "yellow")}</span>,{" "}
-              <span className="txt-green">{t("green", "green")}</span>, <span className="txt-blue">{t("blue", "blue")}</span> {t("learn.cards.1.4", "or")}{" "}
-              <span className="txt-white">{t("white", "white")}</span>.
+            {t("learn.cards.1.1", "Cards are numbered from")} {vignette("number", 1)} {t("learn.cards.1.2", "to")}{" "}
+            {vignette("number", 5)} {t("learn.cards.1.3", "and colored")}{" "}
+            <span className="txt-red">{t("red", "red")}</span>,{" "}
+            <span className="txt-yellow">{t("yellow", "yellow")}</span>,{" "}
+            <span className="txt-green">{t("green", "green")}</span>,{" "}
+            <span className="txt-blue">{t("blue", "blue")}</span> {t("learn.cards.1.4", "or")}{" "}
+            <span className="txt-white">{t("white", "white")}</span>.
           </Paragraph>
           <div className="mb3">
-            {getColors(GameVariant.CLASSIC).map(color => {
+            {getColors(GameVariant.CLASSIC).map((color) => {
               return (
                 <div key={color} className="flex mt2">
-                  {numbers.map(number => {
+                  {numbers.map((number) => {
                     return (
                       <div key={number} className="flex items-center">
                         {card(color, number, CardSize.MEDIUM)}
@@ -175,9 +177,10 @@ const useSteps = () => {
           </div>
           <div className="mt4">
             <Paragraph>
-                {t("learn.goal.2", "Piles from each color must be built in ascending order.")}<br />
-                {t("learn.goal.3","For instance, in the example above, you must play")} {card(IColor.GREEN, 4)}{" "}
-                    {t("learn.goal.4", "before playing")} {card(IColor.GREEN, 5)}{" "}{t("learn.goal.5", ".")}
+              {t("learn.goal.2", "Piles from each color must be built in ascending order.")}
+              <br />
+              {t("learn.goal.3", "For instance, in the example above, you must play")} {card(IColor.GREEN, 4)}{" "}
+              {t("learn.goal.4", "before playing")} {card(IColor.GREEN, 5)} {t("learn.goal.5", ".")}
             </Paragraph>
           </div>
         </>
@@ -188,18 +191,23 @@ const useSteps = () => {
       html: (
         <>
           <Title className="ttu mb4">{t("learn.actions.title", "Actions")}</Title>
-          <Paragraph className="nt4">{t("learn.actions.0","At your turn, you have the choice between 3 actions")}</Paragraph>
+          <Paragraph className="nt4">
+            {t("learn.actions.0", "At your turn, you have the choice between 3 actions")}
+          </Paragraph>
 
           <Subtitle className="ttu mt4 mb2">{t("learn.actions.play.title", "1. Play")}</Subtitle>
           <Paragraph>
-              {t("learn.actions.play.1", "Play a card from your hand on the board.")}
-              <br />
-              <br />
-              {t("learn.actions.play.2", "If the card was not playable, the card is discarded and your team gains a strike token:")}
-              {" "}{token("strikes")}
-              <br />
-              <br />
-              {t("learn.actions.play.3", "Draw a new card from the deck.")}
+            {t("learn.actions.play.1", "Play a card from your hand on the board.")}
+            <br />
+            <br />
+            {t(
+              "learn.actions.play.2",
+              "If the card was not playable, the card is discarded and your team gains a strike token:"
+            )}{" "}
+            {token("strikes")}
+            <br />
+            <br />
+            {t("learn.actions.play.3", "Draw a new card from the deck.")}
           </Paragraph>
         </>
       ),
@@ -211,28 +219,28 @@ const useSteps = () => {
           <Title className="ttu mb4">{t("learn.actions.title", "Actions")}</Title>
           <Subtitle className="ttu mb2">{t("learn.actions.hint.title", "2. Hint")}</Subtitle>
           <Paragraph>
-              {t("learn.actions.hint.1", "Give indications about cards in one of your teammates hand.")}
-              <br />
-              <br />
-              {t("learn.actions.hint.2", "Giving a hint costs a hint token:")} {token("hints")}
-              <br />
-              <br />
-              {t("learn.actions.hint.3", "You can hint about one color or one value.")}
-              <br />
-              {t("learn.actions.hint.4", "For instance, in the hand below:")}
-              <div className="flex mt3 mb4">
-                {card(IColor.BLUE, 2, CardSize.LARGE, 0)}
-                {card(IColor.BLUE, 3, CardSize.LARGE, 1)}
-                {card(IColor.RED, 2, CardSize.LARGE, 2)}
-                {card(IColor.RED, 4, CardSize.LARGE, 3)}
-                {card(IColor.YELLOW, 5, CardSize.LARGE, 4)}
-              </div>
-              {t("learn.actions.hint.5", "You could give the following hints:")}
-              <br />
-              <span className="db mv1 lavender">“{t("learn.actions.hint.6", "Your cards A & B are blue")}”</span>
-              <span className="db mv1 lavender">“{t("learn.actions.hint.7", "Your cards A & C are 2s")}”</span>
-              <span className="db mv1 lavender">“{t("learn.actions.hint.8", "Your card E is yellow")}”</span>
-              <span className="db mv1 lavender">“{t("learn.actions.hint.9", "You have no green cards")}”</span>
+            {t("learn.actions.hint.1", "Give indications about cards in one of your teammates hand.")}
+            <br />
+            <br />
+            {t("learn.actions.hint.2", "Giving a hint costs a hint token:")} {token("hints")}
+            <br />
+            <br />
+            {t("learn.actions.hint.3", "You can hint about one color or one value.")}
+            <br />
+            {t("learn.actions.hint.4", "For instance, in the hand below:")}
+            <div className="flex mt3 mb4">
+              {card(IColor.BLUE, 2, CardSize.LARGE, 0)}
+              {card(IColor.BLUE, 3, CardSize.LARGE, 1)}
+              {card(IColor.RED, 2, CardSize.LARGE, 2)}
+              {card(IColor.RED, 4, CardSize.LARGE, 3)}
+              {card(IColor.YELLOW, 5, CardSize.LARGE, 4)}
+            </div>
+            {t("learn.actions.hint.5", "You could give the following hints:")}
+            <br />
+            <span className="db mv1 lavender">“{t("learn.actions.hint.6", "Your cards A & B are blue")}”</span>
+            <span className="db mv1 lavender">“{t("learn.actions.hint.7", "Your cards A & C are 2s")}”</span>
+            <span className="db mv1 lavender">“{t("learn.actions.hint.8", "Your card E is yellow")}”</span>
+            <span className="db mv1 lavender">“{t("learn.actions.hint.9", "You have no green cards")}”</span>
           </Paragraph>
         </>
       ),
@@ -244,13 +252,13 @@ const useSteps = () => {
           <Title className="ttu mb4">{t("learn.actions.title", "Actions")}</Title>
           <Subtitle className="ttu mb2">{t("learn.actions.discard.title", "3. Discard")}</Subtitle>
           <Paragraph>
-              {t("learn.actions.discard.1", "Throw away a card from your hand. It will be lost forever.")}
-              <br />
-              <br />
-              {t("learn.actions.discard.2", "Gain one hint token:")} {token("hints")}
-              <br />
-              <br />
-              {t("learn.actions.discard.3", "Draw a new card from the deck.")}
+            {t("learn.actions.discard.1", "Throw away a card from your hand. It will be lost forever.")}
+            <br />
+            <br />
+            {t("learn.actions.discard.2", "Gain one hint token:")} {token("hints")}
+            <br />
+            <br />
+            {t("learn.actions.discard.3", "Draw a new card from the deck.")}
           </Paragraph>
         </>
       ),

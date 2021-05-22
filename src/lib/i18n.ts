@@ -1,7 +1,7 @@
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
-
+import { de } from "~/locales/de";
 import { en } from "~/locales/en";
 import { es } from "~/locales/es";
 import { fr } from "~/locales/fr";
@@ -9,7 +9,6 @@ import { it } from "~/locales/it";
 import { nl } from "~/locales/nl";
 import { pt } from "~/locales/pt";
 import { ru } from "~/locales/ru";
-import { de } from "~/locales/de";
 import { sk } from "~/locales/sk";
 
 i18n

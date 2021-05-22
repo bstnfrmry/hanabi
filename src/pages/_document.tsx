@@ -2,11 +2,11 @@ import * as Sentry from "@sentry/browser";
 import NextDocument, { DocumentContext, Head, Html, Main, NextScript } from "next/document";
 import React from "react";
 
-process.on("unhandledRejection", err => {
+process.on("unhandledRejection", (err) => {
   Sentry.captureException(err);
 });
 
-process.on("uncaughtException", err => {
+process.on("uncaughtException", (err) => {
   Sentry.captureException(err);
 });
 

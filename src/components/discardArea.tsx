@@ -2,7 +2,6 @@ import classnames from "classnames";
 import { chunk, groupBy, sortBy } from "lodash";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
 import Card, { CardSize, ICardContext } from "~/components/card";
 import Txt from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
@@ -17,7 +16,7 @@ interface CardPileProps {
 function CardPile(props: CardPileProps) {
   const { cards } = props;
 
-  const sortedCards = sortBy(cards, card => card.number);
+  const sortedCards = sortBy(cards, (card) => card.number);
 
   return (
     <div className="flex mw">
@@ -39,8 +38,8 @@ export default function DiscardArea() {
   const { t } = useTranslation();
 
   const byColor = groupBy(
-    sortBy(game.discardPile, card => card.number),
-    card => card.color
+    sortBy(game.discardPile, (card) => card.number),
+    (card) => card.color
   );
 
   const rows = chunk(getColors(game.options.variant), 2);
@@ -51,7 +50,7 @@ export default function DiscardArea() {
       {rows.map((colors, i) => {
         return (
           <div key={i} className={"flex justify-end mt1"}>
-            {colors.map(color => {
+            {colors.map((color) => {
               return <CardPile key={color} cards={byColor[color] || []} color={color} />;
             })}
           </div>

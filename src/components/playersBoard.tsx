@@ -1,6 +1,5 @@
 import React from "react";
 import posed from "react-pose";
-
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import PlayerGame from "~/components/playerGame";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
@@ -9,11 +8,11 @@ import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 interface Props {
   displayStats: boolean;
   selectedArea: ISelectedArea;
-  onSelectPlayer: Function;
-  onNotifyPlayer: Function;
-  onReaction: Function;
-  onCloseArea: Function;
-  onCommitAction: Function;
+  onSelectPlayer: () => void;
+  onNotifyPlayer: () => void;
+  onReaction: () => void;
+  onCloseArea: () => void;
+  onCommitAction: () => void;
 }
 
 const Item = posed.div({

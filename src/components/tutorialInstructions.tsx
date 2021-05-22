@@ -1,8 +1,6 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useTutorialAction } from "~/lib/tutorial";

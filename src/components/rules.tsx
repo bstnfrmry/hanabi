@@ -1,7 +1,6 @@
 import Image from "next/image";
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
-
 import BuymeacoffeeButton from "~/components/buymeacoffeeButton";
 import DiscordButton from "~/components/discordButton";
 import Button, { ButtonSize } from "~/components/ui/button";

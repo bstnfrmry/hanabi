@@ -1,6 +1,5 @@
 import classnames from "classnames";
 import React from "react";
-
 import ColorSymbol from "~/components/colorSymbol";
 import Txt from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";

@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 import { IGameStatus } from "~/lib/state";
 

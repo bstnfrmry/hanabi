@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
-
 export const sk = {
   hanabi: "Hanabi",
   welcome: "Vitaj",
@@ -78,11 +76,9 @@ export const sk = {
   introTutorial: "Tutorial",
   introContent: "Rýchla ukážka!",
   playedCardsTutorial: "Zahrané karty",
-  playedCardsTutorialContent:
-    "Tu vidíš zahrané karty. Cieľom je poukladať na kôpku každej farby karty od 1 po 5.",
+  playedCardsTutorialContent: "Tu vidíš zahrané karty. Cieľom je poukladať na kôpku každej farby karty od 1 po 5.",
   discardTutorial: "Zahodené karty",
-  discardTutorialContent:
-    "Tu sú karty čo ste zahodili. Nezahadzuj karty čo potrebujete na výhru hry.",
+  discardTutorialContent: "Tu sú karty čo ste zahodili. Nezahadzuj karty čo potrebujete na výhru hry.",
   yourGameTutorial: "Tvoj ťah",
   yourGameTutorialContent:
     "Toto sú tovje karty.\nNemôžeš ich vidieť ale ostatný hráči môžu a budú ti radiť čo na tých kartách je.",
@@ -101,8 +97,7 @@ export const sk = {
   skip: "✕ Preskočené",
   offline: "Nemáš internetové spojenie so serverom!",
   apologies: "Prepáč, niečo sa pokazilo 😕",
-  errorWillInvestigate:
-    "Pokúsime sa vyšetriť problém čo najskôr. Neváhaj nám <1>napísať</1> čo sa stalo.",
+  errorWillInvestigate: "Pokúsime sa vyšetriť problém čo najskôr. Neváhaj nám <1>napísať</1> čo sa stalo.",
   earlyDevelopment: "Hra je stále vo vývoji, potešíme sa akejkoľvek spätnej väzbe.",
   publicRepo: "Máme <1>verejný Github repozritár</1> ak by si chcel niečo zmeniť alebo nahlásiť chybu.",
   backMenu: "Naspäť do menu",
@@ -124,14 +119,14 @@ export const sk = {
   botSpeed: "Rýchlosť bota",
   normalGameExplanation: "Môžeš hrať online, pomocou zdieľania linku tvojím priateľom.",
   passandplayExplanation:
-    "V \"Podaj ďalej\" móde môžeš hrať off-line s viacerími hráčmi, tak že si budete podávať zariadenie.",
+    'V "Podaj ďalej" móde môžeš hrať off-line s viacerími hráčmi, tak že si budete podávať zariadenie.',
   private: "Súkromná hra",
   hints: "Rady",
   allowRollback: "Dovoliť vrátenie ťahu",
   preventLoss: "Zabrániť prehre",
   passandplay: "Podaj ďalej",
   passandplaySubtext: "Fyzicky si budete podávať zariadenie, podĺa toho kto je práve na ťahu.",
-  privateSubtext: "Vaša hra nebude viditeľná v zozname \"Vstúpiť do miestnosti\"",
+  privateSubtext: 'Vaša hra nebude viditeľná v zozname "Vstúpiť do miestnosti"',
   advancedOptions: "Pokročilé možnosti",
   players: "Počet hráčov",
   mode: "Verzia hry",
@@ -155,7 +150,7 @@ export const sk = {
     "Zahodením karty získate jeden modrý žetón nápovedy. Kartu z ruky zahodíš klknutím na ňu. Potom si potiahneš novú kartu z kôpky, ktorá ti automaticky príde na ruku.\nPoznámka: Ak máte všetkých 8 žetónov nápovedy nemôžeš zahodiť kartu a musíš si zvoliť inú akciu.\nO zahodených kartách už môžte diskutovať.",
   rulesPlayTitle: "3. Zahrať kartu",
   rulesPlay:
-    "Ak chceš zahrať kartu, vyber kartu z ruky a klikni na \"Zahrať\".\nNásledne sa stane jedna z dvoch vecí:\n· Ak karta začína ohňostroj novej farby alebo pokračuje nejaký už začatý, tak je karta pridaná ku ohňostroju.\n· Ak karta nepokračuje v žiadnom ohňostroj ani nezačína novú farbu, tak karta bude zahodená a pribudne vám jeden žetón výbuchu.\nPotom si hráč potiahne do ruky novú kartu.\n\nKeď hráč dokončí ohňostroj zahraním karty s číslom 5, tak ak to bude možné ako odmenu získate jeden modrý žetón nápovedy ako bonus.",
+    'Ak chceš zahrať kartu, vyber kartu z ruky a klikni na "Zahrať".\nNásledne sa stane jedna z dvoch vecí:\n· Ak karta začína ohňostroj novej farby alebo pokračuje nejaký už začatý, tak je karta pridaná ku ohňostroju.\n· Ak karta nepokračuje v žiadnom ohňostroj ani nezačína novú farbu, tak karta bude zahodená a pribudne vám jeden žetón výbuchu.\nPotom si hráč potiahne do ruky novú kartu.\n\nKeď hráč dokončí ohňostroj zahraním karty s číslom 5, tak ak to bude možné ako odmenu získate jeden modrý žetón nápovedy ako bonus.',
   rulesEndTitle: "Koniec hry",
   rulesEnd:
     "Hanabi môže skončiť jedným z troch spôsobov:\n· V momente ako získate tretí token výbuchu, celé pódium zhorý v plameňoch!\n· V momente keď hráčom podarí skompletizovať všetkých pät ohňostrojov pred tým ako minú doberací balíček. Hráči tak získavajú 25 (30 ak hráte 🎨 viacfarebnú variantu) bodov a ide o obdivuhodné víťazstvo!\n· Keď hráč potiahne poslednú kartu z kôpky, hra je takmer na konci. Každý hráč zahrá ešte svoj posledný ťah, včítane hráč čo si práve potiahol kartu. Počas toho posledného kola si hráči už nemôžu ťahať nové karty (veď ani nemajú z čoho).\n\nPotom čo skončí posledné kolo, hra končí a hráči si môžu spočítať svoje finálne skóre.",
@@ -170,7 +165,8 @@ export const sk = {
   rulesContact: "✉️ <1>Napíš nám</1> Ak máš akekoľvek otázky či návrhy",
   rulesContributeRepo: "💻 Taktiež máme <1>verejný Github repozitár</1> ak by si sa chcel pridať.",
   rulesDiscordServer: "🗣 Pripoj sa na k diskusii o zlepšeniach na nášom Discord servery.",
-  rulesBuymeacoffee: "🙇‍♀️ Taktiež môžeš podporiť našu iniciatívu a pomôcť nám pokriť prevádzkové náklady, tým že nám kúpite kávu",
+  rulesBuymeacoffee:
+    "🙇‍♀️ Taktiež môžeš podporiť našu iniciatívu a pomôcť nám pokriť prevádzkové náklady, tým že nám kúpite kávu",
   noRoom: "Žiadna voľná miestnosť",
   faster: "Najrýchlejšie",
   fast: "Rýchlo",

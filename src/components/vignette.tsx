@@ -1,6 +1,5 @@
 import classnames from "classnames";
 import React, { CSSProperties } from "react";
-
 import ColorSymbol from "~/components/colorSymbol";
 import Txt from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
@@ -11,7 +10,7 @@ interface Props {
   value: string | number;
   className?: string;
   selected?: boolean;
-  onClick?: Function;
+  onClick?: () => void;
   style?: CSSProperties;
 }
 

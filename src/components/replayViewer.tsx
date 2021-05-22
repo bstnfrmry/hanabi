@@ -1,6 +1,5 @@
 import Slider from "rc-slider";
 import React from "react";
-
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";

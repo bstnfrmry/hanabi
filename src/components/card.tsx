@@ -1,7 +1,6 @@
 import classnames from "classnames";
 import React, { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode, useState } from "react";
 import Popover from "react-popover";
-
 import ColorSymbol from "~/components/colorSymbol";
 import Hint from "~/components/hint";
 import Turn from "~/components/turn";
@@ -133,9 +132,9 @@ function CardPartialHint(props: CardPartialHintProps) {
 
   // when they are only 2 possible cards and one of them is rainbow,
   // apply a rainbow background and a thick border using the other possible color
-  const possibleColors = Object.keys(card.hint.color).filter(color => card.hint.color[color] === IHintLevel.POSSIBLE);
+  const possibleColors = Object.keys(card.hint.color).filter((color) => card.hint.color[color] === IHintLevel.POSSIBLE);
   if (card.hint.color.rainbow === IHintLevel.POSSIBLE && possibleColors.length === 2) {
-    const possibleColor = possibleColors.find(color => color !== IColor.RAINBOW);
+    const possibleColor = possibleColors.find((color) => color !== IColor.RAINBOW);
 
     className = classnames(`bg-rainbow-circle ba b--${possibleColor}-clear`, {
       "bw1.5": size !== CardSize.LARGE,
@@ -276,7 +275,7 @@ export default function Card(props: Props) {
       {displayHints && size === CardSize.LARGE && (
         <div className="flex absolute w-100 right-0 bottom-0 pv1 flex-l items-center flex-column bg-black-50">
           <div className="flex justify-around w-100">
-            {colors.map(color => (
+            {colors.map((color) => (
               <Hint key={color} hint={card.hint.color[color]} type="color" value={color} />
             ))}
           </div>
@@ -284,7 +283,7 @@ export default function Card(props: Props) {
             className="flex justify-around white mt1 mt2-l"
             style={{ width: `${(numbers.length / colors.length) * 100}%` }}
           >
-            {numbers.map(number => (
+            {numbers.map((number) => (
               <Hint key={number} hint={card.hint.number[number]} type="number" value={number} />
             ))}
           </div>

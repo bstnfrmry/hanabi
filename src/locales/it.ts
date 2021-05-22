@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
-
 export const it = {
   hanabi: "Hanabi",
   welcome: "Benvenuto",

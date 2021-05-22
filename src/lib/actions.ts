@@ -2,7 +2,6 @@ import assert from "assert";
 import { cloneDeep, findIndex, flatMap, last, range, shuffle, zipObject } from "lodash";
 import mem from "mem";
 import { shuffle as shuffleSeed } from "shuffle-seed";
-
 import { readableUniqueId } from "./id";
 import IGameState, {
   GameVariant,
@@ -27,9 +26,9 @@ export const MaxHints = 8;
 
 export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
   const isPreviousHere =
-    card.number === 1 || findIndex(playedCards, c => card.number === c.number + 1 && card.color === c.color) > -1; // first card on the pile // previous card belongs to the playedCards
+    card.number === 1 || findIndex(playedCards, (c) => card.number === c.number + 1 && card.color === c.color) > -1; // first card on the pile // previous card belongs to the playedCards
 
-  const isSameNotHere = findIndex(playedCards, c => c.number === card.number && c.color === card.color) === -1;
+  const isSameNotHere = findIndex(playedCards, (c) => c.number === card.number && c.color === card.color) === -1;
 
   return isPreviousHere && isSameNotHere;
 }
@@ -55,16 +54,16 @@ function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
 
       // positive hint on card - mark all other values as impossible (except rainbow)
       Object.keys(card.hint[hint.type])
-        .filter(value => {
+        .filter((value) => {
           return isRainbowVariant ? value !== IColor.RAINBOW : true;
         })
-        .filter(value => {
+        .filter((value) => {
           if (hint.type === "number" && isSequenceVariant) {
             return value < hint.value;
           }
           return value != hint.value;
         })
-        .forEach(value => {
+        .forEach((value) => {
           card.hint[hint.type][value] = IHintLevel.IMPOSSIBLE;
         });
     } else {
@@ -72,7 +71,7 @@ function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
       card.hint[hint.type][hint.value] = IHintLevel.IMPOSSIBLE;
 
       if (hint.type === "number" && isSequenceVariant) {
-        range(hint.value as INumber, 6).forEach(n => {
+        range(hint.value as INumber, 6).forEach((n) => {
           card.hint.number[n] = IHintLevel.IMPOSSIBLE;
         });
       }
@@ -85,7 +84,7 @@ function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
 
     // if there's only one possible color, make it sure
     const onlyPossibleColors = Object.keys(card.hint.color).filter(
-      color => card.hint.color[color] === IHintLevel.POSSIBLE
+      (color) => card.hint.color[color] === IHintLevel.POSSIBLE
     );
     if (onlyPossibleColors.length === 1) {
       card.hint.color[onlyPossibleColors[0]] = IHintLevel.SURE;
@@ -93,7 +92,7 @@ function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
 
     // if there's only one possible number, make it sure
     const onlyPossibleNumbers = Object.keys(card.hint.number).filter(
-      number => card.hint.number[number] === IHintLevel.POSSIBLE
+      (number) => card.hint.number[number] === IHintLevel.POSSIBLE
     );
     if (onlyPossibleNumbers.length === 1) {
       card.hint.number[onlyPossibleNumbers[0]] = IHintLevel.SURE;
@@ -237,11 +236,11 @@ export const getStateAtTurn = mem<[IGameState, number], IGameState, string>(
   (state: IGameState, turnIndex: number) => {
     let newState = newGame(state.options);
 
-    state.players.forEach(player => {
+    state.players.forEach((player) => {
       newState = joinGame(newState, player);
     });
 
-    state.turnsHistory.slice(0, turnIndex).forEach(turn => {
+    state.turnsHistory.slice(0, turnIndex).forEach((turn) => {
       newState = commitAction(newState, turn.action);
     });
 
@@ -281,7 +280,7 @@ export function getColors(variant: GameVariant) {
 }
 
 export function getHintableColors(state: IGameState) {
-  return getColors(state.options.variant).filter(color => color !== IColor.RAINBOW);
+  return getColors(state.options.variant).filter((color) => color !== IColor.RAINBOW);
 }
 
 export function getScore(state: IGameState) {
@@ -306,8 +305,8 @@ export function getPlayedCardsPile(state: IGameState): { [key in IColor]: INumbe
 
   return zipObject(
     colors,
-    colors.map(color => {
-      const topCard = last(state.playedCards.filter(card => card.color === color));
+    colors.map((color) => {
+      const topCard = last(state.playedCards.filter((card) => card.color === color));
 
       return topCard ? topCard.number : 0;
     })
@@ -319,16 +318,16 @@ export function getPlayedCardsPile(state: IGameState): { [key in IColor]: INumbe
  * Doesn't take in account remaining turns
  */
 export function getMaximumPossibleScore(state: IGameState): number {
-  const playableCards = [...state.drawPile, ...flatMap(state.players, p => p.hand)];
+  const playableCards = [...state.drawPile, ...flatMap(state.players, (p) => p.hand)];
   const playedCardsPile = getPlayedCardsPile(state);
 
   let maxScore = getMaximumScore(state);
 
-  Object.keys(playedCardsPile).forEach(color => {
+  Object.keys(playedCardsPile).forEach((color) => {
     let value = playedCardsPile[color];
 
     while (value < 5) {
-      const nextCard = playableCards.find(card => card.color === color && card.number === value + 1);
+      const nextCard = playableCards.find((card) => card.color === color && card.number === value + 1);
 
       if (!nextCard) {
         maxScore -= 5 - value;
@@ -348,7 +347,7 @@ export function joinGame(state: IGameState, player: IPlayer): IGameState {
   game.players = game.players || [];
   game.players.push({ ...player, hand, index: game.players.length });
 
-  hand.forEach(card => (card.hint = emptyHint(state.options)));
+  hand.forEach((card) => (card.hint = emptyHint(state.options)));
 
   return game;
 }
@@ -358,7 +357,7 @@ export function newGame(options: IGameOptions): IGameState {
 
   // All base cards
   const baseColors = [IColor.WHITE, IColor.BLUE, IColor.RED, IColor.GREEN, IColor.YELLOW];
-  let cards = flatMap(baseColors, color => [
+  let cards = flatMap(baseColors, (color) => [
     { number: 1, color },
     { number: 1, color },
     { number: 1, color },
@@ -464,7 +463,7 @@ export function recreateGame(game: IGameState) {
     seed: `${Math.round(Math.random() * 10000)}`,
   });
 
-  shuffle(game.players).forEach(player => {
+  shuffle(game.players).forEach((player) => {
     nextGame = joinGame(nextGame, player);
   });
 

@@ -1,7 +1,6 @@
 import classnames from "classnames";
 import { range } from "lodash";
 import React from "react";
-
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Txt, { TxtSize } from "~/components/ui/txt";
 
@@ -29,7 +28,7 @@ export function Token(props: TokenProps) {
 
   return (
     <div className="relative h1.5 w1.5 ml2">
-      {range(amount).map(i => (
+      {range(amount).map((i) => (
         <Txt
           key={i}
           className={classnames(

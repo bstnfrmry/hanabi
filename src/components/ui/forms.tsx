@@ -1,6 +1,5 @@
 import classnames from "classnames";
 import React, { InputHTMLAttributes, LabelHTMLAttributes, ReactNode, SelectHTMLAttributes } from "react";
-
 import Txt, { TxtSize } from "~/components/ui/txt";
 
 interface FieldProps extends LabelHTMLAttributes<HTMLLabelElement> {
@@ -60,7 +59,7 @@ export function Select(props: SelectProps) {
       }}
       {...attributes}
     >
-      {Object.keys(options).map(value => (
+      {Object.keys(options).map((value) => (
         <option key={value} value={value}>
           {formatter ? formatter(options[value] as string) : options[value]}
         </option>

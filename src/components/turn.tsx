@@ -1,6 +1,5 @@
 import React from "react";
 import { Trans } from "react-i18next";
-
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Hint from "~/components/hint";
 import PlayerName from "~/components/playerName";
@@ -138,7 +137,7 @@ const CardPosition = ({ action }: { action: IDiscardAction | IPlayAction | IHint
     <Txt
       className="lavender mr1"
       size={TxtSize.XSMALL}
-      value={`${(action?.cardsIndex ?? []).map(index => PositionMap[index]).join(", ")}`}
+      value={`${(action?.cardsIndex ?? []).map((index) => PositionMap[index]).join(", ")}`}
     />
   ) : (
     <Txt className="lavender mr1" size={TxtSize.XSMALL} value={`${PositionMap[action.cardIndex]}`} />

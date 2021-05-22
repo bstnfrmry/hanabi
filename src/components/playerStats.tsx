@@ -2,7 +2,6 @@ import classnames from "classnames";
 import { groupBy } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
 import { IInsightColor, IPlayer } from "~/lib/state";
@@ -30,9 +29,9 @@ export default function PlayerStats(props: Props) {
   const [discardsCount, setDiscardsCount] = useState(0);
   const [hintsCount, setHintsCount] = useState(0);
 
-  const playerTurns = game.turnsHistory.filter(turn => turn.action.from === player.index);
+  const playerTurns = game.turnsHistory.filter((turn) => turn.action.from === player.index);
 
-  const groupedTurns = groupBy(playerTurns, turn => turn.action.action);
+  const groupedTurns = groupBy(playerTurns, (turn) => turn.action.action);
 
   const totalCount = playerTurns.length;
 

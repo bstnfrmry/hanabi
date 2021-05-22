@@ -1,12 +1,11 @@
 import { useRouter } from "next/router";
 import React from "react";
-
 import Button, { ButtonSize } from "~/components/ui/button";
 
 interface Props {
   void?: boolean;
   className?: string;
-  onClick?: Function;
+  onClick?: () => void;
 }
 
 export default function HomeButton(props: Props) {

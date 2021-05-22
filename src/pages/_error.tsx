@@ -1,7 +1,6 @@
 import Router from "next/router";
 import React from "react";
 import { Trans, Translation } from "react-i18next";
-
 import Button from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 
@@ -21,7 +20,7 @@ export default class Error extends React.Component<Props> {
     return (
       <div className="pa2 pv4-l ph3-l shadow-5 br3 bg-main-dark flex flex-column justify-center items-center w-100 h-100">
         <Translation>
-          {t => (
+          {(t) => (
             <>
               <Txt className="red" size={TxtSize.LARGE} value={statusCode} />
               <Txt className="mb4" value={t("apologies", "We're sorry, something went wrong 😕")} />

@@ -2,7 +2,6 @@ import Fireworks from "fireworks-canvas";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import DiscardArea from "~/components/discardArea";
 import GameBoard from "~/components/gameBoard";
@@ -124,7 +123,7 @@ export function Game(props: Props) {
       colorBlindMode: game.options.colorBlindMode,
     });
 
-    game.players.forEach(player => {
+    game.players.forEach((player) => {
       sameGame = joinGame(sameGame, {
         id: player.id,
         name: player.name,
@@ -209,7 +208,7 @@ export function Game(props: Props) {
 
   function onAddBot() {
     const playerId = uniqueId();
-    const botsCount = game.players.filter(p => p.bot).length;
+    const botsCount = game.players.filter((p) => p.bot).length;
 
     const bot = {
       name: `AI #${botsCount + 1}`,
@@ -400,7 +399,6 @@ export function Game(props: Props) {
 
     logEvent("Game", "Game recreated");
     router.push(`/${nextGame.id}`);
-
   }
 
   return (

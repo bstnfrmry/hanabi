@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-
 import { CardWrapper } from "~/components/card";
 import HomeButton from "~/components/homeButton";
 import PlayedCards from "~/components/playedCards";
@@ -12,8 +11,8 @@ import { getMaximumPossibleScore, getMaximumScore, getScore } from "~/lib/action
 import { IGameStatus } from "~/lib/state";
 
 interface Props {
-  onMenuClick?: Function;
-  onRollbackClick?: Function;
+  onMenuClick?: () => void;
+  onRollbackClick?: () => void;
 }
 
 export { CardWrapper } from "~/components/card";

@@ -1,5 +1,4 @@
 import React from "react";
-
 import Vignette from "~/components/vignette";
 import { useGame } from "~/hooks/game";
 import { getHintableColors, numbers } from "~/lib/actions";
@@ -35,7 +34,7 @@ export default function Vignettes(props: Props) {
         className="flex flex-row justify-around"
         style={{ width: `${(hintableNumbers.length / colors.length) * 100}%` }}
       >
-        {hintableNumbers.map(number => (
+        {hintableNumbers.map((number) => (
           <Vignette
             key={number}
             selected={pendingHint.type === "number" && pendingHint.value === number}

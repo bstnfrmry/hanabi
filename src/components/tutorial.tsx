@@ -2,7 +2,6 @@ import React, { ReactNode, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Popover, { PopoverPlace } from "react-popover";
 import posed from "react-pose";
-
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 
@@ -173,7 +172,7 @@ export default function Tutorial(props: Props) {
                 <Button
                   size={ButtonSize.TINY}
                   text={lastStep ? "✓" : ">"}
-                  onClick={e => {
+                  onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     nextStep();

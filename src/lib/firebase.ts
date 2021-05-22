@@ -1,7 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/database";
 import { cloneDeep } from "lodash";
-
 import IGameState, { cleanState, fillEmptyValues, GameMode, IGameStatus, IPlayer, rebuildGame } from "~/lib/state";
 
 function database() {
@@ -34,8 +33,8 @@ export function loadPublicGames() {
     .orderByChild("createdAt")
     .startAt(Date.now() - 10 * 60 * 1000);
 
-  return new Promise(resolve => {
-    ref.once("value", event => {
+  return new Promise((resolve) => {
+    ref.once("value", (event) => {
       const games = Object.values(event.val() || {})
         .map(fillEmptyValues)
         // Game is public
@@ -53,7 +52,7 @@ export function subscribeToPublicGames(callback: (games: IGameState[]) => void) 
     .orderByChild("createdAt")
     .startAt(Date.now() - 10 * 60 * 1000);
 
-  ref.on("value", event => {
+  ref.on("value", (event) => {
     const games = Object.values(event.val() || {})
       .map(fillEmptyValues)
       // Game is public
@@ -68,8 +67,8 @@ export function subscribeToPublicGames(callback: (games: IGameState[]) => void) 
 export async function loadGame(gameId: string) {
   const ref = database().ref(`/games/${gameId}`);
 
-  return new Promise<IGameState>(resolve => {
-    ref.once("value", event => {
+  return new Promise<IGameState>((resolve) => {
+    ref.once("value", (event) => {
       resolve(rebuildGame(fillEmptyValues(event.val())));
     });
   });
@@ -78,7 +77,7 @@ export async function loadGame(gameId: string) {
 export function subscribeToGame(gameId: string, callback: (game: IGameState) => void) {
   const ref = database().ref(`/games/${gameId}`);
 
-  ref.on("value", event => {
+  ref.on("value", (event) => {
     callback(rebuildGame(fillEmptyValues(event.val() as IGameState)));
   });
 
@@ -88,21 +87,15 @@ export function subscribeToGame(gameId: string, callback: (game: IGameState) => 
 export async function updateGame(game: IGameState) {
   window["hanabi"] = cloneDeep(game);
 
-  await database()
-    .ref(`/games/${game.id}`)
-    .set(cleanState(game));
+  await database().ref(`/games/${game.id}`).set(cleanState(game));
 }
 
 export async function setReaction(game: IGameState, player: IPlayer, reaction: string) {
-  await database()
-    .ref(`/games/${game.id}/players/${player.index}/reaction`)
-    .set(reaction);
+  await database().ref(`/games/${game.id}/players/${player.index}/reaction`).set(reaction);
 }
 
 export async function setNotification(game: IGameState, player: IPlayer, notified: boolean) {
-  await database()
-    .ref(`/games/${game.id}/players/${player.index}/notified`)
-    .set(notified);
+  await database().ref(`/games/${game.id}/players/${player.index}/notified`).set(notified);
 }
 
 function gameIsPublic(game: IGameState) {
