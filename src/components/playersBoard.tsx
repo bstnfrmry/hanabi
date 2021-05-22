@@ -4,15 +4,16 @@ import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import PlayerGame from "~/components/playerGame";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
+import { IAction, IPlayer } from "~/lib/state";
 
 interface Props {
   displayStats: boolean;
   selectedArea: ISelectedArea;
-  onSelectPlayer: () => void;
-  onNotifyPlayer: () => void;
-  onReaction: () => void;
+  onSelectPlayer: (player: IPlayer, cardIndex: number) => void;
+  onNotifyPlayer: (player: IPlayer) => void;
+  onReaction: (reaction: string) => void;
   onCloseArea: () => void;
-  onCommitAction: () => void;
+  onCommitAction: (action: IAction) => void;
 }
 
 const Item = posed.div({

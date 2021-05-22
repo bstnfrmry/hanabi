@@ -19,6 +19,7 @@ import { matchColor, matchNumber, MaxHints } from "~/lib/actions";
 import IGameState, {
   GameMode,
   GameVariant,
+  IAction,
   ICard,
   IColor,
   IGameStatus,
@@ -76,10 +77,10 @@ interface Props extends HTMLAttributes<HTMLElement> {
   self?: boolean;
   cardIndex?: number;
   displayStats: boolean;
-  onSelectPlayer: () => void;
-  onNotifyPlayer?: () => void;
-  onReaction?: () => void;
-  onCommitAction: () => void;
+  onSelectPlayer: (player: IPlayer, cardIndex: number) => void;
+  onNotifyPlayer?: (player: IPlayer) => void;
+  onReaction?: (reaction: string) => void;
+  onCommitAction: (action: IAction) => void;
   onCloseArea: () => void;
 }
 
@@ -363,7 +364,7 @@ export default function PlayerGame(props: Props) {
                       text={t(action)}
                       onClick={() =>
                         onCommitAction({
-                          action,
+                          action: action as "discard" | "play",
                           from: selfPlayer.index,
                           cardIndex: selectedCard,
                         })

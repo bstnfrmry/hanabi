@@ -232,7 +232,7 @@ export function sendMessage(state: IGameState, message: IMessage) {
 /**
  * Rollback the state for the given amount of turns
  */
-export const getStateAtTurn = mem<[IGameState, number], IGameState, string>(
+export const getStateAtTurn = mem(
   (state: IGameState, turnIndex: number) => {
     let newState = newGame(state.options);
 

@@ -46,7 +46,7 @@ function Meta() {
 
 interface Props {
   host: string;
-  onJoinGame: () => void;
+  onJoinGame: (player: Omit<IPlayer, "id">) => void;
   onAddBot: () => void;
   onStartGame: () => void;
 }

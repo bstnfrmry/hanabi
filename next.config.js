@@ -3,8 +3,6 @@
 require("dotenv").config();
 
 const webpack = require("webpack");
-const path = require("path");
-const Dotenv = require("dotenv-webpack");
 const nextSourceMaps = require("@zeit/next-source-maps")();
 const optimizedImages = require("next-optimized-images");
 const nextOffline = require("next-offline");
@@ -24,13 +22,6 @@ const config = [
       domains: ["cdn.buymeacoffee.com"],
     },
     webpack: (config, { isServer, buildId }) => {
-      config.plugins.push(
-        new Dotenv({
-          path: path.join(__dirname, ".env"),
-          systemvars: true,
-        })
-      );
-
       config.plugins.push(
         new webpack.DefinePlugin({
           "process.env.SENTRY_RELEASE": JSON.stringify(buildId),

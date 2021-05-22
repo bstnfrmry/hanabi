@@ -6,7 +6,7 @@ const ClearReaction = "⊘";
 const Reactions = ["👍", "👎", "👏", "😅", "🤩", "🤭", "🤔", "😬", "♻️", "❤️", "😻"];
 
 interface Props {
-  onReaction: () => void;
+  onReaction: (reaction: string) => void;
   onClose: () => void;
 }
 
