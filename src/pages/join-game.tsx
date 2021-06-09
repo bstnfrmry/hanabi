@@ -54,7 +54,7 @@ export default function JoinGame(props: Props) {
         )}
         {games.length > 0 && (
           <div>
-            <Txt className="nowrap mb6" size={TxtSize.LARGE} value="Available rooms" />
+            <Txt className="nowrap mb6" size={TxtSize.LARGE} value={t("availableRooms", "Available rooms")} />
             {games.map((game) => (
               <div key={game.id} className="flex justify-between items-center mb3 w-100 mt3">
                 <Txt className="mr4 silver" value={`${game.players.length} / ${game.options.playersCount}`} />

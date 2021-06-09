@@ -12,7 +12,7 @@ export const Languages = {
   ru: "Russian",
   pt: "Português",
   de: "Deutsch",
-  sk: "Slovak",
+  sk: "Slovenčina",
 };
 
 interface Props {
