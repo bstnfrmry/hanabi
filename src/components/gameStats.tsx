@@ -7,10 +7,8 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
 import useLongPress from "~/hooks/longPress";
 import { getStateAtTurn, isPlayable } from "~/lib/actions";
-import { isCardDangerous } from "~/lib/ai";
+import { isCardDangerous, isCardEverPlayable } from "~/lib/ai";
 import IGameState, { fillEmptyValues, ICard, IColor, IInsightColor, IPlayer, ITurn } from "~/lib/state";
-
-const CountPerNumber = { 1: 3, 2: 2, 3: 2, 4: 2, 5: 1 };
 
 function turnToStateColor(turn: ITurn) {
   const { action } = turn.action;
@@ -35,23 +33,7 @@ function cardToStateColor(game: IGameState, player: IPlayer, card: ICard) {
     return [IInsightColor.Dangerous];
   }
 
-  const playedCard = game.playedCards.find((c) => card.number === c.number && card.color === c.color);
-  if (playedCard) {
-    return [IInsightColor.Discard];
-  }
-
-  const discardedCardsOfSameColorAndInferiorValue = game.discardPile.filter(
-    (c) => card.number < c.number && card.color === c.color
-  );
-
-  if (card.color === IColor.MULTICOLOR && discardedCardsOfSameColorAndInferiorValue.length) {
-    return [IInsightColor.Discard];
-  }
-  const groupedByNumber = groupBy(discardedCardsOfSameColorAndInferiorValue, (card) => card.number);
-  const allCardsInDiscard = Object.keys(groupedByNumber).find((number) => {
-    return groupedByNumber[number].length === CountPerNumber[number];
-  });
-  if (allCardsInDiscard) {
+  if (!isCardEverPlayable(card, game)) {
     return [IInsightColor.Discard];
   }
 

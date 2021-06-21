@@ -1,6 +1,6 @@
 import { cloneDeep, filter, findLastIndex } from "lodash";
 import { commitAction, getColors, getPlayedCardsPile, getStateAtTurn, isPlayable, numbers } from "./actions";
-import IGameState, { IAction, ICard, ICardHint, IHintAction, IHintLevel, INumber, IPlayer } from "./state";
+import IGameState, { IAction, ICard, ICardHint, IHintAction, IHintLevel, INumber, IColor, IPlayer, GameVariant } from "./state";
 
 export enum IDeductionStatus {
   PLAYABLE = 0, // the card value is such that it can be played right now
@@ -27,6 +27,18 @@ export interface IHiddenCard {
   optimist: boolean;
 }
 
+export function isCriticalCard(card: ICard, state: IGameState): boolean {
+  return (card.color === IColor.RAINBOW && state.options.variant === GameVariant.CRITICAL_RAINBOW)
+    || card.color === IColor.MULTICOLOR;
+}
+
+function identicalCardCount(card: ICard, state: IGameState): number {
+  if (isCriticalCard(card, state)) {
+    return 1;
+  }
+  return { 1: 3, 2: 2, 3: 2, 4: 2, 5: 1 }[card.number];
+}
+
 /**
  * Check whether the current card can be in hand
  */
@@ -38,19 +50,19 @@ export function isCardDangerous(card: ICard, state: IGameState): boolean {
   if (!isCardEverPlayable(card, state)) {
     return false;
   }
-  if (card.color === "multicolor" || card.number === 5) {
+  if (identicalCardCount(card, state) === 1) {
     return true;
   }
 
   const discarded = state.discardPile.filter(c => c.color === card.color && c.number === card.number);
-  if ((card.number === 1 && discarded.length === 2) || discarded.length > 0) {
+  if (discarded.length === identicalCardCount(card, state) - 1) {
       return true;
   }
 
   return false;
 }
 
-function isCardEverPlayable(card: ICard, state: IGameState): boolean {
+export function isCardEverPlayable(card: ICard, state: IGameState): boolean {
   const playedCardsPile = getPlayedCardsPile(state);
   // if the card has already been played once
   if (playedCardsPile[card.color] >= card.number) {
@@ -60,7 +72,7 @@ function isCardEverPlayable(card: ICard, state: IGameState): boolean {
     // e.g. the game pile is a 3 Red, the 2 4s in the discard, and I have a 5 Red
     for (let i = playedCardsPile[card.color] + 1; i < card.number; i++) {
       const discarded = filter(state.discardPile, (e) => e.color === card.color && e.number === i);
-      const cardCount = card.color === "multicolor" ? 1 : 2;
+      const cardCount = identicalCardCount({color: card.color, number: i as INumber} as ICard, state);
       if (discarded.length === cardCount) {
         return false;
       }
