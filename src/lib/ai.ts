@@ -43,7 +43,7 @@ function identicalCardCount(card: ICard, state: IGameState): number {
  * Check whether the current card can be in hand
  */
 function isCardPossible(card: ICard, possibleCards: ICard[]): boolean {
-  return possibleCards.findIndex((c) => c.number === card.number && c.color === card.color) > -1;
+  return possibleCards.findIndex((c) => areIdenticalCards(c, card)) > -1;
 }
 
 export function isCardDangerous(card: ICard, state: IGameState): boolean {
@@ -54,7 +54,7 @@ export function isCardDangerous(card: ICard, state: IGameState): boolean {
     return true;
   }
 
-  const discarded = state.discardPile.filter(c => c.color === card.color && c.number === card.number);
+  const discarded = state.discardPile.filter(c => areIdenticalCards(c, card));
   if (discarded.length === identicalCardCount(card, state) - 1) {
       return true;
   }
@@ -86,15 +86,18 @@ export function isCardEverPlayable(card: ICard, state: IGameState): boolean {
  * Check whether the current card can be discarded
  */
 export function isCardDiscardable(card: IHiddenCard, state: IGameState): boolean {
-  // AI can discard a card that can never be played (already played or because of discards)
-  if (card.deductions.every((deduction) => !isCardEverPlayable(deduction, state))) {
-    return true;
-  }
   // Taking a probabilistic approach for possibly dangerous cards
-  if (1.0 * card.deductions.filter((deduction) => isCardDangerous(deduction, state)).length / card.deductions.length >= 0.45) {
-    return false;
+  // Note: If it is dangerous for sure it is still considered as dangerous
+  let isProbablyDangerous = false;
+  if (card.deductions.filter((deduction) => isCardDangerous(deduction, state)).length / card.deductions.length >= 0.5) {
+    isProbablyDangerous = true;
   }
-  return true;
+  return isCardSafelyDiscardable(card, state) || !isProbablyDangerous;
+}
+
+function isCardSafelyDiscardable(card: IHiddenCard, state: IGameState): boolean {
+  // AI can discard a card that can never be played (already played or because of discards)
+  return card.deductions.every((deduction) => !isCardEverPlayable(deduction, state));
 }
 
 export function getHintDeductions(hint: ICardHint, possibleCards: ICard[], game: IGameState): IDeduction[] {
@@ -104,8 +107,8 @@ export function getHintDeductions(hint: ICardHint, possibleCards: ICard[], game:
   colors.forEach((color) => {
     numbers.forEach((number) => {
       if (
-        hint.color[color] > 0 &&
-        hint.number[number] > 0 &&
+        hint.color[color] > IHintLevel.IMPOSSIBLE &&
+        hint.number[number] > IHintLevel.IMPOSSIBLE &&
         isCardPossible({ color, number } as ICard, possibleCards)
       ) {
         deductions.push({
@@ -209,6 +212,20 @@ function findRainbowAssuringColorHint(card: ICard, hand: ICard[], state: IGameSt
   // find the color that won't touch unnecessarily any other card if it is possible
   const preferredHints = rainbowAssuringColors.filter((color) => hand.every((card) => card.color !== color));
   return preferredHints.length ? preferredHints[0] : rainbowAssuringColors[0];
+  // TODO improve the color selection depending on whether the color hint touches preceding card or not (optimist hint)
+}
+
+function areIdenticalCards(card1: ICard, card2: ICard): boolean {
+  return card1.color === card2.color && card1.number === card2.number;
+}
+
+function isHintedCard(card: ICard, state: IGameState): boolean {
+  // TODO consider number hints for sequence variant
+  return card.hint.color[card.color] > IHintLevel.POSSIBLE || card.hint.number[card.number] === IHintLevel.SURE;
+}
+
+function isIdentifiedCard(card: ICard): boolean {
+  return card.hint.color[card.color] === IHintLevel.SURE && card.hint.number[card.number] === IHintLevel.SURE;
 }
 
 function findGivableHint(hand: ICard[], pIndex: number, state: IGameState): IAction | undefined {
@@ -216,31 +233,34 @@ function findGivableHint(hand: ICard[], pIndex: number, state: IGameState): IAct
   // if possible, give an optimist hint.
 
   // while we have not reached the second hinted card
-  const isRainbowVariant = state.options.variant === GameVariant.RAINBOW || state.options.variant === GameVariant.CRITICAL_RAINBOW;
   let isFirstHintedCardOrBefore = true;
   let hasPlayableCard = false;
   for (let i = 0; i < hand.length; i++) {
     const card = hand[i];
 
     if (isPlayable(card, state.playedCards) &&
-        !hand.slice(i + 1, hand.length).find((c) => c.color === card.color && c.number === card.number)) {
+        // we do not hint cards which are identical with already hinted playable cards in hand
+        // TODO check all visible player hands for play-tips about the same card
+        !hand.slice(i + 1, hand.length).find((c) => areIdenticalCards(c, card) && isHintedCard(c))) {
       hasPlayableCard = true;
       // we don't hint the first hinted card.
       const shouldHint = isFirstHintedCardOrBefore
-        ? card.hint.color[card.color] < IHintLevel.SURE && card.hint.number[card.number] < IHintLevel.SURE
-        : card.hint.color[card.color] < IHintLevel.SURE || card.hint.number[card.number] < IHintLevel.SURE;
+        ? !isHintedCard(card)
+        : !isIdentifiedCard(card);
 
       if (shouldHint) {
         // find the type of hint to give, trying to find the most optimist one
-        // (if there's a card with the same color, give the number hint)
+        // (if there's a card with the same color before this one, give the number hint)
         let type;
         if (hand.slice(0, i).find((c) => c.color === card.color && card.color !== IColor.RAINBOW)) {
           type = card.hint.number[card.number] < IHintLevel.SURE ? "number" : "color";
         } else {
-          type = card.hint.color[card.color] < IHintLevel.CANDIDATE ? "color" : "number";
+          type = card.hint.color[card.color] < IHintLevel.CANDIDATE ? "color" :
+          // we do not hint the same number if it has been hinted already
+          card.hint.number[card.number] === IHintLevel.SURE ? "color" : "number";
         }
         let value = card[type];
-        if (isRainbowVariant && value === IColor.RAINBOW) {
+        if (value === IColor.RAINBOW) {
           value = findRainbowAssuringColorHint(card, hand, state);
         }
         return {
@@ -254,7 +274,7 @@ function findGivableHint(hand: ICard[], pIndex: number, state: IGameState): IAct
     }
 
     // if the card has hints, we switch the condition
-    if (card.hint.color[card.color] < IHintLevel.SURE || card.hint.number[card.number] < IHintLevel.SURE) {
+    if (isHintedCard(card)) {
       isFirstHintedCardOrBefore = false;
     }
   }
@@ -263,8 +283,10 @@ function findGivableHint(hand: ICard[], pIndex: number, state: IGameState): IAct
   const lastCard = hand[hand.length - 1];
   if (
     isCardDangerous(lastCard, state) &&
+    // with dangerous threshold being less than or equal to 0.5 any SURE + CANDIDATE combination should not be considered dangerous
     (lastCard.hint.color[lastCard.color] === IHintLevel.SURE && lastCard.hint.number[lastCard.number] < IHintLevel.CANDIDATE ||
-    lastCard.hint.color[lastCard.color] < IHintLevel.SURE && lastCard.hint.number[lastCard.number] < IHintLevel.SURE) &&
+    lastCard.hint.color[lastCard.color] < IHintLevel.SURE && lastCard.hint.number[lastCard.number] < IHintLevel.SURE ||
+    lastCard.hint.color[lastCard.color] < IHintLevel.CANDIDATE && lastCard.hint.number[lastCard.number] === IHintLevel.SURE) &&
     !hasPlayableCard
   ) {
     const type =
@@ -282,7 +304,7 @@ function findGivableHint(hand: ICard[], pIndex: number, state: IGameState): IAct
         ? "number"
         : "color";
     let value = lastCard[type];
-    if (isRainbowVariant && value === IColor.RAINBOW) {
+    if (value === IColor.RAINBOW) {
       value = findRainbowAssuringColorHint(lastCard, hand, state);
     }
     return {
@@ -420,16 +442,15 @@ function findBestDiscardIndex(playerView: IPlayerView, state: IGameState) {
   for (let i = playerView.hand.length - 1; i >= 0; i--) {
     const card = playerView.hand[i];
     // if the card is definitely discardable (never playable)
-    if (card.deductions.every((deduction) => !isCardEverPlayable(deduction, state))) {
+    if (isCardSafelyDiscardable(card, state)) {
       discardableIndex = i;
       break;
     }
 
-    // if the card is unclued and not dangerous
+    // if the card is unclued and possibly not dangerous
     if (
       isCardDiscardable(card, state) &&
-      !Object.values(card.hint.color).find((v) => v >= IHintLevel.CANDIDATE) &&
-      !Object.values(card.hint.number).find((v) => v >= IHintLevel.CANDIDATE) &&
+      !isHintedCard(card) &&
       !uncluedDiscardableCard
     ) {
       uncluedDiscardableCard = true;
