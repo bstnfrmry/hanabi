@@ -10,7 +10,7 @@ import useLocalStorage from "~/hooks/localStorage";
 import { newGame } from "~/lib/actions";
 import { logEvent } from "~/lib/analytics";
 import { updateGame } from "~/lib/firebase";
-import { readableUniqueId } from "~/lib/id";
+import { generateShuffleSeed, readableUniqueId } from "~/lib/id";
 import { GameMode, GameVariant, IGameHintsLevel } from "~/lib/state";
 
 const PlayerCounts = [2, 3, 4, 5];
@@ -67,7 +67,7 @@ export default function NewGame() {
    * Initialise seed on first render
    */
   useEffect(() => {
-    setSeed(`${Math.round(Math.random() * 10000)}`);
+    setSeed(generateShuffleSeed());
   }, []);
 
   async function onCreateGame() {

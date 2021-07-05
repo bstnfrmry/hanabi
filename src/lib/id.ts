@@ -15,3 +15,9 @@ export function readableUniqueId(): ID {
 export function uniqueId(): ID {
   return shortid();
 }
+
+export function generateShuffleSeed(): string {
+  return Array.from(crypto.getRandomValues(new Uint8Array(32)))
+    .map((x) => x.toString(16).padStart(2, "0"))
+    .join("");
+}
