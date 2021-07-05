@@ -34,11 +34,11 @@ export default function PlayersBoard(props: Props) {
   let selectedPlayer = null;
   let cardIndex = null;
   if (selectedArea.type === ActionAreaType.SELF_PLAYER) {
-    selectedPlayer = selectedArea.player;
+    selectedPlayer = game.players.find((player) => player.id === selectedArea.player.id);
     cardIndex = selectedArea.cardIndex;
   }
   if (selectedArea.type === ActionAreaType.OTHER_PLAYER) {
-    selectedPlayer = selectedArea.player;
+    selectedPlayer = game.players.find((player) => player.id === selectedArea.player.id);
   }
 
   return (
