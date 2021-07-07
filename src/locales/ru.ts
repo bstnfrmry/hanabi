@@ -67,7 +67,7 @@ export const ru = {
   negativeHintNumber: "У вас нет {{ number }}",
   positiveHintColor: "Цвет карт {{ positions }} - {{ color }}",
   positiveHintNumber: "На карте {{ positions }} достоинство {{ number }}",
-  positiveHintNumberSequence: "Достоинств карты {{ positions }} - {{ number }} или выше",
+  positiveHintNumberSequence: "Достоинство карты {{ positions }} - {{ number }} или выше",
   positiveHintColor_1: "Цвет карты {{ positions }} - {{ color }}", // for 2 3 4 cards
   positiveHintNumber_1: "На картах {{ positions }} достоинство {{ number }}",
   positiveHintNumberSequence_1: "На картах {{ positions }} достоинство {{ number }} или выше",
