@@ -159,7 +159,7 @@ export const en = {
     "Hanabi can end in three ways:\n· If you get the third red token, you lose the game as the display goes up in flames!\n· If the team completes all five colors of firework with a value of 5, the team makes a spectacular victorydisplay and obtains the maximum score of 25 points - 30 with multicolor option!\n· If a player draws the last card from deck, the game is almost over. Each player gets one more turn,including the player who drew the last card. Players cannot draw more cards during these final turns.\n\nThe players then score their performance based on the fireworks they assembled.",
   rulesExtensionTitle: "Extension",
   rulesExtensionMulticolor:
-    "🎨 The multicolor variant adds up a 6th pile and a 6th set of cards with only one item of each card: 1, 2, 3, 4, 5. These fireworks are therefore more scarce and you will have to be cautious not to discard them. Rules are the same and you have to complete all siw piles to reach a maximum score of 30 points.",
+    "🎨 The multicolor variant adds up a 6th pile and a 6th set of cards with only one item of each card: 1, 2, 3, 4, 5. These fireworks are therefore more scarce and you will have to be cautious not to discard them. Rules are the same and you have to complete all six piles to reach a maximum score of 30 points.",
   rulesExtensionRainbow:
     "🌈 The rainbow extension also adds a 6th pile with the same values that the 5 other piles (three 1s, 2 items of cards 2/3/4 and one 5). The particularity is that rainbow cards are of all colors. Every time you give a hint on colors, they will be touched.",
   rulesUsTitle: "Who are we?",
