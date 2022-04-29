@@ -26,7 +26,7 @@ export const en = {
   gameStarted: "Game started!",
   gameStarts: "Game starts!",
   discardPile: "discard ({{ discardLength }})",
-  preventLossContent: "You fucked up · Keep going?",
+  preventLossContent: "You made a mistake. Keep going?",
   rewind: "🕑 Rewind",
   backToGame: "Back to game",
   theirTurn: "It's {{currentPlayerName}} turn!",
