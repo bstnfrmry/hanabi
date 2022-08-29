@@ -11,6 +11,7 @@ interface Props {
   turn: ITurn;
   showDrawn: boolean;
   showPosition?: boolean;
+  turnNumber?: number;
 }
 
 export default function Turn(props: Props) {
@@ -112,8 +113,10 @@ export default function Turn(props: Props) {
 
   return (
     <div className="dib">
+      {props.turnNumber ? <Txt className="di gray">{props.turnNumber})&nbsp;</Txt> : ""}
       <Txt className="di">
-        {/* The player action and the card they drawn, if applicable */}- {textualTurn}
+        {/* The player action and the card they drawn, if applicable */}
+        {textualTurn}
         {drawnTurn}
       </Txt>
     </div>

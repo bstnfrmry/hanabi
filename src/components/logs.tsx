@@ -31,7 +31,7 @@ export default function Logs(props: Props) {
             const key = game.turnsHistory.length - i;
 
             const messages = game.messages.filter((message) => message.turn === game.turnsHistory.length - i).reverse();
-
+            const turnNumber = game.turnsHistory.length - i;
             return (
               <PoseItem key={key}>
                 {messages.map((message) => {
@@ -41,6 +41,7 @@ export default function Logs(props: Props) {
                   key={key}
                   showDrawn={!interturn && game.players[turn.action.from].id !== selfPlayer?.id}
                   turn={turn}
+                  turnNumber={turnNumber}
                 />
               </PoseItem>
             );
