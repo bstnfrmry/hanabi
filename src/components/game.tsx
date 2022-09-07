@@ -192,18 +192,10 @@ export function Game(props: Props) {
     router
       .push(`/${game.nextGameId}`)
       .then((b) => {
-        loadGame(game.nextGameId)
-          .then((newGame) => {
-            props.onGameChange(newGame);
-          })
-          .catch((reason) => {
-            router.push(`/${game.nextGameId}`);
-            alert(`A new game was started, but an error was encountered transitioning you: \n${reason}`);
-          });
-      })
-      .catch((reason) => {
-        alert(`A new game was started, but an error was encountered transitioning you: \n${reason}`);
+      loadGame(game.nextGameId).then((newGame) => {
+        props.onGameChange(newGame);
       });
+    });
   }, [game.nextGameId]);
 
   function onJoinGame(player: Omit<IPlayer, "id">) {
