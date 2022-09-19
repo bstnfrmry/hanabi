@@ -28,7 +28,7 @@ export default function Rules(props: Props) {
         )}
 
         <div className="absolute top-0 right-0 w4 h4 ma4 o-50 dn db-l">
-          <Image alt="Hanabi cards game online" height={256} src={"/static/hanabi.png"} width={256} />
+          <Image alt="Hanab cards game online" height={256} src={"/static/hanab.png"} width={256} />
         </div>
 
         <div className="flex justify-center mb4 mb5-l">
@@ -43,7 +43,7 @@ export default function Rules(props: Props) {
         </div>
 
         <div className="flex flex-column mb5">
-          <Txt className="w-100 tc mt2 dib" size={TxtSize.LARGE} value={t("hanabi", "Hanabi")} />
+          <Txt className="w-100 tc mt2 dib" size={TxtSize.LARGE} value={t("hanab", "Hanab")} />
           <Title>{t("objective", "Objective")}</Title>
           <Paragraph>{t("rulesIntro")}</Paragraph>
           <Paragraph>{t("rulesGoal")}</Paragraph>
@@ -74,7 +74,7 @@ export default function Rules(props: Props) {
           <Paragraph>
             <Trans i18nKey="rulesUs">
               We are a group of board-game addicts. Locked down in 2020, we were willing to find an alternative to play
-              together remotely.\n Since we both have fun coding and playing Hanabi, we decided to create an online
+              together remotely.\n Since we both have fun coding and playing Hanab, we decided to create an online
               mobile-friendly version of the game.\n\n 👉 Like us, please buy the{" "}
               <a
                 className="lavender mr1"
@@ -91,7 +91,7 @@ export default function Rules(props: Props) {
           <Paragraph>
             <Trans i18nKey="rulesContact">
               ✉️
-              <a className="lavender" href="mailto:bastien.formery+hanabi@gmail.com">
+              <a className="lavender" href="mailto:bastien.formery+hanab@gmail.com">
                 Contact us
               </a>
               if you have any question or suggestion.

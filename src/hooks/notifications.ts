@@ -31,7 +31,7 @@ export function useNotifications() {
 
     const title = "Your turn!";
     const options = {
-      icon: "/static/hanabi-192.png",
+      icon: "/static/hanab-192.png",
     };
 
     try {

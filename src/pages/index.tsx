@@ -66,15 +66,15 @@ export default function Home() {
         <div className="flex flex-column items-center">
           <div className="mb4 w4 h4">
             <Image
-              alt={t("landingImageAlt", "Hanabi cards game online logo")}
+              alt={t("landingImageAlt", "Hanabcards game online logo")}
               height={256}
-              src={"/static/hanabi.png"}
+              src={"/static/hanab.png"}
               width={256}
             />
           </div>
-          <Txt size={TxtSize.LARGE} value={t("hanabi", "Hanabi")} />
+          <Txt size={TxtSize.LARGE} value={t("hanab", "Hanab")} />
         </div>
-        <span className="tc lavender">{t("tagline", "Play the Hanabi game online with friends!")}</span>
+        <span className="tc lavender">{t("tagline", "Play the Hanab game online with friends!")}</span>
         <main className="flex flex-column mt5">
           <Button
             primary
@@ -113,9 +113,9 @@ export default function Home() {
               router.push("/learn");
             }}
           >
-            {t("learnHanabi", "Learn")}
+            {t("learnHanab", "Learn")}
             <Txt className="ml2" size={TxtSize.XXSMALL}>
-              {t("learnHanabiTime", "~5 mn")}
+              {t("learnHanabTime", "~5 mn")}
             </Txt>
           </Button>
 
@@ -125,7 +125,7 @@ export default function Home() {
               rulesRef.current.scrollIntoView({ behavior: "smooth" });
             }}
           >
-            <span>{t("whatsHanabi", "What's Hanabi?")}</span>
+            <span>{t("whatsHanab", "What's Hanab?")}</span>
             <span>⌄</span>
           </span>
         </main>

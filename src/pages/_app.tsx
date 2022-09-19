@@ -52,7 +52,7 @@ export default class App extends NextApp {
   }
 
   render() {
-    return <Hanabi {...this.props} />;
+    return <Hanab {...this.props} />;
   }
 }
 
@@ -64,7 +64,7 @@ export function reportWebVitals({ id, name, label, value }) {
   });
 }
 
-function Hanabi(props: AppProps) {
+function Hanab(props: AppProps) {
   const { Component, pageProps } = props;
   const { t } = useTranslation();
   const router = useRouter();
@@ -107,22 +107,22 @@ function Meta() {
   return (
     <Head>
       <title>
-        {t("hanabi")} · {t("tagline")}
+        {t("hanab")} · {t("tagline")}
       </title>
 
       <link href="/static/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-      <link href="/static/hanabi-192.png" rel="apple-touch-icon" />
+      <link href="/static/hanab-192.png" rel="apple-touch-icon" />
       <link href="/static/manifest.json" rel="manifest" />
       <meta content={tagline} name="Description" />
 
-      <meta content="hanabi.cards" property="og:title" />
+      <meta content="hanab.cards" property="og:title" />
       <meta content={tagline} property="og:description" />
-      <meta content="https://hanabi.cards/static/hanabi-192.png" property="og:image" />
-      <meta content="https://hanabi.cards" property="og:url" />
+      <meta content="https://hanab.cards/static/hanab-192.png" property="og:image" />
+      <meta content="https://hanab.cards" property="og:url" />
 
-      <meta content="hanabi.cards" name="twitter:title" />
+      <meta content="hanab.cards" name="twitter:title" />
       <meta content={tagline} name="twitter:description" />
-      <meta content="https://hanabi.cards/static/hanabi-192.png" name="twitter:image" />
+      <meta content="https://hanab.cards/static/hanab-192.png" name="twitter:image" />
       <meta content="summary_large_image" name="twitter:card" />
 
       <meta content="#00153f" name="theme-color" />

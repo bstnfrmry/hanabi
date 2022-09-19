@@ -1,5 +1,5 @@
 {
-  "name": "@hanabi/scripts",
+  "name": "@hanab/scripts",
   "private": true,
   "scripts": {
     "convert-database": "node -r ts-node/register --max-old-space-size=8192 convertDatabase.ts"
