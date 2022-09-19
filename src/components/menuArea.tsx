@@ -34,7 +34,7 @@ export default function MenuArea(props: Props) {
       <div className="flex flex-column justify-center items-center w-100 h-100 pa2 z-10">
         {!showRules && (
           <div className="flex flex-column justify-center items-center">
-            <Txt className="ttu txt-yellow mb4 mb5-l" size={TxtSize.MEDIUM} value={t("hanabi")} />
+            <Txt className="ttu txt-yellow mb4 mb5-l" size={TxtSize.MEDIUM} value={t("hanab")} />
 
             <div className="mb4 mb5-l">
               <LanguageSelector />

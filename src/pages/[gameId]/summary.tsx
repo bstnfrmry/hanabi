@@ -185,8 +185,8 @@ export default function Summary(props: Props) {
             <Txt>
               <Trans i18nKey="tryOutAlternative">
                 You can also play with other setups and meet our AI on
-                <a className="lavender" href="https://hanabi.cards">
-                  hanabi.cards
+                <a className="lavender" href="https://hanab.cards">
+                  hanab.cards
                 </a>
               </Trans>
             </Txt>

@@ -85,7 +85,7 @@ export function subscribeToGame(gameId: string, callback: (game: IGameState) => 
 }
 
 export async function updateGame(game: IGameState) {
-  window["hanabi"] = cloneDeep(game);
+  window["hanab"] = cloneDeep(game);
 
   await database().ref(`/games/${game.id}`).set(cleanState(game));
 }

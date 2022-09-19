@@ -68,10 +68,10 @@ const useSteps = () => {
         <>
           {router.locale !== "en" && (
             <div className="mb4 bg-white br2 pa2 main-dark b--yellow ba bw1">
-              <Txt value={`🚧 ${t("learnHanabiEnglish")}`} />
+              <Txt value={`🚧 ${t("learnHanabEnglish")}`} />
               <a
                 className="ml1 main-dark"
-                href="https://github.com/bstnfrmry/hanabi/issues/180"
+                href="https://github.com/bstnfrmry/hanab/issues/180"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -80,7 +80,7 @@ const useSteps = () => {
             </div>
           )}
 
-          <Title className="ttu mb4">{t("learn.welcome.title", "Learn Hanabi")}</Title>
+          <Title className="ttu mb4">{t("learn.welcome.title", "Learn Hanab")}</Title>
           <Paragraph>
             {t("learn.welcome.1", "Welcome! In this brief tutorial, you'll play a game by yourself.")}
           </Paragraph>
@@ -90,7 +90,7 @@ const useSteps = () => {
           <Paragraph>
             {t(
               "learn.cooperation.1",
-              "Hanabi is a cooperative game.\n\nYou play with other players to reach a common goal."
+              "Hanabs a cooperative game.\n\nYou play with other players to reach a common goal."
             )}
           </Paragraph>
           <Divider />
@@ -303,7 +303,7 @@ const useSteps = () => {
           <Paragraph>
             {t(
               "learn.ready.2",
-              "Hanabi is a game with endless options and possibilities. There is no right choice when playing."
+              "Hanabs a game with endless options and possibilities. There is no right choice when playing."
             )}
           </Paragraph>
           <Paragraph>
@@ -377,7 +377,7 @@ export default function Learn() {
       <HomeButton className="absolute top-1 right-1 z-2" />
 
       <div className="fixed top-0 right-0 w4 h4 ma4 o-50 ">
-        <Image alt="Hanabi cards game online" height={256} src="/static/hanabi.png" width={256} />
+        <Image alt="Hanab cards game online" height={256} src="/static/hanab.png" width={256} />
       </div>
 
       <div className="relative flex items-center h-90 w-90 w-50-l center">

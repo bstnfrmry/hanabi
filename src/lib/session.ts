@@ -4,7 +4,7 @@ import { ID, uniqueId } from "~/lib/id";
 export default function withSession(handler) {
   return withIronSession(handler, {
     password: process.env.COOKIE_PASSWORD,
-    cookieName: "hanabi.cards",
+    cookieName: "hanab.cards",
     cookieOptions: {
       secure: process.env.NODE_ENV === "production" ? true : false,
     },

@@ -1,8 +1,6 @@
-# Hanabi.cards
+# Hanab.cards
 
-Hanabi is a cooperative card game created by French game designer Antoine Bauza published in 2010 by Asmodée Éditions.
-
-Being locked down in March 2020, we were willing to play the Hanabi game remotely. Thus, we decided to create an online mobile-friendly version of the game since we both have fun coding and playing.
+Hanab is a cooperative card game inspired by, but unaffiliated with, a game made by French designer Antoine Bauza published in 2010 by Asmodée Éditions.
 
 Like us, please buy the [physical version](https://fr.asmodee.com/fr/games/hanabi/products/hanabi/) to support its creator if you like this game!
 
@@ -18,7 +16,7 @@ We are so happy to see people join the project and contribute to the repository.
 Thanks to all the people who contributed!
 
 <a href="https://github.com/bstnfrmry/hanabi/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=bstnfrmry/hanabi" />
+  <img src="https://contributors-img.web.app/image?repo=bstnfrmry/hanab" />
 </a>
 
 ### Issues
@@ -87,7 +85,7 @@ First, setup the project locally and find the 2-letter language code of the new 
 - Edit the language code on line 3  `export const it = {`
 
 ℹ️ How the translations are composed
-`tagline: "Play Hanabi online with friends!",`
+`tagline: "Play Hanab online with friends!",`
 The first element of every line is the translation name (keep it as is and do not translate it). The translation itself is located under the double-quotes.
 
 - Start translating!
@@ -99,7 +97,7 @@ The first element of every line is the translation name (keep it as is and do no
 
 **Import the new languaage**
 
-- Import your file here [src/lib/i18n.ts](https://github.com/bstnfrmry/hanabi/tree/master/src/lib/i18n.ts) and add the new language in the i18n ressources initiatlization.
+- Import your file here [src/lib/i18n.ts](https://github.com/bstnfrmry/hanab/tree/master/src/lib/i18n.ts) and add the new language in the i18n ressources initiatlization.
 
 ``` Typescript
 (...)
@@ -179,11 +177,11 @@ If you started some work and did not have time to finish, do not hesitate to ope
 
 The variable that will trigger the plural or singular is always named `count`.
 
-For example 
+For example
 ```  Typescript
   turnsLeftDisclaimer: "· 1 turn left",
   turnsLeftDisclaimer_plural: "· {{count}} turns left", // 2 turns left
-``` 
+```
 `count` does not have to be in the translation itself. It can be used only to trigger or not the plural. For example :
 ```  Typescript
   // in the code file
@@ -192,13 +190,13 @@ For example
   // in the translation file, for ex fr.ts rouge = red
   red: "rouge"
   red_plural: "rouges" // as you can see, count is not in the translation itself
-``` 
+```
 
-- Some languages have different plural rules. For example, in English, 0 is plural whereas it is singular in French. The suffix "_plural" will automatically handle it. 
+- Some languages have different plural rules. For example, in English, 0 is plural whereas it is singular in French. The suffix "_plural" will automatically handle it.
 
 - Yet some languages like Russian or Arabic have more complex plurals. You can use this site https://jsfiddle.net/sm9wgLze to know what suffix you can use.
 
 
 #### Need to modify the code?
 
-If your language requires adapting the code or splitting a translation and you do not know how to implement these modifications, do not hesitate to ask for help on [Github](https://github.com/bstnfrmry/hanabi/issues/) or [Discord](https://discord.gg/QEWtYdW).
+If your language requires adapting the code or splitting a translation and you do not know how to implement these modifications, do not hesitate to ask for help on [Github](https://github.com/bstnfrmry/hanab/issues/) or [Discord](https://discord.gg/QEWtYdW).
