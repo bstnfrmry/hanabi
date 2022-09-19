@@ -40,7 +40,7 @@ export default class Error extends React.Component<Props> {
                   We also have
                   <a
                     className="lavender"
-                    href="https://github.com/bstnfrmry/hanab/"
+                    href="https://github.com/bstnfrmry/hanabi/"
                     rel="noopener noreferrer"
                     target="_blank"
                   >

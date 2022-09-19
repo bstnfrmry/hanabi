@@ -71,7 +71,7 @@ const useSteps = () => {
               <Txt value={`🚧 ${t("learnHanabEnglish")}`} />
               <a
                 className="ml1 main-dark"
-                href="https://github.com/bstnfrmry/hanab/issues/180"
+                href="https://github.com/bstnfrmry/hanabi/issues/180"
                 rel="noopener noreferrer"
                 target="_blank"
               >

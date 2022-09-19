@@ -16,7 +16,7 @@ We are so happy to see people join the project and contribute to the repository.
 Thanks to all the people who contributed!
 
 <a href="https://github.com/bstnfrmry/hanabi/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=bstnfrmry/hanab" />
+  <img src="https://contributors-img.web.app/image?repo=bstnfrmry/hanabi" />
 </a>
 
 ### Issues
@@ -97,7 +97,7 @@ The first element of every line is the translation name (keep it as is and do no
 
 **Import the new languaage**
 
-- Import your file here [src/lib/i18n.ts](https://github.com/bstnfrmry/hanab/tree/master/src/lib/i18n.ts) and add the new language in the i18n ressources initiatlization.
+- Import your file here [src/lib/i18n.ts](https://github.com/bstnfrmry/hanabi/tree/master/src/lib/i18n.ts) and add the new language in the i18n ressources initiatlization.
 
 ``` Typescript
 (...)
@@ -199,4 +199,4 @@ For example
 
 #### Need to modify the code?
 
-If your language requires adapting the code or splitting a translation and you do not know how to implement these modifications, do not hesitate to ask for help on [Github](https://github.com/bstnfrmry/hanab/issues/) or [Discord](https://discord.gg/QEWtYdW).
+If your language requires adapting the code or splitting a translation and you do not know how to implement these modifications, do not hesitate to ask for help on [Github](https://github.com/bstnfrmry/hanabi/issues/) or [Discord](https://discord.gg/QEWtYdW).

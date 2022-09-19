@@ -102,7 +102,7 @@ export default function Rules(props: Props) {
               💻 We also have a
               <a
                 className="lavender"
-                href="https://github.com/bstnfrmry/hanab/"
+                href="https://github.com/bstnfrmry/hanabi/"
                 rel="noopener noreferrer"
                 target="_blank"
               >
