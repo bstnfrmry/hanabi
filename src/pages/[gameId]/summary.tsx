@@ -174,7 +174,6 @@ export default function Summary(props: Props) {
                 });
 
                 await updateGame(nextGame);
-                await updateGame({ ...game, nextGameId: nextGameId });
 
                 logEvent("Game", "Game created");
 
