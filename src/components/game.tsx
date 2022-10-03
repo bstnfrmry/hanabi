@@ -18,7 +18,6 @@ import Txt, { TxtSize } from "~/components/ui/txt";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 import useLocalStorage from "~/hooks/localStorage";
 import { useNotifications } from "~/hooks/notifications";
-import usePrevious from "~/hooks/previous";
 import { useReplay } from "~/hooks/replay";
 import { useSession } from "~/hooks/session";
 import { useSoundEffects } from "~/hooks/sounds";
@@ -26,7 +25,7 @@ import { commitAction, getMaximumPossibleScore, getScore, joinGame, newGame, rec
 import { play } from "~/lib/ai";
 import { cheat } from "~/lib/ai-cheater";
 import { logEvent } from "~/lib/analytics";
-import { setNotification, setReaction, updateGame } from "~/lib/firebase";
+import { loadGame, setNotification, setReaction, updateGame } from "~/lib/firebase";
 import { uniqueId } from "~/lib/id";
 import IGameState, { GameMode, IAction, IGameHintsLevel, IGameStatus, IPlayer } from "~/lib/state";
 
@@ -183,16 +182,21 @@ export function Game(props: Props) {
     }
   }, [game.players.length]);
 
+  function changeToNextGame() {
+    router.push(`/${game.nextGameId}`).then(() => {
+      loadGame(game.nextGameId).then((newGame) => {
+        props.onGameChange(newGame);
+      });
+    });
+  }
+
   /**
    * Redirect players to next game
    */
-  const previousNextGameId = usePrevious(game ? game.nextGameId : null);
   useEffect(() => {
     if (!game.nextGameId) return;
-    if (!previousNextGameId) return;
 
     setDisplayStats(false);
-    router.push(`/${game.nextGameId}`);
   }, [game.nextGameId]);
 
   function onJoinGame(player: Omit<IPlayer, "id">) {
@@ -394,12 +398,16 @@ export function Game(props: Props) {
   async function onRestartGame() {
     const nextGame = recreateGame(game);
 
+    const updatedGame = { ...game, nextGameId: nextGame.id };
+    await updateGame(updatedGame);
+
     await updateGame(nextGame);
     onGameChange(nextGame);
 
     logEvent("Game", "Game recreated");
     router.push(`/${nextGame.id}`);
   }
+  const showNextGame = game.nextGameId && true;
 
   return (
     <>
@@ -517,8 +525,8 @@ export function Game(props: Props) {
                         primary
                         className="nowrap ma1 flex-1"
                         size={ButtonSize.TINY}
-                        text={t("newGame")}
-                        onClick={() => onRestartGame()}
+                        text={t(showNextGame ? "nextGame" : "newGame")}
+                        onClick={() => (showNextGame ? changeToNextGame() : onRestartGame())}
                       />
                     </div>
                     <div className="flex w-100-l">

@@ -2,6 +2,7 @@ export const en = {
   hanab: "Hanab",
   welcome: "Welcome",
   newGame: "New game",
+  nextGame: "Next Game",
   tagline: "Play Hanab online with friends!",
   subTagline: "Cooperative multiplayer card game available on phone, tablet & desktop",
   createRoom: "Create a room",
