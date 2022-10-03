@@ -90,7 +90,7 @@ const useSteps = () => {
           <Paragraph>
             {t(
               "learn.cooperation.1",
-              "Hanabs a cooperative game.\n\nYou play with other players to reach a common goal."
+              "Hanab is a cooperative game.\n\nYou play with other players to reach a common goal."
             )}
           </Paragraph>
           <Divider />
@@ -303,7 +303,7 @@ const useSteps = () => {
           <Paragraph>
             {t(
               "learn.ready.2",
-              "Hanabs a game with endless options and possibilities. There is no right choice when playing."
+              "Hanab is a game with endless options and possibilities. There is no right choice when playing."
             )}
           </Paragraph>
           <Paragraph>

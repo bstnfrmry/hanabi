@@ -193,7 +193,7 @@ export const de = {
   multicolor_plural: "bunte",
   orange_plural: "orangene",
   summary: "Zusammenfassung",
-  summarySubtitle: "Unser HanabSpiel",
+  summarySubtitle: "Unser Hanab Spiel",
   gameCompleted: "Spiel abgeschlossen in {{ gameDuration }}",
   result: "Unser Ergebnis",
   evolution: "Spielzüge",
