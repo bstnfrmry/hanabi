@@ -408,7 +408,10 @@ export function Game(props: Props) {
     logEvent("Game", "Game recreated");
     router.push(`/${nextGame.id}`);
   }
-  const showNextGame = game.nextGameId && true;
+  function liveGame() {
+    return game.originalGame || game;
+  }
+  const showNextGame = liveGame().nextGameId && true;
 
   return (
     <>
@@ -492,7 +495,7 @@ export function Game(props: Props) {
           </div>
         )}
 
-        {game.status === IGameStatus.OVER && (
+        {liveGame().status === IGameStatus.OVER && (
           <div className="flex flex-column bg-black-50 bt b--yellow pv3 ph6.5-m">
             <div>
               <div className="flex flex-column flex-row-l justify-between items-center w-100 pb2 ph2 ph0-l">
