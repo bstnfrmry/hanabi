@@ -56,7 +56,6 @@ export function Game(props: Props) {
   const replay = useReplay();
   const tutorial = useContext(TutorialContext);
 
-  console.log(`STATUS : ${game.status} ${game.status}`);
   useNotifications();
   useSoundEffects();
 
@@ -184,8 +183,9 @@ export function Game(props: Props) {
   }, [game.players.length]);
 
   function changeToNextGame() {
-    router.push(`/${game.nextGameId}`).then(() => {
-      loadGame(game.nextGameId).then((newGame) => {
+    const nextGameId = liveGame().nextGameId;
+    router.push(`/${nextGameId}`).then(() => {
+      loadGame(nextGameId).then((newGame) => {
         props.onGameChange(newGame);
       });
     });
