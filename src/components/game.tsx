@@ -56,6 +56,7 @@ export function Game(props: Props) {
   const replay = useReplay();
   const tutorial = useContext(TutorialContext);
 
+  console.log(`STATUS : ${game.status} ${game.status}`);
   useNotifications();
   useSoundEffects();
 
@@ -485,7 +486,7 @@ export function Game(props: Props) {
 
         {game.status === IGameStatus.ONGOING && game.options.tutorial && tutorial.isOver && <TutorialInstructions />}
 
-        {game.status === IGameStatus.ONGOING && replay.cursor !== null && (
+        {replay.cursor !== null && (
           <div className="flex flex-column bg-black-50 bt b--yellow pv3 ph6.5-m">
             <ReplayViewer onReplayCursorChange={onReplayCursorChange} onStopReplay={onStopReplay} />
           </div>
@@ -493,77 +494,71 @@ export function Game(props: Props) {
 
         {game.status === IGameStatus.OVER && (
           <div className="flex flex-column bg-black-50 bt b--yellow pv3 ph6.5-m">
-            {replay.cursor !== null && (
-              <ReplayViewer onReplayCursorChange={onReplayCursorChange} onStopReplay={onStopReplay} />
-            )}
-
-            {replay.cursor === null && (
-              <div>
-                <div className="flex flex-column flex-row-l justify-between items-center w-100 pb2 ph2 ph0-l">
-                  <div className="w-100 w-60-l">
+            <div>
+              <div className="flex flex-column flex-row-l justify-between items-center w-100 pb2 ph2 ph0-l">
+                <div className="w-100 w-60-l">
+                  <Txt
+                    className="db"
+                    size={TxtSize.MEDIUM}
+                    value={t("gameOver", { playedCardsLength: game.playedCards.length })}
+                  />
+                  {reachableScore && (
                     <Txt
-                      className="db"
-                      size={TxtSize.MEDIUM}
-                      value={t("gameOver", { playedCardsLength: game.playedCards.length })}
+                      multiline
+                      className="db mt1 lavender"
+                      size={TxtSize.SMALL}
+                      value={
+                        t("estimatedMaxScore", { reachableScore }) +
+                        ` ` +
+                        (reachableScore > game.playedCards.length ? t("keepPracticing") : t("congrats"))
+                      }
                     />
-                    {reachableScore && (
-                      <Txt
-                        multiline
-                        className="db mt1 lavender"
-                        size={TxtSize.SMALL}
-                        value={
-                          t("estimatedMaxScore", { reachableScore }) +
-                          ` ` +
-                          (reachableScore > game.playedCards.length ? t("keepPracticing") : t("congrats"))
-                        }
-                      />
-                    )}
+                  )}
+                </div>
+                <div className="flex w-100 w-40-l flex-wrap items-start mt2 mt0-l">
+                  <div className="flex w-100-l">
+                    <Button
+                      primary
+                      className="nowrap ma1 flex-1"
+                      size={ButtonSize.TINY}
+                      text={t(showNextGame ? "nextGame" : "newGame")}
+                      onClick={() => (showNextGame ? changeToNextGame() : onRestartGame())}
+                    />
                   </div>
-                  <div className="flex w-100 w-40-l flex-wrap items-start mt2 mt0-l">
-                    <div className="flex w-100-l">
-                      <Button
-                        primary
-                        className="nowrap ma1 flex-1"
-                        size={ButtonSize.TINY}
-                        text={t(showNextGame ? "nextGame" : "newGame")}
-                        onClick={() => (showNextGame ? changeToNextGame() : onRestartGame())}
-                      />
-                    </div>
-                    <div className="flex w-100-l">
-                      <Button
-                        outlined
-                        className="nowrap ma1 flex-1"
-                        size={ButtonSize.TINY}
-                        text={displayStats ? t("hideStats") : t("showStats")}
-                        onClick={() => onToggleStats()}
-                      />
-                      <Button
-                        outlined
-                        className="nowrap ma1 flex-1"
-                        size={ButtonSize.TINY}
-                        text={t("summary")}
-                        onClick={() => {
-                          router.push(`/${game.id}/summary`);
-                        }}
-                      />
-                    </div>
+                  <div className="flex w-100-l">
+                    <Button
+                      outlined
+                      className="nowrap ma1 flex-1"
+                      size={ButtonSize.TINY}
+                      text={displayStats ? t("hideStats") : t("showStats")}
+                      onClick={() => onToggleStats()}
+                    />
+                    <Button
+                      outlined
+                      className="nowrap ma1 flex-1"
+                      size={ButtonSize.TINY}
+                      text={t("summary")}
+                      onClick={() => {
+                        router.push(`/${game.id}/summary`);
+                      }}
+                    />
                   </div>
                 </div>
-                <Txt className="db tc" size={TxtSize.SMALL}>
-                  <Trans i18nKey="buymeacoffeePostGame">
-                    Support the game,{" "}
-                    <a
-                      className="lavender"
-                      href="https://www.buymeacoffee.com/hanabicards"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      buy us a coffee
-                    </a>
-                  </Trans>
-                </Txt>
               </div>
-            )}
+              <Txt className="db tc" size={TxtSize.SMALL}>
+                <Trans i18nKey="buymeacoffeePostGame">
+                  Support the game,{" "}
+                  <a
+                    className="lavender"
+                    href="https://www.buymeacoffee.com/hanabicards"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    buy us a coffee
+                  </a>
+                </Trans>
+              </Txt>
+            </div>
           </div>
         )}
       </div>
