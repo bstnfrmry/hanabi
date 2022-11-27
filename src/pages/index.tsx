@@ -54,6 +54,7 @@ export default function Home() {
       }}
     >
       <Head>
+        <title>Hanab</title>
         <link href="/" hrefLang="x-default" rel="alternate" />
         {Object.keys(Languages).map((locale) => (
           <link key={locale} href={`/${locale}`} hrefLang={locale} rel="alternate" />
