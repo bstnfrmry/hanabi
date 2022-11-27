@@ -184,6 +184,7 @@ export function Game(props: Props) {
 
   function changeToNextGame() {
     const nextGameId = liveGame().nextGameId;
+    onStopReplay();
     router.push(`/${nextGameId}`).then(() => {
       loadGame(nextGameId).then((newGame) => {
         props.onGameChange(newGame);
@@ -357,6 +358,7 @@ export function Game(props: Props) {
   }
 
   function onToggleStats() {
+    onStopReplay();
     setDisplayStats(!displayStats);
 
     selectArea({
@@ -397,9 +399,10 @@ export function Game(props: Props) {
   }, [replay.cursor, game]);
 
   async function onRestartGame() {
-    const nextGame = recreateGame(game);
+    const nextGame = recreateGame(liveGame());
 
-    const updatedGame = { ...game, nextGameId: nextGame.id };
+    const updatedGame = { ...liveGame(), nextGameId: nextGame.id };
+    onStopReplay();
     await updateGame(updatedGame);
 
     await updateGame(nextGame);
@@ -503,7 +506,7 @@ export function Game(props: Props) {
                   <Txt
                     className="db"
                     size={TxtSize.MEDIUM}
-                    value={t("gameOver", { playedCardsLength: game.playedCards.length })}
+                    value={t("gameOver", { playedCardsLength: liveGame().playedCards.length })}
                   />
                   {reachableScore && (
                     <Txt
