@@ -86,7 +86,7 @@ export default function Turn(props: Props) {
     textualTurn = isViewingOwnActions ? (
       turn.failed ? (
         <Trans i18nKey="youPlayedStrikeTurn">
-          You caused a strike playing
+          You caused a <span className="txt-strike">strike</span> playing
           <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
         </Trans>
       ) : (
@@ -97,7 +97,7 @@ export default function Turn(props: Props) {
       )
     ) : turn.failed ? (
       <Trans i18nKey="somebodyPlayedStrikeTurn">
-        {playerNameFrom} caused a strike playing
+        {playerNameFrom} caused a <span className="txt-strike">strike</span> playing
         <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
       </Trans>
     ) : (

@@ -82,6 +82,9 @@ button {
   border-color: var(--color-lavender);
 }
 
+.txt-strike {
+  color: var(--color-strikes);
+}
 .txt-red {
   color: var(--color-red);
 }
