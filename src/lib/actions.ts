@@ -153,6 +153,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
 
   // the function should be pure
   const s = cloneDeep(state) as IGameState;
+  let playFailed: boolean = null;
 
   const player = s.players[action.from];
 
@@ -164,6 +165,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
     /** PLAY */
     if (action.action === "play") {
       if (isPlayable(card, s.playedCards)) {
+        playFailed = false;
         s.playedCards.push(card);
         if (card.number === 5) {
           // play a 5, win a hint
@@ -171,6 +173,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
         }
       } else {
         // strike !
+        playFailed = true;
         s.tokens.strikes += 1;
         s.discardPile.push(card);
       }
@@ -211,7 +214,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   s.currentPlayer = (s.currentPlayer + 1) % s.options.playersCount;
 
   // update history
-  s.turnsHistory.push({ action, card: newCard });
+  s.turnsHistory.push({ action: action, card: newCard, failed: playFailed });
 
   if (isGameOver(s)) {
     s.status = IGameStatus.OVER;
