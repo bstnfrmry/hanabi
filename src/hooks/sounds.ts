@@ -43,6 +43,22 @@ export function useSoundEffects() {
     return () => clearTimeout(timeout);
   }, [hintsCount === previousHintsCount + 1]);
 
+  /**
+   * Play sound when gaining a strike token
+   */
+  const strikeCount = game ? game.tokens.strikes : 0;
+  const previousStrikeCount = usePrevious(strikeCount);
+  useEffect(() => {
+    if (isReplaying) return;
+    if (previousStrikeCount === undefined) return;
+
+    const timeout = setTimeout(() => {
+      playSound(`/static/sounds/strike.mp3`);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [strikeCount === previousStrikeCount + 1]);
+
   useEffect(() => {
     if (isReplaying) return;
     if (previousHintsCount === undefined) return;
