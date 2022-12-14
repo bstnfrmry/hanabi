@@ -84,12 +84,26 @@ export default function Turn(props: Props) {
     }
   } else if (turn.action.action === "play") {
     textualTurn = isViewingOwnActions ? (
-      <Trans i18nKey="youPlayedTurn">
-        You discarded your <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
+      turn.failed ? (
+        <Trans i18nKey="youPlayedStrikeTurn">
+          You caused a strike playing
+          <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
+        </Trans>
+      ) : (
+        <Trans i18nKey="youPlayedTurn">
+          You played
+          <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
+        </Trans>
+      )
+    ) : turn.failed ? (
+      <Trans i18nKey="somebodyPlayedStrikeTurn">
+        {playerNameFrom} caused a strike playing
+        <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
       </Trans>
     ) : (
       <Trans i18nKey="somebodyPlayedTurn">
-        {playerNameFrom} discarded their <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
+        {playerNameFrom} played
+        <TurnCard card={turn.action.card} context={ICardContext.PLAYED} />
       </Trans>
     );
 

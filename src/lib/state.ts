@@ -158,6 +158,7 @@ export type IAction = IDiscardAction | IPlayAction | IHintAction;
 export interface ITurn {
   action: IAction;
   card?: ICard;
+  failed?: boolean;
 }
 
 export interface IMessage {
