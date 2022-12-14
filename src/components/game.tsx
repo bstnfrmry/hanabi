@@ -183,8 +183,10 @@ export function Game(props: Props) {
   }, [game.players.length]);
 
   function changeToNextGame() {
-    router.push(`/${game.nextGameId}`).then(() => {
-      loadGame(game.nextGameId).then((newGame) => {
+    const nextGameId = liveGame().nextGameId;
+    onStopReplay();
+    router.push(`/${nextGameId}`).then(() => {
+      loadGame(nextGameId).then((newGame) => {
         props.onGameChange(newGame);
       });
     });
@@ -356,6 +358,7 @@ export function Game(props: Props) {
   }
 
   function onToggleStats() {
+    onStopReplay();
     setDisplayStats(!displayStats);
 
     selectArea({
@@ -396,9 +399,10 @@ export function Game(props: Props) {
   }, [replay.cursor, game]);
 
   async function onRestartGame() {
-    const nextGame = recreateGame(game);
+    const nextGame = recreateGame(liveGame());
 
-    const updatedGame = { ...game, nextGameId: nextGame.id };
+    const updatedGame = { ...liveGame(), nextGameId: nextGame.id };
+    onStopReplay();
     await updateGame(updatedGame);
 
     await updateGame(nextGame);
@@ -407,7 +411,10 @@ export function Game(props: Props) {
     logEvent("Game", "Game recreated");
     router.push(`/${nextGame.id}`);
   }
-  const showNextGame = game.nextGameId && true;
+  function liveGame() {
+    return game.originalGame || game;
+  }
+  const showNextGame = liveGame().nextGameId && true;
 
   return (
     <>
@@ -485,85 +492,79 @@ export function Game(props: Props) {
 
         {game.status === IGameStatus.ONGOING && game.options.tutorial && tutorial.isOver && <TutorialInstructions />}
 
-        {game.status === IGameStatus.ONGOING && replay.cursor !== null && (
+        {replay.cursor !== null && (
           <div className="flex flex-column bg-black-50 bt b--yellow pv3 ph6.5-m">
             <ReplayViewer onReplayCursorChange={onReplayCursorChange} onStopReplay={onStopReplay} />
           </div>
         )}
 
-        {game.status === IGameStatus.OVER && (
+        {liveGame().status === IGameStatus.OVER && (
           <div className="flex flex-column bg-black-50 bt b--yellow pv3 ph6.5-m">
-            {replay.cursor !== null && (
-              <ReplayViewer onReplayCursorChange={onReplayCursorChange} onStopReplay={onStopReplay} />
-            )}
-
-            {replay.cursor === null && (
-              <div>
-                <div className="flex flex-column flex-row-l justify-between items-center w-100 pb2 ph2 ph0-l">
-                  <div className="w-100 w-60-l">
+            <div>
+              <div className="flex flex-column flex-row-l justify-between items-center w-100 pb2 ph2 ph0-l">
+                <div className="w-100 w-60-l">
+                  <Txt
+                    className="db"
+                    size={TxtSize.MEDIUM}
+                    value={t("gameOver", { playedCardsLength: liveGame().playedCards.length })}
+                  />
+                  {reachableScore && (
                     <Txt
-                      className="db"
-                      size={TxtSize.MEDIUM}
-                      value={t("gameOver", { playedCardsLength: game.playedCards.length })}
+                      multiline
+                      className="db mt1 lavender"
+                      size={TxtSize.SMALL}
+                      value={
+                        t("estimatedMaxScore", { reachableScore }) +
+                        ` ` +
+                        (reachableScore > game.playedCards.length ? t("keepPracticing") : t("congrats"))
+                      }
                     />
-                    {reachableScore && (
-                      <Txt
-                        multiline
-                        className="db mt1 lavender"
-                        size={TxtSize.SMALL}
-                        value={
-                          t("estimatedMaxScore", { reachableScore }) +
-                          ` ` +
-                          (reachableScore > game.playedCards.length ? t("keepPracticing") : t("congrats"))
-                        }
-                      />
-                    )}
+                  )}
+                </div>
+                <div className="flex w-100 w-40-l flex-wrap items-start mt2 mt0-l">
+                  <div className="flex w-100-l">
+                    <Button
+                      primary
+                      className="nowrap ma1 flex-1"
+                      size={ButtonSize.TINY}
+                      text={t(showNextGame ? "nextGame" : "newGame")}
+                      onClick={() => (showNextGame ? changeToNextGame() : onRestartGame())}
+                    />
                   </div>
-                  <div className="flex w-100 w-40-l flex-wrap items-start mt2 mt0-l">
-                    <div className="flex w-100-l">
-                      <Button
-                        primary
-                        className="nowrap ma1 flex-1"
-                        size={ButtonSize.TINY}
-                        text={t(showNextGame ? "nextGame" : "newGame")}
-                        onClick={() => (showNextGame ? changeToNextGame() : onRestartGame())}
-                      />
-                    </div>
-                    <div className="flex w-100-l">
-                      <Button
-                        outlined
-                        className="nowrap ma1 flex-1"
-                        size={ButtonSize.TINY}
-                        text={displayStats ? t("hideStats") : t("showStats")}
-                        onClick={() => onToggleStats()}
-                      />
-                      <Button
-                        outlined
-                        className="nowrap ma1 flex-1"
-                        size={ButtonSize.TINY}
-                        text={t("summary")}
-                        onClick={() => {
-                          router.push(`/${game.id}/summary`);
-                        }}
-                      />
-                    </div>
+                  <div className="flex w-100-l">
+                    <Button
+                      outlined
+                      className="nowrap ma1 flex-1"
+                      size={ButtonSize.TINY}
+                      text={displayStats ? t("hideStats") : t("showStats")}
+                      onClick={() => onToggleStats()}
+                    />
+                    <Button
+                      outlined
+                      className="nowrap ma1 flex-1"
+                      size={ButtonSize.TINY}
+                      text={t("summary")}
+                      onClick={() => {
+                        router.push(`/${game.id}/summary`);
+                      }}
+                    />
                   </div>
                 </div>
-                <Txt className="db tc" size={TxtSize.SMALL}>
-                  <Trans i18nKey="buymeacoffeePostGame">
-                    Support the game,{" "}
-                    <a
-                      className="lavender"
-                      href="https://www.buymeacoffee.com/hanabicards"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      buy us a coffee
-                    </a>
-                  </Trans>
-                </Txt>
               </div>
-            )}
+              <Txt className="db tc" size={TxtSize.SMALL}>
+                <Trans i18nKey="buymeacoffeePostGame">
+                  Support the game,{" "}
+                  <a
+                    className="lavender"
+                    href="https://www.buymeacoffee.com/hanabicards"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    buy us a coffee
+                  </a>
+                </Trans>
+              </Txt>
+            </div>
           </div>
         )}
       </div>
