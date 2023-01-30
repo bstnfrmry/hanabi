@@ -315,4 +315,16 @@ export const en = {
       4: "The conventions mentioned afterwards are not part of the official rules, but rather a system some players created to be more efficient. If you'd like to discover those by yourself, you can leave this tutorial right now and jump right into a game.",
     },
   },
+  tutorialActions: {
+    beginning: {
+      cotent:
+        "At the beginning of the game, you know nothing about your hand, so discarding or playing a card could be dangerous.\nIt is safer to give a hint. Adam here has two playable cards:<3/>and<5/>.\nLet's tell him by hinting him 1s.",
+      todo: 'Tap Adam\'s game, select <1/>, then click "Hint"',
+    },
+    playFirstRed: {
+      cotent:
+        'Nice! Adam played his first card from the hint you gave him.\nJane also gave you a <3/> hint on 2 cards. It might mean those cards are interesting to play right now.\n<6>Convention: Left-most principle</6>When receiving a "play" hint on multiple cards, let\'s assume it the leftmost one is the interesting one.',
+      todo: "Select your game, then play your second card.",
+    },
+  },
 };
