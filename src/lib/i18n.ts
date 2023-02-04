@@ -10,6 +10,7 @@ import { nl } from "~/locales/nl";
 import { pt } from "~/locales/pt";
 import { ru } from "~/locales/ru";
 import { sk } from "~/locales/sk";
+import { zh } from "~/locales/zh";
 
 i18n
   .use(initReactI18next)
@@ -42,6 +43,9 @@ i18n
       },
       sk: {
         translation: sk,
+      },
+      zh: {
+        translation: zh,
       },
     },
     fallbackLng: "en",

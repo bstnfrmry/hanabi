@@ -13,6 +13,7 @@ export const Languages = {
   pt: "Português",
   de: "Deutsch",
   sk: "Slovenčina",
+  zh: "简体中文",
 };
 
 interface Props {
