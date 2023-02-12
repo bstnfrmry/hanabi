@@ -204,6 +204,7 @@ export const en = {
   tryOutButton: "Try this shuffle",
   tryOutAlternative: "You can also play with other setups and meet our AI on <1>hanab.cards</1>",
   back: "Back",
+  start: "Start!",
   statsPlayable: "playable",
   statsDiscardable: "discardable",
   statsDangerous: "dangerous",
