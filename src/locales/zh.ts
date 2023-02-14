@@ -160,8 +160,9 @@ export const zh = {
   rulesUsTitle: "我们是？",
   rulesUs:
     "我们是几个桌游爱好者。在2020居家期间，我们想要找一个远程一起玩的替代方案。\n因为我们既喜欢写代码、又爱玩华火，我们决定做一个移动端友好的在线版华火。\n\n👉 如果你也喜欢这个游戏，请像我们一样购买<2>实体版</2>来支持其创作者！",
+  howToContribute: "如何贡献？",
   rulesContact: "✉️ 如果你有任何问题或建议，<1>联系我们</1>",
-  rulesContributeRepo: "💻 如果你想要为本项目做贡献，我们也有<1>公共Github仓库</1>。",
+  rulesContributeRepo: "💻 如果你想要为本项目贡献，我们也有<1>公共Github仓库</1>。",
   rulesDiscordServer: "🗣 加入我们的Discord服务器来讨论新的功能和改进",
   rulesBuymeacoffee: "🙇‍♀️ 你也可以“给我们买杯咖啡”，支持我们并承担一部分服务器费用",
   noRoom: "没有可用房间",

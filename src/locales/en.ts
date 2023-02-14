@@ -166,6 +166,7 @@ export const en = {
   rulesUsTitle: "Who are we?",
   rulesUs:
     "We are a group of board-game addicts. Locked down in 2020, we were willing to find an alternative to play together remotely.\nSince we both have fun coding and playing Hanab, we decided to create an online mobile-friendly version of the game.\n\n👉 Like us, please buy the <2>physical version</2> to support its creator if you like this game!",
+  howToContribute: "How to contribute?",
   rulesContact: "✉️ <1>Contact us</1> if you have any question or suggestion",
   rulesContributeRepo: "💻 We also have a <1>public Github repository</1> if you'd like to contribute.",
   rulesDiscordServer: "🗣 Join our Discord server to discuss potential new features or improvements",
