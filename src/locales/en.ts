@@ -204,6 +204,7 @@ export const en = {
   tryOutButton: "Try this shuffle",
   tryOutAlternative: "You can also play with other setups and meet our AI on <1>hanab.cards</1>",
   back: "Back",
+  start: "Start!",
   statsPlayable: "playable",
   statsDiscardable: "discardable",
   statsDangerous: "dangerous",
@@ -318,4 +319,48 @@ export const en = {
       4: "The conventions mentioned afterwards are not part of the official rules, but rather a system some players created to be more efficient. If you'd like to discover those by yourself, you can leave this tutorial right now and jump right into a game.",
     },
   },
+  tutorialActions: {
+    beginning: {
+      content:
+        "At the beginning of the game, you know nothing about your hand, so discarding or playing a card could be dangerous.\nIt is safer to give a hint. Adam here has two playable cards:<3/>and<5/>.\nLet's tell him by hinting him 1s.",
+      todo: 'Tap Adam\'s game, select <1/>, then click "Hint"',
+    },
+    playFirstRed: {
+      content:
+        'Nice! Adam played his first card from the hint you gave him.\nJane also gave you a <3/> hint on 2 cards. It might mean those cards are interesting to play right now.\n<6>Convention: Left-most principle</6>When receiving a "play" hint on multiple cards, let\'s assume it the leftmost one is the interesting one.',
+      todo: "Select your game, then play your second card.",
+    },
+    playSecondRed: {
+      content:
+        "All right. We still know that our third card is red.\n<2>Convention: optimism</2>When receiving a hint on multiple cards, let's assume that they're all playable, one by one, from left to right. If it's not the case, let's trust our team to give us a \"stop\" hint to prevent us from making a mistake.\nLet's be optimisic and assume that our third card is <6/>",
+      todo: "Select your game, then play your third card.",
+    },
+    hint: {
+      content:
+        "We don't know anything about our hand and we still have 4 hints <1/> left to give hints.\n\nAdam know that his 3rd card is blue. Maybe that if you hint Jane about her <6/> and she plays it, Adam will understand he can play his <8/>",
+      todo: "Tap Jane's game and hint her <1/>s",
+    },
+    interpret: {
+      content:
+        "Hmmm, looks like Adam didn't understand you. No big deal though, no mistakes have been made.\nWe received a <3/> hint. Can you guess what it means?",
+      todo: "Interpret the hint you just received 😉",
+    },
+    discard: {
+      content:
+        "Things are progressing nicely, you already played 8 cards. However your team is running low on hints and you'll soon get stuck. In order to gain more hints, you'll have to start discarding cards.\n<2>Convention: right-most discard</2>Discarding a card can be risky since you could accidently throw away an important card and get stuck in the game. Always discard your unknown right-most card as it's the oldest one. Like so, if it was dangerous to discard, your teammates would have had time to let you know.\n",
+      todo: "Discard your right-most card",
+    },
+    play: {
+      content:
+        "Looks like your teammates are a bit wasteful. You're out of hints. They'll probably have to discard next turn.\n",
+      todo: "Play your first card",
+    },
+    save: {
+      content:
+        "😅 Adam just discarded <1/>. There's only one <3/> for each color in the deck so it should never be discarded!\n\nIt might have been predicted using the <8>right-most discard</8> convention. Adam had info about his latest card, so he chose to discard <10/> instead.\n\nAlways be mindful of what your teammates are likely to do next!",
+      todo: "Tell Jane about her <1/>",
+    },
+  },
+  tutorialComplete:
+    "That's it! You should be ready to play now. You can either finish this game or start a new one with friends!\n\nThanks for following along 🎉\n\nYou can access the complete rules and tour by taping the ☰ button",
 };
