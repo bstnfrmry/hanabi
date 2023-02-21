@@ -240,6 +240,9 @@ export const en = {
   learnHanabTime: "~5 mn",
   learnWhileWaiting: "Learn the basics of Hanab while waiting",
   learnHanabEnglish: "Learn Hanab - ",
+  userPreferences: "User Preferences",
+  soundOnStrike: "Play sound when a strike occurs",
+  playFireworksAtGameEnd: "Play fireworks at game end",
   learn: {
     welcome: {
       title: "Learn Hanab in 5 minutes",
