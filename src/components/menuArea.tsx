@@ -7,8 +7,6 @@ import { TutorialContext } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import { Modal } from "~/components/ui/modal";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import UserPreferencesDialog from "~/components/userPreferencesDialog";
-import { UserPreferences, useUserPreferences } from "~/hooks/userPreferences";
 
 interface Props {
   onCloseArea: () => void;
@@ -21,12 +19,7 @@ export default function MenuArea(props: Props) {
   const { reset } = useContext(TutorialContext);
   const router = useRouter();
   const { t } = useTranslation();
-  const [showUserPreferences, setShowUserPreferences] = useState(false);
-  const [userPreferences, setUserPreferences] = useUserPreferences();
 
-  function onPrefClick() {
-    setShowUserPreferences(true);
-  }
   function onMenuClick() {
     router.push("/");
   }
@@ -34,20 +27,6 @@ export default function MenuArea(props: Props) {
   function onTutorialClick() {
     reset();
     onCloseArea();
-  }
-
-  if (showUserPreferences) {
-    return (
-      <UserPreferencesDialog
-        saveUserPreferences={(userPreferences: UserPreferences) => {
-          setUserPreferences(userPreferences);
-        }}
-        userPreferences={userPreferences}
-        onCloseArea={() => {
-          setShowUserPreferences(false);
-        }}
-      />
-    );
   }
 
   return (
@@ -60,7 +39,6 @@ export default function MenuArea(props: Props) {
             <div className="mb4 mb5-l">
               <LanguageSelector />
             </div>
-            <Button className="mb3 w-100" size={ButtonSize.MEDIUM} text={t("userPreferences")} onClick={onPrefClick} />
             <Button className="mb3 w-100" size={ButtonSize.MEDIUM} text={t("menu")} onClick={onMenuClick} />
             <Button className="mb3 w-100" size={ButtonSize.MEDIUM} text={t("tutorial")} onClick={onTutorialClick} />
             <Button
