@@ -12,8 +12,8 @@ export function useSoundEffects() {
   const replay = useReplay();
   const selfPlayer = useSelfPlayer();
   const [userPreferences] = useUserPreferences();
-
   const isReplaying = replay.cursor !== null;
+  const previousTurnsPlayed = usePrevious((game.originalGame || game).turnsHistory.length);
 
   /**
    * Handle notification sounds.
@@ -54,6 +54,7 @@ export function useSoundEffects() {
     if (isReplaying) return;
     if (previousStrikeCount === undefined) return;
     if (!userPreferences.soundOnStrike) return;
+    if (game.turnsHistory.length <= previousTurnsPlayed) return;
 
     const timeout = setTimeout(() => {
       playSound(`/static/sounds/strike.mp3`);
