@@ -185,6 +185,7 @@ export function Game(props: Props) {
   function changeToNextGame() {
     const nextGameId = liveGame().nextGameId;
     onStopReplay();
+    setDisplayStats(false);
     router.push(`/${nextGameId}`).then(() => {
       loadGame(nextGameId).then((newGame) => {
         props.onGameChange(newGame);
