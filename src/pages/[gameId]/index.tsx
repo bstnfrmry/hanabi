@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { Game } from "~/components/game";
+import NoSSR from "~/components/NoSSR";
 import { TutorialProvider } from "~/components/tutorial";
 import useConnectivity from "~/hooks/connectivity";
 import { GameContext } from "~/hooks/game";
@@ -62,7 +63,9 @@ export default function Play(props: Props) {
       <GameContext.Provider value={game}>
         <SessionContext.Provider value={session}>
           <ReplayContext.Provider value={{ cursor: replayCursor, moveCursor: setReplayCursor }}>
-            <Game host={host} onGameChange={setGame} />
+            <NoSSR>
+              <Game host={host} onGameChange={setGame} />
+            </NoSSR>
           </ReplayContext.Provider>
         </SessionContext.Provider>
       </GameContext.Provider>
