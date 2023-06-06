@@ -12,7 +12,7 @@ const config = [
   {
     target: "serverless",
     i18n: {
-      locales: ["en", "fr", "es", "it", "nl", "ru", "pt", "de", "sk"],
+      locales: ["en", "fr", "es", "it", "nl", "ru", "pt", "de", "sk", "zh"],
       defaultLocale: "en",
     },
     images: {
