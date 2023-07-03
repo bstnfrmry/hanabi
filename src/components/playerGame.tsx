@@ -363,13 +363,15 @@ export default function PlayerGame(props: Props) {
                       }
                       id={action}
                       text={t(action)}
-                      onClick={() =>
+                      onClick={() => {
                         onCommitAction({
                           action: action as "discard" | "play",
                           from: selfPlayer.index,
                           cardIndex: selectedCard,
-                        })
-                      }
+                        });
+                        setPendingHint({ value: null, type: null } as IHintAction);
+                        selectCard(null);
+                      }}
                     />
                   ))}
                 </div>
@@ -414,14 +416,16 @@ export default function PlayerGame(props: Props) {
                 }
                 id="give-hint"
                 text={t("hint")}
-                onClick={() =>
+                onClick={() => {
                   onCommitAction({
                     action: "hint",
                     from: currentPlayer.index,
                     to: player.index,
                     ...pendingHint,
-                  })
-                }
+                  });
+                  setPendingHint({ value: null, type: null } as IHintAction);
+                  selectCard(null);
+                }}
               />
             </div>
           </div>
