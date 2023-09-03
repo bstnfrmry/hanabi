@@ -103,7 +103,8 @@ export type INumber = 1 | 2 | 3 | 4 | 5;
 export enum IHintLevel {
   IMPOSSIBLE = 0,
   POSSIBLE = 1,
-  SURE = 2,
+  CANDIDATE = 2,
+  SURE = 3,
 }
 
 // an array of 2 (direct hint), 1 (still possible), or 0 (impossible)
