@@ -2,7 +2,7 @@ import assert from "assert";
 import { cloneDeep, findIndex, flatMap, last, range, shuffle, zipObject } from "lodash";
 import mem from "mem";
 import { shuffle as shuffleSeed } from "shuffle-seed";
-import { generateShuffleSeed, readableUniqueId } from "./id";
+import { generateShuffleSeed, nextGameId } from "./id";
 import IGameState, {
   GameVariant,
   IAction,
@@ -462,7 +462,7 @@ export function newGame(options: IGameOptions): IGameState {
 export function recreateGame(game: IGameState) {
   let nextGame = newGame({
     ...game.options,
-    id: game.nextGameId || readableUniqueId(),
+    id: game.nextGameId || nextGameId(game.id),
     seed: generateShuffleSeed(),
   });
 
