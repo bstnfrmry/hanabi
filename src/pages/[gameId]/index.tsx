@@ -7,6 +7,7 @@ import useConnectivity from "~/hooks/connectivity";
 import { GameContext } from "~/hooks/game";
 import { ReplayContext } from "~/hooks/replay";
 import { Session, SessionContext } from "~/hooks/session";
+import { loadUserPreferences, UserPreferencesContext } from "~/hooks/userPreferences";
 import { loadGame, subscribeToGame } from "~/lib/firebase";
 import withSession, { getPlayerIdFromSession } from "~/lib/session";
 import IGameState from "~/lib/state";
@@ -43,6 +44,7 @@ export default function Play(props: Props) {
   const [game, setGame] = useState<IGameState>(initialGame);
   const [replayCursor, setReplayCursor] = useState<number>(null);
 
+  const [userPreferences, setUserPreferences] = useState(loadUserPreferences());
   /**
    * Load game from database
    */
@@ -64,7 +66,9 @@ export default function Play(props: Props) {
         <SessionContext.Provider value={session}>
           <ReplayContext.Provider value={{ cursor: replayCursor, moveCursor: setReplayCursor }}>
             <NoSSR>
-              <Game host={host} onGameChange={setGame} />
+              <UserPreferencesContext.Provider value={[userPreferences, setUserPreferences]}>
+                <Game host={host} onGameChange={setGame} />
+              </UserPreferencesContext.Provider>
             </NoSSR>
           </ReplayContext.Provider>
         </SessionContext.Provider>

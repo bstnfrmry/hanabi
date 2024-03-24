@@ -21,6 +21,7 @@ import { useNotifications } from "~/hooks/notifications";
 import { useReplay } from "~/hooks/replay";
 import { useSession } from "~/hooks/session";
 import { useSoundEffects } from "~/hooks/sounds";
+import { useUserPreferences } from "~/hooks/userPreferences";
 import { commitAction, getMaximumPossibleScore, getScore, joinGame, newGame, recreateGame } from "~/lib/actions";
 import { play } from "~/lib/ai";
 import { cheat } from "~/lib/ai-cheater";
@@ -55,7 +56,7 @@ export function Game(props: Props) {
   const selfPlayer = useSelfPlayer();
   const replay = useReplay();
   const tutorial = useContext(TutorialContext);
-
+  const [userPreferences] = useUserPreferences();
   useNotifications();
   useSoundEffects();
 
@@ -151,7 +152,7 @@ export function Game(props: Props) {
    */
   useEffect(() => {
     if (game.status !== IGameStatus.OVER) return;
-
+    if (!userPreferences.showFireworksAtGameEnd) return;
     const fireworks = new Fireworks(fireworksRef.current, {
       maxRockets: 5, // max # of rockets to spawn
       rocketSpawnInterval: 150, // milliseconds to check if new rockets should spawn
