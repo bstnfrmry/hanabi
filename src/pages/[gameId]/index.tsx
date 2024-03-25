@@ -1,16 +1,12 @@
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { Game } from "~/components/game";
+import React, { useState } from "react";
 import NoSSR from "~/components/NoSSR";
 import { TutorialProvider } from "~/components/tutorial";
-import useConnectivity from "~/hooks/connectivity";
-import { GameContext } from "~/hooks/game";
 import { ReplayContext } from "~/hooks/replay";
 import { Session, SessionContext } from "~/hooks/session";
-import { loadUserPreferences, UserPreferencesContext } from "~/hooks/userPreferences";
-import { loadGame, subscribeToGame } from "~/lib/firebase";
+import { loadGame } from "~/lib/firebase";
 import withSession, { getPlayerIdFromSession } from "~/lib/session";
 import IGameState from "~/lib/state";
+import { SsrFreeGame } from "~/pages/[gameId]/ssrFreeGame";
 
 export const getServerSideProps = withSession(async function ({ req, params }) {
   const game = await loadGame(params.gameId);
@@ -39,40 +35,18 @@ interface Props {
 export default function Play(props: Props) {
   const { game: initialGame, session, host } = props;
 
-  const online = useConnectivity();
-  const router = useRouter();
-  const [game, setGame] = useState<IGameState>(initialGame);
   const [replayCursor, setReplayCursor] = useState<number>(null);
 
-  const [userPreferences, setUserPreferences] = useState(loadUserPreferences());
-  /**
-   * Load game from database
-   */
-  useEffect(() => {
-    if (!online) return;
-
-    return subscribeToGame(game.id as string, (game) => {
-      if (!game) {
-        return router.push("/404");
-      }
-
-      setGame({ ...game, synced: true });
-    });
-  }, [online, game.id]);
-
   return (
+    // eslint-disable-next-line react/jsx-no-undef
     <TutorialProvider>
-      <GameContext.Provider value={game}>
-        <SessionContext.Provider value={session}>
-          <ReplayContext.Provider value={{ cursor: replayCursor, moveCursor: setReplayCursor }}>
-            <NoSSR>
-              <UserPreferencesContext.Provider value={[userPreferences, setUserPreferences]}>
-                <Game host={host} onGameChange={setGame} />
-              </UserPreferencesContext.Provider>
-            </NoSSR>
-          </ReplayContext.Provider>
-        </SessionContext.Provider>
-      </GameContext.Provider>
+      <SessionContext.Provider value={session}>
+        <ReplayContext.Provider value={{ cursor: replayCursor, moveCursor: setReplayCursor }}>
+          <NoSSR>
+            <SsrFreeGame game={initialGame} host={host}></SsrFreeGame>
+          </NoSSR>
+        </ReplayContext.Provider>
+      </SessionContext.Provider>
     </TutorialProvider>
   );
 }
