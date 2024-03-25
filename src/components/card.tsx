@@ -1,9 +1,8 @@
 import classnames from "classnames";
 import React, { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode, useState } from "react";
-import Popover from "react-popover";
 import ColorSymbol from "~/components/colorSymbol";
 import Hint from "~/components/hint";
-import Turn from "~/components/turn";
+import { ReceivedHintsPopover } from "~/components/receivedHintsPopover";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
 import useLocalStorage from "~/hooks/localStorage";
@@ -207,7 +206,11 @@ export default function Card(props: Props) {
       // This try/catch aims to prevent it and inhibate the error.
     }
   }
+  function onActivatePopup(shouldActivate: boolean) {
+    return setIsHintPopoverOpen(shouldActivate);
+  }
 
+  const hints = card.receivedHints;
   return (
     <CardWrapper
       className={classnames({ "bw1 z-5": selected }, className)}
@@ -240,32 +243,8 @@ export default function Card(props: Props) {
       )}
 
       {/* Whether the card has received hints */}
-      {position !== null && card.receivedHints?.length > 0 && (
-        <Popover
-          body={
-            <div className="flex items-center justify-center b--yellow ba bw1 bg-black pa2 pr3 br2">
-              <div className="flex flex-column">
-                {card?.receivedHints?.map((turn, i) => {
-                  return (
-                    <div key={i} className="nb1">
-                      <Turn showDrawn={false} showPosition={false} turn={turn} />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          }
-          className="z-999"
-          isOpen={isHintPopoverOpen}
-          onOuterAction={() => setIsHintPopoverOpen(false)}
-        >
-          <div
-            className="absolute right-0 top-0 bg-hints br--bottom br--left br-100"
-            style={{ width: "20%", height: "20%" }}
-            onMouseEnter={() => setIsHintPopoverOpen(true)}
-            onMouseLeave={() => setIsHintPopoverOpen(false)}
-          />
-        </Popover>
+      {position !== null && hints?.length > 0 && (
+        <ReceivedHintsPopover hints={hints} open={isHintPopoverOpen} onActivationChange={onActivatePopup} />
       )}
 
       {/* show positive hints with a larger type */}
