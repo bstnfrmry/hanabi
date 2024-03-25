@@ -12,10 +12,12 @@ const DefaultPreferences = {
   showFireworksAtGameEnd: true,
 };
 export function loadUserPreferences(): UserPreferences {
-  const preferenceJson = window.localStorage.getItem("userPreferences");
-  if (preferenceJson) {
-    const loadedPreferences = JSON.parse(preferenceJson);
-    return { ...DefaultPreferences, ...loadedPreferences };
+  if (window) {
+    const preferenceJson = window.localStorage.getItem("userPreferences");
+    if (preferenceJson) {
+      const loadedPreferences = JSON.parse(preferenceJson);
+      return { ...DefaultPreferences, ...loadedPreferences };
+    }
   }
   return DefaultPreferences;
 }
