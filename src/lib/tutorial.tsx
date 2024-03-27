@@ -3,7 +3,15 @@ import { Trans, useTranslation } from "react-i18next";
 import Card, { CardSize, ICardContext } from "~/components/card";
 import Vignette from "~/components/vignette";
 import { useGame } from "~/hooks/game";
-import IGameState, { IAction, IColor, IHintType, INumber } from "~/lib/state";
+import IGameState, {
+  IAction,
+  IColor,
+  IHintType,
+  INumber,
+  isDiscardAction,
+  isHintAction,
+  isPlayAction,
+} from "~/lib/state";
 
 export type TutorialAction = { action: IAction; content: ReactNode; todo: ReactNode };
 
@@ -47,15 +55,15 @@ export function isTutorialAction(game: IGameState, tutAction: IAction, action: I
     return false;
   }
 
-  if (tutAction.action === "hint" && action.action === "hint") {
+  if (isHintAction(tutAction) && isHintAction(action)) {
     return tutAction.to === action.to && tutAction.type === action.type && tutAction.value === action.value;
   }
 
-  if (tutAction.action === "discard" && action.action === "discard") {
+  if (isDiscardAction(tutAction) && isDiscardAction(action)) {
     return tutAction.cardIndex === action.cardIndex;
   }
 
-  if (tutAction.action === "play" && action.action === "play") {
+  if (isPlayAction(tutAction) && isPlayAction(action)) {
     return tutAction.cardIndex === action.cardIndex;
   }
 }
@@ -111,7 +119,7 @@ export function useTutorialAction() {
           right. If it's not the case, let's trust our team to give us a "stop" hint to prevent us from making a
           mistake.
           <br />
-          Let's be optimisic and assume that our third card is {card(IColor.RED, 2)}
+          Let's be optimistic and assume that our third card is {card(IColor.RED, 2)}
         </Trans>
       ),
       todo: t("tutorialActions.playSecondRed.todo", "Select your game, then play your third card."),
