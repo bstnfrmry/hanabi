@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import NoSSR from "~/components/NoSSR";
+import GameIndex from "~/components/GameIndex";
 import { TutorialProvider } from "~/components/tutorial";
 import { ReplayContext } from "~/hooks/replay";
 import { Session, SessionContext } from "~/hooks/session";
 import { loadGame } from "~/lib/firebase";
 import withSession, { getPlayerIdFromSession } from "~/lib/session";
 import IGameState from "~/lib/state";
-import GameIndex from "~/pages/[gameId]/ssrFreeGame";
 
 export const getServerSideProps = withSession(async function ({ req, params }) {
   const game = await loadGame(params.gameId);
@@ -42,9 +41,7 @@ export default function Play(props: Props) {
     <TutorialProvider>
       <SessionContext.Provider value={session}>
         <ReplayContext.Provider value={{ cursor: replayCursor, moveCursor: setReplayCursor }}>
-          <NoSSR>
-            <GameIndex game={initialGame} host={host}></GameIndex>
-          </NoSSR>
+          <GameIndex game={initialGame} host={host}></GameIndex>
         </ReplayContext.Provider>
       </SessionContext.Provider>
     </TutorialProvider>

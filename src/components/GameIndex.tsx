@@ -8,7 +8,7 @@ import { loadUserPreferences, UserPreferencesContext } from "~/hooks/userPrefere
 import { subscribeToGame } from "~/lib/firebase";
 import IGameState from "~/lib/state";
 
-function SsrFreeGame(props: { host: string; game: IGameState }) {
+function SsrFreeGameIndex(props: { host: string; game: IGameState }) {
   const { game: initialGame, host } = props;
   const [userPreferences, setUserPreferences] = useState(loadUserPreferences());
   const [game, setGame] = useState<IGameState>(initialGame);
@@ -38,7 +38,7 @@ function SsrFreeGame(props: { host: string; game: IGameState }) {
   );
 }
 
-const GameIndex = dynamic(() => Promise.resolve(SsrFreeGame), {
+const GameIndex = dynamic(() => Promise.resolve(SsrFreeGameIndex), {
   ssr: false,
 });
 export default GameIndex;
