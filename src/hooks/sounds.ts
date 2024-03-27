@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 import usePrevious from "~/hooks/previous";
 import { useReplay } from "~/hooks/replay";
+import { useUserPreferences } from "~/hooks/userPreferences";
 import { setNotification } from "~/lib/firebase";
 import { playSound, vibrate } from "~/lib/sound";
 
@@ -10,6 +11,8 @@ export function useSoundEffects() {
   const game = useGame();
   const replay = useReplay();
   const selfPlayer = useSelfPlayer();
+  const [userPreferences] = useUserPreferences();
+
   const isReplaying = replay.cursor !== null;
   const previousTurnsPlayed = usePrevious((game.originalGame || game).turnsHistory.length);
 
@@ -52,6 +55,7 @@ export function useSoundEffects() {
     if (isReplaying) return;
     if (previousStrikeCount === undefined) return;
     if (game.turnsHistory.length <= previousTurnsPlayed) return;
+    if (!userPreferences.soundOnStrike) return;
 
     const timeout = setTimeout(() => {
       playSound(`/static/sounds/strike.mp3`);
