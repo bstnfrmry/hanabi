@@ -17,6 +17,8 @@ import IGameState, {
   IMessage,
   INumber,
   IPlayer,
+  isCardAction,
+  isHintAction,
 } from "./state";
 
 export const numbers: INumber[] = [1, 2, 3, 4, 5];
@@ -142,9 +144,9 @@ export function isGameOver(state: IGameState) {
   );
 }
 
-export function commitAction(state: IGameState, action: IAction): IGameState {
+export function commitAction<A extends IAction>(state: IGameState, action: A): IGameState {
   const actionIsntFromCurrentPlayer = action.from !== state.currentPlayer;
-  const isSelfHinting = action.action === "hint" && action.from == action.to;
+  const isSelfHinting = isHintAction(action) && action.from == action.to;
   const isHintingWithoutTokens = action.action === "hint" && state.tokens.hints === 0;
 
   if (actionIsntFromCurrentPlayer || isHintingWithoutTokens || isSelfHinting) {
@@ -158,7 +160,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   const player = s.players[action.from];
 
   let newCard = null as ICard;
-  if (action.action === "discard" || action.action === "play") {
+  if (isCardAction(action)) {
     // remove the card from hand
     const [card] = player.hand.splice(action.cardIndex, 1);
     action.card = card;
@@ -196,7 +198,7 @@ export function commitAction(state: IGameState, action: IAction): IGameState {
   }
 
   /** HINT */
-  if (action.action === "hint") {
+  if (isHintAction(action)) {
     s.tokens.hints -= 1;
 
     const hand = s.players[action.to].hand;

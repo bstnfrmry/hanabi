@@ -21,6 +21,7 @@ import IGameState, {
   GameVariant,
   IAction,
   ICard,
+  ICardAction,
   IColor,
   IGameStatus,
   IHintAction,

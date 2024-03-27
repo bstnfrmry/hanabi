@@ -1,6 +1,20 @@
 import { cloneDeep, filter, findLastIndex } from "lodash";
 import { commitAction, getColors, getPlayedCardsPile, getStateAtTurn, isPlayable, numbers } from "./actions";
-import IGameState, { IAction, ICard, ICardHint, IHintAction, IHintLevel, INumber, IColor, IPlayer, GameVariant } from "./state";
+import IGameState, {
+  GameVariant,
+  IAction,
+  ICard,
+  ICardHint,
+  IColor,
+  IDiscardAction,
+  IHintAction,
+  IHintLevel,
+  INumber,
+  IPlayAction,
+  IPlayer,
+  isHintAction,
+  isPlayAction,
+} from "./state";
 
 export enum IDeductionStatus {
   PLAYABLE = 0, // the card value is such that it can be played right now
@@ -28,8 +42,10 @@ export interface IHiddenCard {
 }
 
 export function isCriticalCard(card: ICard, state: IGameState): boolean {
-  return (card.color === IColor.RAINBOW && state.options.variant === GameVariant.CRITICAL_RAINBOW)
-    || card.color === IColor.MULTICOLOR;
+  return (
+    (card.color === IColor.RAINBOW && state.options.variant === GameVariant.CRITICAL_RAINBOW) ||
+    card.color === IColor.MULTICOLOR
+  );
 }
 
 function identicalCardCount(card: ICard, state: IGameState): number {
@@ -54,9 +70,9 @@ export function isCardDangerous(card: ICard, state: IGameState): boolean {
     return true;
   }
 
-  const discarded = state.discardPile.filter(c => c.color === card.color && c.number === card.number);
+  const discarded = state.discardPile.filter((c) => c.color === card.color && c.number === card.number);
   if (discarded.length === identicalCardCount(card, state) - 1) {
-      return true;
+    return true;
   }
 
   return false;
@@ -72,7 +88,7 @@ export function isCardEverPlayable(card: ICard, state: IGameState): boolean {
     // e.g. the game pile is a 3 Red, the 2 4s in the discard, and I have a 5 Red
     for (let i = playedCardsPile[card.color] + 1; i < card.number; i++) {
       const discarded = filter(state.discardPile, (e) => e.color === card.color && e.number === i);
-      const cardCount = identicalCardCount({color: card.color, number: i as INumber} as ICard, state);
+      const cardCount = identicalCardCount({ color: card.color, number: i as INumber } as ICard, state);
       if (discarded.length === cardCount) {
         return false;
       }
@@ -149,12 +165,9 @@ export interface IDeduction extends ICard {
 export type IGameView = IGameState & { gameViews: IPlayerView[] };
 
 export function getLastOptimistCardOfPlayer(state: IGameState, player: number): ICard | null {
-  const lastTimeHinted = findLastIndex(state.turnsHistory, (g) => g.action.action === "hint" && g.action.to === player);
+  const lastTimeHinted = findLastIndex(state.turnsHistory, (g) => isHintAction(g.action) && g.action.to === player);
 
-  const lastTimePlayed = findLastIndex(
-    state.turnsHistory,
-    (g) => g.action.action === "play" && g.action.from === player
-  );
+  const lastTimePlayed = findLastIndex(state.turnsHistory, (g) => isPlayAction(g.action) && g.action.from === player);
 
   if (lastTimeHinted === -1 || lastTimePlayed > lastTimeHinted) {
     return null;
@@ -206,7 +219,7 @@ export function commitViewAction(state: IGameView, action: IAction): IGameView {
   return newState;
 }
 
-function findGivableHint(hand: ICard[], pIndex: number, state: IGameState): IAction | undefined {
+function findGivableHint(hand: ICard[], pIndex: number, state: IGameState): IHintAction | undefined {
   // find the first playable card and give a hint on it.
   // if possible, give an optimist hint.
 
@@ -344,7 +357,7 @@ export function chooseAction(state: IGameView): IAction {
         action: "discard",
         from: state.currentPlayer,
         cardIndex: discardableIndex,
-      };
+      } as IDiscardAction;
     }
   }
 
@@ -359,7 +372,7 @@ export function chooseAction(state: IGameView): IAction {
         to: pIndex,
         type: "number",
         value: 5,
-      };
+      } as IHintAction;
     }
     // if next player has no 5, give a hint on 2s (positive or negative)
     else {
@@ -369,7 +382,7 @@ export function chooseAction(state: IGameView): IAction {
         to: pIndex,
         type: "number",
         value: 2,
-      };
+      } as IHintAction;
     }
   }
 
@@ -377,7 +390,7 @@ export function chooseAction(state: IGameView): IAction {
     action: "play",
     from: state.currentPlayer,
     cardIndex: 0,
-  };
+  } as IPlayAction;
 }
 
 function isLastDiscardableCard(hand: IHiddenCard[], cardIndex: number, state: IGameState) {
@@ -443,7 +456,7 @@ function findBestDiscardIndex(playerView: IPlayerView, state: IGameState) {
 
 export function play(state: IGameState): IGameState {
   // play an AI action as the current player
-  // @todo this gameview should be persisted from action to action,
+  // @todo this game view should be persisted from action to action,
   // we commit
   const gameView = gameStateToGameView(state);
   const action = chooseAction(gameView);
