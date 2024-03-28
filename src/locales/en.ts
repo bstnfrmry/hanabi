@@ -1,4 +1,5 @@
 export const en = {
+  codedHintMarkers: "Coded hint markers on cards",
   hanab: "Hanab",
   welcome: "Welcome",
   newGame: "New game",

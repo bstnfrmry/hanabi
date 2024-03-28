@@ -2,7 +2,7 @@ import classnames from "classnames";
 import React, { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode, useState } from "react";
 import ColorSymbol from "~/components/colorSymbol";
 import Hint from "~/components/hint";
-import { ReceivedHintsPopover } from "~/components/receivedHintsPopover";
+import { ReceivedHints } from "~/components/receivedHintsPopover";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
 import useLocalStorage from "~/hooks/localStorage";
@@ -183,9 +183,9 @@ export default function Card(props: Props) {
   } = props;
 
   const game = useGame();
-  const [isHintPopoverOpen, setIsHintPopoverOpen] = useState(false);
+  const [allHintsPopoverIsOpen, setAllHintsPopoverIsOpen] = useState(false);
   const longPressProps = useLongPress(() => {
-    setIsHintPopoverOpen(true);
+    setAllHintsPopoverIsOpen(true);
   });
   const [colorBlindMode] = useLocalStorage("colorBlindMode", false);
 
@@ -206,10 +206,6 @@ export default function Card(props: Props) {
       // This try/catch aims to prevent it and inhibate the error.
     }
   }
-  function onActivatePopup(shouldActivate: boolean) {
-    return setIsHintPopoverOpen(shouldActivate);
-  }
-
   const hints = card.receivedHints;
   return (
     <CardWrapper
@@ -243,8 +239,15 @@ export default function Card(props: Props) {
       )}
 
       {/* Whether the card has received hints */}
-      {position !== null && hints?.length > 0 && (
-        <ReceivedHintsPopover hints={hints} open={isHintPopoverOpen} onActivationChange={onActivatePopup} />
+      {position !== null && (
+        <ReceivedHints
+          allHintsOpen={allHintsPopoverIsOpen}
+          hints={hints}
+          large={size === CardSize.LARGE}
+          onActivationChange={function (shouldActivate: boolean) {
+            return setAllHintsPopoverIsOpen(shouldActivate);
+          }}
+        />
       )}
 
       {/* show positive hints with a larger type */}
