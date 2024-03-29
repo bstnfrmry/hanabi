@@ -21,6 +21,10 @@ export default function UserPreferencesDialog({ onCloseArea, userPreferences, sa
     const modifiedPreferences = { ...userPreferences, showFireworksAtGameEnd: !userPreferences.showFireworksAtGameEnd };
     saveUserPreferences(modifiedPreferences);
   }
+  function toggleColorBlindMode() {
+    const modifiedPreferences = { ...userPreferences, colorBlindMode: !userPreferences.colorBlindMode };
+    saveUserPreferences(modifiedPreferences);
+  }
 
   return (
     <Modal isOpen onRequestClose={() => onCloseArea()}>
@@ -41,6 +45,11 @@ export default function UserPreferencesDialog({ onCloseArea, userPreferences, sa
               />
               &nbsp;
               <Txt value={t("playFireworksAtGameEnd")} />
+            </div>
+            <div className="flex flex-row justify-start-l items-center">
+              <Checkbox checked={userPreferences.colorBlindMode} onChange={() => toggleColorBlindMode()} />
+              &nbsp;
+              <Txt value={t("colorBlindMode")} />
             </div>
           </div>
         </div>

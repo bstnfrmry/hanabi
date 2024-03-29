@@ -2,7 +2,7 @@ import classnames from "classnames";
 import React from "react";
 import ColorSymbol from "~/components/colorSymbol";
 import Txt from "~/components/ui/txt";
-import { useGame } from "~/hooks/game";
+import { useUserPreferences } from "~/hooks/userPreferences";
 import { IColor, IHintLevel, IHintType, INumber } from "~/lib/state";
 
 interface Props {
@@ -15,10 +15,10 @@ interface Props {
 export default function Hint(props: Props) {
   const { type, value, hint, className } = props;
 
-  const game = useGame();
+  const preferences = useUserPreferences();
 
   const color = type === "color" ? value : "white";
-  const displaySymbol = game.options.colorBlindMode && type === "color";
+  const displaySymbol = preferences.colorBlindMode && type === "color";
 
   return (
     <div

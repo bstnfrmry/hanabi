@@ -56,7 +56,7 @@ export function Game(props: Props) {
   const selfPlayer = useSelfPlayer();
   const replay = useReplay();
   const tutorial = useContext(TutorialContext);
-  const [userPreferences] = useUserPreferences();
+  const userPreferences = useUserPreferences();
   useNotifications();
   useSoundEffects();
 
@@ -120,7 +120,6 @@ export function Game(props: Props) {
       botsWait: 1000,
       turnsHistory: false,
       gameMode: GameMode.NETWORK,
-      colorBlindMode: game.options.colorBlindMode,
     });
 
     game.players.forEach((player) => {

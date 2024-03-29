@@ -46,7 +46,7 @@ program
         const maxPossibleScore = getMaximumPossibleScore(fullState);
         const playersCount = fullState.players.length;
         const variant = fullState.options.variant;
-        const colorblindMode = fullState.options.colorBlindMode ?? false;
+        const colorblindMode = false;
         const messagesCount = fullState.messages?.length ?? 0;
 
         await sequelize.query(`

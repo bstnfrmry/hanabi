@@ -233,6 +233,7 @@ export const en = {
   message: "<0></0>: <1></1>",
   colorBlindMode: "Color Blind Mode",
   colorBlindModeSubtext: "Display symbols on top of cards to help distinguish colors",
+  colorBlindModeChangeNote: "Note: Color Blind Mode is now set on a per browser basis in the User Preferences.",
   pageNotFound: "Page not found",
   contributeLanguage: "Contribute!",
   buymeacoffeePostGame: "Support the game, <2>buy us a coffee</2>",

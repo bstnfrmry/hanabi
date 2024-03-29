@@ -8,7 +8,7 @@ import Button, { ButtonSize } from "~/components/ui/button";
 import { Modal } from "~/components/ui/modal";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import UserPreferencesDialog from "~/components/userPreferencesDialog";
-import { UserPreferences, useUserPreferences } from "~/hooks/userPreferences";
+import { useEditableUserPreferences, UserPreferences } from "~/hooks/userPreferences";
 
 interface Props {
   onCloseArea: () => void;
@@ -22,7 +22,7 @@ export default function MenuArea(props: Props) {
   const router = useRouter();
   const { t } = useTranslation();
   const [showUserPreferences, setShowUserPreferences] = useState(false);
-  const [userPreferences, setUserPreferences] = useUserPreferences();
+  const [userPreferences, setUserPreferences] = useEditableUserPreferences();
 
   function onPrefClick() {
     setShowUserPreferences(true);
