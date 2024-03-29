@@ -1,6 +1,16 @@
 import { cloneDeep, filter, findLastIndex } from "lodash";
 import { commitAction, getColors, getPlayedCardsPile, getStateAtTurn, isPlayable, numbers } from "./actions";
-import IGameState, { IAction, ICard, ICardHint, IHintAction, IHintLevel, INumber, IColor, IPlayer, GameVariant } from "./state";
+import IGameState, {
+  GameVariant,
+  IAction,
+  ICard,
+  ICardHint,
+  IColor,
+  IHintAction,
+  IHintLevel,
+  INumber,
+  IPlayer,
+} from "./state";
 
 export enum IDeductionStatus {
   PLAYABLE = 0, // the card value is such that it can be played right now
@@ -28,8 +38,10 @@ export interface IHiddenCard {
 }
 
 export function isCriticalCard(card: ICard, state: IGameState): boolean {
-  return (card.color === IColor.RAINBOW && state.options.variant === GameVariant.CRITICAL_RAINBOW)
-    || card.color === IColor.MULTICOLOR;
+  return (
+    (card.color === IColor.RAINBOW && state.options.variant === GameVariant.CRITICAL_RAINBOW) ||
+    card.color === IColor.MULTICOLOR
+  );
 }
 
 function identicalCardCount(card: ICard, state: IGameState): number {
@@ -54,9 +66,9 @@ export function isCardDangerous(card: ICard, state: IGameState): boolean {
     return true;
   }
 
-  const discarded = state.discardPile.filter(c => c.color === card.color && c.number === card.number);
+  const discarded = state.discardPile.filter((c) => c.color === card.color && c.number === card.number);
   if (discarded.length === identicalCardCount(card, state) - 1) {
-      return true;
+    return true;
   }
 
   return false;
@@ -72,7 +84,7 @@ export function isCardEverPlayable(card: ICard, state: IGameState): boolean {
     // e.g. the game pile is a 3 Red, the 2 4s in the discard, and I have a 5 Red
     for (let i = playedCardsPile[card.color] + 1; i < card.number; i++) {
       const discarded = filter(state.discardPile, (e) => e.color === card.color && e.number === i);
-      const cardCount = identicalCardCount({color: card.color, number: i as INumber} as ICard, state);
+      const cardCount = identicalCardCount({ color: card.color, number: i as INumber } as ICard, state);
       if (discarded.length === cardCount) {
         return false;
       }

@@ -11,7 +11,7 @@ export function useSoundEffects() {
   const game = useGame();
   const replay = useReplay();
   const selfPlayer = useSelfPlayer();
-  const [userPreferences] = useUserPreferences();
+  const userPreferences = useUserPreferences();
 
   const isReplaying = replay.cursor !== null;
   const previousTurnsPlayed = usePrevious((game.originalGame || game).turnsHistory.length);

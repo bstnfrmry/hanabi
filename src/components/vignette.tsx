@@ -3,6 +3,7 @@ import React, { CSSProperties } from "react";
 import ColorSymbol from "~/components/colorSymbol";
 import Txt from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
+import { useUserPreferences } from "~/hooks/userPreferences";
 import { GameVariant, IColor, IHintAction, IHintType } from "~/lib/state";
 
 interface Props {
@@ -18,8 +19,8 @@ export default function Vignette(props: Props) {
   const { type, value, onClick, className, selected = false } = props;
 
   const game = useGame();
-
-  const displaySymbol = game?.options?.colorBlindMode && type === "color";
+  const preferences = useUserPreferences();
+  const displaySymbol = preferences.colorBlindMode && type === "color";
 
   const style = {
     ...props.style,

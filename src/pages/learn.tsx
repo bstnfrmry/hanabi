@@ -352,7 +352,6 @@ export default function Learn() {
       gameMode: GameMode.NETWORK,
       allowRollback: false,
       botsWait: 2000,
-      colorBlindMode: false,
       hintsLevel: IGameHintsLevel.ALL,
       private: true,
       preventLoss: false,
