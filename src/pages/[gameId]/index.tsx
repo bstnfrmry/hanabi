@@ -1,13 +1,9 @@
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { Game } from "~/components/game";
-import NoSSR from "~/components/NoSSR";
+import React, { useState } from "react";
+import GameIndex from "~/components/GameIndex";
 import { TutorialProvider } from "~/components/tutorial";
-import useConnectivity from "~/hooks/connectivity";
-import { GameContext } from "~/hooks/game";
 import { ReplayContext } from "~/hooks/replay";
 import { Session, SessionContext } from "~/hooks/session";
-import { loadGame, subscribeToGame } from "~/lib/firebase";
+import { loadGame } from "~/lib/firebase";
 import withSession, { getPlayerIdFromSession } from "~/lib/session";
 import IGameState from "~/lib/state";
 
@@ -38,37 +34,16 @@ interface Props {
 export default function Play(props: Props) {
   const { game: initialGame, session, host } = props;
 
-  const online = useConnectivity();
-  const router = useRouter();
-  const [game, setGame] = useState<IGameState>(initialGame);
   const [replayCursor, setReplayCursor] = useState<number>(null);
 
-  /**
-   * Load game from database
-   */
-  useEffect(() => {
-    if (!online) return;
-
-    return subscribeToGame(game.id as string, (game) => {
-      if (!game) {
-        return router.push("/404");
-      }
-
-      setGame({ ...game, synced: true });
-    });
-  }, [online, game.id]);
-
   return (
+    // eslint-disable-next-line react/jsx-no-undef
     <TutorialProvider>
-      <GameContext.Provider value={game}>
-        <SessionContext.Provider value={session}>
-          <ReplayContext.Provider value={{ cursor: replayCursor, moveCursor: setReplayCursor }}>
-            <NoSSR>
-              <Game host={host} onGameChange={setGame} />
-            </NoSSR>
-          </ReplayContext.Provider>
-        </SessionContext.Provider>
-      </GameContext.Provider>
+      <SessionContext.Provider value={session}>
+        <ReplayContext.Provider value={{ cursor: replayCursor, moveCursor: setReplayCursor }}>
+          <GameIndex game={initialGame} host={host}></GameIndex>
+        </ReplayContext.Provider>
+      </SessionContext.Provider>
     </TutorialProvider>
   );
 }
