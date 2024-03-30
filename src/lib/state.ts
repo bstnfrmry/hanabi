@@ -159,6 +159,16 @@ export interface IHintAction {
   cardsIndex?: number[];
 }
 
+export interface IColorHintAction extends IHintAction {
+  type: "color";
+  value: IColor;
+}
+
+export interface INumberHintAction extends IHintAction {
+  type: "number";
+  value: INumber;
+}
+
 export interface ITurn<A extends IAction = IAction> {
   action: A;
   card?: ICard;
@@ -259,4 +269,11 @@ export function isPlayAction(action: IAction): action is IPlayAction {
 }
 export function isCardAction(action: IAction): action is ICardAction {
   return isDiscardAction(action) || isPlayAction(action);
+}
+
+export function isColorHintAction(action: IHintAction): action is IColorHintAction {
+  return action.type === "color";
+}
+export function isNumberHintAction(action: IHintAction): action is INumberHintAction {
+  return action.type === "number";
 }
