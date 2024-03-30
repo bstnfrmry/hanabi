@@ -123,7 +123,7 @@ export interface ICard {
   number: INumber;
   hint?: ICardHint;
   id?: number;
-  receivedHints?: ITurn[];
+  receivedHints?: ITurn<IHintAction>[];
 }
 
 export type IHintType = "color" | "number";
@@ -159,8 +159,8 @@ export interface IHintAction {
   cardsIndex?: number[];
 }
 
-export interface ITurn {
-  action: IAction;
+export interface ITurn<A extends IAction = IAction> {
+  action: A;
   card?: ICard;
   failed?: boolean;
 }

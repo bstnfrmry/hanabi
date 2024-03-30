@@ -260,15 +260,6 @@ export const getStateAtTurn = mem(
   }
 );
 
-export function emptyPlayer(id: string, name: string): IPlayer {
-  return {
-    hand: [],
-    name,
-    id,
-    bot: false,
-  };
-}
-
 export function getColors(variant: GameVariant) {
   switch (variant) {
     case GameVariant.MULTICOLOR:

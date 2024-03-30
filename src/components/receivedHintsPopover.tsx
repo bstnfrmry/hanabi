@@ -3,7 +3,7 @@ import React, { CSSProperties, PropsWithChildren, useState } from "react";
 import Popover from "react-popover";
 import { ReceivedHintsView } from "~/components/receivedHintsView";
 import { useUserPreferences } from "~/hooks/userPreferences";
-import { IColor, INumber, isHintAction, ITurn } from "~/lib/state";
+import { IColor, IHintAction, INumber, ITurn } from "~/lib/state";
 
 export type PopoverMarkerType = "colors" | "numbers";
 export function TombstoneHintMark(
@@ -87,7 +87,7 @@ function HiddenMark() {
 
 function HintsPopover(
   props: PropsWithChildren<{
-    hints: ITurn[];
+    hints: ITurn<IHintAction>[];
     open: boolean;
     large?: boolean;
     onActivationChange: (shouldActivate: boolean) => void;
@@ -114,7 +114,7 @@ function HintsPopover(
 
 function SelfActivatingHintsPopover(props: {
   markerType: PopoverMarkerType;
-  hints: ITurn[];
+  hints: ITurn<IHintAction>[];
   location: "top-left" | "top-right";
   honorMouseEnterMark: boolean;
   large: boolean;
@@ -124,7 +124,7 @@ function SelfActivatingHintsPopover(props: {
     return null;
   }
   const action = props?.hints[0].action;
-  const hintValue = isHintAction(action) && action.value;
+  const hintValue = action.value;
 
   return (
     <HintsPopover hints={props.hints} large={props.large} open={isOpen} onActivationChange={onActivation}>
@@ -145,7 +145,7 @@ function SelfActivatingHintsPopover(props: {
 }
 
 export function ReceivedHints(props: {
-  hints: ITurn[];
+  hints: ITurn<IHintAction>[];
   allHintsOpen: boolean;
   large: boolean;
   onActivationChange: (shouldActivate: boolean) => void;
@@ -153,8 +153,8 @@ export function ReceivedHints(props: {
   const [userPreferences] = useUserPreferences();
   const hints = props.hints || [];
 
-  const colorHints = hints.filter((turn) => isHintAction(turn.action) && turn.action.type === "color");
-  const numberHints = hints.filter((turn) => isHintAction(turn.action) && turn.action.type === "number");
+  const colorHints = hints.filter((turn) => turn.action.type === "color");
+  const numberHints = hints.filter((turn) => turn.action.type === "number");
   if (userPreferences.codedHintMarkers) {
     return (
       <>
