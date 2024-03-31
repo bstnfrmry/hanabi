@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import { uniq } from "lodash";
 import React, { CSSProperties, PropsWithChildren, useState } from "react";
 import Popover from "react-popover";
 import { ReceivedHintsView } from "~/components/receivedHintsView";
@@ -18,17 +19,21 @@ export function TombstoneHintMark(
     classnames?: string;
     style?: CSSProperties;
     onActivationChange: (b: boolean) => void;
+    heightFactor?: number;
   }>
 ) {
+  const heightFactor = props.heightFactor || 1;
+  const verticalRadiusPercent = 100.0 / heightFactor / 2;
+  const heightPercent = heightFactor * 20;
   return (
     <div
-      className={classnames("absolute top-0 bg-hints flex-ns justify-center")}
+      className={classnames("absolute top-0 bg-hints flex justify-center flex-column items-center")}
       style={{
         ...props.style,
-        borderBottomRightRadius: "50%",
-        borderBottomLeftRadius: "50%",
+        borderBottomRightRadius: `50%  ${verticalRadiusPercent}%`,
+        borderBottomLeftRadius: `50%  ${verticalRadiusPercent}%`,
         width: "20%",
-        height: "20%",
+        height: `${heightPercent}%`,
       }}
       onMouseEnter={() => {
         props.onActivationChange(true);
@@ -47,6 +52,8 @@ function Dot(props: { color: IColor }) {
         width: "60%",
         height: "80%",
         marginTop: "20%",
+        marginLeft: "auto",
+        marginRight: "auto",
       }}
     >
       <div
@@ -61,26 +68,30 @@ function Dot(props: { color: IColor }) {
 }
 
 function ColorHintMark(props: { hintActions: IHintAction[]; onActivationChange: (activate: boolean) => void }) {
-  const colorHintActions = props.hintActions.filter(isColorHintAction);
-  const color = colorHintActions[0].value;
+  const colors = uniq(props.hintActions.filter(isColorHintAction).map((a) => a.value));
   return (
-    <TombstoneHintMark style={{ right: "2%" }} onActivationChange={props.onActivationChange}>
-      <Dot color={color} />
+    <TombstoneHintMark
+      heightFactor={colors.length}
+      style={{ right: "2%" }}
+      onActivationChange={props.onActivationChange}
+    >
+      {colors.map((c: IColor, index) => (
+        <Dot key={index} color={c} />
+      ))}
     </TombstoneHintMark>
   );
 }
 
-function NumberHintMark(props: {
-  onActivationChange: (activate: boolean) => void;
-  large: boolean;
-  hintAction: INumberHintAction;
-}) {
-  const fontSize = props.large ? "3cqh" : "1.8cqh";
+function NumberHintMark(props: { onActivationChange: (activate: boolean) => void; hintAction: INumberHintAction }) {
+  const fontSize = "100cqh";
   return (
     <TombstoneHintMark style={{ right: "24%" }} onActivationChange={props.onActivationChange}>
-      <span className={`light-gray fs-normal sans-serif`} style={{ fontSize: fontSize }}>
-        {props.hintAction.value}
-      </span>
+      <div
+        className={`light-gray fs-normal sans-serif tc bg-transparent number-hint-mark`}
+        style={{ height: "80%", width: "100%" }}
+      >
+        <div style={{ fontSize: fontSize }}>{props.hintAction.value}</div>
+      </div>
     </TombstoneHintMark>
   );
 }
@@ -136,7 +147,6 @@ function HintsPopover(
 function SelfActivatingHintsPopover<HA extends IHintAction>(props: {
   hints: ITurn<HA>[];
   enableMouseEnterMark: boolean;
-  large: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   if (props.hints?.length === 0) {
@@ -145,10 +155,8 @@ function SelfActivatingHintsPopover<HA extends IHintAction>(props: {
   const colorHintActions = props.hints.map((t) => t.action);
   const action = props.hints[0].action;
   return (
-    <HintsPopover hints={props.hints} large={props.large} open={isOpen} onActivationChange={onActivation}>
-      {isNumberHintAction(action) ? (
-        <NumberHintMark hintAction={action} large={props.large} onActivationChange={onActivation} />
-      ) : null}
+    <HintsPopover hints={props.hints} open={isOpen} onActivationChange={onActivation}>
+      {isNumberHintAction(action) ? <NumberHintMark hintAction={action} onActivationChange={onActivation} /> : null}
       {isColorHintAction(action) ? (
         <ColorHintMark hintActions={colorHintActions} onActivationChange={onActivation} />
       ) : null}
@@ -186,12 +194,8 @@ export function ReceivedHints(props: {
         <HintsPopover hints={hints} open={props.allHintsOpen} onActivationChange={props.onActivationChange}>
           <HiddenMark />
         </HintsPopover>
-        <SelfActivatingHintsPopover enableMouseEnterMark={!props.allHintsOpen} hints={colorHints} large={props.large} />
-        <SelfActivatingHintsPopover
-          enableMouseEnterMark={!props.allHintsOpen}
-          hints={numberHints}
-          large={props.large}
-        />
+        <SelfActivatingHintsPopover enableMouseEnterMark={!props.allHintsOpen} hints={colorHints} />
+        <SelfActivatingHintsPopover enableMouseEnterMark={!props.allHintsOpen} hints={numberHints} />
       </>
     );
   }

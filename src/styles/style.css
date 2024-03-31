@@ -400,6 +400,10 @@ button {
   -webkit-appearance: none;
 }
 
+.number-hint-mark {
+  container: number-hint / size;
+}
+
 @media screen and (min-width: 1024px) and (min-height: 600px) {
   .game, .Popover {
     zoom: 1.2
