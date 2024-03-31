@@ -4,6 +4,7 @@ import Popover from "react-popover";
 import { ReceivedHintsView } from "~/components/receivedHintsView";
 import { useUserPreferences } from "~/hooks/userPreferences";
 import {
+  IColor,
   IColorHintAction,
   IHintAction,
   INumberHintAction,
@@ -38,19 +39,33 @@ export function TombstoneHintMark(
     </div>
   );
 }
-function ColorHintMark(props: { hintActions: IHintAction[]; onActivationChange: (activate: boolean) => void }) {
-  const colorHintActions = props.hintActions.filter(isColorHintAction);
+
+function Dot(props: { color: IColor }) {
   return (
-    <TombstoneHintMark style={{ right: "2%" }} onActivationChange={props.onActivationChange}>
+    <div
+      style={{
+        width: "60%",
+        height: "80%",
+        marginTop: "20%",
+      }}
+    >
       <div
-        className={`bg-${colorHintActions[0].value}`}
+        className={`bg-${props.color}`}
         style={{
           borderRadius: "50%",
-          height: "60%",
-          width: "60%",
-          marginTop: "20%",
+          aspectRatio: "1/1",
         }}
-      ></div>
+      />
+    </div>
+  );
+}
+
+function ColorHintMark(props: { hintActions: IHintAction[]; onActivationChange: (activate: boolean) => void }) {
+  const colorHintActions = props.hintActions.filter(isColorHintAction);
+  const color = colorHintActions[0].value;
+  return (
+    <TombstoneHintMark style={{ right: "2%" }} onActivationChange={props.onActivationChange}>
+      <Dot color={color} />
     </TombstoneHintMark>
   );
 }
