@@ -82,18 +82,26 @@ function applyHint(hand: IHand, hint: IHintAction, game: IGameState) {
       }
     }
 
-    // if there's only one possible color, make it sure
     const onlyPossibleColors = Object.keys(card.hint.color).filter(
-      (color) => card.hint.color[color] === IHintLevel.POSSIBLE
+      (color) => card.hint.color[color] > IHintLevel.IMPOSSIBLE
     );
+    // if there's only two possible color, make it considered as a candidate for being that color
+    if (onlyPossibleColors.length === 2) {
+      onlyPossibleColors.forEach((possibleColor) => card.hint.color[possibleColor] = IHintLevel.CANDIDATE)
+    }
+    // if there's only one possible color, make it sure
     if (onlyPossibleColors.length === 1) {
       card.hint.color[onlyPossibleColors[0]] = IHintLevel.SURE;
     }
 
-    // if there's only one possible number, make it sure
     const onlyPossibleNumbers = Object.keys(card.hint.number).filter(
-      (number) => card.hint.number[number] === IHintLevel.POSSIBLE
+      (number) => card.hint.number[number] > IHintLevel.IMPOSSIBLE
     );
+    // if there's only two possible number, make it considered as a candidate for being that number
+    if (onlyPossibleNumbers.length === 2) {
+      onlyPossibleNumbers.forEach((possibleNumber) => card.hint.number[possibleNumber] = IHintLevel.CANDIDATE)
+    }
+    // if there's only one possible number, make it sure
     if (onlyPossibleNumbers.length === 1) {
       card.hint.number[onlyPossibleNumbers[0]] = IHintLevel.SURE;
     }
