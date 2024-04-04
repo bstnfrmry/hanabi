@@ -9,6 +9,7 @@ import ChatPopover from "~/components/chatPopover";
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import PlayerStats from "~/components/playerStats";
 import ReactionsPopover from "~/components/reactionsPopover";
+import { ReviewCommentPopover } from "~/components/reviewCommentPopover";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -16,6 +17,7 @@ import Vignettes from "~/components/vignettes";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 import { useReplay } from "~/hooks/replay";
 import { matchColor, matchNumber, MaxHints } from "~/lib/actions";
+import { findExistingCommentText } from "~/lib/reviewComments";
 import IGameState, {
   GameMode,
   GameVariant,
@@ -151,6 +153,7 @@ export default function PlayerGame(props: Props) {
     ? ICardContext.SELF_PLAYER
     : ICardContext.OTHER_PLAYER;
 
+  const existingReviewComment = findExistingCommentText(game, player.id, game.turnsHistory.length);
   return (
     <>
       <div
@@ -235,6 +238,10 @@ export default function PlayerGame(props: Props) {
             </Popover>
           )}
 
+          {self && game.status === IGameStatus.ONGOING && (
+            <ReviewCommentPopover showAlways={true} turnNumber={game.turnsHistory.length} />
+          )}
+
           {active && selfPlayer && !self && !player.notified && !player.bot && (
             <a
               className="ml1 ml4-l pointer"
@@ -276,12 +283,12 @@ export default function PlayerGame(props: Props) {
               {(game.endedAt || game.originalGame?.endedAt) && player === selfPlayer && (
                 <Button
                   void
-                  className={
-                    (classnames({
+                  className={classnames(
+                    {
                       revealCardButton: selected,
-                    }),
-                    "tracked-tight")
-                  }
+                    },
+                    "tracked-tight"
+                  )}
                   size={ButtonSize.TINY}
                   text={revealCards ? t("hide") : t("reveal")}
                   onClick={(e) => {

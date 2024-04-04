@@ -14,6 +14,7 @@ export function useGame() {
     return {
       ...fillEmptyValues(getStateAtTurn(game, replay.cursor)),
       originalGame: game,
+      reviewComments: game.reviewComments,
     };
   }
 

@@ -449,6 +449,7 @@ export function newGame(options: IGameOptions): IGameState {
     messages: [],
     createdAt: Date.now(),
     synced: false,
+    reviewComments: [],
   };
 }
 
