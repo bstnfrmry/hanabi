@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import { uniq } from "lodash";
-import React, { CSSProperties, PropsWithChildren, useState } from "react";
+import React, { CSSProperties, PropsWithChildren, useEffect, useState } from "react";
 import Popover from "react-popover";
 import { ReceivedHintsView } from "~/components/receivedHintsView";
 import { useUserPreferences } from "~/hooks/userPreferences";
@@ -147,6 +147,7 @@ function HintsPopover(
 function SelfActivatingHintsPopover<HA extends IHintAction>(props: {
   hints: ITurn<HA>[];
   enableMouseEnterMark: boolean;
+  onPopoverActivated: (open: boolean) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   if (props.hints?.length === 0) {
@@ -168,6 +169,7 @@ function SelfActivatingHintsPopover<HA extends IHintAction>(props: {
       return;
     }
     setIsOpen(activate);
+    props.onPopoverActivated(activate);
   }
 }
 
@@ -183,25 +185,42 @@ export function ReceivedHints(props: {
   large: boolean;
   onActivationChange: (shouldActivate: boolean) => void;
 }) {
+  let allHintsOpen = props.allHintsOpen;
+  const [codeHintsOpen, setCodedHintsOpen] = useState(false);
   const [userPreferences] = useUserPreferences();
   const hints = props.hints || [];
 
   const colorHints = hints.filter(isColorHintTurn);
   const numberHints = hints.filter(isNumberHintTurn);
+  useEffect(() => {
+    if (codeHintsOpen && allHintsOpen && userPreferences.codedHintMarkers) {
+      props.onActivationChange(false);
+      allHintsOpen = false;
+    }
+  }, [allHintsOpen]);
+
   if (userPreferences.codedHintMarkers) {
     return (
       <>
-        <HintsPopover hints={hints} open={props.allHintsOpen} onActivationChange={props.onActivationChange}>
+        <HintsPopover hints={hints} open={allHintsOpen} onActivationChange={props.onActivationChange}>
           <HiddenMark />
         </HintsPopover>
-        <SelfActivatingHintsPopover enableMouseEnterMark={!props.allHintsOpen} hints={colorHints} />
-        <SelfActivatingHintsPopover enableMouseEnterMark={!props.allHintsOpen} hints={numberHints} />
+        <SelfActivatingHintsPopover
+          enableMouseEnterMark={!allHintsOpen}
+          hints={colorHints}
+          onPopoverActivated={setCodedHintsOpen}
+        />
+        <SelfActivatingHintsPopover
+          enableMouseEnterMark={!allHintsOpen}
+          hints={numberHints}
+          onPopoverActivated={setCodedHintsOpen}
+        />
       </>
     );
   }
 
   return (
-    <HintsPopover hints={hints} open={props.allHintsOpen} onActivationChange={props.onActivationChange}>
+    <HintsPopover hints={hints} open={allHintsOpen} onActivationChange={props.onActivationChange}>
       <CornerMark onActivationChange={props.onActivationChange} />
     </HintsPopover>
   );
