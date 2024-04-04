@@ -1,8 +1,10 @@
+import classnames from "classnames";
 import React from "react";
 import { Trans } from "react-i18next";
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Hint from "~/components/hint";
 import PlayerName from "~/components/playerName";
+import { ReviewCommentPopover } from "~/components/reviewCommentPopover";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 import {
@@ -27,10 +29,8 @@ interface Props {
 
 export default function Turn(props: Props) {
   const { turn, showDrawn, showPosition = true } = props;
-
   const game = useGame();
   const selfPlayer = useSelfPlayer();
-
   const isViewingOwnActions = turn.action.from === selfPlayer?.index;
   const isViewingOwnReceivedHint = isHintAction(turn.action) && turn.action.to === selfPlayer?.index;
 
@@ -38,8 +38,8 @@ export default function Turn(props: Props) {
     <PlayerName explicit={game.options.gameMode === GameMode.PASS_AND_PLAY} player={game.players[turn.action.from]} />
   );
 
-  let textualTurn;
-  let drawnTurn;
+  let textualTurn: React.ReactNode;
+  let drawnTurn: React.ReactNode;
 
   if (isHintAction(turn.action)) {
     const playerNameTo = (
@@ -138,7 +138,10 @@ export default function Turn(props: Props) {
 
   return (
     <div className="dib">
-      {props.turnNumber ? <Txt className="di gray">{props.turnNumber})&nbsp;</Txt> : ""}
+      <ReviewCommentPopover showAlways={false} turnNumber={props.turnNumber} />
+      &nbsp;
+      {props.turnNumber ? <Txt className={classnames("di gray")}>{props.turnNumber}</Txt> : ""}
+      <span>&nbsp;</span>
       <Txt className="di">
         {/* The player action and the card they have drawn, if applicable */}
         {textualTurn}

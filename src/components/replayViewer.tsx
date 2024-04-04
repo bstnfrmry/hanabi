@@ -1,11 +1,29 @@
 import Slider from "rc-slider";
-import React from "react";
+import { MarkObj } from "rc-slider/lib/Marks";
+import React, { useCallback, useState } from "react";
+import { ReviewCommentPopover } from "~/components/reviewCommentPopover";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { useGame } from "~/hooks/game";
+import { useGame, useSelfPlayer } from "~/hooks/game";
 import { useReplay } from "~/hooks/replay";
+import { findComment } from "~/lib/reviewComments";
+import { IReviewComment } from "~/lib/state";
 
+function Empty() {
+  return <div className={"dn"} />;
+}
 const SliderStyle = {
+  DOT: {
+    width: 0,
+    height: 0,
+    borderLeft: "6px solid black",
+    borderRight: "6px solid black",
+    borderBottom: "10px solid black",
+    backgroundColor: "black",
+    borderTop: "10px solid var(--color-review-comment)",
+    borderRadius: 0,
+    top: "-20px",
+  },
   HANDLE: {
     backgroundColor: "var(--color-yellow)",
     borderColor: "var(--color-yellow)",
@@ -29,51 +47,84 @@ interface Props {
 
 export default function ReplayViewer(props: Props) {
   const { onReplayCursorChange, onStopReplay } = props;
-
+  const selfPlayer = useSelfPlayer();
   const game = useGame();
+  const [comment, setComment] = useState<IReviewComment | undefined>(
+    findComment(game, selfPlayer.id, game.turnsHistory.length)
+  );
   const replay = useReplay();
+  const replayChange = useCallback(
+    (cursor: number) => {
+      onReplayCursorChange(cursor);
+      setComment(findComment(game, selfPlayer.id, cursor));
+    },
+    [game, selfPlayer]
+  );
 
   const maxTurns = game.originalGame.turnsHistory.length;
 
+  const marks: Record<string | number, React.ReactNode | MarkObj> = {};
+  const selfReviewComments = game.reviewComments.filter((rc) => rc.playerId === selfPlayer.id);
+  selfReviewComments.forEach((rc) => {
+    marks[rc.afterTurnNumber] = {
+      style: "",
+      label: <Empty />,
+    };
+  });
+
   return (
-    <div className="flex justify-between items-center pa2">
-      <div className="flex flex-column">
-        <Txt className="db" size={TxtSize.SMALL} value={`Replay`} />
-        <Txt
-          className="mt1 light-silver nowrap"
-          multiline={false}
-          size={TxtSize.SMALL}
-          value={`${replay.cursor} / ${maxTurns}`}
+    <div className="flex flex-column items-center w-100">
+      <div className="flex justify-between items-center pa2 w-100">
+        <div className="flex flex-column">
+          <Txt className="db" size={TxtSize.SMALL} value={`Replay`} />
+          <Txt
+            className="mt1 light-silver nowrap"
+            multiline={false}
+            size={TxtSize.SMALL}
+            value={`${replay.cursor} / ${maxTurns}`}
+          />
+        </div>
+        <Button
+          void
+          className="ml3"
+          disabled={replay.cursor === 0}
+          size={ButtonSize.TINY}
+          text="<"
+          onClick={() => replayChange(replay.cursor - 1)}
         />
+        <Slider
+          className="ml3 nt1"
+          dotStyle={SliderStyle.DOT}
+          marks={marks}
+          max={maxTurns}
+          min={0}
+          styles={{
+            rail: SliderStyle.RAIL,
+            track: SliderStyle.TRACK,
+            handle: SliderStyle.HANDLE,
+          }}
+          value={replay.cursor}
+          onChange={replayChange}
+          onChangeComplete={replayChange}
+        />
+        <Button
+          void
+          className="ml3"
+          disabled={replay.cursor === maxTurns}
+          size={ButtonSize.TINY}
+          text=">"
+          onClick={() => replayChange(replay.cursor + 1)}
+        />
+        <Button void className="ml3 pointer:hover" size={ButtonSize.TINY} text="&times;" onClick={onStopReplay} />
       </div>
-      <Button
-        void
-        className="ml3"
-        disabled={replay.cursor === 0}
-        size={ButtonSize.TINY}
-        text="<"
-        onClick={() => onReplayCursorChange(replay.cursor - 1)}
-      />
-      <Slider
-        className="ml3 nt1"
-        handleStyle={SliderStyle.HANDLE}
-        max={maxTurns}
-        min={0}
-        railStyle={SliderStyle.RAIL}
-        trackStyle={SliderStyle.TRACK}
-        value={replay.cursor}
-        onAfterChange={onReplayCursorChange}
-        onChange={onReplayCursorChange}
-      />
-      <Button
-        void
-        className="ml3"
-        disabled={replay.cursor === maxTurns}
-        size={ButtonSize.TINY}
-        text=">"
-        onClick={() => onReplayCursorChange(replay.cursor + 1)}
-      />
-      <Button void className="ml3 pointer:hover" size={ButtonSize.TINY} text="&times;" onClick={onStopReplay} />
+      {comment ? (
+        <div className={"flex flex-row justify-center"} style={{ gap: "10px" }}>
+          <div className={"flex-grow-0"}>
+            <ReviewCommentPopover showAlways={true} turnNumber={replay.cursor} />
+          </div>
+          <Txt className={"flex-grow-1"}>{comment?.comment}</Txt>
+        </div>
+      ) : null}
     </div>
   );
 }
