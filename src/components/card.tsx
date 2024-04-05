@@ -220,7 +220,13 @@ export default function Card(props: Props) {
         ...style,
         userSelect: "none",
       }}
-      onClick={onClick}
+      onClick={(e) => {
+        if (isHintPopoverOpen) {
+          e.stopPropagation();
+          return;
+        }
+        onClick(e);
+      }}
       {...longPressProps}
     >
       {/* Card value */}
