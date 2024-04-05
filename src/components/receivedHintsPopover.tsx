@@ -35,14 +35,21 @@ export function TombstoneHintMark(
         width: "20%",
         height: `${heightPercent}%`,
       }}
+      onClick={stopEventPropagation}
+      onMouseDown={stopEventPropagation}
       onMouseEnter={() => {
         props.onActivationChange(true);
       }}
       onMouseLeave={() => props.onActivationChange(false)}
+      onMouseUp={stopEventPropagation}
     >
       {props.children}
     </div>
   );
+
+  function stopEventPropagation(e) {
+    e.stopPropagation();
+  }
 }
 
 function ColorDot(props: { color: IColor }) {
