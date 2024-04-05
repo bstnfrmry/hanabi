@@ -243,7 +243,6 @@ export default function Card(props: Props) {
         <ReceivedHints
           allHintsOpen={allHintsPopoverIsOpen}
           hints={hints}
-          large={size === CardSize.LARGE}
           onActivationChange={function (shouldActivate: boolean) {
             return setAllHintsPopoverIsOpen(shouldActivate);
           }}
