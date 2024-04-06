@@ -184,9 +184,6 @@ export default function Card(props: Props) {
 
   const game = useGame();
   const [allHintsPopoverIsOpen, setAllHintsPopoverIsOpen] = useState(false);
-  const longPressProps = useLongPress(() => {
-    setAllHintsPopoverIsOpen(true);
-  });
   const [colorBlindMode] = useLocalStorage("colorBlindMode", false);
 
   const colors = getColors(game?.options?.variant);
@@ -206,7 +203,12 @@ export default function Card(props: Props) {
       // This try/catch aims to prevent it and inhibate the error.
     }
   }
-  const hints = card.receivedHints;
+  const hints = card.receivedHints || [];
+  const longPressProps = useLongPress(() => {
+    if (hints.length > 0) {
+      setAllHintsPopoverIsOpen(true);
+    }
+  });
   return (
     <CardWrapper
       className={classnames({ "bw1 z-5": selected }, className)}
