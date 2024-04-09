@@ -69,7 +69,7 @@ export enum IGameHintsLevel {
   ALL = "all",
   // Direct hints are displayed
   DIRECT = "direct",
-  // No hints displayd
+  // No hints displayed
   NONE = "none",
 }
 
@@ -107,7 +107,7 @@ export enum IHintLevel {
 }
 
 // an array of 2 (direct hint), 1 (still possible), or 0 (impossible)
-// e.g. a color hint onto an card turns all but one values to 0, and one value to 2.
+// e.g. a color hint onto a card turns all but one values to 0, and one value to 2.
 // a color hint onto a card give all the other cards in the hand a 0 for that color.
 // it's something public, i.e. information that has been given
 // to all players
@@ -123,11 +123,19 @@ export interface ICard {
   number: INumber;
   hint?: ICardHint;
   id?: number;
-  receivedHints?: ITurn[];
+  receivedHints?: ITurn<IHintAction>[];
 }
 
-export type IActionType = "discard" | "play" | "hint";
+export type IHintType = "color" | "number";
 
+export type IAction = ICardAction | IDiscardAction | IPlayAction | IHintAction;
+
+export interface ICardAction {
+  action: "discard" | "play";
+  from: number;
+  card?: ICard;
+  cardIndex: number;
+}
 export interface IDiscardAction {
   action: "discard";
   from: number;
@@ -142,8 +150,6 @@ export interface IPlayAction {
   cardIndex: number;
 }
 
-export type IHintType = "color" | "number";
-
 export interface IHintAction {
   action: "hint";
   from: number;
@@ -153,10 +159,18 @@ export interface IHintAction {
   cardsIndex?: number[];
 }
 
-export type IAction = IDiscardAction | IPlayAction | IHintAction;
+export interface IColorHintAction extends IHintAction {
+  type: "color";
+  value: IColor;
+}
 
-export interface ITurn {
-  action: IAction;
+export interface INumberHintAction extends IHintAction {
+  type: "number";
+  value: INumber;
+}
+
+export interface ITurn<A extends IAction = IAction> {
+  action: A;
   card?: ICard;
   failed?: boolean;
 }
@@ -242,4 +256,24 @@ export function fillEmptyValues(state: IGameState): IGameState {
     ),
     turnsHistory: [],
   });
+}
+
+export function isHintAction(action: IAction): action is IHintAction {
+  return action.action === "hint";
+}
+export function isDiscardAction(action: IAction): action is IDiscardAction {
+  return action.action === "discard";
+}
+export function isPlayAction(action: IAction): action is IPlayAction {
+  return action.action === "play";
+}
+export function isCardAction(action: IAction): action is ICardAction {
+  return isDiscardAction(action) || isPlayAction(action);
+}
+
+export function isColorHintAction(action: IHintAction): action is IColorHintAction {
+  return action.type === "color";
+}
+export function isNumberHintAction(action: IHintAction): action is INumberHintAction {
+  return action.type === "number";
 }

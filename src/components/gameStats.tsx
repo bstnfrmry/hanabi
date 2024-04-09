@@ -1,4 +1,4 @@
-import { groupBy, range } from "lodash";
+import { range } from "lodash";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
@@ -8,9 +8,9 @@ import { useGame } from "~/hooks/game";
 import useLongPress from "~/hooks/longPress";
 import { getStateAtTurn, isPlayable } from "~/lib/actions";
 import { isCardDangerous, isCardEverPlayable } from "~/lib/ai";
-import IGameState, { fillEmptyValues, ICard, IColor, IInsightColor, IPlayer, ITurn } from "~/lib/state";
+import IGameState, { fillEmptyValues, IAction, ICard, IInsightColor, IPlayer, ITurn } from "~/lib/state";
 
-function turnToStateColor(turn: ITurn) {
+function turnToStateColor(turn: ITurn<IAction>) {
   const { action } = turn.action;
 
   return {

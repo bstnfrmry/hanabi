@@ -21,6 +21,10 @@ export default function UserPreferencesDialog({ onCloseArea, userPreferences, sa
     const modifiedPreferences = { ...userPreferences, showFireworksAtGameEnd: !userPreferences.showFireworksAtGameEnd };
     saveUserPreferences(modifiedPreferences);
   }
+  function toggleCodedHintMarkers() {
+    const modifiedPreferences = { ...userPreferences, codedHintMarkers: !userPreferences.codedHintMarkers };
+    saveUserPreferences(modifiedPreferences);
+  }
 
   return (
     <Modal isOpen onRequestClose={() => onCloseArea()}>
@@ -41,6 +45,11 @@ export default function UserPreferencesDialog({ onCloseArea, userPreferences, sa
               />
               &nbsp;
               <Txt value={t("playFireworksAtGameEnd")} />
+            </div>
+            <div className="flex flex-row justify-start-l items-center">
+              <Checkbox checked={userPreferences.codedHintMarkers} onChange={() => toggleCodedHintMarkers()} />
+              &nbsp;
+              <Txt value={t("codedHintMarkers")} />
             </div>
           </div>
         </div>

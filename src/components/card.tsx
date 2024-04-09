@@ -1,9 +1,8 @@
 import classnames from "classnames";
 import React, { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode, useState } from "react";
-import Popover from "react-popover";
 import ColorSymbol from "~/components/colorSymbol";
 import Hint from "~/components/hint";
-import Turn from "~/components/turn";
+import { ReceivedHints } from "~/components/receivedHintsPopover";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame } from "~/hooks/game";
 import useLocalStorage from "~/hooks/localStorage";
@@ -184,10 +183,7 @@ export default function Card(props: Props) {
   } = props;
 
   const game = useGame();
-  const [isHintPopoverOpen, setIsHintPopoverOpen] = useState(false);
-  const longPressProps = useLongPress(() => {
-    setIsHintPopoverOpen(true);
-  });
+  const [allHintsPopoverIsOpen, setAllHintsPopoverIsOpen] = useState(false);
   const [colorBlindMode] = useLocalStorage("colorBlindMode", false);
 
   const colors = getColors(game?.options?.variant);
@@ -207,7 +203,12 @@ export default function Card(props: Props) {
       // This try/catch aims to prevent it and inhibate the error.
     }
   }
-
+  const hints = card.receivedHints || [];
+  const longPressProps = useLongPress(() => {
+    if (hints.length > 0) {
+      setAllHintsPopoverIsOpen(true);
+    }
+  });
   return (
     <CardWrapper
       className={classnames({ "bw1 z-5": selected }, className)}
@@ -220,7 +221,13 @@ export default function Card(props: Props) {
         ...style,
         userSelect: "none",
       }}
-      onClick={onClick}
+      onClick={(e) => {
+        if (allHintsPopoverIsOpen) {
+          e.stopPropagation();
+          return;
+        }
+        onClick(e);
+      }}
       {...longPressProps}
     >
       {/* Card value */}
@@ -240,32 +247,14 @@ export default function Card(props: Props) {
       )}
 
       {/* Whether the card has received hints */}
-      {position !== null && card.receivedHints?.length > 0 && (
-        <Popover
-          body={
-            <div className="flex items-center justify-center b--yellow ba bw1 bg-black pa2 pr3 br2">
-              <div className="flex flex-column">
-                {card?.receivedHints?.map((turn, i) => {
-                  return (
-                    <div key={i} className="nb1">
-                      <Turn showDrawn={false} showPosition={false} turn={turn} />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          }
-          className="z-999"
-          isOpen={isHintPopoverOpen}
-          onOuterAction={() => setIsHintPopoverOpen(false)}
-        >
-          <div
-            className="absolute right-0 top-0 bg-hints br--bottom br--left br-100"
-            style={{ width: "20%", height: "20%" }}
-            onMouseEnter={() => setIsHintPopoverOpen(true)}
-            onMouseLeave={() => setIsHintPopoverOpen(false)}
-          />
-        </Popover>
+      {position !== null && (
+        <ReceivedHints
+          allHintsOpen={allHintsPopoverIsOpen}
+          hints={hints}
+          onActivationChange={function (shouldActivate: boolean) {
+            return setAllHintsPopoverIsOpen(shouldActivate);
+          }}
+        />
       )}
 
       {/* show positive hints with a larger type */}

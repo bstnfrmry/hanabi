@@ -5,7 +5,18 @@ import Hint from "~/components/hint";
 import PlayerName from "~/components/playerName";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
-import { GameMode, ICard, IDiscardAction, IHintAction, IHintLevel, IPlayAction, ITurn } from "~/lib/state";
+import {
+  GameMode,
+  ICard,
+  IDiscardAction,
+  IHintAction,
+  IHintLevel,
+  IPlayAction,
+  isDiscardAction,
+  isHintAction,
+  isPlayAction,
+  ITurn,
+} from "~/lib/state";
 
 interface Props {
   turn: ITurn;
@@ -21,7 +32,7 @@ export default function Turn(props: Props) {
   const selfPlayer = useSelfPlayer();
 
   const isViewingOwnActions = turn.action.from === selfPlayer?.index;
-  const isViewingOwnReceivedHint = turn.action.action === "hint" && turn.action.to === selfPlayer?.index;
+  const isViewingOwnReceivedHint = isHintAction(turn.action) && turn.action.to === selfPlayer?.index;
 
   const playerNameFrom = (
     <PlayerName explicit={game.options.gameMode === GameMode.PASS_AND_PLAY} player={game.players[turn.action.from]} />
@@ -30,7 +41,7 @@ export default function Turn(props: Props) {
   let textualTurn;
   let drawnTurn;
 
-  if (turn.action.action === "hint") {
+  if (isHintAction(turn.action)) {
     const playerNameTo = (
       <PlayerName explicit={game.options.gameMode === GameMode.PASS_AND_PLAY} player={game.players[turn.action.to]} />
     );
@@ -63,7 +74,7 @@ export default function Turn(props: Props) {
         </>
       );
     }
-  } else if (turn.action.action === "discard") {
+  } else if (isDiscardAction(turn.action)) {
     textualTurn = isViewingOwnActions ? (
       <Trans i18nKey="youDiscardedTurn">
         You discarded your <TurnCard card={turn.action.card} context={ICardContext.DISCARDED} />
@@ -82,7 +93,7 @@ export default function Turn(props: Props) {
         </>
       );
     }
-  } else if (turn.action.action === "play") {
+  } else if (isPlayAction(turn.action)) {
     textualTurn = isViewingOwnActions ? (
       turn.failed ? (
         <Trans i18nKey="youPlayedStrikeTurn">
@@ -129,7 +140,7 @@ export default function Turn(props: Props) {
     <div className="dib">
       {props.turnNumber ? <Txt className="di gray">{props.turnNumber})&nbsp;</Txt> : ""}
       <Txt className="di">
-        {/* The player action and the card they drawn, if applicable */}
+        {/* The player action and the card they have drawn, if applicable */}
         {textualTurn}
         {drawnTurn}
       </Txt>

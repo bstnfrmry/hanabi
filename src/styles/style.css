@@ -17,7 +17,10 @@
   --color-yellow-dark: #69560a;
   --color-green-dark: #094021;
 
-  --color-hints: rgb(0, 61, 181);
+  --color-hints-all: rgb(0, 61, 181);
+  --color-hints-hidden: rgba(0, 61, 181, 0);
+  --color-hints-numbers: rgb(37, 59, 14);
+  --color-hints-colors: rgb(181, 0, 33);
   --color-strikes: rgb(192, 21, 21);
 
   --color-gray-light: #aaa;
@@ -256,9 +259,18 @@ button {
 .bg-hints {
   background: linear-gradient(
     to bottom right,
-    color-mod(var(--color-hints) lightness(70%)),
-    var(--color-hints),
-    color-mod(var(--color-hints) shade(20%))
+    color-mod(var(--color-hints-all) lightness(70%)),
+    var(--color-hints-all),
+    color-mod(var(--color-hints-all) shade(20%))
+  );
+}
+
+.bg-hints-hidden {
+  background: linear-gradient(
+    to bottom right,
+    color-mod(var(--color-hints-hidden) lightness(70%)),
+    var(--color-hints-hidden),
+    color-mod(var(--color-hints-hidden) shade(20%))
   );
 }
 
@@ -337,7 +349,7 @@ button {
 }
 
 .b--hints {
-  border-color: color-mod(var(--color-hints) shade(30%));
+  border-color: color-mod(var(--color-hints-all) shade(30%));
 }
 
 .b--strikes {
@@ -386,6 +398,10 @@ button {
 /* Safari fix? */
 button {
   -webkit-appearance: none;
+}
+
+.number-hint-mark {
+  container: number-hint / size;
 }
 
 @media screen and (min-width: 1024px) and (min-height: 600px) {
