@@ -400,19 +400,26 @@ export function Game(props: Props) {
     };
   }, [replay.cursor, game]);
 
-  async function onRestartGame() {
+  async function onRestartGame(opts?: { abandoned: boolean }) {
     const nextGame = recreateGame(liveGame());
 
     const updatedGame = { ...liveGame(), nextGameId: nextGame.id };
-    onStopReplay();
-    await updateGame(updatedGame);
+    if (opts?.abandoned) {
+      updatedGame.status = IGameStatus.OVER;
+      updatedGame.endedAt = Date.now();
+      logEvent("Game", "Game abandoned");
+    }
 
+    onStopReplay();
+
+    await updateGame(updatedGame);
     await updateGame(nextGame);
     onGameChange(nextGame);
-
     logEvent("Game", "Game recreated");
+
     router.push(`/${nextGame.id}`);
   }
+
   function liveGame() {
     return game.originalGame || game;
   }
@@ -425,7 +432,9 @@ export function Game(props: Props) {
           <GameBoard onMenuClick={onMenuClick} onRollbackClick={onRollbackClick} />
         </div>
         <div className="flex flex-column bg-black-50 bb b--yellow ph6.5-m">
-          {selectedArea.type === ActionAreaType.MENU && <MenuArea onCloseArea={onCloseArea} />}
+          {selectedArea.type === ActionAreaType.MENU && (
+            <MenuArea onCloseArea={onCloseArea} onRestartGame={onRestartGame} />
+          )}
 
           {game.status === IGameStatus.LOBBY && (
             <Lobby host={host} onAddBot={onAddBot} onJoinGame={onJoinGame} onStartGame={onStartGame} />
