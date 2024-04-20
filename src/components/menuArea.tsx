@@ -12,10 +12,11 @@ import { UserPreferences, useUserPreferences } from "~/hooks/userPreferences";
 
 interface Props {
   onCloseArea: () => void;
+  onRestartGame: ({ abandoned }: { abandoned: boolean }) => Promise<void>;
 }
 
 export default function MenuArea(props: Props) {
-  const { onCloseArea } = props;
+  const { onCloseArea, onRestartGame } = props;
 
   const [showRules, setShowRules] = useState(false);
   const { reset } = useContext(TutorialContext);
@@ -33,6 +34,11 @@ export default function MenuArea(props: Props) {
 
   function onTutorialClick() {
     reset();
+    onCloseArea();
+  }
+
+  async function onRestartClick() {
+    onRestartGame({ abandoned: true });
     onCloseArea();
   }
 
@@ -69,6 +75,7 @@ export default function MenuArea(props: Props) {
               text={t("rules")}
               onClick={() => setShowRules(true)}
             />
+            <Button className="mb3 w-100" size={ButtonSize.MEDIUM} text={t("newGame")} onClick={onRestartClick} />
           </div>
         )}
 
