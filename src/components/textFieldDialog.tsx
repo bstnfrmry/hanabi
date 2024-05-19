@@ -35,7 +35,6 @@ export default function TextFieldDialog(props: PropsWithChildren<Props>) {
     <form
       className="flex flex-column items-center justify-start b--yellow ba bw1 bg-white pa1 br2 gray"
       onKeyPress={(e) => {
-        console.debug(`KEY: ${e.key}`);
         if (e.key === "Enter" && (e.getModifierState("Shift") || e.getModifierState("Control"))) {
           onSubmit();
         }
