@@ -1,11 +1,12 @@
 import Slider from "rc-slider";
 import { MarkObj } from "rc-slider/lib/Marks";
 import React, { useCallback, useState } from "react";
-import { ReviewCommentPopover } from "~/components/reviewCommentPopover";
+import { ReadOnlyCommentMarker, ReviewCommentPopover, StaticReviewComment } from "~/components/reviewComments";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 import { useReplay } from "~/hooks/replay";
+import { isGameFinished } from "~/lib/game";
 import { findComment } from "~/lib/reviewComments";
 import { IReviewComment } from "~/lib/state";
 
@@ -117,12 +118,17 @@ export default function ReplayViewer(props: Props) {
         />
         <Button void className="ml3 pointer:hover" size={ButtonSize.TINY} text="&times;" onClick={onStopReplay} />
       </div>
+
       {comment ? (
-        <div className={"flex flex-row justify-center"} style={{ gap: "10px" }}>
+        <div className={"flex flex-row justify-center"} style={{ gap: "0.5rem" }}>
           <div className={"flex-grow-0"}>
-            <ReviewCommentPopover showAlways={true} turnNumber={replay.cursor} />
+            {isGameFinished(game) ? (
+              <ReadOnlyCommentMarker />
+            ) : (
+              <ReviewCommentPopover showAlways={true} turnNumber={replay.cursor} />
+            )}
           </div>
-          <Txt className={"flex-grow-1"}>{comment?.comment}</Txt>
+          <StaticReviewComment comment={comment} />
         </div>
       ) : null}
     </div>
