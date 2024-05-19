@@ -1,7 +1,7 @@
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import posed, { PoseGroup } from "react-pose";
-import { ReviewCommentPopover } from "~/components/reviewCommentPopover";
+import { ReviewCommentPopover } from "~/components/reviewComments";
 import Turn from "~/components/turn";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Txt, { TxtSize } from "~/components/ui/txt";
