@@ -5,7 +5,7 @@ import Popover from "react-popover";
 import TextFieldDialog from "~/components/textFieldDialog";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 import { updateGame } from "~/lib/firebase";
-import { findComment, updateReviewComment } from "~/lib/reviewComments";
+import { addOrReplaceReviewComment, findComment } from "~/lib/reviewComments";
 
 function EnterReviewComment(props: {
   existingComment: string;
@@ -64,12 +64,12 @@ export function ReviewCommentPopover({ showAlways = false, turnNumber }: { turnN
           afterTurnNumber={turnNumber}
           existingComment={comment?.comment}
           onClose={(msg, turnNumber: number) => {
-            const newGame = updateReviewComment(game, {
+            addOrReplaceReviewComment(game, {
               playerId: selfPlayer.id,
               afterTurnNumber: turnNumber,
               comment: msg,
             });
-            updateGame(newGame);
+            updateGame(game.originalGame ? game.originalGame : game);
             setReviewCommentOpenForTurn(undefined);
           }}
         />
