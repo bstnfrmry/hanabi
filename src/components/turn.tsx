@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import Hint from "~/components/hint";
 import PlayerName from "~/components/playerName";
-import { ReviewCommentPopover } from "~/components/reviewCommentPopover";
+import { ReviewCommentPopover } from "~/components/reviewComments";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 import {

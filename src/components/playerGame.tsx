@@ -9,7 +9,7 @@ import ChatPopover from "~/components/chatPopover";
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import PlayerStats from "~/components/playerStats";
 import ReactionsPopover from "~/components/reactionsPopover";
-import { ReviewCommentPopover } from "~/components/reviewCommentPopover";
+import { ReviewCommentPopover } from "~/components/reviewComments";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -23,7 +23,6 @@ import IGameState, {
   GameVariant,
   IAction,
   ICard,
-  ICardAction,
   IColor,
   IGameStatus,
   IHintAction,
@@ -155,6 +154,8 @@ export default function PlayerGame(props: Props) {
     : ICardContext.OTHER_PLAYER;
 
   const existingReviewComment = findExistingCommentText(game, player.id, game.turnsHistory.length);
+  const showReviewCommentPopover =
+    self && game.status === IGameStatus.ONGOING && game.originalGame?.status !== IGameStatus.OVER;
   return (
     <>
       <div
@@ -239,9 +240,7 @@ export default function PlayerGame(props: Props) {
             </Popover>
           )}
 
-          {self && game.status === IGameStatus.ONGOING && (
-            <ReviewCommentPopover showAlways={true} turnNumber={game.turnsHistory.length} />
-          )}
+          {showReviewCommentPopover && <ReviewCommentPopover showAlways={true} turnNumber={game.turnsHistory.length} />}
 
           {active && selfPlayer && !self && !player.notified && !player.bot && (
             <a
