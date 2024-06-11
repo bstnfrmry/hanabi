@@ -8,7 +8,7 @@ import { useGame, useSelfPlayer } from "~/hooks/game";
 import { updateGame } from "~/lib/firebase";
 import { isGameFinished } from "~/lib/game";
 import { addOrReplaceReviewComment, findComment } from "~/lib/reviewComments";
-import { IReviewComment } from "~/lib/state";
+import { IGameStatus, IReviewComment } from "~/lib/state";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Pencil = require("~/images/YellowPencil.svg");
@@ -72,13 +72,36 @@ export function StaticReviewComment(props: { comment: IReviewComment }) {
   return <Txt className={"b--none ma0 white"}>{props.comment?.comment}</Txt>;
 }
 
-export function ReviewCommentPopover({ showAlways = false, turnNumber }: { turnNumber: number; showAlways?: boolean }) {
+export function ReviewCommentPopover({
+  showAlways = false,
+  turnNumber,
+  handleKeyEvent,
+}: {
+  turnNumber: number;
+  showAlways?: boolean;
+  handleKeyEvent?: string;
+}) {
   const game = useGame();
   const selfPlayer = useSelfPlayer();
   const [reviewCommentOpenForTurn, setReviewCommentOpenForTurn] = useState<number | undefined>(undefined);
   const comment = findComment(game, selfPlayer.id, turnNumber);
   const showIcon = showAlways || comment;
-
+  useEffect(() => {
+    function checkKey(event: KeyboardEvent) {
+      console.debug(`event.key = ${event.key}`);
+      if (event.key === handleKeyEvent && game.status === IGameStatus.ONGOING) {
+        setReviewCommentOpenForTurn(turnNumber);
+        event.preventDefault();
+      }
+    }
+    if (handleKeyEvent) {
+      console.debug(`Install Key Handler for ${handleKeyEvent}`);
+      window.addEventListener("keydown", checkKey);
+      return () => {
+        window.removeEventListener("keydown", checkKey);
+      };
+    }
+  }, [game.status, turnNumber, handleKeyEvent]);
   const commentIsEditable = !isGameFinished(game);
   return (
     <Popover
