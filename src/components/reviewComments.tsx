@@ -10,10 +10,22 @@ import { isGameFinished } from "~/lib/game";
 import { addOrReplaceReviewComment, findComment } from "~/lib/reviewComments";
 import { IReviewComment } from "~/lib/state";
 
-export function ReadOnlyCommentMarker() {
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Pencil = require("~/images/YellowPencil.svg");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Clear = require("~/images/Clear.svg");
+
+export function ReviewCommentIcon(props: { size: number; placeholder?: boolean }) {
+  if (props.placeholder) {
+    return <Image height={props.size} src={Clear} width={props.size} />;
+  }
+  return <Image height={props.size} src={Pencil} width={props.size} />;
+}
+
+export function ReadOnlyCommentMarker(props: { size: number }) {
   const style = {
-    width: 0,
-    height: 0,
+    width: props.size,
+    height: props.size,
     borderLeft: "6px solid  var(--color-review-comment)",
     borderRight: "0px solid black",
     borderBottom: "6px solid black",
@@ -54,17 +66,6 @@ function EnterReviewComment(props: {
       </div>
     </TextFieldDialog>
   );
-}
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Pencil = require("~/images/YellowPencil.svg");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Clear = require("~/images/Clear.svg");
-
-export function ReviewCommentIcon(props: { size: number; placeholder?: boolean }) {
-  if (props.placeholder) {
-    return <Image height={props.size} src={Clear} width={props.size} />;
-  }
-  return <Image height={props.size} src={Pencil} width={props.size} />;
 }
 
 export function StaticReviewComment(props: { comment: IReviewComment }) {
@@ -120,7 +121,7 @@ export function ReviewCommentPopover({ showAlways = false, turnNumber }: { turnN
         {!showIcon || commentIsEditable ? (
           <ReviewCommentIcon placeholder={!showIcon} size={15} />
         ) : (
-          <ReadOnlyCommentMarker />
+          <ReadOnlyCommentMarker size={15} />
         )}
       </a>
     </Popover>
