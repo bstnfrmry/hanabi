@@ -240,7 +240,9 @@ export default function PlayerGame(props: Props) {
             </Popover>
           )}
 
-          {showReviewCommentPopover && <ReviewCommentPopover showAlways={true} turnNumber={game.turnsHistory.length} />}
+          {showReviewCommentPopover && (
+            <ReviewCommentPopover handleKeyEvent="c" showAlways={true} turnNumber={game.turnsHistory.length} />
+          )}
 
           {active && selfPlayer && !self && !player.notified && !player.bot && (
             <a
