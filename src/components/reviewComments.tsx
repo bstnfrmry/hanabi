@@ -105,6 +105,7 @@ export function ReviewCommentPopover({ showAlways = false, turnNumber }: { turnN
       }
       className="z-999"
       isOpen={reviewCommentOpenForTurn !== undefined}
+      place={"below"}
       onOuterAction={() => setReviewCommentOpenForTurn(undefined)}
     >
       <a
