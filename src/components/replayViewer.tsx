@@ -123,7 +123,7 @@ export default function ReplayViewer(props: Props) {
         <div className={"flex flex-row justify-center"} style={{ gap: "0.5rem" }}>
           <div className={"flex-grow-0"}>
             {isGameFinished(game) ? (
-              <ReadOnlyCommentMarker />
+              <ReadOnlyCommentMarker size={15} />
             ) : (
               <ReviewCommentPopover showAlways={true} turnNumber={replay.cursor} />
             )}
