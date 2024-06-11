@@ -9,11 +9,10 @@ interface Props {
   onClose: (message: string) => void;
 }
 
-// TODO replace ChatPopover with this dialog
 export default function TextFieldDialog(props: PropsWithChildren<Props>) {
   const { onClose } = props;
 
-  const messageRef = useRef<HTMLTextAreaElement>();
+  const messageRef = useRef<HTMLInputElement>();
   const [message, setMessage] = useState<undefined | string>();
   useEffect(() => {
     if (message === undefined) {
@@ -45,17 +44,17 @@ export default function TextFieldDialog(props: PropsWithChildren<Props>) {
       }}
     >
       {props.children}
-      <textarea
+      <input
         ref={messageRef}
         className="bw0 f6 w5 pa2 br2"
         placeholder={props.placeHolderText}
-        rows={4}
+        type="text"
         value={message}
         onChange={(e) => {
           setMessage(e.target.value);
         }}
         onKeyDown={(e) => {
-          if (e.keyCode === 13 /* enter */ && e.metaKey) {
+          if (e.key === "ENTER") {
             onSubmit();
           }
         }}
