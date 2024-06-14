@@ -49,7 +49,7 @@ export default function TextFieldDialog(props: PropsWithChildren<Props>) {
         className="bw0 f6 w5 pa2 br2"
         placeholder={props.placeHolderText}
         type="text"
-        value={message}
+        value={message === undefined ? props.initialValue : message}
         onChange={(e) => {
           setMessage(e.target.value);
         }}
