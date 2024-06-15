@@ -90,18 +90,20 @@ export function ReviewCommentPopover({
     function checkKey(event: KeyboardEvent) {
       console.debug(`event.key = ${event.key}`);
       if (event.key === handleKeyEvent && game.status === IGameStatus.ONGOING) {
+        console.debug(`TRIGGER; ${turnNumber}`);
         setReviewCommentOpenForTurn(turnNumber);
         event.preventDefault();
       }
     }
-    if (handleKeyEvent) {
+    if (handleKeyEvent && reviewCommentOpenForTurn === undefined) {
       console.debug(`Install Key Handler for ${handleKeyEvent}`);
       window.addEventListener("keydown", checkKey);
       return () => {
+        console.debug("remove keyHandler");
         window.removeEventListener("keydown", checkKey);
       };
     }
-  }, [game.status, turnNumber, handleKeyEvent]);
+  }, [game.status, turnNumber, handleKeyEvent, reviewCommentOpenForTurn]);
   const commentIsEditable = !isGameFinished(game);
   return (
     <Popover
