@@ -114,7 +114,7 @@ export function ReviewCommentPopover({
           </div>
         ) : (
           <EnterReviewComment
-            afterTurnNumber={turnNumber}
+            afterTurnNumber={reviewCommentOpenForTurn}
             existingComment={comment?.comment}
             onClose={(msg, turnNumber: number) => {
               addOrReplaceReviewComment(game, {
