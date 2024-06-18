@@ -15,7 +15,7 @@ export default function BuymeacoffeeButton(props: Props) {
   return (
     <>
       <Head>
-        <link href="https://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Cookie&display=optional" rel="stylesheet" />
       </Head>
       <a
         className={classnames("bmc-button flex", className)}

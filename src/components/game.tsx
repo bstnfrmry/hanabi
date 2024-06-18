@@ -1,6 +1,6 @@
 import Fireworks from "fireworks-canvas";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ActionAreaType, ISelectedArea } from "~/components/actionArea";
 import DiscardArea from "~/components/discardArea";
@@ -76,7 +76,7 @@ export function Game(props: Props) {
     if (game.status !== IGameStatus.ONGOING) return;
 
     setInterturn(true);
-  }, [game.turnsHistory.length, game.players.length, game.status]);
+  }, [game.turnsHistory.length, game.players.length, game.status, game.options.gameMode, game.options.playersCount]);
 
   /**
    * Play for bots.
@@ -99,7 +99,7 @@ export function Game(props: Props) {
     }, game.options.botsWait);
 
     return () => clearTimeout(timeout);
-  }, [game.currentPlayer, game.status, game.synced]);
+  }, [game.currentPlayer, game.status, game.synced, game, currentPlayer, selfPlayer]);
 
   /**
    * At the start of the game, compute and store the maximum score
@@ -136,7 +136,28 @@ export function Game(props: Props) {
     }
 
     setReachableScore(getScore(sameGame));
-  }, [game.status]);
+  }, [
+    game.status,
+    game.id,
+    game.options.colorBlindMode,
+    game.options.playersCount,
+    game.options.seed,
+    game.options.variant,
+    game.players,
+  ]);
+
+  const fillBots = useCallback(async () => {
+    let newState = game;
+    const botsName = ["Jane", "Adam"];
+
+    for (let i = 1; i < newState.options.playersCount; i++) {
+      const playerId = uniqueId();
+
+      newState = joinGame(newState, { id: playerId, name: botsName[i - 1] + " 🤖", bot: true });
+
+      await updateGame(newState);
+    }
+  }, [game]);
 
   /**
    * Track when the game ends
@@ -167,11 +188,23 @@ export function Game(props: Props) {
     }, game.playedCards.length * 200); // stop rockets from spawning
 
     return () => clearTimeout(timeout);
-  }, [game.status]);
+  }, [game.status, game.playedCards.length, userPreferences.showFireworksAtGameEnd]);
 
   /**
    * Automatically start tutorial when player joins
    */
+  const startTutorial = useCallback(() => {
+    const newState = {
+      ...game,
+      status: IGameStatus.ONGOING,
+      startedAt: Date.now(),
+    };
+
+    updateGame(newState).then(() => {
+      logEvent("Game", "Tutorial started");
+    });
+  }, [game]);
+
   useEffect(() => {
     if (!game.options.tutorial) return;
 
@@ -181,7 +214,7 @@ export function Game(props: Props) {
     if (game.players.length === game.options.playersCount && game.status === IGameStatus.LOBBY) {
       startTutorial();
     }
-  }, [game.players.length]);
+  }, [fillBots, startTutorial, game.players.length, game.options.tutorial, game.status, game.options.playersCount]);
 
   function changeToNextGame() {
     const nextGameId = liveGame().nextGameId;
@@ -227,31 +260,6 @@ export function Game(props: Props) {
     updateGame(newState);
 
     logEvent("Game", "Bot added");
-  }
-
-  async function fillBots() {
-    let newState = game;
-    const botsName = ["Jane", "Adam"];
-
-    for (let i = 1; i < newState.options.playersCount; i++) {
-      const playerId = uniqueId();
-
-      newState = joinGame(newState, { id: playerId, name: botsName[i - 1] + " 🤖", bot: true });
-
-      await updateGame(newState);
-    }
-  }
-
-  async function startTutorial() {
-    const newState = {
-      ...game,
-      status: IGameStatus.ONGOING,
-      startedAt: Date.now(),
-    };
-
-    await updateGame(newState);
-
-    logEvent("Game", "Tutorial started");
   }
 
   async function onStartGame() {
@@ -344,20 +352,23 @@ export function Game(props: Props) {
     });
   }
 
-  function onReplay() {
+  const onReplay = useCallback(() => {
     setDisplayStats(false);
     replay.moveCursor(game.turnsHistory.length);
 
     logEvent("Game", "Replay opened");
-  }
+  }, [replay, game.turnsHistory.length]);
 
-  function onReplayCursorChange(replayCursor: number) {
-    replay.moveCursor(replayCursor);
-  }
+  const onReplayCursorChange = useCallback(
+    (replayCursor: number) => {
+      replay.moveCursor(replayCursor);
+    },
+    [replay]
+  );
 
-  function onStopReplay() {
+  const onStopReplay = useCallback(() => {
     replay.moveCursor(null);
-  }
+  }, [replay]);
 
   function onToggleStats() {
     onStopReplay();
@@ -398,7 +409,7 @@ export function Game(props: Props) {
     return () => {
       window.removeEventListener("keydown", checkKey);
     };
-  }, [replay.cursor, game]);
+  }, [replay.cursor, game, onReplay, onReplayCursorChange, onStopReplay]);
 
   async function onRestartGame() {
     const nextGame = recreateGame(liveGame());

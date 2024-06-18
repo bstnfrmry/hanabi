@@ -1,7 +1,7 @@
 import { last, sortBy } from "lodash";
 import { commitAction, MaxHints } from "~/lib/actions";
-import { isCriticalCard, isCardDangerous, isCardEverPlayable } from "~/lib/ai";
-import IGameState, { ICard, IColor } from "~/lib/state";
+import { isCardDangerous, isCardEverPlayable, isCriticalCard } from "~/lib/ai";
+import IGameState, { ICard } from "~/lib/state";
 
 function canPlay(game: IGameState, card: ICard) {
   const topCard = last(game.playedCards.filter((playedCard) => playedCard.color === card.color));

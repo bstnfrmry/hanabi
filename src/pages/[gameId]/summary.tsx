@@ -77,7 +77,7 @@ export default function Summary(props: Props) {
 
       setGame(game);
     });
-  }, [game.id]);
+  }, [game.id, router]);
 
   function onBackClick() {
     router.push(`/${game.id}`);

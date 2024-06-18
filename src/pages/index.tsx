@@ -24,7 +24,7 @@ export default function Home() {
     router.prefetch("/new-game");
     router.prefetch("/join-game");
     router.prefetch("/learn");
-  }, []);
+  }, [router]);
 
   /**
    * Display fireworks animation when game ends

@@ -47,8 +47,6 @@ export default class App extends NextApp {
 
       Sentry.captureException(error);
     });
-
-    super.componentDidCatch(error, errorInfo);
   }
 
   render() {
