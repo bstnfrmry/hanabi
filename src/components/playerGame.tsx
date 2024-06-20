@@ -17,7 +17,6 @@ import Vignettes from "~/components/vignettes";
 import { useCurrentPlayer, useGame, useSelfPlayer } from "~/hooks/game";
 import { useReplay } from "~/hooks/replay";
 import { matchColor, matchNumber, MaxHints } from "~/lib/actions";
-import { findExistingCommentText } from "~/lib/reviewComments";
 import IGameState, {
   GameMode,
   GameVariant,
@@ -119,6 +118,9 @@ export default function PlayerGame(props: Props) {
   const currentPlayer = useCurrentPlayer(game);
   const tutorialAction = useTutorialAction();
 
+  function nothingInvoked() {
+    return chatOpen === false && reactionsOpen === false;
+  }
   useEffect(() => {
     setRevealCards(false);
   }, [game.id]);
@@ -153,7 +155,6 @@ export default function PlayerGame(props: Props) {
     ? ICardContext.SELF_PLAYER
     : ICardContext.OTHER_PLAYER;
 
-  const existingReviewComment = findExistingCommentText(game, player.id, game.turnsHistory.length);
   const showReviewCommentPopover =
     self && game.status === IGameStatus.ONGOING && game.originalGame?.status !== IGameStatus.OVER;
   return (
@@ -241,7 +242,11 @@ export default function PlayerGame(props: Props) {
           )}
 
           {showReviewCommentPopover && (
-            <ReviewCommentPopover handleKeyEvent="c" showAlways={true} turnNumber={game.turnsHistory.length} />
+            <ReviewCommentPopover
+              handleKeyEvent={nothingInvoked() ? "c" : undefined}
+              showAlways={true}
+              turnNumber={game.turnsHistory.length}
+            />
           )}
 
           {active && selfPlayer && !self && !player.notified && !player.bot && (
