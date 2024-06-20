@@ -1,6 +1,10 @@
 export const en = {
   codedHintMarkers: "Coded hint markers on cards",
   hanab: "Hanab",
+  turn: "Turn",
+  save: "Save",
+  clear: "Clear",
+  reviewCommentPlaceholder: "Comment for post-game review",
   welcome: "Welcome",
   newGame: "New game",
   nextGame: "Next Game",
