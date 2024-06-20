@@ -122,10 +122,6 @@ export default function Tutorial(props: Props) {
   const [pose, setPose] = useState(null);
   const context = useContext(TutorialContext);
 
-  if (!context) {
-    return <>{children}</>;
-  }
-
   const { currentStep, previousStep, nextStep, lastStep, skip, totalSteps } = context;
 
   useEffect(() => {
@@ -134,9 +130,9 @@ export default function Tutorial(props: Props) {
     const interval = setTimeout(() => setPose("attention"), 100);
 
     return () => clearInterval(interval);
-  }, [currentStep]);
+  }, [currentStep, step]);
 
-  if (step !== currentStep) {
+  if (!context || step !== currentStep) {
     return children ? <>{children}</> : null;
   }
 

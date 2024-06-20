@@ -21,7 +21,6 @@ import IGameState, {
   GameVariant,
   IAction,
   ICard,
-  ICardAction,
   IColor,
   IGameStatus,
   IHintAction,
@@ -141,7 +140,7 @@ export default function PlayerGame(props: Props) {
       tempHideCards = true;
     }
     setHideCards(tempHideCards);
-  }, [game.status, revealCards]);
+  }, [game.status, revealCards, game.options.gameMode, selfPlayer, self]);
 
   const canPlay = [IGameStatus.ONGOING, IGameStatus.OVER].includes(game.status) && !replay.cursor;
 

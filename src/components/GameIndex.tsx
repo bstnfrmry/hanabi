@@ -27,7 +27,7 @@ function SsrFreeGameIndex(props: { host: string; game: IGameState }) {
 
       setGame({ ...game, synced: true });
     });
-  }, [online, game.id]);
+  }, [online, game.id, router]);
 
   return (
     <GameContext.Provider value={game}>

@@ -7,3 +7,5 @@ node_modules
 
 .now
 .vercel
+src/component/Notes
+/src/components/Notes

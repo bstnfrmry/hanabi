@@ -14,7 +14,7 @@ export default function Play() {
     if (!gameId) return;
 
     router.replace(`/${gameId}`);
-  }, [gameId]);
+  }, [gameId, router]);
 
   return <LoadingScreen />;
 }

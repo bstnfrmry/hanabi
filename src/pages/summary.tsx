@@ -14,7 +14,7 @@ export default function Summary() {
     if (!gameId) return;
 
     router.replace(`/${gameId}/summary`);
-  }, [gameId]);
+  }, [gameId, router]);
 
   return <LoadingScreen />;
 }

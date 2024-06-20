@@ -1,6 +1,11 @@
 module.exports = {
   parser: "@typescript-eslint/parser",
-  extends: ["plugin:@typescript-eslint/recommended", "plugin:react/recommended", "plugin:prettier/recommended"],
+  extends: [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "next/core-web-vitals",
+  ],
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: "module",
@@ -26,5 +31,6 @@ module.exports = {
       },
     ],
     "react/no-unescaped-entities": [0],
+    "@next/next/no-page-custom-font": "off",
   },
 };
