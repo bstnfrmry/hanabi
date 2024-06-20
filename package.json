@@ -31,7 +31,7 @@
     "next-offline": "^5.0.3",
     "next-optimized-images": "^2.6.2",
     "nprogress": "^0.2.0",
-    "rc-slider": "^9.7.1",
+    "rc-slider": "^10.6.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-fullstory": "^1.4.0",
@@ -49,7 +49,6 @@
   "devDependencies": {
     "@types/node": "^14.14.35",
     "@types/nprogress": "^0.2.0",
-    "@types/rc-slider": "^8.6.6",
     "@types/react": "^17.0.3",
     "@types/react-modal": "^3.12.0",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
