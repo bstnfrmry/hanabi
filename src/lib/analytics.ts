@@ -1,4 +1,4 @@
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 
 const NODE_ENV = process.env.NODE_ENV;
 const GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
@@ -17,7 +17,7 @@ export function logPageView() {
   if (isDevelopment) return;
 
   ReactGA.set({ page: window.location.pathname });
-  ReactGA.pageview(window.location.pathname);
+  ReactGA.set({ hitType: "pageview", page: window.location.pathname });
 }
 
 export function logEvent(category: string, action: string, options = {}) {
