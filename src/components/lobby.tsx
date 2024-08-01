@@ -80,7 +80,7 @@ export default function Lobby(props: Props) {
     } else {
       setName(localStorage.getItem(NAME_KEY) || "");
     }
-  }, [game.players.length]);
+  }, [game.players.length, game.options.gameMode]);
 
   function onJoinGameSubmit(e: FormEvent) {
     e.preventDefault();

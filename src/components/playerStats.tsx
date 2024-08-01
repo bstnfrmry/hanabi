@@ -43,7 +43,7 @@ export default function PlayerStats(props: Props) {
     });
 
     return () => clearTimeout(timeout);
-  }, []);
+  }, [groupedTurns]);
 
   return (
     <div className={classnames("flex flex-column", className)}>
