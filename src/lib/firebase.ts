@@ -87,7 +87,12 @@ export function subscribeToGame(gameId: string, callback: (game: IGameState) => 
 export async function updateGame(game: IGameState) {
   window["hanab"] = cloneDeep(game);
 
-  await database().ref(`/games/${game.id}`).set(cleanState(game));
+  try {
+    await database().ref(`/games/${game.id}`).set(cleanState(game));
+  } catch (e) {
+    console.debug(`DB Error: updateGame\n ${e}`);
+    throw e;
+  }
 }
 
 export async function setReaction(game: IGameState, player: IPlayer, reaction: string) {
