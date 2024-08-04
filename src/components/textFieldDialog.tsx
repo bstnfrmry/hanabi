@@ -18,7 +18,7 @@ export default function TextFieldDialog(props: PropsWithChildren<Props>) {
     if (message === undefined) {
       setMessage(props.initialValue);
     }
-  });
+  }, [props.initialValue, message]);
 
   useEffect(() => {
     messageRef.current?.focus();
@@ -33,7 +33,7 @@ export default function TextFieldDialog(props: PropsWithChildren<Props>) {
   return (
     <form
       className="flex flex-column items-center justify-start b--yellow ba bw1 bg-white pa1 br2 gray"
-      onKeyPress={(e) => {
+      onKeyUp={(e) => {
         if (e.key === "Enter" && (e.getModifierState("Shift") || e.getModifierState("Control"))) {
           onSubmit();
         }

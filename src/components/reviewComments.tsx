@@ -5,21 +5,19 @@ import Popover from "react-popover";
 import TextFieldDialog from "~/components/textFieldDialog";
 import Txt from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+import Clear from "~/images/Clear.svg";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+import Pencil from "~/images/YellowPencil.svg";
 import { updateGame } from "~/lib/firebase";
 import { isGameFinished } from "~/lib/game";
 import { addOrReplaceReviewComment, findComment } from "~/lib/reviewComments";
 import { IGameStatus, IReviewComment } from "~/lib/state";
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Pencil = require("~/images/YellowPencil.svg");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Clear = require("~/images/Clear.svg");
-
 export function ReviewCommentIcon(props: { size: number; placeholder?: boolean }) {
   if (props.placeholder) {
-    return <Image height={props.size} src={Clear} width={props.size} />;
+    return <Image alt="No Review Comment" height={props.size} src={Clear} width={props.size} />;
   }
-  return <Image height={props.size} src={Pencil} width={props.size} />;
+  return <Image alt="Review Comment" height={props.size} src={Pencil} width={props.size} />;
 }
 
 export function ReadOnlyCommentMarker(props: { size: number }) {
@@ -35,17 +33,24 @@ export function ReadOnlyCommentMarker(props: { size: number }) {
   };
   return <div className="dib" style={style} />;
 }
-function EnterReviewComment(props: {
+function EnterReviewComment({
+  afterTurnNumber: afterTurnNumber1,
+  existingComment,
+  onClose,
+}: {
   existingComment: string;
   afterTurnNumber: number;
   onClose: (msg: string, afterTurnNumber: number) => void;
 }) {
   const { t } = useTranslation();
-  const escFunction = useCallback((event) => {
-    if (event.key === "Escape") {
-      props.onClose(props.existingComment, props.afterTurnNumber);
-    }
-  }, []);
+  const escFunction = useCallback(
+    (event) => {
+      if (event.key === "Escape") {
+        onClose(existingComment, afterTurnNumber1);
+      }
+    },
+    [onClose, existingComment, afterTurnNumber1]
+  );
   useEffect(() => {
     document.addEventListener("keydown", escFunction, false);
     return () => {
@@ -57,12 +62,12 @@ function EnterReviewComment(props: {
     <TextFieldDialog
       clearButtonText={t("clear")}
       doneButtonText={t("save")}
-      initialValue={props.existingComment || ""}
+      initialValue={existingComment || ""}
       placeHolderText={t("reviewCommentPlaceholder")}
-      onClose={(msg) => props.onClose(msg, props.afterTurnNumber)}
+      onClose={(msg) => onClose(msg, afterTurnNumber1)}
     >
       <div className={"tl"}>
-        {t("turn")} # {props.afterTurnNumber}
+        {t("turn")} # {afterTurnNumber1}
       </div>
     </TextFieldDialog>
   );

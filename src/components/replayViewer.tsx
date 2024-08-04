@@ -59,7 +59,7 @@ export default function ReplayViewer(props: Props) {
       onReplayCursorChange(cursor);
       setComment(findComment(game, selfPlayer.id, cursor));
     },
-    [game, selfPlayer]
+    [game, selfPlayer.id, onReplayCursorChange]
   );
 
   const maxTurns = game.originalGame.turnsHistory.length;
