@@ -20,7 +20,7 @@ export function useGame() {
   return game;
 }
 
-export function useCurrentPlayer(game: IGameState = useGame()) {
+export function useCurrentPlayer(game: IGameState) {
   if (!game) {
     return null;
   }
@@ -28,7 +28,7 @@ export function useCurrentPlayer(game: IGameState = useGame()) {
   return game.players[game.currentPlayer];
 }
 
-export function useSelfPlayer(game: IGameState = useGame()) {
+export function useSelfPlayer(game: IGameState) {
   const { playerId } = useSession();
   const currentPlayer = useCurrentPlayer(game);
 

@@ -4,8 +4,8 @@ import { IGameStatus } from "~/lib/state";
 
 export function useNotifications() {
   const game = useGame();
-  const currentPlayer = useCurrentPlayer();
-  const selfPlayer = useSelfPlayer();
+  const currentPlayer = useCurrentPlayer(game);
+  const selfPlayer = useSelfPlayer(game);
 
   /**
    * Request notification permissions when game starts

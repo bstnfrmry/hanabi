@@ -2,7 +2,7 @@ import classnames from "classnames";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { useSelfPlayer } from "~/hooks/game";
+import { useGame, useSelfPlayer } from "~/hooks/game";
 import { IPlayer } from "~/lib/state";
 
 export enum PlayerNameSize {
@@ -27,7 +27,8 @@ export default function PlayerName(props: Props) {
   const { player, size = PlayerNameSize.SMALL, explicit = false, className } = props;
   const { t } = useTranslation();
 
-  const selfPlayer = useSelfPlayer();
+  const game = useGame();
+  const selfPlayer = useSelfPlayer(game);
   const you = !explicit && player.id === selfPlayer?.id;
 
   return (
