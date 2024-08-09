@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@sentry/browser": "^8.9.2",
+    "@sentry/nextjs": "^8.25.0",
     "@types/classnames": "^2.2.11",
     "@types/lodash": "^4.14.168",
     "@types/react-dom": "17",
