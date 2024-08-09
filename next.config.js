@@ -1,19 +1,35 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 require("dotenv").config();
-
 const webpack = require("webpack");
+const { withSentryConfig } = require("@sentry/nextjs");
+
+const moduleExports = {
+  // next config
+};
+
+const sentryWebpackPluginOptions = {
+  // sentry config
+};
+
 const withPlugins = require("next-compose-plugins");
 
-const config = [
-  {
-    target: "serverless",
+module.exports = async (phase, { defaultConfig }) => {
+  delete defaultConfig["webpackDevMiddleware"];
+  delete defaultConfig["configOrigin"];
+  delete defaultConfig["target"];
+  delete defaultConfig["webpack5"];
+  delete defaultConfig.amp["canonicalBase"];
+
+  const localConfig = {
+    assetPrefix: "/",
+    experimental: {},
+    images: {
+      domains: ["cdn.buymeacoffee.com"],
+    },
     i18n: {
       locales: ["en", "fr", "es", "it", "nl", "ru", "pt", "de", "sk", "zh"],
       defaultLocale: "en",
-    },
-    images: {
-      domains: ["cdn.buymeacoffee.com"],
     },
     webpack: (config, { isServer, buildId }) => {
       config.plugins.push(
@@ -28,7 +44,12 @@ const config = [
 
       return config;
     },
-  },
-];
+  };
 
-module.exports = withPlugins([config]);
+  return {
+    ...withPlugins([], withSentryConfig(moduleExports, sentryWebpackPluginOptions))(phase, {
+      config: defaultConfig,
+    }),
+    ...localConfig,
+  };
+};
