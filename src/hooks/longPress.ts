@@ -4,7 +4,7 @@ export default function useLongPress(callback: () => void, ms = 300) {
   const [startLongPress, setStartLongPress] = useState(false);
 
   useEffect(() => {
-    let timerId;
+    let timerId: NodeJS.Timeout;
     if (startLongPress) {
       timerId = setTimeout(callback, ms);
     } else {
@@ -14,7 +14,7 @@ export default function useLongPress(callback: () => void, ms = 300) {
     return () => {
       clearTimeout(timerId);
     };
-  }, [startLongPress]);
+  }, [startLongPress, callback, ms]);
 
   return {
     onMouseDown: () => setStartLongPress(true),
