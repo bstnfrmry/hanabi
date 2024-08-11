@@ -1,4 +1,5 @@
 export function playSound(path: string) {
+  console.info(`Play Sound: ${path}`);
   new Audio(path).play().catch((error) => {
     console.warn(error);
   });
