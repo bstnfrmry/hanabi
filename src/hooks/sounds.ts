@@ -6,22 +6,6 @@ import { useReplay } from "~/hooks/replay";
 import { useUserPreferences } from "~/hooks/userPreferences";
 import { setNotification } from "~/lib/firebase";
 import { playSound, vibrate } from "~/lib/sound";
-import { isCardAction, isDiscardAction, isHintAction } from "~/lib/state";
-
-type RecognizedAction = "Rewind" | "Hint" | "Discard" | "Strike" | "SilentStrike" | "Played" | "Played-5" | undefined;
-type ActionSoundMap = {
-  [key in RecognizedAction]: string | undefined;
-};
-
-const SoundsForAction: ActionSoundMap = {
-  "Rewind": "/static/sounds/rewind.mp3",
-  "Hint": "/static/sounds/swoosh.wav  ",
-  "Discard": "/static/sounds/card-scrape.mp3",
-  "Strike": "/static/sounds/strike.mp3",
-  "SilentStrike": undefined,
-  "Played": "/static/sounds/play.mp3",
-  "Played-5": "/static/sounds/play-5.mp3",
-};
 
 export function useSoundEffects() {
   const game = useGame();
@@ -29,62 +13,100 @@ export function useSoundEffects() {
   const selfPlayer = useSelfPlayer(game);
   const [userPreferences] = useUserPreferences();
 
-  const turnsCount = game ? (game.originalGame || game).turnsHistory.length : 0;
-  const previousTurnsCount = usePrevious(turnsCount);
   const isReplaying = replay.cursor !== null;
-  const turn = last(game?.turnsHistory);
+  const previousTurnsPlayed = usePrevious((game.originalGame || game).turnsHistory.length);
 
   /**
    * Handle notification sounds.
    */
   useEffect(() => {
-    if (!selfPlayer?.notified) return;
+    if (!selfPlayer) return;
+    if (!selfPlayer.notified) return;
 
     playSound(`/static/sounds/bell.mp3`);
     vibrate(200);
     const timeout = setTimeout(() => setNotification(game, selfPlayer, false), 10000);
 
     return () => clearTimeout(timeout);
-  }, [selfPlayer, selfPlayer?.notified, game]);
+  }, [selfPlayer && selfPlayer.notified]);
+
+  /**
+   * Play sound when gaining a hint token
+   */
+  const hintsCount = game ? game.tokens.hints : 0;
+  const previousHintsCount = usePrevious(hintsCount);
+  useEffect(() => {
+    if (isReplaying) return;
+    if (previousHintsCount === undefined) return;
+
+    const timeout = setTimeout(() => {
+      playSound(`/static/sounds/coin.mp3`);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [hintsCount === previousHintsCount + 1]);
+
+  /**
+   * Play sound when gaining a strike token
+   */
+  const strikeCount = game ? game.tokens.strikes : 0;
+  const previousStrikeCount = usePrevious(strikeCount);
+  useEffect(() => {
+    if (isReplaying) return;
+    if (previousStrikeCount === undefined) return;
+    if (game.turnsHistory.length <= previousTurnsPlayed) return;
+    if (!userPreferences.soundOnStrike) return;
+
+    const timeout = setTimeout(() => {
+      playSound(`/static/sounds/strike.mp3`);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [strikeCount === previousStrikeCount + 1]);
 
   useEffect(() => {
-    function determineLastGameEvent(): RecognizedAction {
-      if (turnsCount < previousTurnsCount) {
-        return "Rewind";
-      }
-      if (turnsCount === previousTurnsCount) {
-        return undefined;
-      }
-      if (isHintAction(turn.action)) {
-        return "Hint";
-      } else if (isDiscardAction(turn.action)) {
-        return "Discard";
-      } else if (isCardAction(turn.action)) {
-        if (turn.failed) {
-          if (userPreferences.soundOnStrike) {
-            return "Strike";
-          } else {
-            return "SilentStrike";
-          }
-        } else {
-          if (turn.action.card.number === 5) {
-            return "Played-5";
-          } else {
-            return "Played";
-          }
-        }
-      }
-
-      console.warn(`Unexpected SFX inspection:`);
-      return undefined;
-    }
-
     if (isReplaying) return;
-    if (!turn) return;
-    const namedEvent = determineLastGameEvent();
-    if (!namedEvent) return;
-    const soundFile = SoundsForAction[namedEvent];
+    if (previousHintsCount === undefined) return;
 
-    playSound(soundFile);
-  }, [turnsCount, previousTurnsCount, turn, userPreferences.soundOnStrike, isReplaying]);
+    const timeout = setTimeout(() => {
+      playSound(`/static/sounds/swoosh.wav`);
+    }, 200);
+
+    return () => clearTimeout(timeout);
+  }, [hintsCount === previousHintsCount - 1]);
+
+  const turnsCount = game ? game.turnsHistory.length : 0;
+  const previousTurnsCount = usePrevious(turnsCount);
+  useEffect(() => {
+    if (isReplaying) return;
+    if (previousTurnsCount === undefined) return;
+
+    playSound(`/static/sounds/rewind.mp3`);
+  }, [turnsCount < previousTurnsCount]);
+
+  /**
+   * Play sound when discarding a card
+   */
+  useEffect(() => {
+    if (!game) return;
+    if (!game.discardPile.length) return;
+    if (isReplaying) return;
+
+    playSound(`/static/sounds/card-scrape.mp3`);
+  }, [game && game.discardPile.length]);
+
+  /**
+   * Play sound when successfully playing a card
+   */
+  useEffect(() => {
+    if (!game) return;
+    if (isReplaying) return;
+
+    const latestCard = last(game.playedCards);
+    if (!latestCard) return;
+
+    const path = latestCard.number === 5 ? `/static/sounds/play-5.mp3` : `/static/sounds/play.mp3`;
+
+    playSound(path);
+  }, [game && game.playedCards.length]);
 }

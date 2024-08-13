@@ -16,9 +16,9 @@ export function useNotifications() {
     if (game.status !== IGameStatus.ONGOING) return;
 
     if (Notification.permission !== "granted") {
-      Notification.requestPermission().catch((e) => console.error(`Error Requesting Permissions:\n${e}`));
+      Notification.requestPermission();
     }
-  }, [game, game.status]);
+  }, [game && game.status === IGameStatus.ONGOING]);
 
   /**
    * Notify player it's time to play when document isn't focused.
@@ -43,7 +43,7 @@ export function useNotifications() {
         notification.close();
       };
 
-      let closeTimeout: NodeJS.Timeout;
+      let closeTimeout;
       notification.onshow = () => {
         closeTimeout = setTimeout(() => {
           notification.close.bind(notification);
@@ -62,5 +62,5 @@ export function useNotifications() {
     } catch (e) {
       // Not handled for many mobile browsers.
     }
-  }, [currentPlayer, selfPlayer]);
+  }, [currentPlayer === selfPlayer]);
 }
