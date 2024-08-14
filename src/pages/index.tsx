@@ -69,7 +69,6 @@ export default function Home() {
             <Image
               alt={t("landingImageAlt", "Hanabcards game online logo")}
               height={256}
-              priority={true}
               src={"/static/hanab.png"}
               width={256}
             />
