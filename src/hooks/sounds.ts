@@ -10,7 +10,7 @@ import { playSound, vibrate } from "~/lib/sound";
 export function useSoundEffects() {
   const game = useGame();
   const replay = useReplay();
-  const selfPlayer = useSelfPlayer(game);
+  const selfPlayer = useSelfPlayer();
   const [userPreferences] = useUserPreferences();
 
   const isReplaying = replay.cursor !== null;

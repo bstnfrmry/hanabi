@@ -25,8 +25,8 @@ export default function PlayersBoard(props: Props) {
   const { displayStats, selectedArea, onSelectPlayer, onNotifyPlayer, onReaction, onCloseArea, onCommitAction } = props;
 
   const game = useGame();
-  const selfPlayer = useSelfPlayer(game);
-  const currentPlayer = useCurrentPlayer(game);
+  const selfPlayer = useSelfPlayer();
+  const currentPlayer = useCurrentPlayer();
 
   const position = selfPlayer ? selfPlayer.index : game.players.length;
   const otherPlayers = [...game.players.slice(position + 1), ...game.players.slice(0, position)];

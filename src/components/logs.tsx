@@ -18,7 +18,7 @@ export default function Logs(props: Props) {
 
   const game = useGame();
   const replay = useReplay();
-  const selfPlayer = useSelfPlayer(game);
+  const selfPlayer = useSelfPlayer();
 
   const PoseItem = replay.cursor ? posed.div() : Item;
   const firstMessages = game.messages.filter((message) => message.turn === 0).reverse();

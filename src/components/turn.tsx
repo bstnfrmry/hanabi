@@ -29,7 +29,7 @@ export default function Turn(props: Props) {
   const { turn, showDrawn, showPosition = true } = props;
 
   const game = useGame();
-  const selfPlayer = useSelfPlayer(game);
+  const selfPlayer = useSelfPlayer();
 
   const isViewingOwnActions = turn.action.from === selfPlayer?.index;
   const isViewingOwnReceivedHint = isHintAction(turn.action) && turn.action.to === selfPlayer?.index;
