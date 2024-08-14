@@ -107,10 +107,7 @@ function Meta() {
       <title>
         {t("hanab")} · {t("tagline")}
       </title>
-      <style>
-        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap'); @import
-        url('https://fonts.googleapis.com/css2?family=Kalam&display=swap');
-      </style>
+
       <link href="/static/favicon.ico" rel="shortcut icon" type="image/x-icon" />
       <link href="/static/hanab-192.png" rel="apple-touch-icon" />
       <link href="/static/manifest.json" rel="manifest" />
