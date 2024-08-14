@@ -15,7 +15,7 @@ export default function ChatPopover(props: Props) {
 
   const { t } = useTranslation();
   const game = useGame();
-  const selfPlayer = useSelfPlayer(game);
+  const selfPlayer = useSelfPlayer();
   const messageRef = useRef<HTMLTextAreaElement>();
   const [message, setMessage] = useState("");
 

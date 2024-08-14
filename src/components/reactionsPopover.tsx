@@ -1,6 +1,6 @@
 import React from "react";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { useGame, useSelfPlayer } from "~/hooks/game";
+import { useSelfPlayer } from "~/hooks/game";
 
 const ClearReaction = "⊘";
 const Reactions = ["👍", "👎", "👏", "😅", "🤩", "🤭", "🤔", "😬", "♻️", "❤️", "😻"];
@@ -13,8 +13,7 @@ interface Props {
 export default function ReactionsPopover(props: Props) {
   const { onReaction, onClose } = props;
 
-  const game = useGame();
-  const selfPlayer = useSelfPlayer(game);
+  const selfPlayer = useSelfPlayer();
 
   return (
     <div className="flex items-center justify-center b--yellow ba bw1 bg-white pa2 pt3 pr3 br2 gray">

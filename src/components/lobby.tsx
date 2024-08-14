@@ -58,7 +58,7 @@ export default function Lobby(props: Props) {
   const { t } = useTranslation();
 
   const game = useGame();
-  const selfPlayer = useSelfPlayer(game);
+  const selfPlayer = useSelfPlayer();
   const router = useRouter();
   const [name, setName] = useState("");
   const [bot, setBot] = useState(false);

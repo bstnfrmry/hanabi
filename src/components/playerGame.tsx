@@ -113,8 +113,8 @@ export default function PlayerGame(props: Props) {
     value: null,
   } as IHintAction);
 
-  const selfPlayer = useSelfPlayer(game);
-  const currentPlayer = useCurrentPlayer(game);
+  const selfPlayer = useSelfPlayer();
+  const currentPlayer = useCurrentPlayer();
   const tutorialAction = useTutorialAction();
 
   useEffect(() => {

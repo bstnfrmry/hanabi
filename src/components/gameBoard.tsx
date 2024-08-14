@@ -22,7 +22,7 @@ export default function GameBoard(props: Props) {
   const { t } = useTranslation();
 
   const game = useGame();
-  const selfPlayer = useSelfPlayer(game);
+  const selfPlayer = useSelfPlayer();
   const score = getScore(game);
   const maxScore = getMaximumScore(game);
   const maxPossibleScore = getMaximumPossibleScore(game);

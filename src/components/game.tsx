@@ -52,8 +52,8 @@ export function Game(props: Props) {
   const fireworksRef = useRef();
 
   const game = useGame();
-  const currentPlayer = useCurrentPlayer(game);
-  const selfPlayer = useSelfPlayer(game);
+  const currentPlayer = useCurrentPlayer();
+  const selfPlayer = useSelfPlayer();
   const replay = useReplay();
   const tutorial = useContext(TutorialContext);
   const [userPreferences] = useUserPreferences();
