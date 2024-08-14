@@ -2,15 +2,18 @@ import { isString } from "lodash";
 import { useState } from "react";
 
 export default function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T) => void] {
-  function isServerSide() {
-    return typeof window === "undefined";
+  // No-op hook for SSR.
+  if (typeof window === "undefined") {
+    return [
+      initialValue,
+      () => {
+        /* No op */
+      },
+    ];
   }
 
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
-      if (isServerSide()) {
-        return initialValue;
-      }
       const item = window.localStorage.getItem(key);
 
       if (!item && initialValue !== null) {
@@ -32,21 +35,11 @@ export default function useLocalStorage<T>(key: string, initialValue: T): [T, (v
       return initialValue;
     }
   });
-  if (typeof window === "undefined") {
-    return [
-      initialValue,
-      () => {
-        /* No op */
-      },
-    ];
-  }
 
   const setValue = (value: T) => {
     try {
       setStoredValue(value);
-      if (!isServerSide()) {
-        window.localStorage.setItem(key, JSON.stringify(value));
-      }
+      window.localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
       console.error(error);
     }
