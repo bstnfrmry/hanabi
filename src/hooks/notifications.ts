@@ -4,8 +4,8 @@ import { IGameStatus } from "~/lib/state";
 
 export function useNotifications() {
   const game = useGame();
-  const currentPlayer = useCurrentPlayer();
-  const selfPlayer = useSelfPlayer();
+  const currentPlayer = useCurrentPlayer(game);
+  const selfPlayer = useSelfPlayer(game);
 
   /**
    * Request notification permissions when game starts
@@ -16,9 +16,9 @@ export function useNotifications() {
     if (game.status !== IGameStatus.ONGOING) return;
 
     if (Notification.permission !== "granted") {
-      Notification.requestPermission();
+      Notification.requestPermission().catch((e) => console.error(`Error Requesting Permissions:\n${e}`));
     }
-  }, [game && game.status === IGameStatus.ONGOING]);
+  }, [game, game.status]);
 
   /**
    * Notify player it's time to play when document isn't focused.
@@ -43,7 +43,7 @@ export function useNotifications() {
         notification.close();
       };
 
-      let closeTimeout;
+      let closeTimeout: NodeJS.Timeout;
       notification.onshow = () => {
         closeTimeout = setTimeout(() => {
           notification.close.bind(notification);
@@ -62,5 +62,5 @@ export function useNotifications() {
     } catch (e) {
       // Not handled for many mobile browsers.
     }
-  }, [currentPlayer === selfPlayer]);
+  }, [currentPlayer, selfPlayer]);
 }
