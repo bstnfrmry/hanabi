@@ -25,7 +25,7 @@ module.exports = async (phase, { defaultConfig }) => {
     assetPrefix: "/",
     experimental: {},
     images: {
-      domains: ["cdn.buymeacoffee.com"],
+      domains: ["cdn.buymeacoffee.com", "localhost"],
     },
     i18n: {
       locales: ["en", "fr", "es", "it", "nl", "ru", "pt", "de", "sk", "zh"],

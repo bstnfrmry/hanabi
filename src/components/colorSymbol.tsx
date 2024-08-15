@@ -1,5 +1,4 @@
-import Image from "next/image";
-import React from "react";
+import { SvgImage } from "~/components/ui/svgImage";
 import { IColor } from "~/lib/state";
 
 export const ColorsToSymbols = {
@@ -28,7 +27,7 @@ export default function ColorSymbol(props: Props) {
 
   return (
     <div className="absolute w-100 h-100 flex justify-center items-center" style={{ transform: "scale(1.4)" }}>
-      <Image alt={color} height={76} src={svg} width={76} />
+      <SvgImage svg={svg} />
     </div>
   );
 }
