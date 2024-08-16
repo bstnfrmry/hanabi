@@ -1,6 +1,6 @@
 import Fireworks from "fireworks-canvas";
 import Head from "next/head";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
