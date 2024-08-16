@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import Head from "next/head";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React from "react";
 
 interface Props {
