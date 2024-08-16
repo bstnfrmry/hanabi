@@ -294,10 +294,8 @@ const useSteps = () => {
           <Title className="ttu">{t("learn.ready.title", "Ready?")}</Title>
           <Paragraph>{t("learn.ready.1", "Let's jump into a trial game to try all this out!")}</Paragraph>
           {gameId && (
-            <Link passHref href={`/${gameId}`}>
-              <a className="lavender pointer">
-                <Txt value={t("backToGame", "Go back to my game instead")} />
-              </a>
+            <Link passHref className="lavender pointer" href={`/${gameId}`}>
+              <Txt value={t("backToGame", "Go back to my game instead")} />
             </Link>
           )}
           <Divider />

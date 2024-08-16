@@ -135,10 +135,12 @@ export default function Lobby(props: Props) {
                     <div className="mt5">
                       <Txt className="txt-yellow mr2 ttu" size={TxtSize.XXSMALL} value={t("new")} />
                       <Txt value={t("learnWhileWaiting")} />
-                      <Link passHref href={`/learn?back-to-game=${game.id}`}>
-                        <a className="ml2 underline lavender ttu pointer">
-                          <Txt value={t("go")} />
-                        </a>
+                      <Link
+                        passHref
+                        className="ml2 underline lavender ttu pointer"
+                        href={`/learn?back-to-game=${game.id}`}
+                      >
+                        <Txt value={t("go")} />
                       </Link>
                     </div>
                   </>
