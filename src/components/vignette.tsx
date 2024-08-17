@@ -41,7 +41,13 @@ export default function Vignette(props: Props) {
     >
       {displaySymbol && <ColorSymbol color={value as IColor} />}
       {type === "number" && (
-        <Txt value={game?.options?.variant === GameVariant.SEQUENCE && value < 5 ? `${value}+` : value} />
+        <Txt
+          value={
+            game?.options?.variant === GameVariant.SEQUENCE && typeof value == "number" && value < 5
+              ? `${value}+`
+              : value
+          }
+        />
       )}
     </a>
   );
