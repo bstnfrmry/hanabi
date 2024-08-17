@@ -13,7 +13,11 @@ export function SvgImage(props: { svg: ImportedSvg; alt?: string }) {
   console.debug(`SvgImage: ${svg.src.substr(1)}`);
   const location = window.location;
   return (
-    <Image height={svg.height} src={location.protocol + "//" + location.host + svg.src.substr(1)} width={svg.width} />
+    <Image
+      alt={props.alt}
+      height={svg.height}
+      src={location.protocol + "//" + location.host + svg.src.substr(1)}
+      width={svg.width}
+    />
   );
-  // return <img alt={props.alt} src={svg.src.substr(1)} style={{ width: svg.width, height: svg.height }} />;
 }
