@@ -1,8 +1,6 @@
 import classnames from "classnames";
-import Head from "next/head";
 import Image from "next/legacy/image";
 import React from "react";
-
 interface Props {
   className?: string;
 }
@@ -14,9 +12,6 @@ export default function BuymeacoffeeButton(props: Props) {
 
   return (
     <>
-      <Head>
-        <link href="https://fonts.googleapis.com/css?family=Cookie&display=optional" rel="stylesheet" />
-      </Head>
       <a
         className={classnames("bmc-button flex", className)}
         href="https://www.buymeacoffee.com/hanabicards"
