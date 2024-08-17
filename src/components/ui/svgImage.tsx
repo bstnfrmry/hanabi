@@ -10,7 +10,6 @@ interface ImportedSvg {
 
 export function SvgImage(props: { svg: ImportedSvg; alt?: string }) {
   const svg = props.svg.default;
-  console.debug(`SvgImage: ${svg.src.substr(1)}`);
   const location = window.location;
   return (
     <Image
