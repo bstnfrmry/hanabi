@@ -1,14 +1,14 @@
-import * as Sentry from "@sentry/browser";
-import NextApp, { AppProps } from "next/app";
+import * as Sentry from "@sentry/react";
+import { AppProps } from "next/app";
 import Head from "next/head";
 import Router, { useRouter } from "next/router";
 import NProgress from "nprogress";
-import React, { ErrorInfo, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import useConnectivity from "~/hooks/connectivity";
+import { initAnalytics, logPageView } from "~/lib/analytics";
 import { i18n } from "~/lib/i18n";
-import { initAnalytics, logEvent, logPageView } from "../lib/analytics";
 import "../styles/style.css";
 
 Sentry.init({
@@ -34,36 +34,19 @@ Router.events.on("routeChangeError", () => {
   NProgress.done();
 });
 
-export default class App extends NextApp {
-  componentDidMount() {
+export default function App(props: AppProps) {
+  useEffect(() => {
     initAnalytics();
-  }
+  }, []);
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    Sentry.withScope((scope) => {
-      Object.keys(errorInfo).forEach((key) => {
-        scope.setExtra(key, errorInfo[key]);
-      });
-
-      Sentry.captureException(error);
-    });
-  }
-
-  render() {
-    return <Hanab {...this.props} />;
-  }
+  return (
+    <Sentry.ErrorBoundary>
+      <Hanab {...props} />;
+    </Sentry.ErrorBoundary>
+  );
 }
 
-export function reportWebVitals({ id, name, label, value }) {
-  logEvent(`${label} metric`, name, {
-    value: Math.round(name === "CLS" ? value * 1000 : value),
-    label: id,
-    nonInteraction: true,
-  });
-}
-
-function Hanab(props: AppProps) {
-  const { Component, pageProps } = props;
+function Hanab({ Component, pageProps }: AppProps) {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -89,7 +72,6 @@ function Hanab(props: AppProps) {
               </a>
             </div>
           )}
-
           <Component {...pageProps} />
         </div>
       </I18nextProvider>
@@ -101,12 +83,10 @@ function Meta() {
   const { t } = useTranslation();
 
   const tagline = `${t("tagline")} · ${t("subTagline")}`;
-
+  const title = `${t("hanab")} · ${t("tagline")}`;
   return (
     <Head>
-      <title>
-        {t("hanab")} · {t("tagline")}
-      </title>
+      <title>{title}</title>
       <style>
         @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap'); @import
         url('https://fonts.googleapis.com/css2?family=Kalam&display=swap');
