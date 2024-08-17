@@ -23,7 +23,12 @@ export function loadUserPreferences(): UserPreferences {
   }
   return DefaultPreferences;
 }
-export const UserPreferencesContext = React.createContext<ValueAndSetter<UserPreferences>>(null);
+export const UserPreferencesContext = React.createContext<ValueAndSetter<UserPreferences>>([
+  DefaultPreferences,
+  () => {
+    console.warn("Unexpected attempt to change default User Preferences");
+  },
+]);
 
 export function useUserPreferences(): ValueAndSetter<UserPreferences> {
   const [userPreferences, setUserPreferencesToContext] = useContext(UserPreferencesContext);
