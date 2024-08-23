@@ -9,6 +9,7 @@ import { Modal } from "~/components/ui/modal";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import UserPreferencesDialog from "~/components/userPreferencesDialog";
 import { UserPreferences, useUserPreferences } from "~/hooks/userPreferences";
+import { logFailedPromise } from "~/lib/errors";
 
 interface Props {
   onCloseArea: () => void;
@@ -28,7 +29,7 @@ export default function MenuArea(props: Props) {
     setShowUserPreferences(true);
   }
   function onMenuClick() {
-    router.push("/");
+    router.push("/").catch(logFailedPromise);
   }
 
   function onTutorialClick() {

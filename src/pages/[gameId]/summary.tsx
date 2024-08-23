@@ -16,6 +16,7 @@ import { newGame } from "~/lib/actions";
 import { logEvent } from "~/lib/analytics";
 import { loadGame, subscribeToGame, updateGame } from "~/lib/firebase";
 import IGameState, { GameVariant } from "~/lib/state";
+import { logFailedPromise } from "~/lib/errors";
 
 interface SectionProps {
   children: ReactNode;
@@ -80,7 +81,7 @@ export default function Summary(props: Props) {
   }, [game.id, router]);
 
   function onBackClick() {
-    router.push(`/${game.id}`);
+    router.push(`/${game.id}`).catch(logFailedPromise);
   }
 
   function gameVariantToText(gameVariant: GameVariant) {
@@ -178,7 +179,7 @@ export default function Summary(props: Props) {
 
                 logEvent("Game", "Game created");
 
-                router.push(`/play?gameId=${nextGame.id}`);
+                await router.push(`/play?gameId=${nextGame.id}`);
               }}
             />
           </div>

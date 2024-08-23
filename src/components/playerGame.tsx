@@ -276,12 +276,10 @@ export default function PlayerGame(props: Props) {
               {(game.endedAt || game.originalGame?.endedAt) && player === selfPlayer && (
                 <Button
                   void
-                  className={
-                    (classnames({
-                      revealCardButton: selected,
-                    }),
-                    "tracked-tight")
-                  }
+                  className={classnames({
+                    "revealCardButton": selected,
+                    "tracked-tight": true,
+                  })}
                   size={ButtonSize.TINY}
                   text={revealCards ? t("hide") : t("reveal")}
                   onClick={(e) => {

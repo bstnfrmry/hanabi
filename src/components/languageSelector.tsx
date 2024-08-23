@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Select } from "~/components/ui/forms";
+import { logFailedPromise } from "~/lib/errors";
 
 export const Languages = {
   en: "English",
@@ -43,7 +44,7 @@ export default function LanguageSelector(props: Props) {
             return;
           }
 
-          router.push(router.pathname, router.asPath, { locale: e.target.value });
+          router.push(router.pathname, router.asPath, { locale: e.target.value }).catch(logFailedPromise);
         }}
       />
     </label>

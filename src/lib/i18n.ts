@@ -11,6 +11,7 @@ import { pt } from "~/locales/pt";
 import { ru } from "~/locales/ru";
 import { sk } from "~/locales/sk";
 import { zh } from "~/locales/zh";
+import { logFailedPromise } from "~/lib/errors";
 
 i18n
   .use(initReactI18next)
@@ -52,6 +53,7 @@ i18n
     interpolation: {
       escapeValue: false,
     },
-  });
+  })
+  .catch(logFailedPromise);
 
 export { i18n };
