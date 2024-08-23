@@ -2,6 +2,7 @@ import firebase from "firebase/app";
 import "firebase/database";
 import { cloneDeep } from "lodash";
 import IGameState, { cleanState, fillEmptyValues, GameMode, IGameStatus, IPlayer, rebuildGame } from "~/lib/state";
+import { logFailedPromise } from "~/lib/errors";
 
 function database() {
   if (!firebase.apps.length) {
@@ -34,14 +35,16 @@ export function loadPublicGames() {
     .startAt(Date.now() - 10 * 60 * 1000);
 
   return new Promise((resolve) => {
-    ref.once("value", (event) => {
-      const games = Object.values(event.val() || {})
-        .map(fillEmptyValues)
-        // Game is public
-        .filter(gameIsPublic);
+    ref
+      .once("value", (event) => {
+        const games = Object.values(event.val() || {})
+          .map(fillEmptyValues)
+          // Game is public
+          .filter(gameIsPublic);
 
-      resolve(games);
-    });
+        resolve(games);
+      })
+      .catch(logFailedPromise);
   });
 }
 

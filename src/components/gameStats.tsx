@@ -8,9 +8,9 @@ import { useGame } from "~/hooks/game";
 import useLongPress from "~/hooks/longPress";
 import { getStateAtTurn, isPlayable } from "~/lib/actions";
 import { isCardDangerous, isCardEverPlayable } from "~/lib/ai";
-import IGameState, { fillEmptyValues, IAction, ICard, IInsightColor, IPlayer, ITurn } from "~/lib/state";
+import IGameState, { fillEmptyValues, ICard, IInsightColor, IPlayer, ITurn } from "~/lib/state";
 
-function turnToStateColor(turn: ITurn<IAction>) {
+function turnToStateColor(turn: ITurn) {
   const { action } = turn.action;
 
   return {

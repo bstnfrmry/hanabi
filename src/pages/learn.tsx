@@ -19,6 +19,7 @@ import { logEvent } from "~/lib/analytics";
 import { updateGame } from "~/lib/firebase";
 import { readableUniqueId } from "~/lib/id";
 import { GameMode, GameVariant, IColor, IGameHintsLevel, IHintType, INumber } from "~/lib/state";
+import { logFailedPromise } from "~/lib/errors";
 
 function card(color: IColor, number: INumber, size = CardSize.XSMALL, position?: number) {
   return (
@@ -365,9 +366,9 @@ export default function Learn() {
 
     const originalGameId = router.query["back-to-game"];
     if (originalGameId) {
-      router.push(`/${id}?back-to-game=${originalGameId}`);
+      await router.push(`/${id}?back-to-game=${originalGameId}`);
     } else {
-      router.push(`/${id}`);
+      await router.push(`/${id}`);
     }
   };
 
@@ -408,7 +409,7 @@ export default function Learn() {
                   className="ml4"
                   text={t("start", "Start!")}
                   onClick={() => {
-                    onStartClick();
+                    onStartClick().catch(logFailedPromise);
                   }}
                 />
               )}

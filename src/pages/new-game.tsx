@@ -94,7 +94,7 @@ export default function NewGame() {
 
     logEvent("Game", "Game created");
 
-    router.push(`/${gameId}`);
+    await router.push(`/${gameId}`);
   }
 
   return (

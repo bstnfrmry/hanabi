@@ -10,6 +10,7 @@ import useConnectivity from "~/hooks/connectivity";
 import { initAnalytics, logPageView } from "~/lib/analytics";
 import { i18n } from "~/lib/i18n";
 import "../styles/style.css";
+import { logFailedPromise } from "~/lib/errors";
 
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
@@ -51,7 +52,7 @@ function Hanab({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
-    i18n.changeLanguage(router.locale);
+    i18n.changeLanguage(router.locale).catch(logFailedPromise);
   }, [router.locale]);
 
   const [showOffline, setShowOffline] = useState(true);

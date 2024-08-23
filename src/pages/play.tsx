@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import LoadingScreen from "~/components/loadingScreen";
+import { logFailedPromise } from "~/lib/errors";
 
 /**
  * Legacy route for /play?gameId={gameId}
@@ -13,7 +14,7 @@ export default function Play() {
   useEffect(() => {
     if (!gameId) return;
 
-    router.replace(`/${gameId}`);
+    router.replace(`/${gameId}`).catch(logFailedPromise);
   }, [gameId, router]);
 
   return <LoadingScreen />;

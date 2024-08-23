@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
 import Button, { ButtonSize } from "~/components/ui/button";
+import { logFailedPromise } from "~/lib/errors";
 
 interface Props {
   void?: boolean;
@@ -17,7 +18,7 @@ export default function HomeButton(props: Props) {
     if (onClick) {
       return onClick();
     } else {
-      router.push("/");
+      router.push("/").catch(logFailedPromise);
     }
   }
 

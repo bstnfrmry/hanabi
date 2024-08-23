@@ -9,6 +9,7 @@ import Rules from "~/components/rules";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import useLocalStorage from "~/hooks/localStorage";
+import { logFailedPromise } from "~/lib/errors";
 
 export default function Home() {
   const router = useRouter();
@@ -21,9 +22,9 @@ export default function Home() {
   const lastGame = gameId && playerId ? { gameId } : null;
 
   useEffect(() => {
-    router.prefetch("/new-game");
-    router.prefetch("/join-game");
-    router.prefetch("/learn");
+    router.prefetch("/new-game").catch(logFailedPromise);
+    router.prefetch("/join-game").catch(logFailedPromise);
+    router.prefetch("/learn").catch(logFailedPromise);
   }, [router]);
 
   /**
@@ -112,7 +113,7 @@ export default function Home() {
             id="tutorial"
             size={ButtonSize.LARGE}
             onClick={() => {
-              router.push("/learn");
+              router.push("/learn").catch(logFailedPromise);
             }}
           >
             {t("learnHanab", "Learn")}

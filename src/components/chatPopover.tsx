@@ -5,6 +5,7 @@ import { useGame, useSelfPlayer } from "~/hooks/game";
 import { sendMessage } from "~/lib/actions";
 import { updateGame } from "~/lib/firebase";
 import { uniqueId } from "~/lib/id";
+import { logFailedPromise } from "~/lib/errors";
 
 interface Props {
   onClose: () => void;
@@ -30,7 +31,7 @@ export default function ChatPopover(props: Props) {
       from: selfPlayer.index,
       turn: game.turnsHistory.length,
     });
-    updateGame(newGame);
+    updateGame(newGame).catch(logFailedPromise);
 
     setMessage("");
     onClose();

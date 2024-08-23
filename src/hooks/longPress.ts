@@ -8,7 +8,7 @@ export default function useLongPress(callback: () => void, ms = 300) {
     if (startLongPress) {
       timerId = setTimeout(callback, ms);
     } else {
-      clearTimeout(timerId);
+      if (timerId !== undefined) clearTimeout(timerId);
     }
 
     return () => {

@@ -149,7 +149,7 @@ function getPossibleCards(state: IGameState, player: number): ICard[] {
  * Level 0: all possible values (color, number) given the card's hints are of level 0 (or more)
  * Level 1: all possible values given the card's hints and all observable cards (other players games, discard pile) are of level 1 (or more)
  * Level 2: all level 1 values that are compatible with the previous player's action being optimal
- * Level 3: all level 2 values that are compatible with the the two previous actions being optimal
+ * Level 3: all level 2 values that are compatible with the two previous actions being optimal
  * ...
  * A higher level deduction is less certain (although 0 and 1 are certain and deterministic)
  * but makes the card more likely to be played.
@@ -441,7 +441,7 @@ function findBestDiscardIndex(playerView: IPlayerView, state: IGameState) {
 }
 
 /**
- * we inspect how the previous person would have played for each possible combination of deductions (i.e possible games)
+ * we inspect how the previous person would have played for each possible combination of deductions (i.e. possible games)
  * and keep a set of deductions that correspond to what that person actually played.
  */
 
@@ -451,7 +451,7 @@ function findBestDiscardIndex(playerView: IPlayerView, state: IGameState) {
  * has made her action.
  */
 
-/** that recursion is bounded by a max lookahead forwards and backwards. We should check the compute load but it should be alright?
+/** that recursion is bounded by a max lookahead forwards and backwards. We should check the compute load, but it should be alright?
  */
 
 export function play(state: IGameState): IGameState {

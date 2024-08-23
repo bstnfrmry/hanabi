@@ -29,6 +29,7 @@ import { logEvent } from "~/lib/analytics";
 import { loadGame, setNotification, setReaction, updateGame } from "~/lib/firebase";
 import { uniqueId } from "~/lib/id";
 import IGameState, { GameMode, IAction, IGameHintsLevel, IGameStatus, IPlayer } from "~/lib/state";
+import { logFailedPromise } from "~/lib/errors";
 
 interface Props {
   host: string;
@@ -88,13 +89,13 @@ export function Game(props: Props) {
     if (!currentPlayer.bot) return;
 
     if (game.options.botsWait === 0) {
-      updateGame(play(game));
+      updateGame(play(game)).catch(logFailedPromise);
       return;
     }
 
-    setReaction(game, currentPlayer, "🧠");
+    setReaction(game, currentPlayer, "🧠").catch(logFailedPromise);
     const timeout = setTimeout(() => {
-      updateGame(play(game));
+      updateGame(play(game)).catch(logFailedPromise);
       game.options.botsWait && setReaction(game, currentPlayer, null);
     }, game.options.botsWait);
 
@@ -209,7 +210,7 @@ export function Game(props: Props) {
     if (!game.options.tutorial) return;
 
     if (game.players.length === 1 && game.status === IGameStatus.LOBBY) {
-      fillBots();
+      fillBots().catch(logFailedPromise);
     }
     if (game.players.length === game.options.playersCount && game.status === IGameStatus.LOBBY) {
       startTutorial();
@@ -240,7 +241,7 @@ export function Game(props: Props) {
     const newState = joinGame(game, { id: playerId, ...player });
 
     onGameChange({ ...newState, synced: false });
-    updateGame(newState);
+    updateGame(newState).catch(logFailedPromise);
 
     logEvent("Game", "Player joined");
 
@@ -257,7 +258,7 @@ export function Game(props: Props) {
     const newState = joinGame(game, { id: playerId, ...bot, bot: true });
 
     onGameChange({ ...newState, synced: false });
-    updateGame(newState);
+    updateGame(newState).catch(logFailedPromise);
 
     logEvent("Game", "Bot added");
   }
@@ -270,7 +271,7 @@ export function Game(props: Props) {
     };
 
     onGameChange({ ...newState, synced: false });
-    updateGame(newState);
+    await updateGame(newState);
 
     logEvent("Game", "Game started");
   }
@@ -290,7 +291,7 @@ export function Game(props: Props) {
     }
 
     onGameChange({ ...newState, synced: false });
-    updateGame(newState);
+    await updateGame(newState);
 
     logEvent("Game", "Turn played");
   }
@@ -312,11 +313,11 @@ export function Game(props: Props) {
   }
 
   async function onNotifyPlayer(player: IPlayer) {
-    setNotification(game, player, true);
+    await setNotification(game, player, true);
   }
 
   async function onReaction(reaction: string) {
-    setReaction(game, selfPlayer, reaction);
+    await setReaction(game, selfPlayer, reaction);
   }
 
   function onSelectArea(area: ISelectedArea) {
@@ -422,7 +423,7 @@ export function Game(props: Props) {
     onGameChange(nextGame);
 
     logEvent("Game", "Game recreated");
-    router.push(`/${nextGame.id}`);
+    await router.push(`/${nextGame.id}`);
   }
   function liveGame() {
     return game.originalGame || game;
@@ -558,7 +559,7 @@ export function Game(props: Props) {
                       size={ButtonSize.TINY}
                       text={t("summary")}
                       onClick={() => {
-                        router.push(`/${game.id}/summary`);
+                        router.push(`/${game.id}/summary`).catch(logFailedPromise);
                       }}
                     />
                   </div>

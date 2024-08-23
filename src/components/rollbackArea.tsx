@@ -7,6 +7,7 @@ import { useGame } from "~/hooks/game";
 import { getStateAtTurn } from "~/lib/actions";
 import { updateGame } from "~/lib/firebase";
 import IGameState from "~/lib/state";
+import { logFailedPromise } from "~/lib/errors";
 
 interface Props {
   onCloseArea: () => void;
@@ -37,7 +38,7 @@ export default function RollbackArea(props: Props) {
   const canRollback = lastRollbackableTurn >= 0;
 
   function onRollback() {
-    updateGame(getStateAtTurn(game, lastRollbackableTurn));
+    updateGame(getStateAtTurn(game, lastRollbackableTurn)).catch(logFailedPromise);
   }
 
   return (
