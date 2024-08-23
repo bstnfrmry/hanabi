@@ -18,7 +18,7 @@ export default function TextFieldDialog(props: PropsWithChildren<Props>) {
     if (message === undefined) {
       setMessage(props.initialValue);
     }
-  });
+  }, [props.initialValue, message]);
 
   useEffect(() => {
     messageRef.current?.focus();

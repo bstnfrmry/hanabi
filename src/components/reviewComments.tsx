@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Popover from "react-popover";
@@ -9,17 +8,16 @@ import { updateGame } from "~/lib/firebase";
 import { isGameFinished } from "~/lib/game";
 import { addOrReplaceReviewComment, findComment } from "~/lib/reviewComments";
 import { IGameStatus, IReviewComment } from "~/lib/state";
+import { SvgImage } from "~/components/ui/svgImage";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Pencil = require("~/images/YellowPencil.svg");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Clear = require("~/images/Clear.svg");
+import Pencil from "~/images/YellowPencil.svg";
+import Clear from "~/images/Clear.svg";
 
 export function ReviewCommentIcon(props: { size: number; placeholder?: boolean }) {
   if (props.placeholder) {
-    return <Image height={props.size} src={Clear} width={props.size} />;
+    return <SvgImage height={props.size} svg={Clear} width={props.size} />;
   }
-  return <Image height={props.size} src={Pencil} width={props.size} />;
+  return <SvgImage height={props.size} svg={Pencil} width={props.size} />;
 }
 
 export function ReadOnlyCommentMarker(props: { size: number }) {
@@ -41,11 +39,14 @@ function EnterReviewComment(props: {
   onClose: (msg: string, afterTurnNumber: number) => void;
 }) {
   const { t } = useTranslation();
-  const escFunction = useCallback((event) => {
-    if (event.key === "Escape") {
-      props.onClose(props.existingComment, props.afterTurnNumber);
-    }
-  }, []);
+  const escFunction = useCallback(
+    (event) => {
+      if (event.key === "Escape") {
+        props.onClose(props.existingComment, props.afterTurnNumber);
+      }
+    },
+    [props]
+  );
   useEffect(() => {
     document.addEventListener("keydown", escFunction, false);
     return () => {
@@ -82,24 +83,20 @@ export function ReviewCommentPopover({
   handleKeyEvent?: string;
 }) {
   const game = useGame();
-  const selfPlayer = useSelfPlayer();
+  const selfPlayer = useSelfPlayer(game);
   const [reviewCommentOpenForTurn, setReviewCommentOpenForTurn] = useState<number | undefined>(undefined);
   const comment = findComment(game, selfPlayer.id, turnNumber);
   const showIcon = showAlways || comment;
   useEffect(() => {
     function checkKey(event: KeyboardEvent) {
-      console.debug(`event.key = ${event.key}`);
       if (event.key === handleKeyEvent && game.status === IGameStatus.ONGOING) {
-        console.debug(`TRIGGER; ${turnNumber}`);
         setReviewCommentOpenForTurn(turnNumber);
         event.preventDefault();
       }
     }
     if (handleKeyEvent && reviewCommentOpenForTurn === undefined) {
-      console.debug(`Install Key Handler for ${handleKeyEvent}`);
       window.addEventListener("keydown", checkKey);
       return () => {
-        console.debug("remove keyHandler");
         window.removeEventListener("keydown", checkKey);
       };
     }

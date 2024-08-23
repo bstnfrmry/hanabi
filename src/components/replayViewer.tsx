@@ -48,8 +48,8 @@ interface Props {
 
 export default function ReplayViewer(props: Props) {
   const { onReplayCursorChange, onStopReplay } = props;
-  const selfPlayer = useSelfPlayer();
   const game = useGame();
+  const selfPlayer = useSelfPlayer(game);
   const [comment, setComment] = useState<IReviewComment | undefined>(
     findComment(game, selfPlayer.id, game.turnsHistory.length)
   );
@@ -59,7 +59,7 @@ export default function ReplayViewer(props: Props) {
       onReplayCursorChange(cursor);
       setComment(findComment(game, selfPlayer.id, cursor));
     },
-    [game, selfPlayer]
+    [game, selfPlayer, onReplayCursorChange]
   );
 
   const maxTurns = game.originalGame.turnsHistory.length;
