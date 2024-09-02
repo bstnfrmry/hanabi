@@ -11,6 +11,7 @@ import { initAnalytics, logPageView } from "~/lib/analytics";
 import { i18n } from "~/lib/i18n";
 import "../styles/style.css";
 import { logFailedPromise } from "~/lib/errors";
+import { TutorialProvider } from "~/components/tutorial";
 
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
@@ -61,20 +62,22 @@ function Hanab({ Component, pageProps }: AppProps) {
   return (
     <>
       <I18nextProvider i18n={i18n}>
-        <Meta />
+        <TutorialProvider>
+          <Meta />
 
-        <div className="aspect-ratio--object">
-          {/* Offline indicator */}
-          {!online && showOffline && (
-            <div className="relative flex items-center justify-center bg-red shadow-4 b--red ba pa2 z-99">
-              <Txt uppercase size={TxtSize.MEDIUM} value={t("offline")} />
-              <a className="absolute right-1" onClick={() => setShowOffline(false)}>
-                <Txt value="×" />
-              </a>
-            </div>
-          )}
-          <Component {...pageProps} />
-        </div>
+          <div className="aspect-ratio--object">
+            {/* Offline indicator */}
+            {!online && showOffline && (
+              <div className="relative flex items-center justify-center bg-red shadow-4 b--red ba pa2 z-99">
+                <Txt uppercase size={TxtSize.MEDIUM} value={t("offline")} />
+                <a className="absolute right-1" onClick={() => setShowOffline(false)}>
+                  <Txt value="×" />
+                </a>
+              </div>
+            )}
+            <Component {...pageProps} />
+          </div>
+        </TutorialProvider>
       </I18nextProvider>
     </>
   );
