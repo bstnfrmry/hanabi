@@ -374,58 +374,56 @@ export default function Learn() {
 
   return (
     <>
-      <TutorialProvider>
-        <HomeButton className="absolute top-1 right-1 z-2" />
+      <HomeButton className="absolute top-1 right-1 z-2" />
 
-        <div className="fixed top-0 right-0 w4 h4 ma4 o-50 ">
-          <Image alt="Hanab cards game online" height={256} src="/static/hanab.png" width={256} />
-        </div>
+      <div className="fixed top-0 right-0 w4 h4 ma4 o-50 ">
+        <Image alt="Hanab cards game online" height={256} src="/static/hanab.png" width={256} />
+      </div>
 
-        <div className="relative flex items-center h-90 w-90 w-50-l center">
-          <PoseGroup>
-            {steps.map((step, i) => {
-              return i === currentStep ? (
-                <Step key={i} className="flex flex-column">
-                  {step.html}
-                </Step>
-              ) : null;
-            })}
-          </PoseGroup>
-          <div className="absolute left-0 right-0 bottom-1 flex justify-between items-center mh2">
-            <Txt className="lavender nowrap" size={TxtSize.XXSMALL} value={`${currentStep + 1} / ${steps.length}`} />
-            <div>
-              {canGoBack && (
-                <Button
-                  void
-                  text={t("back", "Back")}
-                  onClick={() => {
-                    setCurrentStep(currentStep - 1);
-                  }}
-                />
-              )}
-              {isLastStep && (
-                <Button
-                  primary
-                  className="ml4"
-                  text={t("start", "Start!")}
-                  onClick={() => {
-                    onStartClick().catch(logFailedPromise);
-                  }}
-                />
-              )}
-              {!isLastStep && (
-                <Button
-                  className="ml4"
-                  text={t("next", "Next") + " ➤"}
-                  onClick={() => {
-                    setCurrentStep(currentStep + 1);
-                  }}
-                />
-              )}
-            </div>
+      <div className="relative flex items-center h-90 w-90 w-50-l center">
+        <PoseGroup>
+          {steps.map((step, i) => {
+            return i === currentStep ? (
+              <Step key={i} className="flex flex-column">
+                {step.html}
+              </Step>
+            ) : null;
+          })}
+        </PoseGroup>
+        <div className="absolute left-0 right-0 bottom-1 flex justify-between items-center mh2">
+          <Txt className="lavender nowrap" size={TxtSize.XXSMALL} value={`${currentStep + 1} / ${steps.length}`} />
+          <div>
+            {canGoBack && (
+              <Button
+                void
+                text={t("back", "Back")}
+                onClick={() => {
+                  setCurrentStep(currentStep - 1);
+                }}
+              />
+            )}
+            {isLastStep && (
+              <Button
+                primary
+                className="ml4"
+                text={t("start", "Start!")}
+                onClick={() => {
+                  onStartClick().catch(logFailedPromise);
+                }}
+              />
+            )}
+            {!isLastStep && (
+              <Button
+                className="ml4"
+                text={t("next", "Next") + " ➤"}
+                onClick={() => {
+                  setCurrentStep(currentStep + 1);
+                }}
+              />
+            )}
           </div>
         </div>
-      </TutorialProvider>
+      </div>
     </>
   );
 }
