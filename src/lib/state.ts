@@ -21,6 +21,7 @@ export default interface IGameState {
   actionsLeft: number;
   turnsHistory: ITurn[];
   messages: IMessage[];
+  reviewComments: IReviewComment[];
   createdAt: number;
   startedAt?: number;
   endedAt?: number;
@@ -126,9 +127,8 @@ export interface ICard {
   receivedHints?: ITurn<IHintAction>[];
 }
 
-export type IHintType = "color" | "number";
-
 export type IAction = ICardAction | IDiscardAction | IPlayAction | IHintAction;
+export type IActionType = "discard" | "play" | "hint";
 
 export interface ICardAction {
   action: "discard" | "play";
@@ -150,6 +150,8 @@ export interface IPlayAction {
   cardIndex: number;
 }
 
+export type IHintType = "color" | "number";
+
 export interface IHintAction {
   action: "hint";
   from: number;
@@ -159,6 +161,11 @@ export interface IHintAction {
   cardsIndex?: number[];
 }
 
+export interface IReviewComment {
+  playerId: string;
+  afterTurnNumber: number;
+  comment?: string;
+}
 export interface IColorHintAction extends IHintAction {
   type: "color";
   value: IColor;
@@ -219,6 +226,7 @@ export function rebuildGame(state: Partial<IGameState>) {
   newState.status = state.status;
   newState.createdAt = state.createdAt;
   newState.nextGameId = state.nextGameId ?? null;
+  newState.reviewComments = state.reviewComments;
 
   return newState;
 }
@@ -255,6 +263,7 @@ export function fillEmptyValues(state: IGameState): IGameState {
       })
     ),
     turnsHistory: [],
+    reviewComments: [],
   });
 }
 

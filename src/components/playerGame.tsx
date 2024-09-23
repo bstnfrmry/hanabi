@@ -9,6 +9,7 @@ import ChatPopover from "~/components/chatPopover";
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import PlayerStats from "~/components/playerStats";
 import ReactionsPopover from "~/components/reactionsPopover";
+import { ReviewCommentPopover } from "~/components/reviewComments";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -117,6 +118,9 @@ export default function PlayerGame(props: Props) {
   const currentPlayer = useCurrentPlayer(game);
   const tutorialAction = useTutorialAction();
 
+  function nothingInvoked() {
+    return chatOpen === false && reactionsOpen === false;
+  }
   useEffect(() => {
     setRevealCards(false);
   }, [game.id]);
@@ -151,6 +155,8 @@ export default function PlayerGame(props: Props) {
     ? ICardContext.SELF_PLAYER
     : ICardContext.OTHER_PLAYER;
 
+  const showReviewCommentPopover =
+    self && game.status === IGameStatus.ONGOING && game.originalGame?.status !== IGameStatus.OVER;
   return (
     <>
       <div
@@ -235,6 +241,14 @@ export default function PlayerGame(props: Props) {
             </Popover>
           )}
 
+          {showReviewCommentPopover && (
+            <ReviewCommentPopover
+              handleKeyEvent={nothingInvoked() ? "c" : undefined}
+              showAlways={true}
+              turnNumber={game.turnsHistory.length}
+            />
+          )}
+
           {active && selfPlayer && !self && !player.notified && !player.bot && (
             <a
               className="ml1 ml4-l pointer"
@@ -276,10 +290,12 @@ export default function PlayerGame(props: Props) {
               {(game.endedAt || game.originalGame?.endedAt) && player === selfPlayer && (
                 <Button
                   void
-                  className={classnames({
-                    "revealCardButton": selected,
-                    "tracked-tight": true,
-                  })}
+                  className={classnames(
+                    {
+                      revealCardButton: selected,
+                    },
+                    "tracked-tight"
+                  )}
                   size={ButtonSize.TINY}
                   text={revealCards ? t("hide") : t("reveal")}
                   onClick={(e) => {
