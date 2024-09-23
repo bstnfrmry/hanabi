@@ -30,7 +30,7 @@
     "next-iron-session": "^4.2.0",
     "next-offline": "^5.0.5",
     "nprogress": "^0.2.0",
-    "rc-slider": "^10.6.2",
+    "rc-slider": "^11.1.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-fullstory": "^1.4.0",
