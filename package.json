@@ -39,6 +39,7 @@
     "react-modal": "^3.12.1",
     "react-popover": "^0.5.10",
     "react-pose": "^4.0.10",
+    "react-tiny-popover": "^8.1.4",
     "shortid": "^2.2.16",
     "shuffle-seed": "^1.1.6",
     "type-fest": "^1.1.3",

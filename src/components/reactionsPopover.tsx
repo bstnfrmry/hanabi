@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
 
@@ -8,6 +8,7 @@ const Reactions = ["👍", "👎", "👏", "😅", "🤩", "🤭", "🤔", "😬
 interface Props {
   onReaction: (reaction: string) => void;
   onClose: () => void;
+  style?: CSSProperties;
 }
 
 export default function ReactionsPopover(props: Props) {
@@ -17,7 +18,7 @@ export default function ReactionsPopover(props: Props) {
   const selfPlayer = useSelfPlayer(game);
 
   return (
-    <div className="flex items-center justify-center b--yellow ba bw1 bg-white pa2 pt3 pr3 br2 gray">
+    <div className="flex items-center justify-center ba bw1 bg-white pa2 pt3 pr3 br2 gray" style={props.style}>
       {Reactions.map((reaction, i) => (
         <a
           key={i}
