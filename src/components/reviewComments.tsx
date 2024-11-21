@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Popover from "react-popover";
+import { Popover, ArrowContainer } from "react-tiny-popover";
 import TextFieldDialog from "~/components/textFieldDialog";
 import Txt from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
@@ -102,33 +102,45 @@ export function ReviewCommentPopover({
     }
   }, [game.status, turnNumber, handleKeyEvent, reviewCommentOpenForTurn]);
   const commentIsEditable = !isGameFinished(game);
+  const borderAndArrowColor = "rgb(195,166,50)";
+
   return (
     <Popover
-      body={
-        !commentIsEditable ? (
-          <div className={"flex flex-column bg-black pa2 items-center justify-start b--yellow br2 ba bw1"}>
-            <StaticReviewComment comment={comment} />
-          </div>
-        ) : (
-          <EnterReviewComment
-            afterTurnNumber={reviewCommentOpenForTurn}
-            existingComment={comment?.comment}
-            onClose={(msg, turnNumber: number) => {
-              addOrReplaceReviewComment(game, {
-                playerId: selfPlayer.id,
-                afterTurnNumber: turnNumber,
-                comment: msg,
-              });
-              updateGame(game.originalGame ? game.originalGame : game);
-              setReviewCommentOpenForTurn(undefined);
-            }}
-          />
-        )
-      }
-      className="z-999"
+      containerClassName="z-999"
+      content={({ position, childRect, popoverRect }) => {
+        return (
+          <ArrowContainer
+            arrowColor={borderAndArrowColor}
+            arrowSize={10}
+            childRect={childRect}
+            popoverRect={popoverRect}
+            position={position}
+          >
+            {!commentIsEditable ? (
+              <div className={"flex flex-column bg-black pa2 items-center justify-start b--yellow br2 ba bw1"}>
+                <StaticReviewComment comment={comment} />
+              </div>
+            ) : (
+              <EnterReviewComment
+                afterTurnNumber={reviewCommentOpenForTurn}
+                existingComment={comment?.comment}
+                onClose={(msg, turnNumber: number) => {
+                  addOrReplaceReviewComment(game, {
+                    playerId: selfPlayer.id,
+                    afterTurnNumber: turnNumber,
+                    comment: msg,
+                  });
+                  updateGame(game.originalGame ? game.originalGame : game);
+                  setReviewCommentOpenForTurn(undefined);
+                }}
+              />
+            )}
+          </ArrowContainer>
+        );
+      }}
       isOpen={reviewCommentOpenForTurn !== undefined}
-      place={"below"}
-      onOuterAction={() => setReviewCommentOpenForTurn(undefined)}
+      positions={"bottom"}
+      onClickOutside={() => setReviewCommentOpenForTurn(undefined)}
     >
       <a
         className="pointer grow ml2"
