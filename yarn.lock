@@ -9126,6 +9126,11 @@ react-pose@^4.0.10:
     popmotion-pose "^3.4.10"
     tslib "^1.10.0"
 
+react-tiny-popover@^8.1.4:
+  version "8.1.4"
+  resolved "https://registry.yarnpkg.com/react-tiny-popover/-/react-tiny-popover-8.1.4.tgz#4ca8e5e9dcce62e38fb8cde65165f5a743e36b24"
+  integrity sha512-rHNAosGfUwlkOQeTJ+fCX/lHUOuMmgQZVhtRBnU9DqAONgltSv1QIZHeG1FGvZIGg7y7wbV4H6wriDuiSssIfQ==
+
 react@^18.3.1:
   version "18.3.1"
   resolved "https://registry.yarnpkg.com/react/-/react-18.3.1.tgz#49ab892009c53933625bd16b2533fc754cab2891"
