@@ -18,7 +18,7 @@ export default function PlayedCards(props: Props) {
   const colors = getColors(game?.options?.variant);
 
   return (
-    <Tutorial placement="below" step={ITutorialStep.PLAYED_CARDS}>
+    <Tutorial placement="bottom" step={ITutorialStep.PLAYED_CARDS}>
       <div className="flex flex-row mt1">
         {colors.map((color, i) => {
           const topCard = last(groupedCards[color]);

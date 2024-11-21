@@ -51,7 +51,7 @@ export default function Logs(props: Props) {
           return <Message key={message.id} message={message} />;
         })}
 
-        <Tutorial placement="below" step={ITutorialStep.WELCOME}>
+        <Tutorial placement="bottom" step={ITutorialStep.WELCOME}>
           <Txt
             className="lavender"
             size={TxtSize.SMALL}
