@@ -2,8 +2,7 @@ import classnames from "classnames";
 import { TFunction } from "i18next";
 import React, { HTMLAttributes, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import * as OldPopover from "react-popover";
-import { Popover, ArrowContainer } from "react-tiny-popover";
+import { ArrowContainer, Popover } from "react-tiny-popover";
 import posed, { PoseGroup } from "react-pose";
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import ChatPopover from "~/components/chatPopover";
@@ -209,11 +208,13 @@ export default function PlayerGame(props: Props) {
                     popoverRect={popoverRect}
                     position={position}
                   >
-                    <ReactionsPopover
-                      style={{ borderColor: borderAndArrowColor }}
-                      onClose={() => setReactionsOpen(false)}
-                      onReaction={onReaction}
-                    />
+                    {
+                      <ReactionsPopover
+                        style={{ borderColor: borderAndArrowColor }}
+                        onClose={() => setReactionsOpen(false)}
+                        onReaction={onReaction}
+                      />
+                    }
                   </ArrowContainer>
                 );
               }}
@@ -226,7 +227,7 @@ export default function PlayerGame(props: Props) {
                 onClick={(e) => {
                   e.stopPropagation();
                   setReactionsOpen(!reactionsOpen);
-                  console.debug(`set reactionsOpen = ${reactionsOpen}`);
+                  setChatOpen(false);
                 }}
               >
                 {player.reaction && (
@@ -243,22 +244,41 @@ export default function PlayerGame(props: Props) {
           )}
 
           {self && !replay.cursor && game.status !== IGameStatus.LOBBY && (
-            <OldPopover.default
-              body={<ChatPopover onClose={() => setChatOpen(false)} />}
-              className="z-999"
+            <Popover
+              containerClassName="z-999"
+              content={({ position, childRect, popoverRect }) => {
+                const borderAndArrowColor = "rgb(195,166,50)";
+                return (
+                  <ArrowContainer
+                    arrowColor={borderAndArrowColor} // determined from .b--yellow
+                    arrowSize={10}
+                    arrowStyle={{ opacity: 1 }}
+                    childRect={childRect}
+                    popoverRect={popoverRect}
+                    position={position}
+                  >
+                    {<ChatPopover style={{ borderColor: borderAndArrowColor }} onClose={() => setChatOpen(false)} />}
+                  </ArrowContainer>
+                );
+              }}
               isOpen={chatOpen}
-              onOuterAction={() => setChatOpen(false)}
+              padding={5}
+              onClickOutside={() => setChatOpen(false)}
             >
               <a
-                className="pointer grow ml2"
+                className="pointer grow"
                 onClick={(e) => {
                   e.stopPropagation();
                   setChatOpen(!chatOpen);
+                  setReactionsOpen(false);
                 }}
               >
-                <Txt value="💬" />
+                <span>
+                  &nbsp;
+                  <Txt value="💬" />
+                </span>
               </a>
-            </OldPopover.default>
+            </Popover>
           )}
 
           {showReviewCommentPopover && (
