@@ -4,6 +4,7 @@ import { Popover, ArrowContainer, PopoverPosition } from "react-tiny-popover";
 import posed from "react-pose";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
+import { POPOVER_ARROW_COLOR, POPOVER_CONTENT_STYLE } from "~/components/popoverAppearance";
 
 export const TutorialContext = React.createContext(null);
 
@@ -142,17 +143,16 @@ export default function Tutorial(props: Props) {
     <Popover
       containerClassName="z-999"
       content={({ position, childRect, popoverRect }) => {
-        const borderAndArrowColor = "rgb(195,166,50)";
         return (
           <ArrowContainer
-            arrowColor={borderAndArrowColor}
+            arrowColor={POPOVER_ARROW_COLOR}
             arrowSize={10}
             arrowStyle={{ opacity: 1 }}
             childRect={childRect}
             popoverRect={popoverRect}
             position={position}
           >
-            <div className="flex flex-column b--yellow ba bw1 bg-white pa2 pa3-l br2 main-dark">
+            <div className="flex flex-column ba bw1 bg-white pa2 pa3-l br2 main-dark" style={POPOVER_CONTENT_STYLE}>
               <span className="flex items-center justify-between">
                 <Txt className="ttu" size={TxtSize.MEDIUM} value={t(title)} />
                 {step > 0 && <Txt className="gray mr2" value={`${step} / ${totalSteps - 1}`} />}

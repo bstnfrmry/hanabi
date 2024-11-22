@@ -28,6 +28,7 @@ import IGameState, {
   IPlayer,
 } from "~/lib/state";
 import { isTutorialAction, useTutorialAction } from "~/lib/tutorial";
+import { POPOVER_ARROW_COLOR, POPOVER_CONTENT_STYLE } from "~/components/popoverAppearance";
 
 function isCardHintable(game: IGameState, hint: IHintAction, card: ICard) {
   return hint.type === "color"
@@ -192,23 +193,20 @@ export default function PlayerGame(props: Props) {
             <Popover
               containerClassName="z-999"
               content={({ position, childRect, popoverRect }) => {
-                const borderAndArrowColor = "rgb(195,166,50)";
                 return (
                   <ArrowContainer
-                    arrowColor={borderAndArrowColor} // determined from .b--yellow
+                    arrowColor={POPOVER_ARROW_COLOR} // determined from .b--yellow
                     arrowSize={10}
                     arrowStyle={{ opacity: 1 }}
                     childRect={childRect}
                     popoverRect={popoverRect}
                     position={position}
                   >
-                    {
-                      <ReactionsPopover
-                        style={{ borderColor: borderAndArrowColor }}
-                        onClose={() => setReactionsOpen(false)}
-                        onReaction={onReaction}
-                      />
-                    }
+                    <ReactionsPopover
+                      style={POPOVER_CONTENT_STYLE}
+                      onClose={() => setReactionsOpen(false)}
+                      onReaction={onReaction}
+                    />
                   </ArrowContainer>
                 );
               }}
@@ -241,17 +239,16 @@ export default function PlayerGame(props: Props) {
             <Popover
               containerClassName="z-999"
               content={({ position, childRect, popoverRect }) => {
-                const borderAndArrowColor = "rgb(195,166,50)";
                 return (
                   <ArrowContainer
-                    arrowColor={borderAndArrowColor} // determined from .b--yellow
+                    arrowColor={POPOVER_ARROW_COLOR} // determined from .b--yellow
                     arrowSize={10}
                     arrowStyle={{ opacity: 1 }}
                     childRect={childRect}
                     popoverRect={popoverRect}
                     position={position}
                   >
-                    {<ChatPopover style={{ borderColor: borderAndArrowColor }} onClose={() => setChatOpen(false)} />}
+                    {<ChatPopover style={POPOVER_CONTENT_STYLE} onClose={() => setChatOpen(false)} />}
                   </ArrowContainer>
                 );
               }}

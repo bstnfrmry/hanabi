@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import { uniq } from "lodash";
-import React, { CSSProperties, PropsWithChildren, useState } from "react";
-import Popover from "react-popover";
+import React, { CSSProperties, forwardRef, PropsWithChildren, useState } from "react";
+import { ArrowContainer, Popover } from "react-tiny-popover";
 import { ReceivedHintsView } from "~/components/receivedHintsView";
 import { useUserPreferences } from "~/hooks/userPreferences";
 import {
@@ -13,44 +13,50 @@ import {
   isNumberHintAction,
   ITurn,
 } from "~/lib/state";
+import { POPOVER_ARROW_COLOR, POPOVER_CONTENT_STYLE } from "~/components/popoverAppearance";
 
-export function TombstoneHintMark(
-  props: PropsWithChildren<{
-    classnames?: string;
-    style?: CSSProperties;
-    onActivationChange: (b: boolean) => void;
-    heightFactor?: number;
-  }>
-) {
-  const heightFactor = props.heightFactor || 1;
-  const verticalRadiusPercent = 100.0 / heightFactor / 2;
-  const heightPercent = heightFactor * 20;
-  return (
-    <div
-      className={classnames("absolute top-0 bg-hints flex justify-center flex-column items-center")}
-      style={{
-        ...props.style,
-        borderBottomRightRadius: `50%  ${verticalRadiusPercent}%`,
-        borderBottomLeftRadius: `50%  ${verticalRadiusPercent}%`,
-        width: "20%",
-        height: `${heightPercent}%`,
-      }}
-      onClick={stopEventPropagation}
-      onMouseDown={stopEventPropagation}
-      onMouseEnter={() => {
-        props.onActivationChange(true);
-      }}
-      onMouseLeave={() => props.onActivationChange(false)}
-      onMouseUp={stopEventPropagation}
-    >
-      {props.children}
-    </div>
-  );
-
-  function stopEventPropagation(e) {
-    e.stopPropagation();
+type TombstoneHintMarkProps = PropsWithChildren<{
+  classnames?: string;
+  style?: CSSProperties;
+  onActivationChange: (b: boolean) => void;
+  heightFactor?: number;
+}>;
+const TombstoneHintMark = forwardRef<HTMLDivElement, TombstoneHintMarkProps>(
+  (props: TombstoneHintMarkProps, ref: React.Ref<HTMLDivElement>) => {
+    const heightFactor = props.heightFactor || 1;
+    const verticalRadiusPercent = 100.0 / heightFactor / 2;
+    const heightPercent = heightFactor * 20;
+    return (
+      <div
+        ref={ref}
+        className={classnames("absolute top-0 bg-hints flex justify-center flex-column items-center")}
+        style={{
+          ...props.style,
+          borderBottomRightRadius: `50%  ${verticalRadiusPercent}%`,
+          borderBottomLeftRadius: `50%  ${verticalRadiusPercent}%`,
+          width: "20%",
+          height: `${heightPercent}%`,
+        }}
+        onClick={function (e) {
+          e.stopPropagation();
+        }}
+        onMouseDown={function (e) {
+          e.stopPropagation();
+        }}
+        onMouseEnter={() => {
+          props.onActivationChange(true);
+        }}
+        onMouseLeave={() => props.onActivationChange(false)}
+        onMouseUp={function (e) {
+          e.stopPropagation();
+        }}
+      >
+        {props.children}
+      </div>
+    );
   }
-}
+);
+TombstoneHintMark.displayName = "TombstoneHint";
 
 function ColorDot(props: { color: IColor }) {
   return (
@@ -74,55 +80,78 @@ function ColorDot(props: { color: IColor }) {
   );
 }
 
-function ColorHintMark(props: { hintActions: IHintAction[]; onActivationChange: (activate: boolean) => void }) {
-  const colors = uniq(props.hintActions.filter(isColorHintAction).map((a) => a.value));
-  return (
-    <TombstoneHintMark
-      heightFactor={colors.length}
-      style={{ right: "2%" }}
-      onActivationChange={props.onActivationChange}
-    >
-      {colors.map((c: IColor, index) => (
-        <ColorDot key={index} color={c} />
-      ))}
-    </TombstoneHintMark>
-  );
-}
-
-function NumberHintMark(props: { onActivationChange: (activate: boolean) => void; hintAction: INumberHintAction }) {
-  const fontSize = "100cqh";
-  return (
-    <TombstoneHintMark style={{ right: "24%" }} onActivationChange={props.onActivationChange}>
-      <div
-        className={`light-gray fs-normal sans-serif tc bg-transparent number-hint-mark`}
-        style={{ height: "80%", width: "100%" }}
+const ColorHintMark = forwardRef(
+  (
+    props: { onActivationChange: (activate: boolean) => void; hintActions: IHintAction[] },
+    ref: React.Ref<HTMLDivElement>
+  ) => {
+    const colors = uniq(props.hintActions.filter(isColorHintAction).map((a) => a.value));
+    return (
+      <TombstoneHintMark
+        ref={ref}
+        heightFactor={colors.length}
+        style={{ right: "2%" }}
+        onActivationChange={props.onActivationChange}
       >
-        <div style={{ fontSize: fontSize }}>{props.hintAction.value}</div>
-      </div>
-    </TombstoneHintMark>
-  );
-}
+        {colors.map((c: IColor, index) => (
+          <ColorDot key={index} color={c} />
+        ))}
+      </TombstoneHintMark>
+    );
+  }
+);
+ColorHintMark.displayName = "ColorHintMark";
 
-export function CornerMark(props: { onActivationChange: (b: boolean) => void }) {
-  return (
-    <div
-      className={"absolute right-0 br--left top-0 br--bottom br-100 bg-hints"}
-      style={{ width: "20%", height: "20%" }}
-      onMouseEnter={() => {
-        props.onActivationChange(true);
-      }}
-      onMouseLeave={() => props.onActivationChange(false)}
-    />
-  );
-}
+const NumberHintMark = forwardRef(
+  (
+    props: { onActivationChange: (activate: boolean) => void; hintAction: INumberHintAction },
+    ref: React.Ref<HTMLDivElement>
+  ) => {
+    const fontSize = "100cqh";
+    return (
+      <TombstoneHintMark ref={ref} style={{ right: "24%" }} onActivationChange={props.onActivationChange}>
+        <div
+          className={`light-gray fs-normal sans-serif tc bg-transparent number-hint-mark`}
+          style={{ height: "80%", width: "100%" }}
+        >
+          <div style={{ fontSize: fontSize }}>{props.hintAction.value}</div>
+        </div>
+      </TombstoneHintMark>
+    );
+  }
+);
+NumberHintMark.displayName = "NumberHintMark";
 
-function HiddenMark() {
+const CornerMark = forwardRef(
+  (
+    props: {
+      onActivationChange: (b: boolean) => void;
+    },
+    ref: React.Ref<HTMLDivElement>
+  ) => {
+    return (
+      <div
+        ref={ref}
+        className={"absolute right-0 br--left top-0 br--bottom br-100 bg-hints"}
+        style={{ width: "20%", height: "20%" }}
+        onMouseEnter={() => {
+          props.onActivationChange(true);
+        }}
+        onMouseLeave={() => props.onActivationChange(false)}
+      />
+    );
+  }
+);
+CornerMark.displayName = "CornerMark";
+
+const HiddenMark = forwardRef((_props: Record<string, never>, ref: React.Ref<HTMLDivElement>) => {
   return (
-    <div className={"absolute top-0 left-0 bg-hints-hidden"} style={{ width: "100%", height: "20%" }}>
+    <div ref={ref} className={"absolute top-0 left-0 bg-hints-hidden"} style={{ width: "100%", height: "20%" }}>
       <br />
     </div>
   );
-}
+});
+HiddenMark.displayName = "HiddenMark";
 
 function HintsPopover(
   props: PropsWithChildren<{
@@ -130,6 +159,7 @@ function HintsPopover(
     open: boolean;
     large?: boolean;
     closePopover: () => void;
+    children: JSX.Element;
   }>
 ) {
   if (props.hints === undefined || props.hints.length === 0) {
@@ -139,12 +169,28 @@ function HintsPopover(
   if (childCount != 1) {
     console.error("Exactly one child should provided");
   }
+
   return (
     <Popover
-      body={<ReceivedHintsView hints={props.hints} />}
-      className="z-999"
+      containerClassName="z-999"
+      content={({ position, childRect, popoverRect }) => {
+        return (
+          <ArrowContainer
+            arrowColor={POPOVER_ARROW_COLOR} // determined from .b--yellow
+            arrowSize={10}
+            arrowStyle={{ opacity: 1 }}
+            childRect={childRect}
+            popoverRect={popoverRect}
+            position={position}
+          >
+            <ReceivedHintsView hints={props.hints} style={POPOVER_CONTENT_STYLE} />
+          </ArrowContainer>
+        );
+      }}
       isOpen={props.open}
-      onOuterAction={props.closePopover}
+      padding={5}
+      positions={"top"}
+      onClickOutside={props.closePopover}
     >
       {props.children}
     </Popover>
@@ -169,7 +215,6 @@ function CodedHintMarks(props: {
 
   const colorHints = props.hints.filter(isColorHintTurn);
   const numberHints = props.hints.filter(isNumberHintTurn);
-
   return (
     <>
       <HintsPopover closePopover={() => props.onActivationChange(false)} hints={props.hints} open={allHintsOpen}>
