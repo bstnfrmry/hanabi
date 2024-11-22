@@ -419,17 +419,21 @@ export function Game(props: Props) {
   }, [replay.cursor, game, onReplay, onReplayCursorChange, onStopReplay]);
 
   async function onRestartGame() {
-    const nextGame = recreateGame(liveGame());
-
-    const updatedGame = { ...liveGame(), nextGameId: nextGame.id };
+    function log(message: string) {
+      console.debug(`${Date.now()}: ${message}`);
+    }
     onStopReplay();
-    await updateGame(updatedGame);
-
+    const nextGame = recreateGame(liveGame());
     await updateGame(nextGame);
+    log("Next Game Persisted");
+    const updatedGame = { ...liveGame(), nextGameId: nextGame.id };
+    await updateGame(updatedGame);
+    log("Link to nextGame updated");
     onGameChange(nextGame);
-
-    logEvent("Game", "Game recreated");
+    log(`GameChange fired for ${nextGame.id}`);
+    logEvent("Game", "Next Game Created");
     await router.push(`/${nextGame.id}`);
+    log("Router updated with new link");
   }
   function liveGame() {
     return game.originalGame || game;
