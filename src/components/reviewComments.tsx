@@ -12,6 +12,7 @@ import { SvgImage } from "~/components/ui/svgImage";
 
 import Pencil from "~/images/YellowPencil.svg";
 import Clear from "~/images/Clear.svg";
+import { POPOVER_ARROW_COLOR } from "~/components/popoverAppearance";
 
 export function ReviewCommentIcon(props: { size: number; placeholder?: boolean }) {
   if (props.placeholder) {
@@ -102,7 +103,6 @@ export function ReviewCommentPopover({
     }
   }, [game.status, turnNumber, handleKeyEvent, reviewCommentOpenForTurn]);
   const commentIsEditable = !isGameFinished(game);
-  const borderAndArrowColor = "rgb(195,166,50)";
 
   return (
     <Popover
@@ -110,7 +110,7 @@ export function ReviewCommentPopover({
       content={({ position, childRect, popoverRect }) => {
         return (
           <ArrowContainer
-            arrowColor={borderAndArrowColor}
+            arrowColor={POPOVER_ARROW_COLOR}
             arrowSize={10}
             childRect={childRect}
             popoverRect={popoverRect}
