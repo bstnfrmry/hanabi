@@ -218,9 +218,9 @@ export function Game(props: Props) {
   }, [fillBots, startTutorial, game.players.length, game.options.tutorial, game.status, game.options.playersCount]);
 
   function changeToNextGame() {
-    const nextGameId = liveGame().nextGameId;
     onStopReplay();
     setDisplayStats(false);
+    const nextGameId = liveGame().nextGameId;
     router.push(`/${nextGameId}`).then(() => {
       loadGame(nextGameId).then((newGame) => {
         props.onGameChange(newGame);
