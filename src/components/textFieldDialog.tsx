@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
 import Button, { ButtonSize } from "~/components/ui/button";
+import { POPOVER_CONTENT_STYLE } from "~/components/popoverAppearance";
 
 interface Props {
   clearButtonText?: string;
@@ -32,7 +33,8 @@ export default function TextFieldDialog(props: PropsWithChildren<Props>) {
 
   return (
     <form
-      className="flex flex-column items-center justify-start b--yellow ba bw1 bg-white pa1 br2 gray"
+      className="flex flex-column items-center justify-start ba bw1 bg-white pa1 br2 gray"
+      style={POPOVER_CONTENT_STYLE}
       onKeyPress={(e) => {
         if (e.key === "Enter" && (e.getModifierState("Shift") || e.getModifierState("Control"))) {
           onSubmit();
