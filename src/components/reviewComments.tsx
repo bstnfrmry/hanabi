@@ -26,10 +26,10 @@ export function ReadOnlyCommentMarker(props: { size: number }) {
     width: props.size,
     height: props.size,
     borderLeft: "6px solid  var(--color-review-comment)",
-    borderRight: "0px solid black",
-    borderBottom: "6px solid black",
-    borderTop: "6px solid black",
-    backgroundColor: "black",
+    borderRight: "0px solid transparent",
+    borderBottom: "6px solid transparent",
+    borderTop: "6px solid transparent",
+    backgroundColor: "transparent",
     borderRadius: 0,
   };
   return <div className="dib" style={style} />;
