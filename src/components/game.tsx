@@ -30,6 +30,7 @@ import { loadGame, setNotification, setReaction, updateGame } from "~/lib/fireba
 import { uniqueId } from "~/lib/id";
 import IGameState, { GameMode, IAction, IGameHintsLevel, IGameStatus, IPlayer } from "~/lib/state";
 import { logFailedPromise } from "~/lib/errors";
+import { log } from "react-fullstory";
 
 interface Props {
   host: string;
@@ -224,13 +225,19 @@ export function Game(props: Props) {
     console.debug(`changeToNextGame: ${nextGameId}`);
     setDisplayStats(false);
     console.debug(`changeToNextGame: Turn off Stats`);
-    router.push(`/${nextGameId}`).then(() => {
-      console.debug(`changeToNextGame: router.push`);
-      loadGame(nextGameId).then((newGame) => {
-        console.debug(`changeToNextGame: gameLoaded`);
-        props.onGameChange(newGame);
-      });
-    });
+    router
+      .push(`/${nextGameId}`)
+      .then(() => {
+        console.debug(`changeToNextGame: router.push`);
+        loadGame(nextGameId)
+          .then((newGame) => {
+            console.debug(`changeToNextGame: gameLoaded`);
+            props.onGameChange(newGame);
+            console.debug("changeToNextGame: onGameChange complete");
+          })
+          .catch((e) => console.error(`Error in loadGame(${nextGameId})\n${e}`));
+      })
+      .catch((e) => console.error(`Error in router.push('/${nextGameId})\n${e}`));
     console.debug("Promises processing");
   }
 
@@ -423,10 +430,11 @@ export function Game(props: Props) {
       console.debug(`${Date.now()}: ${message}`);
     }
     onStopReplay();
-    const nextGame = recreateGame(liveGame());
+    const finishedGame = liveGame();
+    const nextGame = recreateGame(finishedGame);
     await updateGame(nextGame);
     log("Next Game Persisted");
-    const updatedGame = { ...liveGame(), nextGameId: nextGame.id };
+    const updatedGame = { ...finishedGame, nextGameId: nextGame.id };
     await updateGame(updatedGame);
     log("Link to nextGame updated");
     onGameChange(nextGame);
