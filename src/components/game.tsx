@@ -220,25 +220,18 @@ export function Game(props: Props) {
 
   function changeToNextGame() {
     onStopReplay();
-    console.debug(`changeToNextGame: Replay Stopped`);
     const nextGameId = liveGame().nextGameId;
-    console.debug(`changeToNextGame: ${nextGameId}`);
     setDisplayStats(false);
-    console.debug(`changeToNextGame: Turn off Stats`);
     router
       .push(`/${nextGameId}`)
       .then(() => {
-        console.debug(`changeToNextGame: router.push`);
         loadGame(nextGameId)
           .then((newGame) => {
-            console.debug(`changeToNextGame: gameLoaded`);
             props.onGameChange(newGame);
-            console.debug("changeToNextGame: onGameChange complete");
           })
           .catch((e) => console.error(`Error in loadGame(${nextGameId})\n${e}`));
       })
       .catch((e) => console.error(`Error in router.push('/${nextGameId})\n${e}`));
-    console.debug("Promises processing");
   }
 
   /**
