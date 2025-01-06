@@ -222,16 +222,8 @@ export function Game(props: Props) {
     onStopReplay();
     const nextGameId = liveGame().nextGameId;
     setDisplayStats(false);
-    router
-      .push(`/${nextGameId}`)
-      .then(() => {
-        loadGame(nextGameId)
-          .then((newGame) => {
-            props.onGameChange(newGame);
-          })
-          .catch((e) => console.error(`Error in loadGame(${nextGameId})\n${e}`));
-      })
-      .catch((e) => console.error(`Error in router.push('/${nextGameId})\n${e}`));
+    const newUrl = `/${nextGameId}`;
+    location.assign(newUrl);
   }
 
   /**
