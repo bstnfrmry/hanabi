@@ -2,13 +2,14 @@ import classnames from "classnames";
 import { TFunction } from "i18next";
 import React, { HTMLAttributes, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Popover from "react-popover";
+import { ArrowContainer, Popover } from "react-tiny-popover";
 import posed, { PoseGroup } from "react-pose";
 import Card, { CardSize, ICardContext, PositionMap } from "~/components/card";
 import ChatPopover from "~/components/chatPopover";
 import PlayerName, { PlayerNameSize } from "~/components/playerName";
 import PlayerStats from "~/components/playerStats";
 import ReactionsPopover from "~/components/reactionsPopover";
+import { ReviewCommentPopover } from "~/components/reviewComments";
 import Tutorial, { ITutorialStep } from "~/components/tutorial";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -28,13 +29,13 @@ import IGameState, {
   IPlayer,
 } from "~/lib/state";
 import { isTutorialAction, useTutorialAction } from "~/lib/tutorial";
+import { POPOVER_ARROW_COLOR, POPOVER_CONTENT_STYLE } from "~/components/popoverAppearance";
 
 function isCardHintable(game: IGameState, hint: IHintAction, card: ICard) {
   return hint.type === "color"
     ? matchColor(card.color, hint.value as IColor)
     : matchNumber(game, card.number, hint.value as INumber);
 }
-
 function textualHint(game: IGameState, hint: IHintAction, cards: ICard[], t: TFunction) {
   const hintableCards = cards
     .map((c, i) => (isCardHintable(game, hint, c) ? i : null))
@@ -117,6 +118,9 @@ export default function PlayerGame(props: Props) {
   const currentPlayer = useCurrentPlayer(game);
   const tutorialAction = useTutorialAction();
 
+  function nothingInvoked() {
+    return chatOpen === false && reactionsOpen === false;
+  }
   useEffect(() => {
     setRevealCards(false);
   }, [game.id]);
@@ -151,6 +155,8 @@ export default function PlayerGame(props: Props) {
     ? ICardContext.SELF_PLAYER
     : ICardContext.OTHER_PLAYER;
 
+  const showReviewCommentPopover =
+    self && game.status === IGameStatus.ONGOING && game.originalGame?.status !== IGameStatus.OVER;
   return (
     <>
       <div
@@ -191,16 +197,35 @@ export default function PlayerGame(props: Props) {
 
           {self && !replay.cursor && (
             <Popover
-              body={<ReactionsPopover onClose={() => setReactionsOpen(false)} onReaction={onReaction} />}
-              className="z-999"
+              containerClassName="z-999"
+              content={({ position, childRect, popoverRect }) => {
+                return (
+                  <ArrowContainer
+                    arrowColor={POPOVER_ARROW_COLOR} // determined from .b--yellow
+                    arrowSize={10}
+                    arrowStyle={{ opacity: 1 }}
+                    childRect={childRect}
+                    popoverRect={popoverRect}
+                    position={position}
+                  >
+                    <ReactionsPopover
+                      style={POPOVER_CONTENT_STYLE}
+                      onClose={() => setReactionsOpen(false)}
+                      onReaction={onReaction}
+                    />
+                  </ArrowContainer>
+                );
+              }}
               isOpen={reactionsOpen}
-              onOuterAction={() => setReactionsOpen(false)}
+              padding={5}
+              onClickOutside={() => setReactionsOpen(false)}
             >
               <a
                 className="pointer grow"
                 onClick={(e) => {
                   e.stopPropagation();
                   setReactionsOpen(!reactionsOpen);
+                  setChatOpen(false);
                 }}
               >
                 {player.reaction && (
@@ -218,21 +243,47 @@ export default function PlayerGame(props: Props) {
 
           {self && !replay.cursor && game.status !== IGameStatus.LOBBY && (
             <Popover
-              body={<ChatPopover onClose={() => setChatOpen(false)} />}
-              className="z-999"
+              containerClassName="z-999"
+              content={({ position, childRect, popoverRect }) => {
+                return (
+                  <ArrowContainer
+                    arrowColor={POPOVER_ARROW_COLOR} // determined from .b--yellow
+                    arrowSize={10}
+                    arrowStyle={{ opacity: 1 }}
+                    childRect={childRect}
+                    popoverRect={popoverRect}
+                    position={position}
+                  >
+                    {<ChatPopover style={POPOVER_CONTENT_STYLE} onClose={() => setChatOpen(false)} />}
+                  </ArrowContainer>
+                );
+              }}
               isOpen={chatOpen}
-              onOuterAction={() => setChatOpen(false)}
+              padding={5}
+              onClickOutside={() => setChatOpen(false)}
             >
               <a
-                className="pointer grow ml2"
+                className="pointer grow"
                 onClick={(e) => {
                   e.stopPropagation();
                   setChatOpen(!chatOpen);
+                  setReactionsOpen(false);
                 }}
               >
-                <Txt value="💬" />
+                <span>
+                  &nbsp;
+                  <Txt value="💬" />
+                </span>
               </a>
             </Popover>
+          )}
+
+          {showReviewCommentPopover && (
+            <ReviewCommentPopover
+              handleKeyEvent={nothingInvoked() ? "c" : undefined}
+              showAlways={true}
+              turnNumber={game.turnsHistory.length}
+            />
           )}
 
           {active && selfPlayer && !self && !player.notified && !player.bot && (
@@ -276,10 +327,12 @@ export default function PlayerGame(props: Props) {
               {(game.endedAt || game.originalGame?.endedAt) && player === selfPlayer && (
                 <Button
                   void
-                  className={classnames({
-                    "revealCardButton": selected,
-                    "tracked-tight": true,
-                  })}
+                  className={classnames(
+                    {
+                      revealCardButton: selected,
+                    },
+                    "tracked-tight"
+                  )}
                   size={ButtonSize.TINY}
                   text={revealCards ? t("hide") : t("reveal")}
                   onClick={(e) => {

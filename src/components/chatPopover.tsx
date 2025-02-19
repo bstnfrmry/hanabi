@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { CSSProperties, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Button, { ButtonSize } from "~/components/ui/button";
 import { useGame, useSelfPlayer } from "~/hooks/game";
@@ -9,6 +9,7 @@ import { logFailedPromise } from "~/lib/errors";
 
 interface Props {
   onClose: () => void;
+  style: CSSProperties;
 }
 
 export default function ChatPopover(props: Props) {
@@ -39,7 +40,8 @@ export default function ChatPopover(props: Props) {
 
   return (
     <form
-      className="flex flex-column items-center justify-center b--yellow ba bw1 bg-white pa1 br2 gray"
+      className="flex flex-column items-center justify-center ba bw1 bg-white pa1 br2 gray"
+      style={props.style}
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit();
