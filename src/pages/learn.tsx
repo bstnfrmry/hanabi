@@ -19,6 +19,7 @@ import { updateGame } from "~/lib/firebase";
 import { readableUniqueId } from "~/lib/id";
 import { GameMode, GameVariant, IColor, IGameHintsLevel, IHintType, INumber } from "~/lib/state";
 import { logFailedPromise } from "~/lib/errors";
+import { useColorBlindMode } from "~/hooks/game";
 
 function card(color: IColor, number: INumber, size = CardSize.XSMALL, position?: number) {
   return (
@@ -341,17 +342,18 @@ export default function Learn() {
   const canGoBack = currentStep > 0;
   const isLastStep = currentStep === steps.length - 1;
 
-  const onStartClick = async () => {
+  const onStartClick = async (colorBlindMode: boolean) => {
     const id = readableUniqueId();
+
     const game = newGame({
       id,
       playersCount: 3,
       variant: GameVariant.CLASSIC,
       seed: "tutorial",
       gameMode: GameMode.NETWORK,
+      colorBlindMode: colorBlindMode,
       allowRollback: false,
       botsWait: 2000,
-      colorBlindMode: false,
       hintsLevel: IGameHintsLevel.ALL,
       private: true,
       preventLoss: false,
@@ -371,6 +373,7 @@ export default function Learn() {
     }
   };
 
+  const colorBlindMode = useColorBlindMode();
   return (
     <>
       <HomeButton className="absolute top-1 right-1 z-2" />
@@ -407,7 +410,7 @@ export default function Learn() {
                 className="ml4"
                 text={t("start", "Start!")}
                 onClick={() => {
-                  onStartClick().catch(logFailedPromise);
+                  onStartClick(colorBlindMode).catch(logFailedPromise);
                 }}
               />
             )}
