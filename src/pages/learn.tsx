@@ -50,9 +50,8 @@ function token(color: string, size = 1) {
 
 const Divider = () => <div className="mv4 bt b--yellow w4" />;
 
-const useSteps = () => {
+function useSteps(colorBlindMode: boolean, setColorBlindMode: (newColorBlindMode: boolean) => void) {
   const { t } = useTranslation();
-  const [colorBlindMode, setColorBlindMode] = useLocalStorage("colorBlindMode", false);
   const router = useRouter();
   const gameId = router.query["back-to-game"];
 
@@ -315,14 +314,14 @@ const useSteps = () => {
           <Paragraph>
             {t(
               "learn.ready.4",
-              "The conventions mentionned afterwards are not part of the official rules, but rather a system some players created to be more efficient. If you'd like to discover those by yourself, you can leave this tutorial right now and jump right into a game."
+              "The conventions mentioned afterwards are not part of the official rules, but rather a system some players created to be more efficient. If you'd like to discover those by yourself, you can leave this tutorial right now and jump right into a game."
             )}
           </Paragraph>
         </>
       ),
     },
   ];
-};
+}
 
 const Step = posed.div({
   enter: {
@@ -335,14 +334,15 @@ const Step = posed.div({
 
 export default function Learn() {
   const [currentStep, setCurrentStep] = useState(0);
-  const steps = useSteps();
+  const [colorBlindMode, setColorBlindMode] = useLocalStorage("colorBlindMode", false);
+  const steps = useSteps(colorBlindMode, setColorBlindMode);
   const router = useRouter();
   const { t } = useTranslation();
 
   const canGoBack = currentStep > 0;
   const isLastStep = currentStep === steps.length - 1;
 
-  const onStartClick = async (colorBlindMode: boolean) => {
+  const onStartClick = async () => {
     const id = readableUniqueId();
 
     const game = newGame({
@@ -373,7 +373,6 @@ export default function Learn() {
     }
   };
 
-  const colorBlindMode = useColorBlindMode();
   return (
     <>
       <HomeButton className="absolute top-1 right-1 z-2" />
@@ -410,7 +409,7 @@ export default function Learn() {
                 className="ml4"
                 text={t("start", "Start!")}
                 onClick={() => {
-                  onStartClick(colorBlindMode).catch(logFailedPromise);
+                  onStartClick().catch(logFailedPromise);
                 }}
               />
             )}

@@ -5,7 +5,6 @@ import Hint from "~/components/hint";
 import { ReceivedHints } from "~/components/receivedHintsPopover";
 import Txt, { TxtSize } from "~/components/ui/txt";
 import { useColorBlindMode, useGame } from "~/hooks/game";
-import useLocalStorage from "~/hooks/localStorage";
 import useLongPress from "~/hooks/longPress";
 import { getColors, numbers } from "~/lib/actions";
 import { ICard, IColor, IGameHintsLevel, IHintLevel } from "~/lib/state";
