@@ -3,9 +3,18 @@ import { useReplay } from "~/hooks/replay";
 import { useSession } from "~/hooks/session";
 import { getStateAtTurn } from "~/lib/actions";
 import IGameState, { fillEmptyValues, GameMode } from "~/lib/state";
+import useLocalStorage from "~/hooks/localStorage";
 
 export const GameContext = React.createContext<IGameState>(null);
 
+export function useColorBlindMode() {
+  const game = useGame();
+  const [persistedColorBlindMode] = useLocalStorage("colorBlindMode", false);
+  if (game) {
+    return game.options.colorBlindMode;
+  }
+  return persistedColorBlindMode;
+}
 export function useGame() {
   const game = useContext<IGameState>(GameContext);
   const replay = useReplay();

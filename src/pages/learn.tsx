@@ -19,6 +19,7 @@ import { updateGame } from "~/lib/firebase";
 import { readableUniqueId } from "~/lib/id";
 import { GameMode, GameVariant, IColor, IGameHintsLevel, IHintType, INumber } from "~/lib/state";
 import { logFailedPromise } from "~/lib/errors";
+import { useColorBlindMode } from "~/hooks/game";
 
 function card(color: IColor, number: INumber, size = CardSize.XSMALL, position?: number) {
   return (
@@ -49,9 +50,8 @@ function token(color: string, size = 1) {
 
 const Divider = () => <div className="mv4 bt b--yellow w4" />;
 
-const useSteps = () => {
+function useSteps(colorBlindMode: boolean, setColorBlindMode: (newColorBlindMode: boolean) => void) {
   const { t } = useTranslation();
-  const [colorBlindMode, setColorBlindMode] = useLocalStorage("colorBlindMode", false);
   const router = useRouter();
   const gameId = router.query["back-to-game"];
 
@@ -314,14 +314,14 @@ const useSteps = () => {
           <Paragraph>
             {t(
               "learn.ready.4",
-              "The conventions mentionned afterwards are not part of the official rules, but rather a system some players created to be more efficient. If you'd like to discover those by yourself, you can leave this tutorial right now and jump right into a game."
+              "The conventions mentioned afterwards are not part of the official rules, but rather a system some players created to be more efficient. If you'd like to discover those by yourself, you can leave this tutorial right now and jump right into a game."
             )}
           </Paragraph>
         </>
       ),
     },
   ];
-};
+}
 
 const Step = posed.div({
   enter: {
@@ -334,7 +334,8 @@ const Step = posed.div({
 
 export default function Learn() {
   const [currentStep, setCurrentStep] = useState(0);
-  const steps = useSteps();
+  const [colorBlindMode, setColorBlindMode] = useLocalStorage("colorBlindMode", false);
+  const steps = useSteps(colorBlindMode, setColorBlindMode);
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -343,15 +344,16 @@ export default function Learn() {
 
   const onStartClick = async () => {
     const id = readableUniqueId();
+
     const game = newGame({
       id,
       playersCount: 3,
       variant: GameVariant.CLASSIC,
       seed: "tutorial",
       gameMode: GameMode.NETWORK,
+      colorBlindMode: colorBlindMode,
       allowRollback: false,
       botsWait: 2000,
-      colorBlindMode: false,
       hintsLevel: IGameHintsLevel.ALL,
       private: true,
       preventLoss: false,

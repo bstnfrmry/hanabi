@@ -4,8 +4,7 @@ import ColorSymbol from "~/components/colorSymbol";
 import Hint from "~/components/hint";
 import { ReceivedHints } from "~/components/receivedHintsPopover";
 import Txt, { TxtSize } from "~/components/ui/txt";
-import { useGame } from "~/hooks/game";
-import useLocalStorage from "~/hooks/localStorage";
+import { useColorBlindMode, useGame } from "~/hooks/game";
 import useLongPress from "~/hooks/longPress";
 import { getColors, numbers } from "~/lib/actions";
 import { ICard, IColor, IGameHintsLevel, IHintLevel } from "~/lib/state";
@@ -75,7 +74,7 @@ export function CardWrapper(props: CardWrapperProps) {
     ...attributes
   } = props;
 
-  const [colorBlindMode] = useLocalStorage("colorBlindMode", false);
+  const colorBlindMode = useColorBlindMode();
   const sizeClass = CardClasses[size];
 
   return (
@@ -184,7 +183,7 @@ export default function Card(props: Props) {
 
   const game = useGame();
   const [allHintsPopoverIsOpen, setAllHintsPopoverIsOpen] = useState(false);
-  const [colorBlindMode] = useLocalStorage("colorBlindMode", false);
+  const colorBlindMode = useColorBlindMode();
 
   const colors = getColors(game?.options?.variant);
   const color = hidden ? "gray-light" : card.color;
