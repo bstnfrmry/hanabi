@@ -13,7 +13,11 @@ export function addOrReplaceReviewComment(game: IGameState, newComment: IReviewC
   game.reviewComments = comments;
 }
 
-export function findComment(game: IGameState, playerId: string, turnNumber: number): IReviewComment | undefined {
+export function findComment(
+  game: IGameState,
+  playerId: undefined | string,
+  turnNumber: number
+): IReviewComment | undefined {
   return game.reviewComments.find((rc) => rc.playerId === playerId && rc.afterTurnNumber === turnNumber);
 }
 
