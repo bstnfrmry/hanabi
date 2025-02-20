@@ -96,6 +96,7 @@ export default function ReplayViewer(props: Props) {
         <Slider
           className="ml3 nt1"
           dotStyle={SliderStyle.DOT}
+          keyboard={false}
           marks={marks}
           max={maxTurns}
           min={0}
@@ -106,7 +107,6 @@ export default function ReplayViewer(props: Props) {
           }}
           value={replay.cursor}
           onChange={replayChange}
-          onChangeComplete={replayChange}
         />
         <Button
           void
