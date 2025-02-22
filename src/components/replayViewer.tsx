@@ -51,13 +51,13 @@ export default function ReplayViewer(props: Props) {
   const game = useGame();
   const selfPlayer = useSelfPlayer(game);
   const [comment, setComment] = useState<IReviewComment | undefined>(
-    findComment(game, selfPlayer.id, game.turnsHistory.length)
+    findComment(game, selfPlayer?.id, game.turnsHistory.length)
   );
   const replay = useReplay();
   const replayChange = useCallback(
     (cursor: number) => {
       onReplayCursorChange(cursor);
-      setComment(findComment(game, selfPlayer.id, cursor));
+      setComment(findComment(game, selfPlayer?.id, cursor));
     },
     [game, selfPlayer, onReplayCursorChange]
   );
@@ -65,7 +65,7 @@ export default function ReplayViewer(props: Props) {
   const maxTurns = game.originalGame.turnsHistory.length;
 
   const marks: Record<string | number, React.ReactNode | MarkObj> = {};
-  const selfReviewComments = game.reviewComments.filter((rc) => rc.playerId === selfPlayer.id);
+  const selfReviewComments = game.reviewComments.filter((rc) => rc.playerId === selfPlayer?.id);
   selfReviewComments.forEach((rc) => {
     marks[rc.afterTurnNumber] = {
       style: "",

@@ -126,7 +126,7 @@ export function ReviewCommentPopover({
                 existingComment={comment?.comment}
                 onClose={(msg, turnNumber: number) => {
                   addOrReplaceReviewComment(game, {
-                    playerId: selfPlayer.id,
+                    playerId: selfPlayer?.id,
                     afterTurnNumber: turnNumber,
                     comment: msg,
                   });

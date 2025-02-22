@@ -19,7 +19,6 @@ import { updateGame } from "~/lib/firebase";
 import { readableUniqueId } from "~/lib/id";
 import { GameMode, GameVariant, IColor, IGameHintsLevel, IHintType, INumber } from "~/lib/state";
 import { logFailedPromise } from "~/lib/errors";
-import { useColorBlindMode } from "~/hooks/game";
 
 function card(color: IColor, number: INumber, size = CardSize.XSMALL, position?: number) {
   return (

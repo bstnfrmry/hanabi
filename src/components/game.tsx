@@ -26,11 +26,10 @@ import { commitAction, getMaximumPossibleScore, getScore, joinGame, newGame, rec
 import { play } from "~/lib/ai";
 import { cheat } from "~/lib/ai-cheater";
 import { logEvent } from "~/lib/analytics";
-import { loadGame, setNotification, setReaction, updateGame } from "~/lib/firebase";
+import { setNotification, setReaction, updateGame } from "~/lib/firebase";
 import { uniqueId } from "~/lib/id";
 import IGameState, { GameMode, IAction, IGameHintsLevel, IGameStatus, IPlayer } from "~/lib/state";
 import { logFailedPromise } from "~/lib/errors";
-import { log } from "react-fullstory";
 
 interface Props {
   host: string;
