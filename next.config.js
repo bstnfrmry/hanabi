@@ -22,6 +22,7 @@ module.exports = async (phase, { defaultConfig }) => {
   delete defaultConfig.amp["canonicalBase"];
 
   const localConfig = {
+    productionBrowserSourceMaps: true,
     assetPrefix: "/",
     experimental: {},
     images: {
