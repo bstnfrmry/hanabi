@@ -86,7 +86,7 @@ export function ReviewCommentPopover({
   const game = useGame();
   const selfPlayer = useSelfPlayer(game);
   const [reviewCommentOpenForTurn, setReviewCommentOpenForTurn] = useState<number | undefined>(undefined);
-  const comment = findComment(game, selfPlayer.id, turnNumber);
+  const comment = findComment(game, selfPlayer?.id, turnNumber);
   const showIcon = showAlways || comment;
   useEffect(() => {
     function checkKey(event: KeyboardEvent) {
@@ -126,7 +126,7 @@ export function ReviewCommentPopover({
                 existingComment={comment?.comment}
                 onClose={(msg, turnNumber: number) => {
                   addOrReplaceReviewComment(game, {
-                    playerId: selfPlayer.id,
+                    playerId: selfPlayer?.id,
                     afterTurnNumber: turnNumber,
                     comment: msg,
                   });
