@@ -169,134 +169,137 @@ export default function PlayerGame(props: Props) {
         {...attributes}
       >
         <div className="flex items-center">
-          <div className="flex flex-column">
-            {player === selfPlayer && player === currentPlayer && (
-              <Tutorial placement="right" step={ITutorialStep.YOUR_TURN}>
-                <Txt
-                  className="yellow nt1"
-                  id="your-turn"
-                  size={TxtSize.XSMALL}
-                  value={game.status === IGameStatus.LOBBY ? t("youWillStart") : t("yourTurn")}
-                />
-              </Tutorial>
-            )}
-            <div className={classnames("flex items-center")}>
-              {player === currentPlayer && <Txt className="yellow mr2" size={TxtSize.SMALL} value="➤" />}
-              <PlayerName className="mr2" explicit={true} player={player} size={PlayerNameSize.MEDIUM} />
-            </div>
-          </div>
-
-          {!self && player.reaction && (
-            <Txt
-              style={{
-                animation: "FontPulse 600ms 5",
-              }}
-              value={player.reaction}
-            />
-          )}
-
-          {self && !replay.cursor && (
-            <Popover
-              containerClassName="z-999"
-              content={({ position, childRect, popoverRect }) => {
-                return (
-                  <ArrowContainer
-                    arrowColor={POPOVER_ARROW_COLOR} // determined from .b--yellow
-                    arrowSize={10}
-                    arrowStyle={{ opacity: 1 }}
-                    childRect={childRect}
-                    popoverRect={popoverRect}
-                    position={position}
-                  >
-                    <ReactionsPopover
-                      style={POPOVER_CONTENT_STYLE}
-                      onClose={() => setReactionsOpen(false)}
-                      onReaction={onReaction}
-                    />
-                  </ArrowContainer>
-                );
-              }}
-              isOpen={reactionsOpen}
-              padding={5}
-              onClickOutside={() => setReactionsOpen(false)}
-            >
-              <a
-                className="pointer grow"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setReactionsOpen(!reactionsOpen);
-                  setChatOpen(false);
-                }}
-              >
-                {player.reaction && (
+          <div className="flex flex-wrap flex-row">
+            <div className="flex flex-column">
+              {player === selfPlayer && player === currentPlayer && (
+                <Tutorial placement="right" step={ITutorialStep.YOUR_TURN}>
                   <Txt
-                    style={{
-                      animation: "FontPulse 600ms 5",
-                    }}
-                    value={player.reaction}
+                    className="yellow nt1"
+                    id="your-turn"
+                    size={TxtSize.XSMALL}
+                    value={game.status === IGameStatus.LOBBY ? t("youWillStart") : t("yourTurn")}
                   />
-                )}
-                {!player.reaction && <Txt style={{ filter: "grayscale(100%)" }} value="︎︎︎︎😊" />}
-              </a>
-            </Popover>
-          )}
+                </Tutorial>
+              )}
+              <div className={classnames("flex items-center")}>
+                {player === currentPlayer && <Txt className="yellow mr2" size={TxtSize.SMALL} value="➤" />}
+                <PlayerName className="mr2" explicit={true} player={player} size={PlayerNameSize.MEDIUM} />
+              </div>
+            </div>
 
-          {self && !replay.cursor && game.status !== IGameStatus.LOBBY && (
-            <Popover
-              containerClassName="z-999"
-              content={({ position, childRect, popoverRect }) => {
-                return (
-                  <ArrowContainer
-                    arrowColor={POPOVER_ARROW_COLOR} // determined from .b--yellow
-                    arrowSize={10}
-                    arrowStyle={{ opacity: 1 }}
-                    childRect={childRect}
-                    popoverRect={popoverRect}
-                    position={position}
-                  >
-                    {<ChatPopover style={POPOVER_CONTENT_STYLE} onClose={() => setChatOpen(false)} />}
-                  </ArrowContainer>
-                );
-              }}
-              isOpen={chatOpen}
-              padding={5}
-              onClickOutside={() => setChatOpen(false)}
-            >
+            {!self && player.reaction && (
+              <Txt
+                style={{
+                  animation: "FontPulse 600ms 5",
+                }}
+                value={player.reaction}
+              />
+            )}
+          </div>
+          <div>
+            {self && !replay.cursor && (
+              <Popover
+                containerClassName="z-999"
+                content={({ position, childRect, popoverRect }) => {
+                  return (
+                    <ArrowContainer
+                      arrowColor={POPOVER_ARROW_COLOR} // determined from .b--yellow
+                      arrowSize={10}
+                      arrowStyle={{ opacity: 1 }}
+                      childRect={childRect}
+                      popoverRect={popoverRect}
+                      position={position}
+                    >
+                      <ReactionsPopover
+                        style={POPOVER_CONTENT_STYLE}
+                        onClose={() => setReactionsOpen(false)}
+                        onReaction={onReaction}
+                      />
+                    </ArrowContainer>
+                  );
+                }}
+                isOpen={reactionsOpen}
+                padding={5}
+                onClickOutside={() => setReactionsOpen(false)}
+              >
+                <a
+                  className="pointer grow"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setReactionsOpen(!reactionsOpen);
+                    setChatOpen(false);
+                  }}
+                >
+                  {player.reaction && (
+                    <Txt
+                      style={{
+                        animation: "FontPulse 600ms 5",
+                      }}
+                      value={player.reaction}
+                    />
+                  )}
+                  {!player.reaction && <Txt style={{ filter: "grayscale(100%)" }} value="︎︎︎︎😊" />}
+                </a>
+              </Popover>
+            )}
+
+            {self && !replay.cursor && game.status !== IGameStatus.LOBBY && (
+              <Popover
+                containerClassName="z-999"
+                content={({ position, childRect, popoverRect }) => {
+                  return (
+                    <ArrowContainer
+                      arrowColor={POPOVER_ARROW_COLOR} // determined from .b--yellow
+                      arrowSize={10}
+                      arrowStyle={{ opacity: 1 }}
+                      childRect={childRect}
+                      popoverRect={popoverRect}
+                      position={position}
+                    >
+                      {<ChatPopover style={POPOVER_CONTENT_STYLE} onClose={() => setChatOpen(false)} />}
+                    </ArrowContainer>
+                  );
+                }}
+                isOpen={chatOpen}
+                padding={5}
+                onClickOutside={() => setChatOpen(false)}
+              >
+                <a
+                  className="pointer grow"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setChatOpen(!chatOpen);
+                    setReactionsOpen(false);
+                  }}
+                >
+                  <span>
+                    &nbsp;
+                    <Txt value="💬" />
+                  </span>
+                </a>
+              </Popover>
+            )}
+
+            {showReviewCommentPopover && (
+              <ReviewCommentPopover
+                handleKeyEvent={nothingInvoked() ? "c" : undefined}
+                showAlways={true}
+                turnNumber={game.turnsHistory.length}
+              />
+            )}
+
+            {active && selfPlayer && !self && !player.notified && !player.bot && (
               <a
-                className="pointer grow"
+                className="ml1 ml4-l pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setChatOpen(!chatOpen);
-                  setReactionsOpen(false);
+                  onNotifyPlayer(player);
                 }}
               >
-                <span>
-                  &nbsp;
-                  <Txt value="💬" />
-                </span>
+                <Txt value="🔔" />
               </a>
-            </Popover>
-          )}
-
-          {showReviewCommentPopover && (
-            <ReviewCommentPopover
-              handleKeyEvent={nothingInvoked() ? "c" : undefined}
-              showAlways={true}
-              turnNumber={game.turnsHistory.length}
-            />
-          )}
-
-          {active && selfPlayer && !self && !player.notified && !player.bot && (
-            <a
-              className="ml1 ml4-l pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                onNotifyPlayer(player);
-              }}
-            >
-              <Txt value="🔔" />
-            </a>
-          )}
+            )}
+          </div>
 
           {selected && (
             <a className="absolute top-0 right-0 mt2 mr3 pr6.5-m" onClick={() => onCloseArea()}>

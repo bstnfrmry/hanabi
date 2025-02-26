@@ -79,8 +79,6 @@ function Message(props: MessageProps) {
 
   return (
     <div key={message.id} className="lavender">
-      <ReviewCommentPopover turnNumber={-1} />
-      &nbsp;
       <Trans i18nKey="message">
         <Txt size={TxtSize.SMALL} value={player.name} />
         <Txt className="white" size={TxtSize.SMALL} value={message.content} />
