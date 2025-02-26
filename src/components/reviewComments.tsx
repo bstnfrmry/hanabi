@@ -8,18 +8,7 @@ import { updateGame } from "~/lib/firebase";
 import { isGameFinished } from "~/lib/game";
 import { addOrReplaceReviewComment, findComment } from "~/lib/reviewComments";
 import { IGameStatus, IReviewComment } from "~/lib/state";
-import { SvgImage } from "~/components/ui/svgImage";
-
-import Pencil from "~/images/YellowPencil.svg";
-import Clear from "~/images/Clear.svg";
 import { POPOVER_ARROW_COLOR } from "~/components/popoverAppearance";
-
-export function ReviewCommentIcon(props: { size: number; placeholder?: boolean }) {
-  if (props.placeholder) {
-    return <SvgImage height={props.size} svg={Clear} width={props.size} />;
-  }
-  return <SvgImage height={props.size} svg={Pencil} width={props.size} />;
-}
 
 export function ReadOnlyCommentMarker(props: { size: number }) {
   const style = {
@@ -103,6 +92,9 @@ export function ReviewCommentPopover({
     }
   }, [game.status, turnNumber, handleKeyEvent, reviewCommentOpenForTurn]);
   const commentIsEditable = !isGameFinished(game);
+  if (!showIcon) {
+    return null;
+  }
 
   return (
     <Popover
@@ -153,11 +145,7 @@ export function ReviewCommentPopover({
           }
         }}
       >
-        {!showIcon || commentIsEditable ? (
-          <ReviewCommentIcon placeholder={!showIcon} size={15} />
-        ) : (
-          <ReadOnlyCommentMarker size={15} />
-        )}
+        {!showIcon || commentIsEditable ? <Txt className="mirror" value={"✏️"} /> : <ReadOnlyCommentMarker size={15} />}
       </a>
     </Popover>
   );
