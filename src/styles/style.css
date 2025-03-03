@@ -49,6 +49,13 @@ body ::-webkit-scrollbar {
   display: none;
 }
 
+.grayscale {
+  filter: grayscale(100%)
+}
+.turnNumber {
+  font-variant-numeric: tabular-nums;
+  font-kerning: none;
+}
 button {
   background-color: white;
 }

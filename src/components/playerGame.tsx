@@ -272,7 +272,7 @@ export default function PlayerGame(props: Props) {
                     setReactionsOpen(false);
                   }}
                 >
-                  <span>
+                  <span className={classnames({ grayscale: !chatOpen })}>
                     &nbsp;
                     <Txt value="💬" />
                   </span>
@@ -283,6 +283,7 @@ export default function PlayerGame(props: Props) {
             {showReviewCommentPopover && (
               <ReviewCommentPopover
                 handleKeyEvent={nothingInvoked() ? "c" : undefined}
+                initiallyGray={true}
                 showAlways={true}
                 turnNumber={game.turnsHistory.length}
               />

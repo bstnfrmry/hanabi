@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Popover, ArrowContainer } from "react-tiny-popover";
+import { Popover, ArrowContainer, PopoverPosition } from "react-tiny-popover";
 import TextFieldDialog from "~/components/textFieldDialog";
 import Txt from "~/components/ui/txt";
 import { useGame, useSelfPlayer } from "~/hooks/game";
@@ -9,6 +9,7 @@ import { isGameFinished } from "~/lib/game";
 import { addOrReplaceReviewComment, findComment } from "~/lib/reviewComments";
 import { IGameStatus, IReviewComment } from "~/lib/state";
 import { POPOVER_ARROW_COLOR } from "~/components/popoverAppearance";
+import classnames from "classnames";
 
 export function ReadOnlyCommentMarker(props: { size: number }) {
   const style = {
@@ -53,7 +54,7 @@ function EnterReviewComment(props: {
       onClose={(msg) => props.onClose(msg, props.afterTurnNumber)}
     >
       <div className={"tl"}>
-        {t("turn")} # {props.afterTurnNumber}
+        {t("turn")} #{props.afterTurnNumber}
       </div>
     </TextFieldDialog>
   );
@@ -65,18 +66,23 @@ export function StaticReviewComment(props: { comment: IReviewComment }) {
 
 export function ReviewCommentPopover({
   showAlways = false,
+  initiallyGray = false,
   turnNumber,
   handleKeyEvent,
+  position = "bottom",
 }: {
+  initiallyGray?: boolean;
   turnNumber: number;
   showAlways?: boolean;
   handleKeyEvent?: string;
+  position?: PopoverPosition;
 }) {
   const game = useGame();
   const selfPlayer = useSelfPlayer(game);
   const [reviewCommentOpenForTurn, setReviewCommentOpenForTurn] = useState<number | undefined>(undefined);
   const comment = findComment(game, selfPlayer?.id, turnNumber);
   const showIcon = showAlways || comment;
+  const showGrayIcon = initiallyGray && reviewCommentOpenForTurn === undefined;
   useEffect(() => {
     function checkKey(event: KeyboardEvent) {
       if (event.key === handleKeyEvent && game.status === IGameStatus.ONGOING) {
@@ -96,6 +102,7 @@ export function ReviewCommentPopover({
     return null;
   }
 
+  console.debug(`Position: ${position}`);
   return (
     <Popover
       containerClassName="z-999"
@@ -131,7 +138,7 @@ export function ReviewCommentPopover({
         );
       }}
       isOpen={reviewCommentOpenForTurn !== undefined}
-      positions={"bottom"}
+      positions={position}
       onClickOutside={() => setReviewCommentOpenForTurn(undefined)}
     >
       <a
@@ -145,7 +152,11 @@ export function ReviewCommentPopover({
           }
         }}
       >
-        {!showIcon || commentIsEditable ? <Txt className="mirror" value={"✏️"} /> : <ReadOnlyCommentMarker size={15} />}
+        {!showIcon || commentIsEditable ? (
+          <Txt className={classnames("mirror", { grayscale: showGrayIcon })} value={"✏️"} />
+        ) : (
+          <ReadOnlyCommentMarker size={15} />
+        )}
       </a>
     </Popover>
   );
