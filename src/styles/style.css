@@ -49,6 +49,10 @@ body ::-webkit-scrollbar {
   display: none;
 }
 
+.identityBlock {
+  flex-wrap: wrap;
+  flex-direction: row;
+}
 button {
   background-color: white;
 }
@@ -413,4 +417,3 @@ button {
     zoom: 1.3
   }
 }
-
