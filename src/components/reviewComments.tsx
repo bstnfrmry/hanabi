@@ -10,18 +10,8 @@ import { addOrReplaceReviewComment, findComment } from "~/lib/reviewComments";
 import { IGameStatus, IReviewComment } from "~/lib/state";
 import { POPOVER_ARROW_COLOR } from "~/components/popoverAppearance";
 
-export function ReadOnlyCommentMarker(props: { size: number }) {
-  const style = {
-    width: props.size,
-    height: props.size,
-    borderLeft: "6px solid  var(--color-review-comment)",
-    borderRight: "0px solid transparent",
-    borderBottom: "6px solid transparent",
-    borderTop: "6px solid transparent",
-    backgroundColor: "transparent",
-    borderRadius: 0,
-  };
-  return <div className="dib" style={style} />;
+export function ReadOnlyCommentMarker() {
+  return <Txt className={"b--none ma0 white"} value={"📝"} />;
 }
 function EnterReviewComment(props: {
   existingComment: string;
@@ -145,7 +135,7 @@ export function ReviewCommentPopover({
           }
         }}
       >
-        {!showIcon || commentIsEditable ? <Txt className="mirror" value={"✏️"} /> : <ReadOnlyCommentMarker size={15} />}
+        {!showIcon || commentIsEditable ? <Txt className="mirror" value={"✏️"} /> : <ReadOnlyCommentMarker />}
       </a>
     </Popover>
   );

@@ -1,6 +1,6 @@
 import Slider from "rc-slider";
 import { MarkObj } from "rc-slider/lib/Marks";
-import React, { useCallback, useState } from "react";
+import React from "react";
 import { ReadOnlyCommentMarker, ReviewCommentPopover, StaticReviewComment } from "~/components/reviewComments";
 import Button, { ButtonSize } from "~/components/ui/button";
 import Txt, { TxtSize } from "~/components/ui/txt";
@@ -8,7 +8,6 @@ import { useGame, useSelfPlayer } from "~/hooks/game";
 import { useReplay } from "~/hooks/replay";
 import { isGameFinished } from "~/lib/game";
 import { findComment } from "~/lib/reviewComments";
-import { IReviewComment } from "~/lib/state";
 
 function Empty() {
   return <div className={"dn"} />;
@@ -113,7 +112,7 @@ export default function ReplayViewer(props: Props) {
         <div className={"flex flex-row justify-center"} style={{ gap: "0.5rem" }}>
           <div className={"flex-grow-0"}>
             {isGameFinished(game) ? (
-              <ReadOnlyCommentMarker size={15} />
+              <ReadOnlyCommentMarker />
             ) : (
               <ReviewCommentPopover showAlways={true} turnNumber={replay.cursor} />
             )}
