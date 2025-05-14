@@ -8,6 +8,7 @@ import { useGame, useSelfPlayer } from "~/hooks/game";
 import { useReplay } from "~/hooks/replay";
 import { isGameFinished } from "~/lib/game";
 import { findComment } from "~/lib/reviewComments";
+import { IPlayer } from "~/lib/state";
 
 function Empty() {
   return <div className={"dn"} />;
@@ -48,9 +49,9 @@ interface Props {
 export default function ReplayViewer(props: Props) {
   const { onReplayCursorChange, onStopReplay } = props;
   const game = useGame();
-  const selfPlayer = useSelfPlayer(game);
+  const selfPlayer: IPlayer | undefined = useSelfPlayer(game);
   const replay = useReplay();
-  const comment = findComment(game, selfPlayer.id, replay.cursor);
+  const comment = findComment(game, selfPlayer?.id, replay.cursor);
   const maxTurns = game.originalGame.turnsHistory.length;
 
   const marks: Record<string | number, React.ReactNode | MarkObj> = {};
