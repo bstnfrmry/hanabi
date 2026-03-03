@@ -27,6 +27,7 @@ const ROOM_KEY = "currentRoom";
 const VariantKeys: Record<string, string> = {
   [GameVariant.CLASSIC]: "classicVariant",
   [GameVariant.MULTICOLOR]: "multicolorVariant",
+  [GameVariant.MULTICOLOR_6]: "multicolor6Variant",
   [GameVariant.RAINBOW]: "rainbowVariant",
   [GameVariant.CRITICAL_RAINBOW]: "criticalRainbowVariant",
   [GameVariant.ORANGE]: "orangeVariant",

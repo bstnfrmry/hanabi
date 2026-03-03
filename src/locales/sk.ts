@@ -91,6 +91,8 @@ export const sk = {
   classicVariantDescription: "Klasická hra Hanab s piatimi farbami",
   multicolorVariantDescription:
     "Hra s pridanou šiestou farbou, ale šiesta farba má iba po jednej karte z každej hodnoty",
+  multicolor6Variant: "🎨 Viacfarebný 6",
+  multicolor6VariantDescription: "Viacfarebný, ale hráči majú o jednu kartu v ruke viac",
   rainbowVariantDescription: "Hra s pridanou šiestou farbou, ktorá pri nápovedách zodpovedá každej farbe",
   criticalRainbowVariantDescription: 'Dúhový variant, ale dúhová "farba" má iba po jednej karte z každej hodnoty',
   orangeVariantDescription: "Hra s pridanou šiestou farbou",

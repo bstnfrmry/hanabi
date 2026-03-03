@@ -89,6 +89,8 @@ export const pt = {
   sequenceVariant: "Sequência",
   classicVariantDescription: "Um jogo clássico de Hanab com 5 cores",
   multicolorVariantDescription: "É adicionado um sexto naipe com apenas uma carta de cada número",
+  multicolor6Variant: "Multicolor 6",
+  multicolor6VariantDescription: "Multicolor, mas os jogadores têm uma carta extra na mão",
   rainbowVariantDescription: "É adicionado um sexto naipe que combina com todas as cores",
   criticalRainbowVariantDescription: "Arco-íris, mas o sexto naipe tem apenas uma carta de cada número",
   orangeVariantDescription: "É adicionado um sexto naipe clássico",

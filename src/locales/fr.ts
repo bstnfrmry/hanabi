@@ -89,6 +89,8 @@ export const fr = {
   sequenceVariant: "Séquences",
   classicVariantDescription: "Le jeu traditionnel d'Hanab sans extension",
   multicolorVariantDescription: "Une sixième pile est ajoutée avec seulement un exemplaire de chaque valeur",
+  multicolor6Variant: "Multicolore 6",
+  multicolor6VariantDescription: "Multicolore, mais les joueurs ont une carte de plus en main",
   rainbowVariantDescription:
     "Une sixième pile est ajoutée dont les cartes sont touchées par tous les indices de couleur",
   criticalRainbowVariantDescription: "Arc-en-ciel, mais la 6ème pile n'a qu'un exemplaire de chaque valeur",

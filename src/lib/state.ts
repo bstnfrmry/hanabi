@@ -52,6 +52,7 @@ export interface IGameOptions {
 export enum GameVariant {
   CLASSIC = "classic",
   MULTICOLOR = "multicolor",
+  MULTICOLOR_6 = "multicolor6",
   RAINBOW = "rainbow",
   CRITICAL_RAINBOW = "criticalRainbow",
   ORANGE = "orange",

@@ -86,6 +86,8 @@ export const nl = {
   criticalRainbowVariant: "Kritische Regenboog",
   classicVariantDescription: "Een klassiek spel Hanab met 5 kleuren",
   multicolorVariantDescription: "Een 6de suite werd toegevoegd met enkel één kaart van elk",
+  multicolor6Variant: "Veelkleurig 6",
+  multicolor6VariantDescription: "Veelkleurig, maar spelers houden een extra kaart in de hand",
   rainbowVariantDescription: "Een 6de suite werd toegevoegd die matcht met elke kleur",
   criticalRainbowVariantDescription: "Regenboog, maar de 6e kleur heeft slechts één kaart van elk",
   orangeVariantDescription: "Een 6de klassieke suite werd toegevoegd",

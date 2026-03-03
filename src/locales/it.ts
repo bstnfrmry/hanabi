@@ -89,6 +89,8 @@ export const it = {
   sequenceVariant: "Sequenza",
   classicVariantDescription: "Una partita classica di Hanab con 5 colori",
   multicolorVariantDescription: "Viene aggiunto un sesto seme con una sola carta per numero",
+  multicolor6Variant: "Multicolore 6",
+  multicolor6VariantDescription: "Multicolore, ma i giocatori hanno una carta in più in mano",
   rainbowVariantDescription: "Viene aggiunto un sesto seme che corrisponde a tutti i colori",
   criticalRainbowVariantDescription: "Rainbow, ma il 6° seme ha solo una carta di ogni",
   orangeVariantDescription: "Viene aggiunto un sesto seme classico",

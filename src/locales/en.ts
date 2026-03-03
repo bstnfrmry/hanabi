@@ -116,6 +116,8 @@ export const en = {
   sequenceVariant: "Sequence",
   classicVariantDescription: "A classic game of Hanab with 5 colors",
   multicolorVariantDescription: "A 6th suit is added with only one card of each",
+  multicolor6Variant: "Multicolor 6",
+  multicolor6VariantDescription: "Multicolor, but players hold one extra card in hand",
   rainbowVariantDescription: "A 6th suit is added that matches every color",
   criticalRainbowVariantDescription: "Rainbow, but the 6th suit has only one card of each",
   orangeVariantDescription: "A 6th classic suit is added",

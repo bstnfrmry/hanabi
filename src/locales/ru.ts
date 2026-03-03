@@ -99,6 +99,8 @@ export const ru = {
   sequenceVariant: "Последовательный",
   classicVariantDescription: "Классическая игра Ханаби с 5 цветами",
   multicolorVariantDescription: "6-ой набор с одной копией каждой карты",
+  multicolor6Variant: "Разноцветный 6",
+  multicolor6VariantDescription: "Разноцветный, но игроки держат на одну карту больше",
   rainbowVariantDescription: "6-ой набор, где карты имеют все цвета",
   criticalRainbowVariantDescription: "Радужный, но в 6-ом наборе есть только по одной копии карты.",
   orangeVariantDescription: "Добавлен обычный 6-ой набор",

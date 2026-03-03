@@ -89,6 +89,8 @@ export const zh = {
   sequenceVariant: "序列",
   classicVariantDescription: "经典5色华火游戏",
   multicolorVariantDescription: "加入第六种颜色，每个数字只有一张",
+  multicolor6Variant: "多彩6",
+  multicolor6VariantDescription: "多彩模式，但每位玩家手中多持一张牌",
   rainbowVariantDescription: "加入第六种彩虹色，会在任何颜色的线索中被标记",
   criticalRainbowVariantDescription: "彩虹模式，但每个数字只有一张",
   orangeVariantDescription: "加入第六种颜色",

@@ -89,6 +89,8 @@ export const es = {
   sequenceVariant: "Secuencia",
   classicVariantDescription: "Un juego clásico de Hanab con 5 colores",
   multicolorVariantDescription: "Se añade una 6ta pinta con una sola carta de cada número",
+  multicolor6Variant: "Multicolor 6",
+  multicolor6VariantDescription: "Multicolor, pero los jugadores tienen una carta extra en la mano",
   rainbowVariantDescription: "Se añade una 6ta pinta que combina con todos los demás colores",
   criticalRainbowVariantDescription: "Arcoíris pero el sexto palo sólo tiene una carta de cada uno",
   orangeVariantDescription: "Se añade una 6ta pinta clásica",

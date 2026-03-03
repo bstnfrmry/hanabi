@@ -23,6 +23,7 @@ import IGameState, {
 export const numbers: INumber[] = [1, 2, 3, 4, 5];
 
 const startingHandSize = { 2: 5, 3: 5, 4: 4, 5: 4 };
+const startingHandSizeMulticolor6 = { 2: 6, 3: 6, 4: 5, 5: 5 };
 export const MaxHints = 8;
 
 export function isPlayable(card: ICard, playedCards: ICard[]): boolean {
@@ -109,7 +110,8 @@ export function emptyHint(options: IGameOptions): ICardHint {
       [IColor.GREEN]: 1,
       [IColor.YELLOW]: 1,
       [IColor.WHITE]: 1,
-      [IColor.MULTICOLOR]: options.variant === GameVariant.MULTICOLOR ? 1 : 0,
+      [IColor.MULTICOLOR]:
+        options.variant === GameVariant.MULTICOLOR || options.variant === GameVariant.MULTICOLOR_6 ? 1 : 0,
       [IColor.RAINBOW]: 1, // Should never be used directly
       [IColor.ORANGE]: options.variant === GameVariant.ORANGE ? 1 : 0,
     },
@@ -260,6 +262,7 @@ export const getStateAtTurn = memoize(
 export function getColors(variant: GameVariant) {
   switch (variant) {
     case GameVariant.MULTICOLOR:
+    case GameVariant.MULTICOLOR_6:
       return [IColor.BLUE, IColor.GREEN, IColor.RED, IColor.WHITE, IColor.YELLOW, IColor.MULTICOLOR];
     case GameVariant.RAINBOW:
     case GameVariant.CRITICAL_RAINBOW:
@@ -283,6 +286,7 @@ export function getScore(state: IGameState) {
 export function getMaximumScore(state: IGameState) {
   switch (state.options.variant) {
     case GameVariant.MULTICOLOR:
+    case GameVariant.MULTICOLOR_6:
     case GameVariant.RAINBOW:
     case GameVariant.CRITICAL_RAINBOW:
     case GameVariant.ORANGE:
@@ -343,7 +347,9 @@ export function joinGame(state: IGameState, player: IPlayer): IGameState {
     return game;
   }
 
-  const hand = game.drawPile.splice(0, startingHandSize[game.options.playersCount]);
+  const handSizeMap =
+    game.options.variant === GameVariant.MULTICOLOR_6 ? startingHandSizeMulticolor6 : startingHandSize;
+  const hand = game.drawPile.splice(0, handSizeMap[game.options.playersCount]);
 
   game.players.push({ ...player, hand, index: game.players.length });
 
@@ -371,7 +377,7 @@ export function newGame(options: IGameOptions): IGameState {
   ]);
 
   // Add multicolor cards when applicable
-  if (options.variant === GameVariant.MULTICOLOR) {
+  if (options.variant === GameVariant.MULTICOLOR || options.variant === GameVariant.MULTICOLOR_6) {
     cards.push(
       { number: 1, color: IColor.MULTICOLOR },
       { number: 2, color: IColor.MULTICOLOR },
