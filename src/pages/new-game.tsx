@@ -17,6 +17,7 @@ const PlayerCounts = [2, 3, 4, 5];
 const Variants = {
   [GameVariant.CLASSIC]: "classicVariant",
   [GameVariant.MULTICOLOR]: "multicolorVariant",
+  [GameVariant.MULTICOLOR6]: "multicolor6Variant",
   [GameVariant.RAINBOW]: "rainbowVariant",
   [GameVariant.CRITICAL_RAINBOW]: "criticalRainbowVariant",
   [GameVariant.ORANGE]: "orangeVariant",
@@ -26,6 +27,7 @@ const Variants = {
 const VariantDescriptions = {
   [GameVariant.CLASSIC]: "classicVariantDescription",
   [GameVariant.MULTICOLOR]: "multicolorVariantDescription",
+  [GameVariant.MULTICOLOR6]: "multicolor6VariantDescription",
   [GameVariant.RAINBOW]: "rainbowVariantDescription",
   [GameVariant.CRITICAL_RAINBOW]: "criticalRainbowVariantDescription",
   [GameVariant.ORANGE]: "orangeVariantDescription",

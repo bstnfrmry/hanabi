@@ -81,6 +81,8 @@ export default function Summary() {
         return t("classicVariant");
       case GameVariant.MULTICOLOR:
         return t("multicolorVariant");
+      case GameVariant.MULTICOLOR6:
+        return t("multicolor6Variant");
       case GameVariant.RAINBOW:
         return t("rainbowVariant");
       case GameVariant.CRITICAL_RAINBOW:

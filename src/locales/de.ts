@@ -85,11 +85,13 @@ export const de = {
   classicVariant: "Klassik",
   orangeVariant: "Orange",
   multicolorVariant: "Bunt",
+  multicolor6Variant: "Bunt 6",
   rainbowVariant: "Regenbogen",
   criticalRainbowVariant: "Regenbogen erweitert",
   sequenceVariant: "Reihenfolge",
   classicVariantDescription: "Ein klassisches Hanab Spiel mit 5 Farben",
   multicolorVariantDescription: "Ein sechster Ablage-Stapel wird ergänzt mit jeweils nur einer Karte",
+  multicolor6VariantDescription: "Bunt mit 6 Karten auf der Hand für alle Spieler",
   rainbowVariantDescription: "Ein sechster Ablage-Stapel wird ergänzt dessen Karten zu jeder Farbe passen",
   criticalRainbowVariantDescription:
     "Regenbogen-Version, aber der sechste Ablage-Stapel Farbe hat jeweils nur eine Karte",
