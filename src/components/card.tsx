@@ -225,7 +225,7 @@ export default function Card(props: Props) {
           e.stopPropagation();
           return;
         }
-        onClick(e);
+        onClick?.(e);
       }}
       {...longPressProps}
     >

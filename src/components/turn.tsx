@@ -139,7 +139,7 @@ export default function Turn(props: Props) {
 
   return (
     <div className="dib">
-      {props.turnNumber ? <Txt className={classnames("di gray")}>{props.turnNumber}</Txt> : ""}
+      {props.turnNumber ? <Txt className={classnames("di gray")} size={TxtSize.XSMALL}>{props.turnNumber}</Txt> : ""}
       <span>&nbsp;</span>
       <Txt className="di">
         {/* The player action and the card they have drawn, if applicable */}
@@ -167,12 +167,12 @@ const HintValue = ({ action }: { action: IHintAction }) => (
 const CardPosition = ({ action }: { action: IDiscardAction | IPlayAction | IHintAction }) =>
   action.action === "hint" ? (
     <Txt
-      className="lavender mr1"
+      className="gray mr1"
       size={TxtSize.XSMALL}
       value={`${(action?.cardsIndex ?? []).map((index) => PositionMap[index]).join(", ")}`}
     />
   ) : (
-    <Txt className="lavender mr1" size={TxtSize.XSMALL} value={`${PositionMap[action.cardIndex]}`} />
+    <Txt className="gray mr1" size={TxtSize.XSMALL} value={`${PositionMap[action.cardIndex]}`} />
   );
 
 const DrawnCard = ({ card }: { card: ICard }) => (
