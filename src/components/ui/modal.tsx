@@ -38,7 +38,7 @@ export function Modal(props: Props) {
       }}
     >
       <div className="bg-main-dark">
-        {onRequestClose && <Button void className="absolute right-1 top-1" text="&times;" onClick={onRequestClose} />}
+        {onRequestClose && <Button void className="absolute right-1 top-1 z-5" text="&times;" onClick={onRequestClose} />}
 
         {children}
       </div>

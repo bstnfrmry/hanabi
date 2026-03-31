@@ -185,7 +185,7 @@ export default function Lobby(props: Props) {
               </a>
             </div>
             <input ref={inputRef} readOnly className="fixed top--2 left--2" type="text" value={shareLink} />
-            <Button text={t("copy")} onClick={copy} />
+            <Button outlined text={t("copy")} onClick={copy} />
           </div>
         )}
       </div>
