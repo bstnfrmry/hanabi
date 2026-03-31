@@ -10,16 +10,18 @@ export function readableUniqueId(): ID {
     separator: "",
     style: "capital",
   });
-  return `${main}-0`;
+  return main;
 }
 
 export function nextGameId(existingId: string) {
-  const parts = existingId.split("-");
-  if (parts.length != 2) {
-    throw Error("Invalid ID");
+  const lastDash = existingId.lastIndexOf("-");
+  const suffix = lastDash !== -1 ? parseInt(existingId.slice(lastDash + 1)) : NaN;
+
+  if (isNaN(suffix)) {
+    return `${existingId}-1`;
   }
-  const nextInSequence = parseInt(parts[1]) + 1;
-  return parts[0] + `-${nextInSequence}`;
+
+  return existingId.slice(0, lastDash) + `-${suffix + 1}`;
 }
 
 export function uniqueId(): ID {
