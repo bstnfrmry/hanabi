@@ -62,10 +62,16 @@ export function Game(props: Props) {
   useSoundEffects();
 
   /**
-   * Resets the selected area when a player plays.
+   * Resets the selected area when a player plays,
+   * unless the self player's own cards are currently expanded.
    */
   useEffect(() => {
-    selectArea({ id: "logs", type: ActionAreaType.LOGS });
+    selectArea((current) => {
+      if (current.type === ActionAreaType.SELF_PLAYER) {
+        return { ...current, id: `game-${current.player.id}`, cardIndex: undefined };
+      }
+      return { id: "logs", type: ActionAreaType.LOGS };
+    });
   }, [game.turnsHistory.length]);
 
   /**
@@ -85,21 +91,29 @@ export function Game(props: Props) {
   useEffect(() => {
     if (!game.synced) return;
     if (game.status !== IGameStatus.ONGOING) return;
-    if (!selfPlayer || selfPlayer.index) return;
+    if (!selfPlayer) return;
     if (!currentPlayer.bot) return;
 
-    if (game.options.botsWait === 0) {
-      updateGame(play(game)).catch(logFailedPromise);
-      return;
+    try {
+      if (game.options.botsWait === 0) {
+        updateGame(play(game)).catch(logFailedPromise);
+        return;
+      }
+
+      setReaction(game, currentPlayer, "🧠").catch(logFailedPromise);
+      const timeout = setTimeout(() => {
+        try {
+          updateGame(play(game)).catch(logFailedPromise);
+          game.options.botsWait && setReaction(game, currentPlayer, null);
+        } catch (e) {
+          console.error(`[Bot] Error during play:`, e);
+        }
+      }, game.options.botsWait);
+
+      return () => clearTimeout(timeout);
+    } catch (e) {
+      console.error(`[Bot] Error during play:`, e);
     }
-
-    setReaction(game, currentPlayer, "🧠").catch(logFailedPromise);
-    const timeout = setTimeout(() => {
-      updateGame(play(game)).catch(logFailedPromise);
-      game.options.botsWait && setReaction(game, currentPlayer, null);
-    }, game.options.botsWait);
-
-    return () => clearTimeout(timeout);
   }, [game.currentPlayer, game.status, game.synced, game, currentPlayer, selfPlayer]);
 
   /**
