@@ -226,12 +226,13 @@ export function Game(props: Props) {
   }
 
   /**
-   * Redirect players to next game
+   * Redirect all players to next game
    */
   useEffect(() => {
     if (!game.nextGameId) return;
 
     setDisplayStats(false);
+    location.assign(`/${game.nextGameId}`);
   }, [game.nextGameId]);
 
   function onJoinGame(player: Omit<IPlayer, "id">) {

@@ -13,15 +13,8 @@ export function readableUniqueId(): ID {
   return main;
 }
 
-export function nextGameId(existingId: string) {
-  const lastDash = existingId.lastIndexOf("-");
-  const suffix = lastDash !== -1 ? parseInt(existingId.slice(lastDash + 1)) : NaN;
-
-  if (isNaN(suffix)) {
-    return `${existingId}-1`;
-  }
-
-  return existingId.slice(0, lastDash) + `-${suffix + 1}`;
+export function nextGameId(): ID {
+  return readableUniqueId();
 }
 
 export function uniqueId(): ID {
