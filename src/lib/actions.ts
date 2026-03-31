@@ -456,7 +456,7 @@ export function newGame(options: IGameOptions): IGameState {
 export function recreateGame(game: IGameState) {
   let nextGame = newGame({
     ...game.options,
-    id: game.nextGameId || nextGameId(game.id),
+    id: game.nextGameId || nextGameId(),
     seed: generateShuffleSeed(),
   });
 

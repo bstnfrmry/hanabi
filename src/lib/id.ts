@@ -10,16 +10,11 @@ export function readableUniqueId(): ID {
     separator: "",
     style: "capital",
   });
-  return `${main}-0`;
+  return main;
 }
 
-export function nextGameId(existingId: string) {
-  const parts = existingId.split("-");
-  if (parts.length != 2) {
-    throw Error("Invalid ID");
-  }
-  const nextInSequence = parseInt(parts[1]) + 1;
-  return parts[0] + `-${nextInSequence}`;
+export function nextGameId(): ID {
+  return readableUniqueId();
 }
 
 export function uniqueId(): ID {
