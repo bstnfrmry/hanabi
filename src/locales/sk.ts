@@ -23,6 +23,7 @@ export const sk = {
   autoplay: "Automatické prehrávanie",
   shareGame: "Zdieľať túto hru",
   copy: "Kopírovať",
+  copied: "Skopírované!",
   waitForOthers: "Čakať na ostatných alebo ",
   gameStarted: "Hra začala!",
   gameStarts: "Hra sa začína!",

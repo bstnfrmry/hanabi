@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import moment from "moment";
 import { useRouter } from "next/router";
-import React, { ReactNode, useCallback, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import shortid from "shortid";
 import GameActionsStats from "~/components/gameActionsStats";
@@ -60,25 +60,32 @@ interface Props {
   game: IGameState;
 }
 
+function CopiedToast({ visible, label }: { visible: boolean; label: string }) {
+  if (!visible) return null;
+
+  return (
+    <div
+      className="fixed z-999 bg-white black ph3 pv2 br2 shadow-2 f6 fw5"
+      style={{ top: "1rem", left: "50%", transform: "translateX(-50%)" }}
+    >
+      {label}
+    </div>
+  );
+}
+
 function ShuffleSeed({ seed, onCopy }: { seed: string; onCopy: () => void }) {
   return (
     <Txt className="mt2 lavender flex items-center" size={TxtSize.MEDIUM}>
       Shuffle: {seed}
-      <svg
-        className="ml2 pointer"
-        fill="none"
-        height="16"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        viewBox="0 0 24 24"
-        width="16"
+      <button
+        className="ml2 pointer bg-transparent bn lavender o-70 glow"
         onClick={onCopy}
       >
-        <rect height="13" rx="2" ry="2" width="13" x="9" y="9" />
-        <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
-      </svg>
+        <svg fill="none" height="16" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="16">
+          <rect height="13" rx="2" ry="2" width="13" x="9" y="9" />
+          <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+        </svg>
+      </button>
     </Txt>
   );
 }
@@ -88,6 +95,7 @@ export default function Summary(props: Props) {
 
   const router = useRouter();
   const [game, setGame] = useState<IGameState>(initialGame);
+  const [copied, setCopied] = useState(false);
   const { t } = useTranslation();
 
   /**
@@ -126,9 +134,11 @@ export default function Summary(props: Props) {
     }
   }
 
-  const onCopySeed = useCallback(() => {
+  function onCopySeed() {
     navigator.clipboard.writeText(game.options.seed);
-  }, [game.options.seed]);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
 
   if (!game) {
     return <LoadingScreen />;
@@ -139,6 +149,7 @@ export default function Summary(props: Props) {
 
   return (
     <GameContext.Provider value={game}>
+      <CopiedToast label={t("copied")} visible={copied} />
       <div className="flex flex-column items-center pv4">
         <Button
           void

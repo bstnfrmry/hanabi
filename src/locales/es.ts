@@ -22,6 +22,7 @@ export const es = {
   autoplay: "Autoplay",
   shareGame: "Comparte este juego",
   copy: "Copiar",
+  copied: "¡Copiado!",
   waitForOthers: "Puedes esperar a los demás o ",
   gameStarted: "¡Comenzó el juego!",
   gameStarts: "¡Comienza el juego!",

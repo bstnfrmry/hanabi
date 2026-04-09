@@ -319,14 +319,6 @@ export default function PlayerGame(props: Props) {
           )}
           {!displayStats && (
             <div className="relative flex items-center justify-end flex-grow-1 dib">
-              {selected && (
-                <Txt
-                  className="lavender absolute top--1 right-2 dib"
-                  size={TxtSize.XSMALL}
-                  style={{ marginTop: "-1px" }}
-                  value="⟶"
-                />
-              )}
 
               {/* When game has ended (even in replay mode)
               Enable user to view their game */}
