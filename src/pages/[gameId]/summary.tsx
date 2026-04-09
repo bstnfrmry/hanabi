@@ -135,7 +135,7 @@ export default function Summary(props: Props) {
   }
 
   const gameDuration = game.startedAt && game.endedAt ? formatDuration(game.startedAt, game.endedAt) : null;
-  const shortSeed = game.options.seed ? game.options.seed.slice(0, 4) + "****" + game.options.seed.slice(-4) : "";
+  const shortSeed = game.options.seed ? game.options.seed.slice(0, 4) + "∗∗∗∗" + game.options.seed.slice(-4) : "";
 
   return (
     <GameContext.Provider value={game}>
