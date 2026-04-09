@@ -421,13 +421,14 @@ export default function PlayerGame(props: Props) {
                       id={action}
                       text={t(action)}
                       onClick={() => {
+                        const cardIdx = selectedCard;
                         onCommitAction({
                           action: action as "discard" | "play",
                           from: selfPlayer.index,
-                          cardIndex: selectedCard,
+                          cardIndex: cardIdx,
                         });
                         setPendingHint({ value: null, type: null } as IHintAction);
-                        selectCard(null);
+                        selectCard(cardIdx);
                       }}
                     />
                   ))}
