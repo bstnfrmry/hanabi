@@ -53,7 +53,7 @@ export default function MenuArea(props: Props) {
 
   return (
     <Modal isOpen onRequestClose={() => onCloseArea()}>
-      <div className="flex flex-column justify-center items-center w-100 h-100 pa2 z-10">
+      <div className={`flex flex-column justify-center items-center w-100 h-100 z-10 ${showRules ? "" : "pa2"}`}>
         {!showRules && (
           <div className="flex flex-column justify-center items-center">
             <Txt className="ttu txt-yellow mb4 mb5-l" size={TxtSize.MEDIUM} value={t("hanab")} />
