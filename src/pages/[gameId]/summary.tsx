@@ -68,13 +68,13 @@ function ShuffleSeed({ seed, onCopy }: { seed: string; onCopy: () => void }) {
         className="ml2 pointer"
         fill="none"
         height="16"
-        onClick={onCopy}
         stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
         viewBox="0 0 24 24"
         width="16"
+        onClick={onCopy}
       >
         <rect height="13" rx="2" ry="2" width="13" x="9" y="9" />
         <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
@@ -135,9 +135,7 @@ export default function Summary(props: Props) {
   }
 
   const gameDuration = game.startedAt && game.endedAt ? formatDuration(game.startedAt, game.endedAt) : null;
-  const shortSeed = game.options.seed
-    ? game.options.seed.slice(0, 4) + "****" + game.options.seed.slice(-4)
-    : "";
+  const shortSeed = game.options.seed ? game.options.seed.slice(0, 4) + "****" + game.options.seed.slice(-4) : "";
 
   return (
     <GameContext.Provider value={game}>
