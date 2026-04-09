@@ -139,7 +139,13 @@ export default function Turn(props: Props) {
 
   return (
     <div className="dib">
-      {props.turnNumber ? <Txt className={classnames("di gray")} size={TxtSize.XSMALL}>{props.turnNumber}</Txt> : ""}
+      {props.turnNumber ? (
+        <Txt className={classnames("di gray")} size={TxtSize.XSMALL}>
+          {props.turnNumber}
+        </Txt>
+      ) : (
+        ""
+      )}
       <span>&nbsp;</span>
       <Txt className="di">
         {/* The player action and the card they have drawn, if applicable */}
