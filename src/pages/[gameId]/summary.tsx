@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import moment from "moment";
 import { useRouter } from "next/router";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import shortid from "shortid";
 import GameActionsStats from "~/components/gameActionsStats";
@@ -60,6 +60,29 @@ interface Props {
   game: IGameState;
 }
 
+function ShuffleSeed({ seed, onCopy }: { seed: string; onCopy: () => void }) {
+  return (
+    <Txt className="mt2 lavender flex items-center" size={TxtSize.MEDIUM}>
+      Shuffle: {seed}
+      <svg
+        className="ml2 pointer"
+        fill="none"
+        height="16"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+        width="16"
+        onClick={onCopy}
+      >
+        <rect height="13" rx="2" ry="2" width="13" x="9" y="9" />
+        <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+      </svg>
+    </Txt>
+  );
+}
+
 export default function Summary(props: Props) {
   const { game: initialGame } = props;
 
@@ -103,15 +126,20 @@ export default function Summary(props: Props) {
     }
   }
 
+  const onCopySeed = useCallback(() => {
+    navigator.clipboard.writeText(game.options.seed);
+  }, [game.options.seed]);
+
   if (!game) {
     return <LoadingScreen />;
   }
 
   const gameDuration = game.startedAt && game.endedAt ? formatDuration(game.startedAt, game.endedAt) : null;
+  const shortSeed = game.options.seed ? game.options.seed.slice(0, 4) + "****" + game.options.seed.slice(-4) : "";
 
   return (
     <GameContext.Provider value={game}>
-      <div className="flex flex-column items-center mb5">
+      <div className="flex flex-column items-center pv4">
         <Button
           void
           className="absolute left-0 top-1"
@@ -123,11 +151,9 @@ export default function Summary(props: Props) {
         <div className="flex flex-column items-center mt4">
           <Txt size={TxtSize.MEDIUM} value={t("summarySubtitle")} />
           <Txt className="mt2" size={TxtSize.MEDIUM}>
-            <Trans i18nKey="partySetup">
-              Players: {{ players: game.players.length }} · Mode: {{ variant: gameVariantToText(game.options.variant) }}{" "}
-              · Shuffle #{{ shuffle: game.options.seed }}
-            </Trans>
+            Players: {game.players.length} · Mode: {gameVariantToText(game.options.variant)}
           </Txt>
+          <ShuffleSeed seed={shortSeed} onCopy={onCopySeed} />
           {gameDuration && <Txt className="mt2" size={TxtSize.MEDIUM} value={t("gameCompleted", { gameDuration })} />}
         </div>
 
@@ -159,13 +185,15 @@ export default function Summary(props: Props) {
 
         <Section className="tc" title={t("tryOutTitle")}>
           <div>
-            <Trans i18nKey="partySetup">
-              Players: {{ players: game.players.length }} · Mode: {{ variant: gameVariantToText(game.options.variant) }}{" "}
-              · Shuffle #{{ shuffle: game.options.seed }}
-            </Trans>
+            <Txt size={TxtSize.MEDIUM}>
+              Players: {game.players.length} · Mode: {gameVariantToText(game.options.variant)}
+            </Txt>
+            <div className="mt2 flex items-center justify-center">
+              <ShuffleSeed seed={shortSeed} onCopy={onCopySeed} />
+            </div>
             <Button
               primary
-              className="ml3"
+              className="ml3 mt4"
               text={t("tryOutButton")}
               onClick={async () => {
                 const nextGameId = shortid();
