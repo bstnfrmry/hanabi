@@ -319,7 +319,6 @@ export default function PlayerGame(props: Props) {
           )}
           {!displayStats && (
             <div className="relative flex items-center justify-end flex-grow-1 dib">
-
               {/* When game has ended (even in replay mode)
               Enable user to view their game */}
               {(game.endedAt || game.originalGame?.endedAt) && player === selfPlayer && (

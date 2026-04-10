@@ -77,11 +77,17 @@ function ShuffleSeed({ seed, onCopy }: { seed: string; onCopy: () => void }) {
   return (
     <Txt className="mt2 lavender flex items-center" size={TxtSize.MEDIUM}>
       Shuffle: {seed}
-      <button
-        className="ml2 pointer bg-transparent bn lavender o-70 glow"
-        onClick={onCopy}
-      >
-        <svg fill="none" height="16" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="16">
+      <button className="ml2 pointer bg-transparent bn lavender o-70 glow" onClick={onCopy}>
+        <svg
+          fill="none"
+          height="16"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          width="16"
+        >
           <rect height="13" rx="2" ry="2" width="13" x="9" y="9" />
           <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
         </svg>
