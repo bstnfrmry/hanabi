@@ -62,6 +62,7 @@ export default function Lobby(props: Props) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [bot, setBot] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const gameFull = game.players.length === game.options.playersCount;
   const canJoin = (game.options.gameMode === GameMode.PASS_AND_PLAY || !selfPlayer) && !gameFull;
@@ -72,6 +73,8 @@ export default function Lobby(props: Props) {
   function copy() {
     inputRef.current.select();
     document.execCommand("copy");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   }
 
   useEffect(() => {
@@ -93,6 +96,14 @@ export default function Lobby(props: Props) {
 
   return (
     <div className="flex items-center justify-center h-100 w-100 pa2">
+      {copied && (
+        <div
+          className="fixed z-999 bg-white black ph3 pv2 br2 shadow-2 f6 fw5"
+          style={{ top: "1rem", left: "50%", transform: "translateX(-50%)" }}
+        >
+          {t("copied")}
+        </div>
+      )}
       <Meta />
       <div className="flex flex-column pa2 w-100 h-100">
         <div className="mb3 ttu flex items-center">

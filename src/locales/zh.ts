@@ -23,6 +23,7 @@ export const zh = {
   autoplay: "自动出牌",
   shareGame: "分享房间",
   copy: "复制",
+  copied: "已复制！",
   waitForOthers: "等待其它玩家，或者",
   gameStarted: "游戏已开始！",
   gameStarts: "游戏开始！",

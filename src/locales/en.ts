@@ -28,6 +28,7 @@ export const en = {
   autoplay: "Autoplay",
   shareGame: "Share this game",
   copy: "Copy",
+  copied: "Copied!",
   waitForOthers: "Wait for others, or ",
   gameStarted: "Game started!",
   gameStarts: "Game starts!",

@@ -43,7 +43,7 @@ export default function App(props: AppProps) {
 
   return (
     <Sentry.ErrorBoundary>
-      <Hanab {...props} />;
+      <Hanab {...props} />
     </Sentry.ErrorBoundary>
   );
 }

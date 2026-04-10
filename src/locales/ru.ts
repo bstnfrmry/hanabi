@@ -27,6 +27,7 @@ export const ru = {
   autoplay: "Авто-игра",
   shareGame: "Поделиться этой игрой",
   copy: "Копировать",
+  copied: "Скопировано!",
   waitForOthers: "Ждать остальных или ",
   gameStarted: "Игра началась!",
   gameStarts: "Игра начинается!",
