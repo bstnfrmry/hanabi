@@ -41,7 +41,7 @@ export default function Play(props: Props) {
     <TutorialProvider>
       <SessionContext.Provider value={session}>
         <ReplayContext.Provider value={{ cursor: replayCursor, moveCursor: setReplayCursor }}>
-          <GameIndex game={initialGame} host={host}></GameIndex>
+          <GameIndex key={initialGame.id} game={initialGame} host={host}></GameIndex>
         </ReplayContext.Provider>
       </SessionContext.Provider>
     </TutorialProvider>

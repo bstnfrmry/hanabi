@@ -239,15 +239,28 @@ export function Game(props: Props) {
     location.assign(newUrl);
   }
 
+  // Captured once Firebase has synced the game, so we don't redirect when the
+  // user navigated back to a game whose nextGameId was already set on arrival
+  // — only redirect when the "New game" action happens during this visit.
+  const initialNextGameIdRef = useRef<string | null | undefined>(undefined);
+
   /**
    * Redirect all players to next game
    */
   useEffect(() => {
+    if (!game.synced) return;
+
+    if (initialNextGameIdRef.current === undefined) {
+      initialNextGameIdRef.current = game.nextGameId ?? null;
+      return;
+    }
+
     if (!game.nextGameId) return;
+    if (game.nextGameId === initialNextGameIdRef.current) return;
 
     setDisplayStats(false);
     location.assign(`/${game.nextGameId}`);
-  }, [game.nextGameId]);
+  }, [game.synced, game.nextGameId]);
 
   function onJoinGame(player: Omit<IPlayer, "id">) {
     const newState = joinGame(game, { id: playerId, ...player });
@@ -434,6 +447,12 @@ export function Game(props: Props) {
     await updateGame(nextGame);
     log("Next Game Persisted");
     const updatedGame = { ...finishedGame, nextGameId: nextGame.id };
+    // Pre-set the ref so the redirect effect treats the Firebase echo as
+    // "no change from arrival" and skips location.assign — otherwise the
+    // clicker would navigate twice (router.push below + location.assign from
+    // the effect), leaving a duplicate history entry that breaks the back
+    // button.
+    initialNextGameIdRef.current = nextGame.id;
     await updateGame(updatedGame);
     log("Link to nextGame updated");
     onGameChange(nextGame);
